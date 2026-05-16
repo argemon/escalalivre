@@ -1,7 +1,9 @@
 import { useEffect } from "react";
-import { EmployeeSidebar } from "./components/EmployeeSidebar";
-import { InsightPanel } from "./components/InsightPanel";
-import { ScheduleCalendar } from "./components/ScheduleCalendar";
+import { EmployeeDrawer } from "./components/EmployeeDrawer";
+import { GlobalHeader } from "./components/GlobalHeader";
+import { OperationalSidebar } from "./components/OperationalSidebar";
+import { OperationalTimeline } from "./components/OperationalTimeline";
+import { SolverPanel } from "./components/SolverPanel";
 import { useScheduleStore } from "./store/scheduleStore";
 
 export default function App() {
@@ -12,22 +14,18 @@ export default function App() {
   }, [theme]);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background text-foreground">
-      <aside className="hidden w-80 shrink-0 lg:block">
-        <EmployeeSidebar />
-      </aside>
-      <ScheduleCalendar />
-      <aside className="hidden w-96 shrink-0 xl:block">
-        <InsightPanel />
-      </aside>
-      <div className="fixed inset-x-3 bottom-3 z-20 grid grid-cols-2 gap-2 xl:hidden">
-        <div className="max-h-64 overflow-auto rounded-md border border-border shadow-lg lg:hidden">
-          <EmployeeSidebar />
+    <div className="relative flex h-screen flex-col overflow-hidden bg-background text-foreground">
+      <GlobalHeader />
+      <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[340px_minmax(0,1fr)] xl:grid-cols-[340px_minmax(0,1fr)_380px]">
+        <div className="hidden min-h-0 lg:block">
+          <OperationalSidebar />
         </div>
-        <div className="max-h-64 overflow-auto rounded-md border border-border shadow-lg">
-          <InsightPanel />
+        <OperationalTimeline />
+        <div className="hidden min-h-0 xl:block">
+          <SolverPanel />
         </div>
       </div>
+      <EmployeeDrawer />
     </div>
   );
 }

@@ -78,6 +78,36 @@ export const sampleDocument: EscalaLivreDocument = {
       break: { start: "2026-05-18T13:00:00", end: "2026-05-18T14:00:00" },
       source: "manual",
       tags: ["preferencia"]
+    },
+    {
+      id: "8a1023fb-ded5-4579-8593-a83216715927",
+      employeeId: "4d4d59dd-9891-428a-95e3-c48508320516",
+      role: "vendedor",
+      start: "2026-05-18T19:00:00",
+      end: "2026-05-19T07:00:00",
+      break: { start: "2026-05-19T00:00:00", end: "2026-05-19T01:30:00" },
+      source: "solver",
+      tags: ["12x36", "overnight"]
+    },
+    {
+      id: "dc447648-a83f-47c6-bf24-c2bc9e76b032",
+      employeeId: "729ef3cd-bd12-4eb6-9e82-5f7e28c538f6",
+      role: "caixa",
+      start: "2026-05-18T10:00:00",
+      end: "2026-05-18T18:00:00",
+      break: { start: "2026-05-18T14:00:00", end: "2026-05-18T15:00:00" },
+      source: "solver",
+      tags: ["cobertura"]
+    },
+    {
+      id: "f22e5b08-e426-4af2-a0ad-2f46eb4c5302",
+      employeeId: "6dc2656b-ad7f-48ca-8204-a6dce313f00c",
+      role: "vendedor",
+      start: "2026-05-19T08:00:00",
+      end: "2026-05-19T16:00:00",
+      break: { start: "2026-05-19T12:00:00", end: "2026-05-19T14:00:00" },
+      source: "solver",
+      tags: ["almoco-otimizado"]
     }
   ],
   updatedAt: "2026-05-16T17:00:00.000Z"
@@ -85,8 +115,18 @@ export const sampleDocument: EscalaLivreDocument = {
 
 export const sampleAnalysis: ScheduleResult = {
   assignments: sampleDocument.assignments,
-  conflicts: [],
+  conflicts: [
+    {
+      severity: "warning",
+      code: "lunch-flex",
+      message: "Almoco de Ana estendido para 2h para preservar cobertura 12h-13h.",
+      start: "2026-05-19T12:00:00",
+      end: "2026-05-19T14:00:00",
+      role: "vendedor"
+    }
+  ],
   gaps: [
+    { start: "2026-05-18T12:00:00", end: "2026-05-18T14:00:00", role: "vendedor", missingEmployees: 1 },
     { start: "2026-05-23T18:00:00", end: "2026-05-23T22:00:00", role: "vendedor", missingEmployees: 1 }
   ],
   hiringSuggestions: [
