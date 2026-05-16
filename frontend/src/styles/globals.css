@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 210 24% 98%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --muted: 214 32% 91%;
+  --border: 214 32% 86%;
+  --primary: 162 72% 42%;
+  --accent: 33 95% 55%;
+}
+
+.dark {
+  --background: 220 18% 10%;
+  --foreground: 210 30% 96%;
+  --card: 222 16% 14%;
+  --muted: 218 16% 20%;
+  --border: 218 15% 23%;
+  --primary: 162 72% 48%;
+  --accent: 33 95% 60%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.fc {
+  --fc-border-color: hsl(var(--border));
+  --fc-page-bg-color: hsl(var(--background));
+  --fc-neutral-bg-color: hsl(var(--card));
+  --fc-today-bg-color: color-mix(in srgb, hsl(var(--primary)) 14%, transparent);
+  --fc-button-bg-color: hsl(var(--foreground));
+  --fc-button-border-color: hsl(var(--foreground));
+  --fc-button-text-color: hsl(var(--background));
+  height: 100%;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.fc .fc-button {
+  border-radius: 6px;
+  text-transform: capitalize;
+}
+
+.fc-event {
+  border: 0;
+  border-radius: 6px;
+  padding: 2px 4px;
+}
+
+.event-manual {
+  background: hsl(var(--primary));
+}
+
+.event-solver {
+  background: hsl(var(--accent));
+}
