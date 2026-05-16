@@ -1,0 +1,6 @@
+@EscalaLivre.Api_HostAddress = http://localhost:5003
+
+GET {{EscalaLivre.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
