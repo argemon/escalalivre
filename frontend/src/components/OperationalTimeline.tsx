@@ -1,20 +1,23 @@
 import { Activity, Flame, Layers3 } from "lucide-react";
-import { assignmentForEmployee, assignmentLabel, dateToTimelineHour, durationPercent, formatHour, percentAt, timelineHours } from "../lib/planning";
+import { Fragment } from "react";
+import {
+  assignmentForEmployee,
+  assignmentLabel,
+  dateToTimelineHour,
+  durationPercent,
+  formatHour,
+  percentAt,
+  timelineHours
+} from "../lib/planning";
 import { useScheduleStore } from "../store/scheduleStore";
+import type { CoverageBlock } from "../types/schedule";
 import { Badge } from "./ui";
 
-const coverageBands = [
-  { label: "08h-10h", state: "ok", width: "20%" },
-  { label: "10h-12h", state: "warn", width: "20%" },
-  { label: "12h-14h", state: "gap", width: "20%" },
-  { label: "14h-18h", state: "ok", width: "40%" }
-];
-
-const heatmapRows = ["vendedor", "caixa", "atendente"];
-const heatmapCols = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
+const dayLabels = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
 
 export function OperationalTimeline() {
   const { viewMode, setSelectedEmployeeId } = useScheduleStore();
+  const coverage = useScheduleStore((state) => state.analysis.coverage);
 
   return (
     <main className="min-w-0 flex-1 overflow-hidden bg-background">
@@ -23,7 +26,7 @@ export function OperationalTimeline() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="text-xs uppercase text-muted-foreground">Timeline operacional</p>
-              <h2 className="text-xl font-semibold">Cobertura em tempo real · Seg 18/05</h2>
+              <h2 className="text-xl font-semibold">Cobertura em tempo real - Seg 18/05</h2>
             </div>
             <div className="flex gap-2">
               <Badge><Layers3 className="mr-1 size-3" /> Turnos reais</Badge>
@@ -36,19 +39,11 @@ export function OperationalTimeline() {
         <section className="border-b border-border px-5 py-4">
           <div className="mb-2 flex items-center justify-between">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Linha de cobertura</p>
-            <p className="text-xs text-muted-foreground">verde OK · amarelo atencao · vermelho buraco</p>
+            <p className="text-xs text-muted-foreground">verde OK - amarelo atencao - vermelho buraco</p>
           </div>
-          <div className="flex h-10 overflow-hidden rounded-md border border-border">
-            {coverageBands.map((band) => (
-              <div
-                key={band.label}
-                className={`flex items-center justify-center text-xs font-semibold ${
-                  band.state === "ok" ? "bg-emerald-500/25 text-emerald-300" : band.state === "warn" ? "bg-amber-500/25 text-amber-300" : "bg-red-500/25 text-red-300"
-                }`}
-                style={{ width: band.width }}
-              >
-                {band.label}
-              </div>
+          <div className="grid h-10 grid-cols-12 overflow-hidden rounded-md border border-border">
+            {coverage.slice(0, 12).map((block) => (
+              <CoverageSegment key={`${block.role}-${block.start}`} block={block} />
             ))}
           </div>
         </section>
@@ -126,6 +121,10 @@ function TimelineRows({ onEmployeeClick }: { onEmployeeClick: (id: string) => vo
 }
 
 function Heatmap() {
+  const coverage = useScheduleStore((state) => state.analysis.coverage);
+  const roles = Array.from(new Set(coverage.map((block) => block.role)));
+  const days = Array.from(new Set(coverage.map((block) => new Date(block.start).getDay()))).sort((a, b) => a - b);
+
   return (
     <div className="rounded-md border border-border bg-card p-4">
       <div className="mb-4 flex items-center justify-between">
@@ -135,20 +134,38 @@ function Heatmap() {
         </div>
         <Badge>tempo real</Badge>
       </div>
-      <div className="grid grid-cols-[120px_repeat(6,1fr)] gap-2">
+      <div className="grid gap-2" style={{ gridTemplateColumns: `120px repeat(${Math.max(days.length, 1)}, minmax(72px, 1fr))` }}>
         <div />
-        {heatmapCols.map((day) => <p key={day} className="text-center text-xs text-muted-foreground">{day}</p>)}
-        {heatmapRows.map((role, rowIndex) => (
-          <>
+        {days.map((day) => <p key={day} className="text-center text-xs text-muted-foreground">{dayLabels[day]}</p>)}
+        {roles.map((role) => (
+          <Fragment key={role}>
             <p key={`${role}-label`} className="py-3 text-sm font-medium capitalize">{role}</p>
-            {heatmapCols.map((day, colIndex) => {
-              const score = (rowIndex + colIndex) % 5;
-              const color = score === 0 ? "bg-red-500/70" : score < 3 ? "bg-amber-500/70" : "bg-emerald-500/70";
-              return <div key={`${role}-${day}`} className={`h-12 rounded-md ${color}`} />;
+            {days.map((day) => {
+              const blocks = coverage.filter((block) => block.role === role && new Date(block.start).getDay() === day);
+              const uncovered = blocks.filter((block) => block.state === "uncovered").length;
+              const warning = blocks.filter((block) => block.state === "warning").length;
+              const color = uncovered > 0 ? "bg-red-500/70" : warning > 0 ? "bg-amber-500/70" : "bg-emerald-500/70";
+              const label = blocks.length === 0 ? "sem regra" : `${blocks.reduce((sum, block) => sum + block.assigned, 0)}/${blocks.reduce((sum, block) => sum + block.required, 0)}`;
+              return <div key={`${role}-${day}`} className={`flex h-12 items-center justify-center rounded-md text-xs font-semibold text-slate-950 ${color}`}>{label}</div>;
             })}
-          </>
+          </Fragment>
         ))}
       </div>
+    </div>
+  );
+}
+
+function CoverageSegment({ block }: { block: CoverageBlock }) {
+  const className =
+    block.state === "healthy"
+      ? "bg-emerald-500/25 text-emerald-300"
+      : block.state === "warning"
+        ? "bg-amber-500/25 text-amber-300"
+        : "bg-red-500/25 text-red-300";
+
+  return (
+    <div className={`flex min-w-0 items-center justify-center border-r border-background/40 px-1 text-[11px] font-semibold last:border-r-0 ${className}`}>
+      {new Date(block.start).getHours()}h {block.assigned}/{block.required}
     </div>
   );
 }

@@ -77,6 +77,15 @@ export type CoverageGap = {
   missingEmployees: number;
 };
 
+export type CoverageBlock = {
+  start: string;
+  end: string;
+  role: string;
+  required: number;
+  assigned: number;
+  state: "healthy" | "warning" | "uncovered";
+};
+
 export type ScheduleIssue = {
   severity: "error" | "warning" | "info";
   code: string;
@@ -93,10 +102,29 @@ export type HiringSuggestion = {
   rationale: string;
 };
 
+export type OptimizationSuggestion = {
+  code: string;
+  message: string;
+  impact: string;
+  employeeId?: string;
+  start?: string;
+  end?: string;
+};
+
+export type SolverDecision = {
+  assignmentId: string;
+  employeeId: string;
+  reason: string;
+  factors: string[];
+};
+
 export type ScheduleResult = {
   assignments: ShiftAssignment[];
   conflicts: ScheduleIssue[];
+  coverage: CoverageBlock[];
   gaps: CoverageGap[];
   hiringSuggestions: HiringSuggestion[];
+  optimizationSuggestions: OptimizationSuggestion[];
+  decisions: SolverDecision[];
   coverageScore: number;
 };

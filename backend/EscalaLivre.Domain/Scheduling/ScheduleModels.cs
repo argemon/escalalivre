@@ -12,7 +12,7 @@ public sealed record CompanyRules(
     string Name,
     TimeOnly OpensAt,
     TimeOnly ClosesAt,
-    IReadOnlySet<DayOfWeek> OperatingDays,
+    IReadOnlyList<DayOfWeek> OperatingDays,
     WorkloadRule DefaultWorkload,
     LunchRule Lunch,
     TimeSpan MinimumRest,
@@ -29,7 +29,7 @@ public sealed record Employee(
     IReadOnlyList<Preference> Preferences,
     bool AllowsOvertime,
     bool AllowsNightWork,
-    IReadOnlySet<DayOfWeek> PreferredDaysOff);
+    IReadOnlyList<DayOfWeek> PreferredDaysOff);
 
 public sealed record WorkloadRule(
     string RegimeType,
@@ -60,6 +60,12 @@ public sealed record BreakWindow(DateTime Start, DateTime End);
 
 public sealed record ScheduleIssue(string Severity, string Code, string Message, DateTime? Start = null, DateTime? End = null, string? Role = null);
 
+public sealed record CoverageBlock(DateTime Start, DateTime End, string Role, int Required, int Assigned, string State);
+
 public sealed record CoverageGap(DateTime Start, DateTime End, string Role, int MissingEmployees);
 
 public sealed record HiringSuggestion(string Role, double WeeklyHours, IReadOnlyList<AvailabilityWindow> IdealWindows, string Rationale);
+
+public sealed record OptimizationSuggestion(string Code, string Message, string Impact, Guid? EmployeeId = null, DateTime? Start = null, DateTime? End = null);
+
+public sealed record SolverDecision(Guid AssignmentId, Guid EmployeeId, string Reason, IReadOnlyList<string> Factors);
