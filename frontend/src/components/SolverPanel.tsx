@@ -1,5 +1,5 @@
-import { BrainCircuit, BriefcaseBusiness, CheckCircle2, CircleAlert, Loader2, Wand2 } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
+import { BrainCircuit, BriefcaseBusiness, CheckCircle2, CircleAlert, Loader2, Wand2 } from "lucide-react";
 import type { ReactNode } from "react";
 import { solveSchedule } from "../lib/api";
 import { useScheduleStore } from "../store/scheduleStore";
@@ -70,14 +70,20 @@ export function SolverPanel() {
 
         <section className="space-y-2">
           <Title icon={<CheckCircle2 className="size-4" />} text="Explicabilidade" />
-          <article className="rounded-md border border-border bg-background p-3 text-sm">
-            <p className="font-medium">Bruno alocado no overnight porque:</p>
-            <p className="mt-2 text-muted-foreground">regime HOUR_BASED permite 12x36, evita hora extra da Ana e cobre fechamento sem violar descanso minimo.</p>
-          </article>
-          <article className="rounded-md border border-border bg-background p-3 text-sm">
-            <p className="font-medium">Almoco de Ana movido porque:</p>
-            <p className="mt-2 text-muted-foreground">janela flexivel reduz buraco 12h-13h e preserva limite semanal.</p>
-          </article>
+          {analysis.decisions.slice(0, 3).map((decision) => (
+            <article key={decision.assignmentId} className="rounded-md border border-border bg-background p-3 text-sm">
+              <p className="font-medium">{decision.reason}</p>
+              <div className="mt-2 space-y-1 text-muted-foreground">
+                {decision.factors.map((factor) => <p key={factor}>- {factor}</p>)}
+              </div>
+            </article>
+          ))}
+          {analysis.optimizationSuggestions.map((suggestion) => (
+            <article key={`${suggestion.code}-${suggestion.start}`} className="rounded-md border border-sky-500/30 bg-sky-500/10 p-3 text-sm">
+              <p className="font-medium">{suggestion.message}</p>
+              <p className="mt-2 text-muted-foreground">{suggestion.impact}</p>
+            </article>
+          ))}
         </section>
 
         <section className="space-y-2">
@@ -85,7 +91,7 @@ export function SolverPanel() {
           {analysis.hiringSuggestions.map((suggestion) => (
             <article key={suggestion.role} className="rounded-md border border-border bg-background p-3">
               <p className="text-sm font-semibold">1 {suggestion.role} parcial</p>
-              <p className="mt-1 text-xs text-muted-foreground">{suggestion.weeklyHours}h semanais · 18h-22h · terca-sabado</p>
+              <p className="mt-1 text-xs text-muted-foreground">{suggestion.weeklyHours}h semanais - janelas criticas detectadas</p>
               <p className="mt-2 text-sm">{suggestion.rationale}</p>
             </article>
           ))}

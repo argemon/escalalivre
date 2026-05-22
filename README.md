@@ -1,33 +1,32 @@
 # EscalaLivre
 
-EscalaLivre e um SaaS-like local-first para geracao, otimizacao e validacao de escalas de funcionarios com regras operacionais e trabalhistas brasileiras. Ele combina uma SPA moderna com um backend .NET 10 orientado a solver para transformar disponibilidade, regimes, cobertura minima e restricoes individuais em uma escala operacional analisavel.
+EscalaLivre is a local-first workforce optimization platform for operational scheduling, labor rule validation, coverage analysis and planning intelligence. It combines a modern React SPA with a .NET scheduling API powered by OR-Tools to generate explainable schedules from company rules, employee constraints, configurable shift regimes, coverage requirements and flexible break windows.
 
-O diferencial do produto e tratar escala como planejamento inteligente, nao como CRUD de calendario. O sistema detecta buracos de cobertura, valida conflitos, sugere contratacao e permite que intervalos de almoco sejam otimizados dentro de limites legais e operacionais.
-
-Tudo foi desenhado para funcionar offline apos o carregamento inicial. A persistencia principal e baseada em arquivo nativo `.escalalivre`, com import/export para reconstruir o estado local sem login, conta, banco cloud ou autenticacao.
+The platform is designed for operational teams that need fast schedule generation without accounts, cloud persistence or database administration. Users configure the operation, generate schedules, inspect coverage gaps, review solver explanations, export a portable `.escalalivre` file and restore the full planning state later.
 
 ## Features
 
-- Geracao automatica de escala com solver.
-- Regras por funcionario com heranca ou sobrescrita do padrao da empresa.
-- Regras da empresa para funcionamento, jornada, almoco, descanso e cobertura.
-- Cobertura minima por funcao, dia e faixa horaria.
-- Deteccao de buracos operacionais e funcoes insuficientes.
-- Sugestao de contratacao por funcao, carga ideal e janela ideal.
-- Exportacao/importacao de arquivo nativo `.escalalivre`.
-- Estrutura para exportacao XLSX e PDF.
-- Suporte a regimes day-based, como 5x2, 6x1 e 4x3.
-- Suporte a regimes hour-based, como 12x36 e 24x72.
-- Otimizacao de almoco com intervalo movel e configuravel.
-- Funcionamento offline-first com estado persistido localmente.
+- Automatic schedule generation with OR-Tools CP-SAT.
+- Labor rule validation for rest windows, weekly limits, availability and operational impossibilities.
+- Coverage optimization by role, day and hour.
+- Conflict detection for uncovered periods, rest violations and impossible staffing.
+- Hiring suggestions with role, weekly hours and critical coverage windows.
+- Intelligent lunch and break optimization using flexible break candidates.
+- Day-based regimes for configurable work/off cycles.
+- Hour-based regimes for continuous shifts, overnight work and temporal rest windows.
+- Real DateTime shift intervals with cross-day rendering.
+- Operational timeline, coverage heatmap and solver intelligence panel.
+- Native `.escalalivre` import/export with schema versioning, UUIDs, ISO-8601 dates and camelCase JSON.
+- XLSX and PDF export endpoints.
+- Offline-first browser persistence through local state.
 
 ## Stack
 
-- **Frontend:** React, TypeScript, Vite, TailwindCSS, Zustand, TanStack Query, React Hook Form, Zod, FullCalendar e componentes em estilo shadcn/ui.
-- **Backend:** .NET 10, ASP.NET Core Minimal APIs, FluentValidation e OR-Tools.
-- **Arquitetura:** monorepo modular com dominio, aplicacao, infraestrutura e API separados. O frontend persiste localmente e fala com o backend apenas para solve/validate/analyze/import/export.
+- Frontend: React, TypeScript, Vite, TailwindCSS, Zustand, TanStack Query, React Hook Form, Zod, FullCalendar-compatible models and shadcn-style UI primitives.
+- Backend: .NET 10, ASP.NET Core Minimal APIs, OR-Tools and FluentValidation.
+- Architecture: monorepo with domain, application contracts, infrastructure adapters, API endpoints, frontend SPA and documentation.
 
-## Como Rodar Localmente
+## Running Locally
 
 Frontend:
 
@@ -45,29 +44,43 @@ dotnet restore
 dotnet run
 ```
 
-## Estrutura Do Projeto
+## Project Structure
 
 ```text
 /frontend
-  SPA React com calendario, paineis inteligentes, estado local-first e import/export.
+  React SPA with operational dashboard, local-first store, API client and enterprise scheduling UI.
 /backend
-  Solucao .NET 10 com API, dominio, aplicacao, infraestrutura e testes.
+  .NET solution with domain models, shift regimes, validation, OR-Tools solver, import/export and API.
 /docs
-  Documentacao de arquitetura, solver, import/export, regimes e regras de negocio.
+  Architecture, solver, import/export, regimes and business rules documentation.
 ```
 
-## Screenshots
+## API
 
-> Placeholder: calendario semanal com cobertura visual.
+All API responses use the envelope:
 
-> Placeholder: painel inteligente com conflitos, buracos e contratacao sugerida.
+```json
+{
+  "success": true,
+  "data": {},
+  "errors": [],
+  "warnings": [],
+  "metadata": {}
+}
+```
 
-> Placeholder: importacao/exportacao local-first.
+Endpoints:
 
-## Roadmap
+- `POST /solve`
+- `POST /validate`
+- `POST /analyze`
+- `POST /import`
+- `POST /export`
 
-- PWA instalavel com cache offline completo.
-- Colaboracao local/rede sem obrigatoriedade de cloud.
-- Cloud sync opcional.
-- IA generativa para explicar conflitos e sugerir cenarios.
-- Aplicativo mobile.
+## Future Roadmap
+
+- PWA installation and service worker caching.
+- Optional cloud sync.
+- Collaborative planning sessions.
+- AI-generated rule ingestion.
+- Mobile support for schedule review and operational alerts.

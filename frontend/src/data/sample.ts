@@ -125,6 +125,14 @@ export const sampleAnalysis: ScheduleResult = {
       role: "vendedor"
     }
   ],
+  coverage: [
+    { start: "2026-05-18T09:00:00", end: "2026-05-18T10:00:00", role: "vendedor", required: 2, assigned: 1, state: "warning" },
+    { start: "2026-05-18T10:00:00", end: "2026-05-18T11:00:00", role: "vendedor", required: 2, assigned: 1, state: "warning" },
+    { start: "2026-05-18T12:00:00", end: "2026-05-18T13:00:00", role: "vendedor", required: 2, assigned: 0, state: "uncovered" },
+    { start: "2026-05-18T14:00:00", end: "2026-05-18T18:00:00", role: "vendedor", required: 2, assigned: 2, state: "healthy" },
+    { start: "2026-05-18T10:00:00", end: "2026-05-18T18:00:00", role: "caixa", required: 1, assigned: 1, state: "healthy" },
+    { start: "2026-05-23T18:00:00", end: "2026-05-23T22:00:00", role: "vendedor", required: 2, assigned: 1, state: "warning" }
+  ],
   gaps: [
     { start: "2026-05-18T12:00:00", end: "2026-05-18T14:00:00", role: "vendedor", missingEmployees: 1 },
     { start: "2026-05-23T18:00:00", end: "2026-05-23T22:00:00", role: "vendedor", missingEmployees: 1 }
@@ -135,6 +143,30 @@ export const sampleAnalysis: ScheduleResult = {
       weeklyHours: 20,
       idealWindows: [{ start: "2026-05-19T18:00:00", end: "2026-05-23T22:00:00" }],
       rationale: "Demanda de fechamento concentrada entre terca e sabado."
+    }
+  ],
+  optimizationSuggestions: [
+    {
+      code: "moveBreak",
+      message: "Estender o almoco de Bruno para 2h desloca a sobreposicao critica e melhora 12h-13h.",
+      impact: "Recupera cobertura sem contratar.",
+      employeeId: "4d4d59dd-9891-428a-95e3-c48508320516",
+      start: "2026-05-18T12:00:00",
+      end: "2026-05-18T13:00:00"
+    }
+  ],
+  decisions: [
+    {
+      assignmentId: "8a1023fb-ded5-4579-8593-a83216715927",
+      employeeId: "4d4d59dd-9891-428a-95e3-c48508320516",
+      reason: "Bruno alocado no overnight para proteger fechamento e transicao da manha.",
+      factors: ["regime hourBased permite 12 horas continuas", "Ana nao permite trabalho noturno", "evita ultrapassar limite semanal"]
+    },
+    {
+      assignmentId: "dc447648-a83f-47c6-bf24-c2bc9e76b032",
+      employeeId: "729ef3cd-bd12-4eb6-9e82-5f7e28c538f6",
+      reason: "Carla cobre caixa no bloco comercial principal.",
+      factors: ["cobertura minima de caixa exigida", "intervalo posicionado fora do pico", "descanso minimo preservado"]
     }
   ],
   coverageScore: 0.82

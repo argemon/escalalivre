@@ -7,8 +7,11 @@ public sealed record ScheduleRequest(EscalaLivreDocument Document, DateTime Star
 public sealed record ScheduleResult(
     IReadOnlyList<ShiftAssignment> Assignments,
     IReadOnlyList<ScheduleIssue> Conflicts,
+    IReadOnlyList<CoverageBlock> Coverage,
     IReadOnlyList<CoverageGap> Gaps,
     IReadOnlyList<HiringSuggestion> HiringSuggestions,
+    IReadOnlyList<OptimizationSuggestion> OptimizationSuggestions,
+    IReadOnlyList<SolverDecision> Decisions,
     double CoverageScore);
 
 public sealed record ImportRequest(string FileName, string ContentBase64, string Format);
