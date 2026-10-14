@@ -17,6 +17,33 @@ public sealed class ProductionRegressionTests
     }
 
     [Fact]
+    public void CustomDaysRestrictGenerationAndInheritedDaysFollowCompany()
+    {
+        var request = Request();
+        var employee = request.Document.Employees[0] with { InheritsCompanyDefaults = false, WorkingDays = [DayOfWeek.Tuesday] };
+        request = request with { Document = request.Document with { Employees = [employee] } };
+        var solver = new OrToolsScheduleSolver();
+        var custom = solver.Solve(request);
+        Assert.Single(custom.Assignments);
+        Assert.All(custom.Assignments, a => Assert.Equal(DayOfWeek.Tuesday, a.Start.DayOfWeek));
+        request = request with { Document = request.Document with { Employees = [employee with { InheritsCompanyDefaults = true }] } };
+        Assert.Equal(2, solver.Solve(request).Assignments.Count);
+    }
+
+    [Fact]
+    public void RecognizedClosingPreferenceChangesShiftSelection()
+    {
+        var request = Request();
+        request = request with { Document = request.Document with {
+            Company = request.Document.Company with { Coverage = [new("nurse", DayOfWeek.Monday, new(10, 0), new(12, 0), 1)] },
+            Employees = [request.Document.Employees[0] with { Preferences = [new("closing", 10, "Fechar")] }]
+        } };
+        var result = new OrToolsScheduleSolver().Solve(request);
+        Assert.Single(result.Assignments);
+        Assert.Equal(18, result.Assignments[0].End.Hour);
+    }
+
+    [Fact]
     public void DoesNotAssignUnneededEmployees()
     {
         var result = new OrToolsScheduleSolver().Solve(Request(employees: 3));

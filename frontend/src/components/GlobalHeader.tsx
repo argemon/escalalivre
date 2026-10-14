@@ -1,12 +1,12 @@
-import { Download, FileUp, Moon, RotateCcw, Sun, Wifi } from "lucide-react";
-import { sampleDocument } from "../data/sample";
+import { Download, FileUp, Moon, Trash2, Sun, Wifi } from "lucide-react";
+import { useState } from "react";
 import { exportNative, importNative } from "../lib/api";
 import { useScheduleStore, type SolverStatus, type ViewMode } from "../store/scheduleStore";
 import { Badge, Button, IconButton } from "./ui";
 
 const viewModes: { mode: ViewMode; label: string; description: string }[] = [
-  { mode: "timeline", label: "Escala do dia", description: "Veja os horários de cada pessoa no dia selecionado. Clique em um nome para editar seu cadastro." }, { mode: "week", label: "Escala semanal", description: "Veja os turnos da semana no calendário. Arraste um turno para mudar seu horário ou clique nele para abrir o cadastro da pessoa." },
-  { mode: "month", label: "Escala mensal", description: "Veja os turnos distribuídos ao longo do mês. Clique em um turno para abrir o cadastro da pessoa." }, { mode: "coverage", label: "Pessoas por horário", description: "Confira quantas pessoas estão escaladas e quantas são necessárias em cada período e função." },
+  { mode: "timeline", label: "Escala do dia", description: "Veja os horários de cada pessoa no dia selecionado. Clique em um nome para editar seu cadastro." }, { mode: "week", label: "Escala semanal", description: "Veja os turnos e a disponibilidade de cada pessoa na semana. Clique em um nome para editar." },
+  { mode: "month", label: "Escala mensal", description: "Veja os turnos e os períodos disponíveis de todas as pessoas ao longo do mês. Clique em um turno para abrir o cadastro da pessoa." }, { mode: "coverage", label: "Pessoas por horário", description: "Confira quantas pessoas estão escaladas e quantas são necessárias em cada período e função." },
   { mode: "heatmap", label: "Onde faltam pessoas", description: "Identifique os dias e as funções que precisam de mais pessoas na escala." }, { mode: "solver", label: "Assistente de escala", description: "Gere uma escala otimizada e revise os conflitos, as faltas de pessoas e as sugestões de ajuste." }
 ];
 
@@ -19,14 +19,16 @@ const solverLabels: Record<SolverStatus, string> = {
 };
 
 export function GlobalHeader() {
-  const { document, analysis, theme, setTheme, viewMode, setViewMode, solverStatus, setDocument, setSelectedEmployeeId } = useScheduleStore();
+  const { document, analysis, theme, setTheme, viewMode, setViewMode, solverStatus, setDocument, clearAll } = useScheduleStore();
 
+  const [clearing,setClearing] = useState(false);
+  const [confirmation,setConfirmation] = useState("");
   return (
     <header className="app-header shrink-0 border-b border-border bg-card"><div className="flex flex-wrap items-center justify-between gap-4 px-5 py-4">
       <div className="flex min-w-0 items-center gap-4">
         <div>
-          <p className="text-xs uppercase text-muted-foreground">EscalaLivre · Gestão de equipes</p>
-          <h1 className="truncate text-lg font-semibold">{document.company.name}</h1>
+          <p className="text-sm font-bold tracking-wide text-primary">Escala Livre</p>
+          <h1 className="break-words text-2xl font-semibold">{document.company.name}</h1>
         </div>
         <div className="hidden items-center gap-2 xl:flex">
           <Badge>{document.company.opensAt.slice(0, 5)}-{document.company.closesAt.slice(0, 5)}</Badge>
@@ -66,15 +68,21 @@ export function GlobalHeader() {
             }}
           />
         </label>
-        <Button onClick={() => setSelectedEmployeeId("new")}>Adicionar funcionário</Button>
-        <IconButton title="Restaurar demonstração" onClick={() => { if (window.confirm("Substituir o planejamento atual pela demonstração? Exporte seus dados antes de continuar.")) setDocument(structuredClone(sampleDocument)); }}>
-          <RotateCcw className="size-4" />
-        </IconButton>
+
+        <Button className="bg-card text-red-600 dark:bg-card dark:text-red-400" onClick={() => {setConfirmation("");setClearing(true);}}><Trash2 className="size-4" />Limpar tudo</Button>
         <IconButton title={theme === "dark" ? "Usar tema claro" : "Usar tema escuro"} onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
           {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
         </IconButton>
       </div>
       </div>
+      {clearing && <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onKeyDown={e => {if(e.key === "Escape") setClearing(false);}}>
+        <form role="dialog" aria-modal="true" aria-labelledby="clear-title" className="w-full max-w-md space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xl" onSubmit={e => {e.preventDefault();if(confirmation === "LIMPAR") {clearAll();setClearing(false);}}}>
+          <h2 id="clear-title" className="text-xl font-semibold text-red-600">Apagar todos os dados?</h2>
+          <p className="text-sm">Isso apaga a empresa configurada, funcionários, turnos e regras de cobertura salvos neste dispositivo. A ação não pode ser desfeita. Exporte uma cópia antes, se quiser guardar seus dados.</p>
+          <label className="block text-sm">Digite <strong>LIMPAR</strong> para confirmar<input autoFocus value={confirmation} onChange={e => setConfirmation(e.target.value)} className="mt-2 w-full rounded-lg border border-border bg-background p-3" /></label>
+          <div className="flex justify-end gap-2"><Button type="button" onClick={() => setClearing(false)}>Cancelar</Button><Button type="submit" disabled={confirmation !== "LIMPAR"} className="bg-red-600 dark:bg-red-600 dark:text-white">Apagar tudo</Button></div>
+        </form>
+      </div>}
       <nav aria-label="Visualizações da escala" className="flex gap-1 overflow-x-auto border-t border-border px-5 py-2">
         {viewModes.map(({ mode, label, description }) => (
           <button

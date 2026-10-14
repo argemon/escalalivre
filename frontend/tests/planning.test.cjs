@@ -8,7 +8,7 @@ function load(relative) {
   const exports = {};
   const source = fs.readFileSync(path.join(__dirname, '..', 'src', relative), 'utf8');
   const code = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
-  vm.runInNewContext(code, { exports, Date, Set, Map });
+  vm.runInNewContext(code, { exports, Date, Set, Map, require: r => load(path.posix.normalize(path.posix.join(path.posix.dirname(relative), r)) + ".ts") });
   return exports;
 }
 const { analyzeDocument } = load('lib/analysis.ts');
@@ -61,4 +61,14 @@ test('recalculates after coverage rules change', () => {
   d.company.coverage=[];
   assert.equal(analyzeDocument(d).gaps.length,0);
   assert.equal(analyzeDocument(d).coverageScore,1);
+});
+
+test('custom working days are enforced but inherited days follow company', () => {
+  const d = document();
+  const e = d.employees.find(e => e.id === d.assignments[0].employeeId);
+  e.inheritsCompanyDefaults = false;
+  e.workingDays = [2];
+  assert.ok(analyzeDocument(d).conflicts.some(c => c.code === 'workingDay'));
+  e.inheritsCompanyDefaults = true;
+  assert.ok(!analyzeDocument(d).conflicts.some(c => c.code === 'workingDay'));
 });

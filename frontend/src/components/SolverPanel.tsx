@@ -56,11 +56,12 @@ export function SolverPanel() {
           </div>
         </section>
 
-        <Button className="w-full" onClick={() => mutation.mutate(document)} disabled={solverStatus === "calculating"}>
+        <Button className="w-full" onClick={() => mutation.mutate(document)} disabled={solverStatus === "calculating" || !document.employees.length || !document.company.coverage.some(r => r.minimumEmployees > 0)}>
           <Wand2 className="size-4" />
           {mutation.isPending ? "Preparando sua escala…" : "Gerar escala otimizada"}
         </Button>
 
+        {(!document.employees.length || !document.company.coverage.some(r => r.minimumEmployees > 0)) && <p className="text-sm text-muted-foreground">Para gerar a escala, cadastre funcionários e ao menos uma regra de cobertura com quantidade maior que zero.</p>}
         {mutation.isError && <p role="alert" className="text-red-400">{mutation.error.message} Verifique se a API está em execução e tente novamente.</p>}
         <section className="space-y-2">
           <Title icon={<CircleAlert className="size-4" />} text="O que precisa de atenção" />

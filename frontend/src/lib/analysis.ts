@@ -1,3 +1,4 @@
+import { middayClosureFor, outsideOperatingHours } from "./coverageRules";
 import type { EscalaLivreDocument, ScheduleResult, ShiftAssignment } from "../types/schedule";
 
 export function localDate(value: Date) {
@@ -28,6 +29,7 @@ export function analyzeDocument(document: EscalaLivreDocument): ScheduleResult {
     for (const rule of document.company.coverage.filter(r => r.day === day.getDay())) {
       const from = at(day,rule.start), to = at(day,rule.end);
       if (to <= from) to.setDate(to.getDate()+1);
+      const closure = !rule.allowsOutsideHours ? middayClosureFor(document.company, day) : undefined;
       const boundaries = new Set<number>([+from,+to]);
       for (let t = +from; t < +to; t += 3600000) boundaries.add(t);
       for (const a of document.assignments.filter(a => a.role === rule.role)) {
@@ -35,9 +37,11 @@ export function analyzeDocument(document: EscalaLivreDocument): ScheduleResult {
           if (value && Date.parse(value) > +from && Date.parse(value) < +to) boundaries.add(Date.parse(value));
         }
       }
+      if (closure) for (const point of [closure.start, closure.end]) if (point > +from && point < +to) boundaries.add(point);
       const points = [...boundaries].sort((a,b) => a-b);
       for (let i=0;i<points.length-1;i++) {
         const start = points[i], finish = points[i+1];
+        if (closure && start >= closure.start && finish <= closure.end) continue;
         const assigned = new Set(document.assignments.filter(a => a.role === rule.role && document.employees.some(e => e.id === a.employeeId && e.role === rule.role) && Date.parse(a.start) <= start && Date.parse(a.end) >= finish && (!a.break || Date.parse(a.break.end) <= start || Date.parse(a.break.start) >= finish)).map(a => a.employeeId)).size;
         const block = { start: localDate(new Date(start)), end: localDate(new Date(finish)), role: rule.role, required: rule.minimumEmployees, assigned, state: assigned >= rule.minimumEmployees ? "healthy" as const : assigned === 0 ? "uncovered" as const : "warning" as const };
         result.coverage.push(block);
@@ -57,11 +61,21 @@ export function analyzeDocument(document: EscalaLivreDocument): ScheduleResult {
     const weeks = new Map<string,number>();
     for (let i=0;i<shifts.length;i++) {
       const a = shifts[i], start = new Date(a.start), finish = new Date(a.end);
+      const exception = document.company.coverage.some(r => r.allowsOutsideHours && r.role === a.role && r.day === start.getDay() && (() => { const from = at(start,r.start), to = at(start,r.end); if (to <= from) to.setDate(to.getDate()+1); return +from <= +start && +finish <= +to; })());
+      if (outsideOperatingHours(document.company,start.getDay(),a.start.slice(11,19),a.end.slice(11,19))) result.conflicts.push({code:"outsideHours",severity:exception ? "info" : "error",message:employee.name+": fora do expediente"+(exception ? " — cobertura excepcional autorizada para "+a.role : " — sem cobertura excepcional autorizada para esta função"),start:a.start,end:a.end,role:a.role});
+      const closure = middayClosureFor(document.company, start);
+      if (!exception && closure && +start < closure.end && +finish > closure.start && (!a.break || Date.parse(a.break.start) > Math.max(+start,closure.start) || Date.parse(a.break.end) < Math.min(+finish,closure.end))) issue("middayClosure", `${employee.name}: falta intervalo durante o fechamento para almoço.`, a);
+      if ((!document.company.operatingDays.includes(start.getDay()) && !exception) || (!employee.inheritsCompanyDefaults && employee.workingDays && !employee.workingDays.includes(start.getDay()))) issue("workingDay", `${employee.name}: turno fora dos dias de trabalho.`, a);
       if (finish <= start || a.role !== employee.role) issue("invalidShift",`${employee.name}: turno inválido ou função divergente.`,a);
       if (employee.restrictions.some(w => Date.parse(w.start) < +finish && +start < Date.parse(w.end)) || (employee.availability.length > 0 && !employee.availability.some(w => Date.parse(w.start) <= +start && Date.parse(w.end) >= +finish))) issue("availability",`${employee.name}: turno fora da disponibilidade ou em horário bloqueado.`,a);
       const nightEnd = new Date(start); nightEnd.setHours(22,0,0,0);
       if (!employee.allowsNightWork && (start.getHours() < 6 || finish > nightEnd)) issue("nightWork",`${employee.name}: trabalho noturno não permitido.`,a);
       if (i > 0 && +start-Date.parse(shifts[i-1].end) < Math.max(duration(document.company.minimumRest),rule.regimeType === "hourBased" ? rule.restUnits*3600000 : 0)) issue("minimumRest",`${employee.name}: descanso mínimo entre turnos violado.`,a);
+      if (rule.regimeType === "dayBased") {
+        const cycleStart = new Date(start); cycleStart.setDate(cycleStart.getDate()-Math.max(1,rule.workUnits+rule.restUnits)+1); cycleStart.setHours(0,0,0,0);
+        const workedDays = new Set(shifts.filter(s => Date.parse(s.start) >= +cycleStart && Date.parse(s.start) <= +start).map(s => s.start.slice(0,10)));
+        if (workedDays.size > rule.workUnits) issue("regime", `${employee.name}: dias de trabalho excedem o ciclo configurado.`, a);
+      }
       const week = new Date(start); week.setDate(week.getDate()-week.getDay()); week.setHours(0,0,0,0);
       const key = localDate(week); weeks.set(key,(weeks.get(key) ?? 0)+workTime(a));
     }

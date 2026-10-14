@@ -4,7 +4,7 @@ export const sampleDocument: EscalaLivreDocument = {
   schemaVersion: "1.0.0",
   id: "4e8a2937-f61a-46bf-a33f-9ce0f7b13279",
   company: {
-    name: "EscalaLivre Demo",
+    name: "Escala Livre",
     opensAt: "08:00:00",
     closesAt: "22:00:00",
     operatingDays: [1, 2, 3, 4, 5, 6],
@@ -171,3 +171,7 @@ export const sampleAnalysis: ScheduleResult = {
   ],
   coverageScore: 0.82
 };
+
+export function emptyDocument(): EscalaLivreDocument {
+  return { ...structuredClone(sampleDocument), roles: [], setup: { companyConfigured: false }, id: crypto.randomUUID(), company: { ...structuredClone(sampleDocument.company), name: "Escala Livre", coverage: [] }, employees: [], assignments: [], updatedAt: new Date().toISOString() };
+}

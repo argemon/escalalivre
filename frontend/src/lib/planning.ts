@@ -66,7 +66,8 @@ export function coverageForRequirement(document: EscalaLivreDocument, requiremen
 export function assignmentLabel(assignment: ShiftAssignment) {
   const start = new Date(assignment.start);
   const end = new Date(assignment.end);
-  return `${String(start.getHours()).padStart(2, "0")}h-${String(end.getHours()).padStart(2, "0")}h`;
+  const clock = (d: Date) => `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+  return `${clock(start)}–${clock(end)}`;
 }
 
 function startOfDay(value: Date) {

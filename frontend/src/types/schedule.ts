@@ -16,6 +16,7 @@ export type AvailabilityWindow = {
 export type Employee = {
   id: string;
   name: string;
+  roleId?: string;
   role: string;
   inheritsCompanyDefaults: boolean;
   workload: WorkloadRule;
@@ -25,9 +26,11 @@ export type Employee = {
   allowsOvertime: boolean;
   allowsNightWork: boolean;
   preferredDaysOff: number[];
+  workingDays?: number[];
 };
 
 export type CompanyRules = {
+  middayClosure?: { start: string; end: string };
   name: string;
   opensAt: string;
   closesAt: string;
@@ -43,6 +46,9 @@ export type CompanyRules = {
 };
 
 export type CoverageRequirement = {
+  daysMode?: "operating" | "custom";
+  allowsOutsideHours?: boolean;
+  roleId?: string;
   role: string;
   day: number;
   start: string;
@@ -53,6 +59,7 @@ export type CoverageRequirement = {
 export type ShiftAssignment = {
   id: string;
   employeeId: string;
+  roleId?: string;
   role: string;
   start: string;
   end: string;
@@ -62,6 +69,8 @@ export type ShiftAssignment = {
 };
 
 export type EscalaLivreDocument = {
+  roles?: { id: string; name: string }[];
+  setup?: { companyConfigured: boolean };
   schemaVersion: string;
   id: string;
   company: CompanyRules;
@@ -73,6 +82,7 @@ export type EscalaLivreDocument = {
 export type CoverageGap = {
   start: string;
   end: string;
+  roleId?: string;
   role: string;
   missingEmployees: number;
 };
@@ -80,6 +90,7 @@ export type CoverageGap = {
 export type CoverageBlock = {
   start: string;
   end: string;
+  roleId?: string;
   role: string;
   required: number;
   assigned: number;
@@ -96,6 +107,7 @@ export type ScheduleIssue = {
 };
 
 export type HiringSuggestion = {
+  roleId?: string;
   role: string;
   weeklyHours: number;
   idealWindows: AvailabilityWindow[];

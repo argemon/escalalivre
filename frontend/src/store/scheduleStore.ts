@@ -1,6 +1,7 @@
+import { normalizeRoles } from "../lib/roles";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { sampleDocument } from "../data/sample";
+import { sampleDocument, emptyDocument } from "../data/sample";
 import { analyzeDocument } from "../lib/analysis";
 import type { Employee, EscalaLivreDocument, ScheduleResult, ShiftAssignment } from "../types/schedule";
 
@@ -14,17 +15,19 @@ type ScheduleState = {
   setTheme: (theme: Theme) => void; setViewMode: (mode: ViewMode) => void;
   setSolverStatus: (status: SolverStatus) => void; setSelectedRole: (role: string) => void;
   setSelectedEmployeeId: (id?: string) => void; setDocument: (document: EscalaLivreDocument) => void;
+  clearAll: () => void;
   setAnalysis: (analysis: ScheduleResult) => void;
   moveAssignment: (id: string, start: string, end: string) => void;
   upsertAssignment: (assignment: ShiftAssignment) => void;
 };
-const changed = (document: EscalaLivreDocument) => ({ document,analysis:analyzeDocument(document),solverStatus:"idle" as const });
+const changed = (input: EscalaLivreDocument) => { const document = normalizeRoles(input); return { document, analysis:analyzeDocument(document), solverStatus:"idle" as const }; };
 export const useScheduleStore = create<ScheduleState>()(persist((set) => ({
   ...changed(sampleDocument),theme:"light",viewMode:"timeline",selectedRole:"todos",
   setTheme: theme => set({theme}),setViewMode:viewMode => set({viewMode}),
   setSolverStatus:solverStatus => set({solverStatus}),setSelectedRole:selectedRole => set({selectedRole}),
   setSelectedEmployeeId:selectedEmployeeId => set({selectedEmployeeId}),
   setDocument:document => set({...changed(document),selectedEmployeeId:undefined}),
+  clearAll: () => set({...changed(emptyDocument()), selectedEmployeeId:undefined, selectedRole:"todos", viewMode:"timeline"}),
   setAnalysis:analysis => set({analysis}),
   upsertEmployee:employee => set(state => ({...changed({...state.document,updatedAt:new Date().toISOString(),
     employees:[...state.document.employees.filter(e => e.id !== employee.id),employee],
@@ -47,7 +50,8 @@ export const useScheduleStore = create<ScheduleState>()(persist((set) => ({
   partialize:state => ({document:state.document,theme:state.theme,viewMode:state.viewMode}),
   merge:(persisted,current) => {
     const saved = persisted as Partial<ScheduleState> | undefined;
-    const document = saved?.document ?? current.document;
+    const document = structuredClone(saved?.document ?? current.document);
+    if (document.company.name === "EscalaLivre Demo") document.company.name = "Escala Livre";
     return {...current,...saved,...changed(document)};
   }
 }));

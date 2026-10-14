@@ -9,6 +9,8 @@ import { useScheduleStore } from "./store/scheduleStore";
 
 export default function App() {
   const viewMode = useScheduleStore((state) => state.viewMode);
+  const companyName = useScheduleStore(state => state.document.company.name);
+  useEffect(() => { document.title = companyName === "Escala Livre" ? companyName : `${companyName} · Escala Livre`; }, [companyName]);
   const theme = useScheduleStore((state) => state.theme);
 
   useEffect(() => {

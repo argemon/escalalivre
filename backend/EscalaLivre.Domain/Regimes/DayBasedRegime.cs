@@ -9,19 +9,16 @@ public sealed class DayBasedRegime : IShiftRegime
     public bool CanWork(DateTime candidateStart, DateTime candidateEnd, IReadOnlyList<ShiftAssignment> existingAssignments, WorkloadRule rule)
     {
         var cycle = Math.Max(1, rule.WorkUnits + rule.RestUnits);
-        var dayIndex = (int)(candidateStart.Date - DateTime.UnixEpoch.Date).TotalDays % cycle;
-        if (dayIndex >= rule.WorkUnits)
+        var cycleStart = candidateStart.Date.AddDays(1 - cycle);
+        var workedDays = existingAssignments.Where(x => x.Start.Date >= cycleStart && x.Start.Date <= candidateStart.Date)
+            .Select(x => x.Start.Date).Append(candidateStart.Date).Distinct().Count();
+        if (workedDays > rule.WorkUnits)
         {
             return false;
         }
 
-        var weekStart = candidateStart.Date.AddDays(-(int)candidateStart.DayOfWeek);
-        var weekEnd = weekStart.AddDays(7);
-        var assignedHours = existingAssignments
-            .Where(x => x.Start >= weekStart && x.Start < weekEnd)
-            .Sum(x => (x.End - x.Start).TotalHours);
-
-        return assignedHours + (candidateEnd - candidateStart).TotalHours <= rule.WeeklyLimitHours;
+        // Weekly work minutes (excluding breaks) are enforced by the solver and validator.
+        return candidateEnd > candidateStart;
     }
 
     public DateTime GetNextEligibleStart(DateTime lastShiftEnd, WorkloadRule rule)

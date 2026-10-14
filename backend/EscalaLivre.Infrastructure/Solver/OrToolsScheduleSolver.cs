@@ -42,6 +42,20 @@ public sealed class OrToolsScheduleSolver : IScheduleSolver
             model.Add(LinearExpr.Sum(weightedHours) <= (long)Math.Round(rule.WeeklyLimitHours * 60));
         }
 
+        foreach (var group in candidates.GroupBy(x => x.EmployeeId))
+        {
+            var employee = request.Document.Employees.First(x => x.Id == group.Key);
+            var rule = employee.InheritsCompanyDefaults ? request.Document.Company.DefaultWorkload : employee.Workload;
+            if (rule.RegimeType != "dayBased") continue;
+            var cycle = Math.Max(1, rule.WorkUnits + rule.RestUnits);
+            foreach (var lastDay in Days(request.Start, request.End.AddDays(cycle - 1)))
+            {
+                var firstDay = lastDay.AddDays(1 - cycle);
+                var before = request.Document.Assignments.Where(a => a.EmployeeId == employee.Id && a.Start.Date < request.Start.Date && a.Start.Date >= firstDay && a.Start.Date <= lastDay).Select(a => a.Start.Date).Distinct().Count();
+                model.Add(LinearExpr.Sum(group.Where(a => a.Start.Date >= firstDay && a.Start.Date <= lastDay).Select(a => decisionVars[a.Id])) <= Math.Max(0, rule.WorkUnits - before));
+            }
+        }
+
         var shortageTerms = new List<LinearExpr>();
         foreach (var coverage in request.Document.Company.Coverage)
         {
@@ -49,7 +63,7 @@ public sealed class OrToolsScheduleSolver : IScheduleSolver
             {
                 var start = day.Add(coverage.Start.ToTimeSpan());
                 var end = BuildEnd(day, coverage.Start, coverage.End);
-                foreach (var block in Blocks(start, end))
+                foreach (var block in CoverageBlocks(start, end, request.Document.Company, coverage.AllowsOutsideHours, candidates))
                 {
                     var covering = candidates
                         .Where(x => Covers(x, block.Start, block.End) && x.Role == coverage.Role)
@@ -104,22 +118,24 @@ public sealed class OrToolsScheduleSolver : IScheduleSolver
     {
         foreach (var day in Days(request.Start, request.End))
         {
-            if (!request.Document.Company.OperatingDays.Contains(day.DayOfWeek))
-            {
-                continue;
-            }
+
 
             foreach (var employee in request.Document.Employees)
             {
+                if (!employee.InheritsCompanyDefaults && employee.WorkingDays is { } days && !days.Contains(day.DayOfWeek)) continue;
                 var rule = employee.InheritsCompanyDefaults ? request.Document.Company.DefaultWorkload : employee.Workload;
                 var regime = regimeFactory.Resolve(rule.RegimeType);
-                var opening = day.Add(request.Document.Company.OpensAt.ToTimeSpan());
-                var closing = BuildEnd(day, request.Document.Company.OpensAt, request.Document.Company.ClosesAt);
+                var windows = new List<(DateTime Start, DateTime End)>();
+                if (request.Document.Company.OperatingDays.Contains(day.DayOfWeek)) windows.Add((day.Add(request.Document.Company.OpensAt.ToTimeSpan()), BuildEnd(day, request.Document.Company.OpensAt, request.Document.Company.ClosesAt)));
+                windows.AddRange(request.Document.Company.Coverage.Where(c => c.AllowsOutsideHours && c.Role == employee.Role && c.Day == day.DayOfWeek).Select(c => (day.Add(c.Start.ToTimeSpan()), BuildEnd(day,c.Start,c.End))));
+                foreach (var window in windows.Distinct()) {
+                var opening = window.Start;
+                var closing = window.End;
                 var shiftDuration = rule.DefaultShiftDuration < closing - opening ? rule.DefaultShiftDuration : closing - opening;
                 if (shiftDuration <= TimeSpan.Zero) continue;
                 var starts = new SortedSet<DateTime> { opening, closing - shiftDuration };
                 for (var cursor = opening; cursor + shiftDuration <= closing; cursor = cursor.AddMinutes(30)) starts.Add(cursor);
-                foreach (var window in employee.Availability) if (window.Start >= opening && window.Start + shiftDuration <= closing) starts.Add(window.Start);
+                foreach (var available in employee.Availability) if (available.Start >= opening && available.Start + shiftDuration <= closing) starts.Add(available.Start);
                 foreach (var start in starts)
                 {
                 var end = start.Add(shiftDuration);
@@ -135,9 +151,14 @@ public sealed class OrToolsScheduleSolver : IScheduleSolver
                     continue;
                 }
 
-                foreach (var breakWindow in BuildBreakWindows(start, end, request.Document.Company.Lunch))
+                var closure = ClosureOn(request.Document.Company, day);
+                var exceptional = request.Document.Company.Coverage.Any(c => c.AllowsOutsideHours && c.Role == employee.Role && c.Day == day.DayOfWeek && start >= day.Add(c.Start.ToTimeSpan()) && end <= BuildEnd(day, c.Start, c.End));
+                foreach (var breakWindow in BuildBreakWindows(start, end, request.Document.Company.Lunch, exceptional ? null : closure))
                 {
                     var tags = new List<string>();
+                    if (start == opening) tags.Add("opening");
+                    if (end == closing) tags.Add("closing");
+                    if (start.Hour < 12) tags.Add("morning");
                     if (employee.PreferredDaysOff.Contains(day.DayOfWeek))
                     {
                         tags.Add("preferredDayOff");
@@ -149,6 +170,7 @@ public sealed class OrToolsScheduleSolver : IScheduleSolver
                     }
 
                     yield return new ShiftAssignment(Guid.NewGuid(), employee.Id, employee.Role, start, end, breakWindow, "solver", tags);
+                }
                 }
                 }
             }
@@ -190,12 +212,14 @@ public sealed class OrToolsScheduleSolver : IScheduleSolver
                 yield return new ScheduleIssue("error", "unknownEmployee", "Turno referencia funcionario inexistente.", assignment.Start, assignment.End);
                 continue;
             }
+            if ((!employee.InheritsCompanyDefaults && employee.WorkingDays is { } workingDays && !workingDays.Contains(assignment.Start.DayOfWeek)) || (!request.Document.Company.OperatingDays.Contains(assignment.Start.DayOfWeek) && !request.Document.Company.Coverage.Any(c => c.AllowsOutsideHours && c.Role == assignment.Role && c.Day == assignment.Start.DayOfWeek && assignment.Start >= assignment.Start.Date.Add(c.Start.ToTimeSpan()) && assignment.End <= BuildEnd(assignment.Start.Date,c.Start,c.End))))
+                yield return new ScheduleIssue("error", "workingDay", "Turno fora dos dias de trabalho.", assignment.Start, assignment.End);
             var rule = employee.InheritsCompanyDefaults ? request.Document.Company.DefaultWorkload : employee.Workload;
             if (assignment.End <= assignment.Start || assignment.Role != employee.Role || !IsAvailable(employee, assignment.Start, assignment.End))
                 yield return new ScheduleIssue("error", "invalidShift", "Turno invalido ou fora da disponibilidade.", assignment.Start, assignment.End);
             if (!employee.AllowsNightWork && IsNight(assignment.Start, assignment.End))
                 yield return new ScheduleIssue("error", "nightWork", "Funcionario nao permite trabalho noturno.", assignment.Start, assignment.End);
-            if (!regimeFactory.Resolve(rule.RegimeType).CanWork(assignment.Start, assignment.End, [], rule))
+            if (!regimeFactory.Resolve(rule.RegimeType).CanWork(assignment.Start, assignment.End, assignments.Where(a => a.EmployeeId == employee.Id && a.Id != assignment.Id && a.Start < assignment.Start).ToList(), rule))
                 yield return new ScheduleIssue("error", "regime", "Turno viola o regime configurado.", assignment.Start, assignment.End);
             if (assignment.Break is { } pause && (pause.Start < assignment.Start || pause.End > assignment.End || pause.End <= pause.Start))
                 yield return new ScheduleIssue("error", "invalidBreak", "Intervalo fora do turno ou com duracao invalida.", assignment.Start, assignment.End);
@@ -233,7 +257,7 @@ public sealed class OrToolsScheduleSolver : IScheduleSolver
             {
                 var start = day.Add(requirement.Start.ToTimeSpan());
                 var end = BuildEnd(day, requirement.Start, requirement.End);
-                foreach (var block in Blocks(start, end))
+                foreach (var block in CoverageBlocks(start, end, request.Document.Company, requirement.AllowsOutsideHours, assignments))
                 {
                     var assigned = assignments.Count(x => x.Role == requirement.Role && Covers(x, block.Start, block.End));
                     var state = assigned >= requirement.MinimumEmployees ? "healthy" : assigned + 1 >= requirement.MinimumEmployees ? "warning" : "uncovered";
@@ -319,9 +343,18 @@ public sealed class OrToolsScheduleSolver : IScheduleSolver
         return assignment.Break is null || assignment.Break.End <= start || assignment.Break.Start >= end;
     }
 
-    private static IEnumerable<BreakWindow?> BuildBreakWindows(DateTime shiftStart, DateTime shiftEnd, LunchRule lunch)
+    private static IEnumerable<BreakWindow?> BuildBreakWindows(DateTime shiftStart, DateTime shiftEnd, LunchRule lunch, BreakWindow? closure = null)
     {
         var duration = shiftEnd - shiftStart;
+        if (closure is not null && shiftStart < closure.End && shiftEnd > closure.Start)
+        {
+            var start = shiftStart > closure.Start ? shiftStart : closure.Start;
+            var end = shiftEnd < closure.End ? shiftEnd : closure.End;
+            if (end - start >= duration) yield break;
+            if (duration >= TimeSpan.FromHours(6) && end - start < lunch.Minimum) yield break;
+            yield return new BreakWindow(start, end);
+            yield break;
+        }
         if (duration < TimeSpan.FromHours(6) || lunch.Minimum == TimeSpan.Zero)
         {
             yield return null;
@@ -345,6 +378,36 @@ public sealed class OrToolsScheduleSolver : IScheduleSolver
             {
                 yield return new BreakWindow(start, start.Add(lunch.Maximum));
             }
+        }
+    }
+
+    private static BreakWindow? ClosureOn(CompanyRules company, DateTime day)
+    {
+        if (company.MiddayClosure is not { } closure) return null;
+        var opening = day.Date.Add(company.OpensAt.ToTimeSpan());
+        var start = day.Date.Add(closure.Start.ToTimeSpan());
+        if (start < opening) start = start.AddDays(1);
+        var end = start.Date.Add(closure.End.ToTimeSpan());
+        if (end <= start) end = end.AddDays(1);
+        return new BreakWindow(start, end);
+    }
+
+    private static IEnumerable<(DateTime Start, DateTime End)> CoverageBlocks(DateTime start, DateTime end, CompanyRules company, bool allowsOutsideHours, IReadOnlyList<ShiftAssignment> shifts)
+    {
+        var points = new SortedSet<DateTime> { start, end };
+        foreach (var block in Blocks(start, end)) { points.Add(block.Start); points.Add(block.End); }
+        foreach (var shift in shifts.Where(s => s.Start < end && s.End > start))
+        {
+            foreach (var point in new DateTime?[] { shift.Start, shift.End, shift.Break?.Start, shift.Break?.End })
+                if (point is { } value && value > start && value < end) points.Add(value);
+        }
+        var closure = allowsOutsideHours ? null : ClosureOn(company, start.Date);
+        if (closure is not null) { if (closure.Start > start && closure.Start < end) points.Add(closure.Start); if (closure.End > start && closure.End < end) points.Add(closure.End); }
+        var boundaries = points.ToArray();
+        for (var i = 0; i < boundaries.Length - 1; i++)
+        {
+            if (closure is not null && boundaries[i] >= closure.Start && boundaries[i + 1] <= closure.End) continue;
+            yield return (boundaries[i], boundaries[i + 1]);
         }
     }
 
