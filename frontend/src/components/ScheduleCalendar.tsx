@@ -60,18 +60,15 @@ export function ScheduleCalendar() {
 
   return (
     <main className="flex min-h-0 min-w-0 flex-1 flex-col bg-background">
-      <div className="flex shrink-0 flex-wrap gap-x-5 gap-y-1 border-b border-border px-5 py-3 text-sm text-muted-foreground" aria-label="Resumo da escala mensal">
+      <div className="flex shrink-0 flex-wrap items-center gap-x-4 gap-y-1 border-b border-border px-4 py-2 text-xs text-muted-foreground" aria-label="Resumo da escala mensal">
         <span>{document.employees.length} pessoas</span>
         <span>{document.assignments.length} turnos salvos</span>
         <span>{new Set(document.employees.map(employee=>employee.role)).size} funções</span>
         <span>{document.company.coverage.length} regras de cobertura</span>
+        <Button className="ml-auto h-8 px-3 text-xs" type="button" onClick={()=>{setHolidayPickerDate(visibleDate);setAddingHoliday(true);}}>Adicionar feriado</Button>
+        <details className="calendar-help"><summary>Ajuda</summary><div><p>Clique no número do dia para editar feriados e turnos especiais.</p><p>Prévia: horário estimado. Salvo: turno cadastrado ou gerado. Verde: hoje.</p></div></details>
       </div>
 
-      <div className="flex shrink-0 flex-wrap items-center gap-3 border-b border-border px-5 py-3">
-        <Button type="button" onClick={()=>{setHolidayPickerDate(visibleDate);setAddingHoliday(true);}}>Adicionar feriado</Button>
-        <p className="text-sm text-muted-foreground">Clique no número de qualquer dia para cadastrar ou editar um feriado e adicionar turnos, como os dos seguranças.</p>
-        <p className="w-full text-xs text-muted-foreground">Prévia = horário estimado, ainda não salvo como turno. Salvo = turno cadastrado ou gerado na escala. O fundo verde do dia marca hoje.</p>
-      </div>
       {addingHoliday && <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 p-4"><form role="dialog" aria-modal="true" aria-label="Adicionar feriado" className="w-full max-w-sm space-y-4 rounded-xl border border-border bg-card p-5" onSubmit={e=>{e.preventDefault();const chosenDate=String(new FormData(e.currentTarget).get("holidayDate"));setAddingHoliday(false);setHolidayDate(chosenDate);}}><h2 className="text-xl font-semibold">Adicionar feriado</h2><label className="block">Data<input type="date" name="holidayDate" required value={holidayPickerDate} onChange={e=>setHolidayPickerDate(e.target.value)} className="mt-2 w-full rounded border border-border bg-background p-2" /></label><div className="flex gap-2"><Button type="submit">Continuar</Button><Button type="button" onClick={()=>setAddingHoliday(false)}>Cancelar</Button></div></form></div>}
       <section className="min-h-0 flex-1 overflow-hidden p-4 monthly-calendar">
         <FullCalendar
@@ -96,6 +93,7 @@ export function ScheduleCalendar() {
           dayCellClassNames={arg => holidayOn(document.company,dateKey(arg.date)) ? ["calendar-holiday"] : document.company.operatingDays.includes(arg.date.getDay()) ? [] : ["bg-muted", "text-muted-foreground"]}
           dayCellContent={arg => { const holiday=holidayOn(document.company,dateKey(arg.date)); return <button type="button" className="text-right" title={holiday ? "Editar feriado e turnos: "+holiday.name : "Adicionar feriado ou turnos neste dia"} aria-label={(holiday ? "Editar feriado e turnos em " : "Adicionar feriado em ")+dateKey(arg.date)} onClick={()=>setHolidayDate(dateKey(arg.date))}>{arg.dayNumberText}{holiday ? <small className="block font-semibold">Feriado · {holiday.name}{holiday.closed ? " · Fechada" : " · Aberta"}</small> : !document.company.operatingDays.includes(arg.date.getDay()) && <small className="ml-1">Fechada</small>}</button>; }}
           locale="pt-br"
+          firstDay={0}
           height="100%"
           editable
           droppable

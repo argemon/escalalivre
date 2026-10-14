@@ -79,6 +79,7 @@ A execução possui limite de tempo e pode encontrar uma solução viável sem c
 | **Onde faltam pessoas** | Identificar lacunas por função e dia em uma visualização com cores. |
 | **Assistente de escala** | Revisar conflitos, explicações dos turnos e sugestões de ajuste e contratação. |
 | **Arquivo `.escalalivre`** | Exportar e reabrir empresa, equipe, regras e turnos em um documento portátil. |
+| **Impressão para o mural** | Escolher um período e imprimir os turnos salvos, com empresa em destaque, datas e marca Escala Livre discreta. |
 | **Temas claro e escuro** | Usar a interface em português, com explicações das abas e contraste adaptado ao tema. |
 
 O backend também oferece exportação XLSX e uma exportação PDF básica pela API. Os controles de importação e exportação da interface usam o formato nativo `.escalalivre`.
@@ -119,6 +120,16 @@ As visões semanal e mensal exibem também horários estimados a partir dos cada
 | **Fundo verde no dia** | Destaque da data de hoje. |
 
 A navegação e os nomes dos dias permanecem acima da área de rolagem. Horários preservam os minutos, como **07:30**, e os campos usam o formato **HH:mm**. Turnos salvos podem ser ajustados pelo calendário; prévias servem para consulta.
+
+### Imprima e leve para o mural
+
+Clique em **Imprimir** no cabeçalho e escolha o **mês da escala**. A impressão mostra funcionários em **ordem alfabética**, com colunas para **dias de trabalho**, **entrada e saída** e **intervalo**.
+
+Dias consecutivos com os mesmos horários são agrupados em períodos. Por exemplo: **Edson · 14/10 a 16/10 · 07:30–17:30 · intervalo 11:30–13:30**. Uma mudança de horário ou intervalo, ou um dia sem turno entre duas jornadas, inicia uma nova linha. Todos os funcionários aparecem, incluindo os que não têm turnos salvos no mês.
+
+O nome da empresa aparece em destaque, o período identifica o mês completo e a marca **Escala Livre** fica discreta no canto. O layout usa **A4 horizontal** e continua em outras folhas quando necessário, repetindo o cabeçalho e mantendo o tamanho do texto.
+
+Use **Imprimir / Salvar PDF** para abrir as opções do navegador. Desative os cabeçalhos e rodapés do navegador para retirar o endereço do site. São impressos somente **turnos salvos**, inclusive os especiais de feriado. Dias sem turno salvo não confirmam folga. Os dias se referem à entrada do turno; `+1d` identifica saída ou intervalo no dia seguinte. As prévias estimadas do calendário não entram na impressão.
 
 ## Por que a proposta é diferente
 
@@ -332,6 +343,7 @@ Na raiz do repositório:
 ```bash
 node --test frontend/tests/planning.test.cjs
 node --test frontend/tests/roles.test.cjs frontend/tests/setup.test.cjs
+node --test frontend/tests/print.test.cjs
 dotnet test backend/EscalaLivre.Tests/EscalaLivre.Tests.csproj --configuration Release
 ```
 

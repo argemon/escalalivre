@@ -124,3 +124,80 @@ button:disabled { cursor: not-allowed; }
 .monthly-calendar .fc-day-today .fc-daygrid-day-number { color:hsl(var(--primary)); font-weight:700; }
 
 .monthly-calendar .fc-scrollgrid-section-header .fc-scroller { overflow-y:hidden !important; }
+
+/* A separate document surface keeps navigation and estimated shifts off the mural. */
+.schedule-print-root { position:fixed; inset:0; z-index:100; overflow:auto; background:#e9eceb; color:#172b25; }
+.schedule-print-controls { position:sticky; top:0; z-index:1; background:hsl(var(--card)); color:hsl(var(--foreground)); padding:20px; border-bottom:1px solid hsl(var(--border)); box-shadow:0 2px 12px #0001; }
+.schedule-print-preview { padding:24px; overflow-x:auto; }
+.schedule-print-sheet { background:#fff; color:#172b25; width:277mm; max-width:none; min-height:180mm; padding:12mm; margin:0 auto 24px; box-shadow:0 4px 24px #0002; }
+.schedule-print-table { width:100%; border-collapse:collapse; table-layout:fixed; font-size:10pt; }
+.schedule-print-table th, .schedule-print-table td { border:1px solid #a9b3af; padding:9px 7px; vertical-align:top; overflow-wrap:anywhere; text-align:left; }
+.schedule-print-table .schedule-print-heading { padding:0 0 8mm; border:0; font-weight:400; }
+.schedule-print-heading-row { display:flex; align-items:flex-start; justify-content:space-between; gap:8mm; }
+.schedule-print-heading h1 { margin:0 0 3mm; font-size:25pt; line-height:1.15; font-weight:750; }
+.schedule-print-heading p { margin:0 0 2mm; font-size:12pt; }
+.schedule-print-heading small { font-size:9pt; }
+.schedule-print-brand { white-space:nowrap; font-size:9pt; color:#576a62; font-weight:600; margin-top:2mm; }
+.schedule-print-days th { background:#eff3f1; }
+.schedule-print-days span, .schedule-print-table small { display:block; margin-top:4px; font-weight:400; font-size:8pt; line-height:1.4; }
+.schedule-print-table strong { font-weight:650; }
+.schedule-print-shift { border:1px solid #d5ded9; border-left:3px solid #39745d; border-radius:5px; background:#fff; padding:7px; margin-top:7px; }
+.schedule-print-shift strong, .schedule-print-shift span { display:block; font-size:9pt; line-height:1.4; }
+.schedule-print-shift span { margin-top:3px; }
+.schedule-print-day-date { display:flex; justify-content:flex-end; align-items:center; gap:5px; margin-bottom:6px; }
+.schedule-print-day-date small { margin:0; font-size:7pt; }
+.schedule-print-holiday { font-size:8pt; margin:4px 0 8px; }
+.schedule-print-days th { text-align:center; text-transform:uppercase; font-size:9pt; }
+.schedule-print-table tbody td { height:65mm; }
+.calendar-help { position:relative; }
+.calendar-help summary { cursor:pointer; padding:5px 8px; }
+.calendar-help > div { position:absolute; z-index:25; top:100%; right:0; width:280px; padding:12px; background:hsl(var(--card)); border:1px solid hsl(var(--border)); border-radius:8px; box-shadow:0 4px 16px #0002; }
+.calendar-help p + p { margin-top:6px; }
+.schedule-print-empty { color:#66776f; }
+.schedule-print-outside { background:#f4f5f4; color:#66776f; }
+.schedule-print-legend { margin:4mm 0 0; font-size:8pt; color:#44574e; }
+@page { size:A4 landscape; margin:10mm; }
+.schedule-list-table tbody td { height:auto; }
+.schedule-list-table tbody th, .schedule-list-table tbody td { padding:.5mm 2mm; font-size:10pt; line-height:1.15; }
+.schedule-list-table tbody th small { margin-top:1px; line-height:1.15; }
+.schedule-list-table .schedule-print-days th { text-align:left; }
+.schedule-list-table .schedule-list-person-start > * { border-top:2px solid #697e74; }
+.schedule-list-table .schedule-print-heading { padding-bottom:4mm; }
+.schedule-list-title { display:flex; flex-wrap:wrap; align-items:center; gap:3mm 6mm; min-width:0; }
+.schedule-list-title h1 { margin:0; font-size:22pt; overflow-wrap:anywhere; }
+.schedule-list-title p { margin:0; font-size:10pt; }
+.schedule-list-table tbody tr:not(.schedule-list-person-start) > * { border-top:0; }
+.schedule-list-table tbody tr:has(+ tr:not(.schedule-list-person-start)) > td { border-bottom:0; }
+.schedule-month-sheet { width:277mm; height:189mm; min-height:0; padding:0; overflow:hidden; }
+.schedule-month-content { width:277mm; padding:4mm; margin:0 auto; }
+.schedule-month-content h1 { margin:0 0 2mm; font-size:20pt; line-height:1.15; font-weight:750; overflow-wrap:anywhere; }
+.schedule-month-content .schedule-print-heading-row { margin-bottom:3mm; }
+.schedule-month-content .schedule-print-heading-row p { margin:0; font-size:10pt; }
+.schedule-month-table th, .schedule-month-table td { padding:1mm; }
+.schedule-month-table tbody td { height:23mm; }
+.schedule-month-table .schedule-print-shift { margin-top:1mm; padding:1mm; border-left-width:2px; border-radius:3px; }
+.schedule-month-table .schedule-print-shift strong, .schedule-month-table .schedule-print-shift span { font-size:7pt; line-height:1.15; }
+.schedule-month-table .schedule-print-shift span { margin-top:.5mm; }
+.schedule-month-table .schedule-print-shift small { font-size:6pt; margin-top:.5mm; line-height:1.15; }
+.schedule-month-table .schedule-print-day-date { margin-bottom:.5mm; font-size:8pt; }
+.schedule-month-table .schedule-print-holiday { font-size:6pt; margin:.5mm 0; line-height:1.15; }
+.schedule-month-content .schedule-print-legend { font-size:6pt; margin-top:2mm; }
+@media print {
+  html, body { height:auto !important; overflow:visible !important; background:#fff !important; }
+  body:has(.schedule-print-root) > :not(.schedule-print-root) { display:none !important; }
+  .schedule-print-root { position:static; overflow:visible; background:#fff; }
+  .schedule-print-controls { display:none !important; }
+  .schedule-print-preview { padding:0; overflow:visible; }
+  .schedule-print-sheet { width:auto; min-height:0; padding:0; margin:0; box-shadow:none; break-after:page; }
+  .schedule-print-sheet:last-child { break-after:auto; }
+  .schedule-print-table thead { display:table-header-group; }
+  .schedule-print-table tr { break-inside:avoid; }
+  .schedule-print-table th, .schedule-print-table td { padding:2.5mm 2mm; }
+  .schedule-print-table { print-color-adjust:exact; -webkit-print-color-adjust:exact; }
+  .schedule-print-legend { break-inside:avoid; }
+  .schedule-month-sheet { width:277mm; height:189mm; overflow:hidden; break-inside:avoid; break-after:auto; }
+  .schedule-month-table th, .schedule-month-table td { padding:1mm; }
+  .schedule-list-sheet { overflow:visible; height:auto; break-inside:auto; }
+  .schedule-list-table tbody td { height:auto; }
+  .schedule-list-table tbody th, .schedule-list-table tbody td { padding:.5mm 2mm; line-height:1.15; }
+}

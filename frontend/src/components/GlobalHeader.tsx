@@ -1,4 +1,5 @@
-import { Download, FileUp, Moon, Trash2, Sun, Wifi } from "lucide-react";
+import { Download, FileUp, Moon, Trash2, Sun, Wifi, Printer } from "lucide-react";
+import { PrintSchedule } from "./PrintSchedule";
 import { useState } from "react";
 import { exportNative, importNative } from "../lib/api";
 import { useScheduleStore, type SolverStatus, type ViewMode } from "../store/scheduleStore";
@@ -22,6 +23,7 @@ export function GlobalHeader() {
   const { document, analysis, theme, setTheme, viewMode, setViewMode, solverStatus, setDocument, clearAll } = useScheduleStore();
 
   const [clearing,setClearing] = useState(false);
+  const [printing,setPrinting] = useState(false);
   const [confirmation,setConfirmation] = useState("");
   return (
     <header className="app-header shrink-0 border-b border-border bg-card"><div className="flex flex-wrap items-center justify-between gap-4 px-5 py-4">
@@ -40,6 +42,7 @@ export function GlobalHeader() {
 
 
       <div className="flex items-center gap-2">
+        <Button onClick={() => setPrinting(true)}><Printer className="size-4" />Imprimir</Button>
         <Badge className="hidden md:inline-flex">Salvo neste dispositivo</Badge>
         <Badge className="hidden gap-1 md:inline-flex"><Wifi className="size-3" /> Disponível offline</Badge>
         <Button className="hidden bg-card text-foreground dark:bg-card dark:text-foreground md:inline-flex" onClick={() => exportNative(document)}>
@@ -75,6 +78,7 @@ export function GlobalHeader() {
         </IconButton>
       </div>
       </div>
+      {printing && <PrintSchedule onClose={() => setPrinting(false)} />}
       {clearing && <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onKeyDown={e => {if(e.key === "Escape") setClearing(false);}}>
         <form role="dialog" aria-modal="true" aria-labelledby="clear-title" className="w-full max-w-md space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xl" onSubmit={e => {e.preventDefault();if(confirmation === "LIMPAR") {clearAll();setClearing(false);}}}>
           <h2 id="clear-title" className="text-xl font-semibold text-red-600">Apagar todos os dados?</h2>
