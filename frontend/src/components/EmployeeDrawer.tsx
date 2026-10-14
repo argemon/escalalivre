@@ -1,126 +1,65 @@
-import { CalendarDays, Clock, PanelRightClose, SlidersHorizontal } from "lucide-react";
-import type { ReactNode } from "react";
-import { dayLabels, regimeLabel } from "../lib/planning";
+import { useState, type FormEvent, type ReactNode } from "react";
 import { useScheduleStore } from "../store/scheduleStore";
-import { Badge, IconButton } from "./ui";
+import { documentSchema } from "../lib/documentSchema";
+import { dayLabels } from "../lib/planning";
+import type { Employee, AvailabilityWindow } from "../types/schedule";
+import { Button } from "./ui";
 
 export function EmployeeDrawer() {
-  const { document, selectedEmployeeId, setSelectedEmployeeId } = useScheduleStore();
-  const employee = document.employees.find((item) => item.id === selectedEmployeeId);
+  const { document, selectedEmployeeId } = useScheduleStore();
+  if (!selectedEmployeeId) return null;
+  const employee = document.employees.find(e => e.id === selectedEmployeeId);
+  if (!employee && selectedEmployeeId !== "new") return null;
+  const initial: Employee = employee ?? { id: crypto.randomUUID(), name: "", role: "", inheritsCompanyDefaults: true,
+    workload: { ...document.company.defaultWorkload }, availability: [], restrictions: [], preferences: [], allowsOvertime: false, allowsNightWork: false, preferredDaysOff: [] };
+  return <EmployeeForm key={selectedEmployeeId} initial={initial} isNew={!employee} />;
+}
 
-  if (!employee) {
-    return null;
+function EmployeeForm({ initial, isNew }: { initial: Employee; isNew: boolean }) {
+  const { document, upsertEmployee, deleteEmployee, setSelectedEmployeeId } = useScheduleStore();
+  const [draft, setDraft] = useState(initial);
+  const [error, setError] = useState("");
+  const patch = (change: Partial<Employee>) => setDraft(d => ({ ...d, ...change }));
+  const workload = (change: Partial<Employee["workload"]>) => patch({ workload: { ...draft.workload, ...change } });
+  function save(event: FormEvent) {
+    event.preventDefault();
+    const employee = { ...draft, name: draft.name.trim(), role: draft.role.trim(), workload: draft.inheritsCompanyDefaults ? { ...document.company.defaultWorkload } : draft.workload };
+    const result = documentSchema.safeParse({ ...document, employees: [...document.employees.filter(e => e.id !== employee.id), employee] });
+    if (!result.success) { setError(result.error.issues[0].message); return; }
+    upsertEmployee(employee);
   }
-
-  return (
-    <aside className="absolute inset-y-0 right-0 z-30 w-full max-w-md border-l border-border bg-card shadow-2xl">
-      <div className="flex h-full min-h-0 flex-col">
-        <header className="flex items-start justify-between border-b border-border p-5">
-          <div>
-            <p className="text-xs uppercase text-muted-foreground">Editor avancado</p>
-            <h2 className="text-xl font-semibold">{employee.name}</h2>
-            <p className="text-sm capitalize text-muted-foreground">{employee.role}</p>
-          </div>
-          <IconButton title="Fechar" onClick={() => setSelectedEmployeeId(undefined)}>
-            <PanelRightClose className="size-4" />
-          </IconButton>
-        </header>
-
+  return <div className="absolute inset-0 z-30 flex justify-end bg-black/40" onClick={() => setSelectedEmployeeId(undefined)}>
+    <aside role="dialog" aria-modal="true" aria-label={isNew ? "Adicionar funcionário" : "Editar funcionário"} className="h-full w-full max-w-md border-l border-border bg-card shadow-2xl" onClick={e => e.stopPropagation()} onKeyDown={e => { if (e.key === "Escape") setSelectedEmployeeId(undefined); }}>
+      <form onSubmit={save} className="flex h-full flex-col">
+        <header className="flex items-center justify-between border-b border-border p-5"><h2 className="text-xl font-semibold">{isNew ? "Adicionar funcionário" : "Editar funcionário"}</h2><Button type="button" onClick={() => setSelectedEmployeeId(undefined)}>Fechar</Button></header>
         <div className="min-h-0 flex-1 space-y-4 overflow-auto p-5">
-          <Section title="Regime" icon={<SlidersHorizontal className="size-4" />}>
-            <div className="rounded-md border border-border bg-background p-3">
-              <label className="flex items-center justify-between gap-3 text-sm">
-                <span>Herdar padrao empresa</span>
-                <input type="checkbox" checked={employee.inheritsCompanyDefaults} readOnly className="size-4 accent-emerald-500" />
-              </label>
-              <div className="mt-3 grid grid-cols-2 gap-2">
-                <Badge className={employee.workload.regimeType === "dayBased" ? "border-emerald-500 text-emerald-400" : ""}>DAY_BASED</Badge>
-                <Badge className={employee.workload.regimeType === "hourBased" ? "border-emerald-500 text-emerald-400" : ""}>HOUR_BASED</Badge>
-              </div>
-              <p className="mt-3 text-sm font-medium">{regimeLabel(employee)}</p>
-            </div>
-          </Section>
-
-          <Section title="Jornada" icon={<Clock className="size-4" />}>
-            <div className="grid grid-cols-2 gap-2">
-              <Metric label="Semanal maxima" value={`${employee.workload.weeklyLimitHours}h`} />
-              <Metric label="Turno padrao" value={employee.workload.defaultShiftDuration.slice(0, 5)} />
-              <Metric label="Hora extra" value={employee.allowsOvertime ? "permitida" : "bloqueada"} />
-              <Metric label="Noturno" value={employee.allowsNightWork ? "permitido" : "bloqueado"} />
-            </div>
-          </Section>
-
-          <Section title="Disponibilidade" icon={<CalendarDays className="size-4" />}>
-            <WeeklyGrid activeDays={document.company.operatingDays} />
-          </Section>
-
-          <Section title="Restricoes">
-            <div className="space-y-2">
-              <Rule text={employee.allowsNightWork ? "Pode fazer noturno" : "Nao faz noturno"} />
-              <Rule text={employee.preferredDaysOff.length > 0 ? `Folga preferida: ${employee.preferredDaysOff.map((day) => dayLabels[day]).join(", ")}` : "Sem folga preferida"} />
-              <Rule text={employee.restrictions.length > 0 ? `${employee.restrictions.length} bloqueio(s) de horario` : "Sem bloqueios cadastrados"} />
-            </div>
-          </Section>
-
-          <Section title="Preferencias">
-            <div className="space-y-2">
-              {employee.preferences.length === 0 && <Rule text="Sem preferencias cadastradas" />}
-              {employee.preferences.map((preference) => <Rule key={preference.code} text={`${preference.description} · peso ${preference.weight}`} />)}
-            </div>
-          </Section>
-
-          <Section title="Almoco flexivel">
-            <div className="rounded-md border border-border bg-background p-3">
-              <div className="grid grid-cols-3 gap-2">
-                <Metric label="Minimo" value={document.company.lunch.minimum.slice(0, 5)} />
-                <Metric label="Maximo" value={document.company.lunch.maximum.slice(0, 5)} />
-                <Metric label="Apos" value={document.company.lunch.preferredAfter.slice(0, 5)} />
-              </div>
-              <div className="mt-3 h-8 rounded bg-muted p-1">
-                <div className="h-6 w-1/2 rounded bg-amber-500/80 text-center text-xs font-medium leading-6 text-slate-950">janela movel</div>
-              </div>
-            </div>
-          </Section>
+          <Field label="Nome"><input autoFocus required value={draft.name} onChange={e => patch({ name: e.target.value })} /></Field>
+          <Field label="Função"><input required value={draft.role} onChange={e => patch({ role: e.target.value })} /></Field>
+          <label className="flex gap-2"><input type="checkbox" checked={draft.inheritsCompanyDefaults} onChange={e => patch({ inheritsCompanyDefaults: e.target.checked, workload: e.target.checked ? { ...document.company.defaultWorkload } : draft.workload })} />Herdar padrão da empresa</label>
+          <fieldset disabled={draft.inheritsCompanyDefaults} className="space-y-3 disabled:opacity-60">
+            <Field label="Regime"><select value={draft.workload.regimeType} onChange={e => workload({ regimeType: e.target.value as "dayBased" | "hourBased" })}><option value="dayBased">Ciclo em dias</option><option value="hourBased">Ciclo em horas</option></select></Field>
+            <div className="grid grid-cols-2 gap-3"><Field label="Unidades de trabalho"><input type="number" required min="1" max="168" value={draft.workload.workUnits} onChange={e => workload({ workUnits: e.target.valueAsNumber })} /></Field><Field label="Unidades de descanso"><input type="number" required min="0" max="168" value={draft.workload.restUnits} onChange={e => workload({ restUnits: e.target.valueAsNumber })} /></Field></div>
+            <Field label="Limite semanal (horas)"><input type="number" required min="1" max="44" value={draft.workload.weeklyLimitHours} onChange={e => workload({ weeklyLimitHours: e.target.valueAsNumber })} /></Field>
+            <Field label="Duração do turno"><input type="time" required value={draft.workload.defaultShiftDuration.slice(0,5)} onChange={e => workload({ defaultShiftDuration: e.target.value + ":00" })} /></Field>
+          </fieldset>
+          <label className="flex gap-2"><input type="checkbox" checked={draft.allowsOvertime} onChange={e => patch({ allowsOvertime: e.target.checked })} />Permitir hora extra</label>
+          <label className="flex gap-2"><input type="checkbox" checked={draft.allowsNightWork} onChange={e => patch({ allowsNightWork: e.target.checked })} />Permitir trabalho noturno</label>
+          <fieldset><legend className="mb-2 text-sm">Folgas preferidas</legend><div className="flex flex-wrap gap-2">{dayLabels.map((day,i) => <label key={day} className="text-sm"><input type="checkbox" checked={draft.preferredDaysOff.includes(i)} onChange={e => patch({ preferredDaysOff: e.target.checked ? [...draft.preferredDaysOff,i] : draft.preferredDaysOff.filter(d => d !== i) })} /> {day}</label>)}</div></fieldset>
+          <Windows title="Disponibilidade" value={draft.availability} onChange={availability => patch({ availability })} />
+          <p className="text-xs text-muted-foreground">Sem janelas de disponibilidade, utiliza os horários da operação.</p>
+          <Windows title="Bloqueios de horário" value={draft.restrictions} onChange={restrictions => patch({ restrictions })} />
+          <section className="space-y-2"><h3>Preferências</h3>{draft.preferences.map((p,i) => <div key={i} className="space-y-2"><Field label="Descrição"><input required value={p.description} onChange={e => patch({ preferences: draft.preferences.map((v,j) => j === i ? { ...v, description: e.target.value } : v) })} /></Field><Field label="Peso"><input type="number" required value={p.weight} onChange={e => patch({ preferences: draft.preferences.map((v,j) => j === i ? { ...v, weight: e.target.valueAsNumber } : v) })} /></Field><Button type="button" onClick={() => patch({ preferences: draft.preferences.filter((_,j) => j !== i) })}>Remover preferência</Button></div>)}<Button type="button" onClick={() => patch({ preferences: [...draft.preferences, { code: crypto.randomUUID(), description: "", weight: 1 }] })}>Adicionar preferência</Button></section>
+          {error && <p role="alert" className="text-red-400">{error}</p>}
         </div>
-      </div>
+        <footer className="flex flex-wrap gap-2 border-t border-border p-4"><Button type="submit">Salvar funcionário</Button><Button type="button" onClick={() => setSelectedEmployeeId(undefined)}>Cancelar</Button>{!isNew && <Button type="button" onClick={() => { if (window.confirm("Excluir funcionário e todos os seus turnos?")) deleteEmployee(draft.id); }}>Excluir</Button>}</footer>
+      </form>
     </aside>
-  );
+  </div>;
 }
 
-function Section({ title, icon, children }: { title: string; icon?: ReactNode; children: ReactNode }) {
-  return (
-    <section className="space-y-2">
-      <h3 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        {icon}
-        {title}
-      </h3>
-      {children}
-    </section>
-  );
+function Field({ label, children }: { label: string; children: ReactNode }) {
+  return <label className="block space-y-1 text-sm"><span>{label}</span><div className="[&>input]:w-full [&>input]:rounded [&>input]:border [&>input]:border-border [&>input]:bg-background [&>input]:p-2 [&>select]:w-full [&>select]:bg-background [&>select]:p-2">{children}</div></label>;
 }
-
-function Metric({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-md border border-border bg-card p-3">
-      <p className="text-[11px] text-muted-foreground">{label}</p>
-      <p className="mt-1 text-sm font-semibold">{value}</p>
-    </div>
-  );
-}
-
-function Rule({ text }: { text: string }) {
-  return <p className="rounded-md border border-border bg-background px-3 py-2 text-sm">{text}</p>;
-}
-
-function WeeklyGrid({ activeDays }: { activeDays: number[] }) {
-  return (
-    <div className="grid grid-cols-7 gap-1">
-      {dayLabels.map((day, index) => (
-        <div key={day} className={`rounded-md border p-2 text-center text-xs ${activeDays.includes(index) ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-300" : "border-border bg-background text-muted-foreground"}`}>
-          <p className="font-medium">{day}</p>
-          <p className="mt-1">08-22</p>
-        </div>
-      ))}
-    </div>
-  );
+function Windows({ title, value, onChange }: { title: string; value: AvailabilityWindow[]; onChange: (v: AvailabilityWindow[]) => void }) {
+  return <section className="space-y-2"><h3>{title}</h3>{value.map((w,i) => <div key={i} className="space-y-2 rounded border border-border p-2">{(["start", "end"] as const).map(k => <Field key={k} label={k === "start" ? "Início" : "Fim"}><input type="datetime-local" required value={w[k].slice(0,16)} onChange={e => onChange(value.map((v,j) => j === i ? { ...v, [k]: e.target.value + ":00" } : v))} /></Field>)}<Button type="button" onClick={() => onChange(value.filter((_,j) => j !== i))}>Remover janela</Button></div>)}<Button type="button" onClick={() => onChange([...value, { start: "", end: "" }])}>Adicionar janela</Button></section>;
 }

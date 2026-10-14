@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { BrainCircuit, BriefcaseBusiness, CheckCircle2, CircleAlert, Loader2, Wand2 } from "lucide-react";
 import type { ReactNode } from "react";
+import { analyzeDocument } from "../lib/analysis";
 import { solveSchedule } from "../lib/api";
 import { useScheduleStore } from "../store/scheduleStore";
 import { Badge, Button, Panel } from "./ui";
@@ -10,11 +11,17 @@ export function SolverPanel() {
   const mutation = useMutation({
     mutationFn: solveSchedule,
     onMutate: () => setSolverStatus("calculating"),
-    onSuccess: (result) => {
+    onSuccess: (result, submitted) => {
+      if (useScheduleStore.getState().document !== submitted) { setSolverStatus("idle"); return; }
       if (!result.conflicts.some(item => item.code === "solverInfeasible" || item.code === "solverTimeout")) {
-      setDocument({ ...document, assignments: result.assignments, updatedAt: new Date().toISOString() });
+      const next = { ...submitted, assignments: result.assignments, updatedAt: new Date().toISOString() };
+      setDocument(next);
       }
-      setAnalysis(result);
+      const failed = result.conflicts.some(item => item.code === "solverInfeasible" || item.code === "solverTimeout");
+      if (failed) {
+        const current = analyzeDocument(submitted);
+        setAnalysis({ ...current, conflicts: [...current.conflicts, ...result.conflicts.filter(item => item.code === "solverInfeasible" || item.code === "solverTimeout")] });
+      } else setAnalysis(result);
       setSolverStatus(result.conflicts.some((item) => item.severity === "error") ? "invalid" : result.gaps.length > 0 ? "partial" : "optimized");
     },
     onError: () => setSolverStatus("invalid")
@@ -28,10 +35,10 @@ export function SolverPanel() {
       <header className="border-b border-border p-4">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="text-xs uppercase text-muted-foreground">Operational intelligence</p>
-            <h2 className="text-lg font-semibold">Solver engine</h2>
+            <p className="text-xs uppercase text-muted-foreground">Ajuda para planejar melhor</p>
+            <h2 className="text-lg font-semibold">Assistente de escala</h2>
           </div>
-          <Badge>{solverStatus}</Badge>
+          <Badge>{({idle:"Pronto",calculating:"Calculando",optimized:"Otimizado",partial:"Revisar",invalid:"Revisar"})[solverStatus]}</Badge>
         </div>
       </header>
 
@@ -42,20 +49,22 @@ export function SolverPanel() {
             {mutation.isPending && <Loader2 className="size-4 animate-spin text-primary" />}
           </div>
           <p className="mt-3 text-3xl font-semibold">{Math.round(analysis.coverageScore * 100)}%</p>
-          <p className="text-sm text-muted-foreground">score de cobertura operacional</p>
+          <p className="text-sm text-muted-foreground">da cobertura necessária atendida</p>
           <div className="mt-4 grid grid-cols-2 gap-2">
-            <Metric label="Hard violations" value={String(hardViolations)} tone={hardViolations > 0 ? "bad" : "good"} />
-            <Metric label="Soft violations" value={String(softViolations)} tone={softViolations > 0 ? "warn" : "good"} />
+            <Metric label="Conflitos" value={String(hardViolations)} tone={hardViolations > 0 ? "bad" : "good"} />
+            <Metric label="Pontos de atenção" value={String(softViolations)} tone={softViolations > 0 ? "warn" : "good"} />
           </div>
         </section>
 
-        <Button className="w-full" onClick={() => mutation.mutate(document)} disabled={mutation.isPending}>
+        <Button className="w-full" onClick={() => mutation.mutate(document)} disabled={solverStatus === "calculating"}>
           <Wand2 className="size-4" />
-          {mutation.isPending ? "Calculando plano otimo" : "Otimizar operacao"}
+          {mutation.isPending ? "Preparando sua escala…" : "Gerar escala otimizada"}
         </Button>
 
+        {mutation.isError && <p role="alert" className="text-red-400">{mutation.error.message} Verifique se a API está em execução e tente novamente.</p>}
         <section className="space-y-2">
-          <Title icon={<CircleAlert className="size-4" />} text="Conflitos e buracos" />
+          <Title icon={<CircleAlert className="size-4" />} text="O que precisa de atenção" />
+          {analysis.gaps.length === 0 && analysis.conflicts.length === 0 && <p className="text-sm text-muted-foreground">{document.company.coverage.length ? "Nenhum buraco ou conflito detectado no planejamento atual." : "Cadastre regras de cobertura mínima para detectar buracos."}</p>}
           {analysis.gaps.map((gap) => (
             <article key={`${gap.role}-${gap.start}`} className="rounded-md border border-red-500/30 bg-red-500/10 p-3">
               <p className="text-sm font-semibold">Falta {gap.missingEmployees} {gap.role}</p>
@@ -71,7 +80,7 @@ export function SolverPanel() {
         </section>
 
         <section className="space-y-2">
-          <Title icon={<CheckCircle2 className="size-4" />} text="Explicabilidade" />
+          <Title icon={<CheckCircle2 className="size-4" />} text="Por que esta escala?" />
           {analysis.decisions.slice(0, 3).map((decision) => (
             <article key={decision.assignmentId} className="rounded-md border border-border bg-background p-3 text-sm">
               <p className="font-medium">{decision.reason}</p>
@@ -89,7 +98,7 @@ export function SolverPanel() {
         </section>
 
         <section className="space-y-2">
-          <Title icon={<BriefcaseBusiness className="size-4" />} text="Contratacao" />
+          <Title icon={<BriefcaseBusiness className="size-4" />} text="Sugestões para a equipe" />
           {analysis.hiringSuggestions.map((suggestion) => (
             <article key={suggestion.role} className="rounded-md border border-border bg-background p-3">
               <p className="text-sm font-semibold">1 {suggestion.role} parcial</p>

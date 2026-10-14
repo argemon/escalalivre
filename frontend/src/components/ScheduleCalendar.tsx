@@ -3,13 +3,13 @@ import type { EventDropArg } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import { CalendarDays, Columns3, Settings2 } from "lucide-react";
+
 import { useMemo } from "react";
 import { useScheduleStore } from "../store/scheduleStore";
-import { Button, IconButton } from "./ui";
+
 
 export function ScheduleCalendar() {
-  const { document, moveAssignment } = useScheduleStore();
+  const { document, moveAssignment, viewMode, setSelectedEmployeeId } = useScheduleStore();
   const events = useMemo(
     () =>
       document.assignments.map((assignment) => {
@@ -40,18 +40,7 @@ export function ScheduleCalendar() {
           <p className="text-xs uppercase text-muted-foreground">Planejamento operacional</p>
           <h1 className="text-2xl font-semibold tracking-normal">{document.company.name}</h1>
         </div>
-        <div className="flex items-center gap-2">
-          <Button className="bg-card text-foreground dark:bg-card dark:text-foreground">
-            <CalendarDays className="size-4" />
-            Semana
-          </Button>
-          <IconButton title="Timeline">
-            <Columns3 className="size-4" />
-          </IconButton>
-          <IconButton title="Configuracoes">
-            <Settings2 className="size-4" />
-          </IconButton>
-        </div>
+
       </header>
 
       <section className="grid grid-cols-2 gap-px border-b border-border bg-border md:grid-cols-4">
@@ -71,7 +60,9 @@ export function ScheduleCalendar() {
       <section className="min-h-0 flex-1 p-4">
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          initialView="timeGridWeek"
+          initialView={viewMode === "month" ? "dayGridMonth" : "timeGridWeek"}
+          initialDate={document.assignments.map(a => a.start).sort()[0]}
+          eventClick={arg => { const assignment = document.assignments.find(a => a.id === arg.event.id); if (assignment) setSelectedEmployeeId(assignment.employeeId); }}
           headerToolbar={{
             left: "prev,next today",
             center: "title",

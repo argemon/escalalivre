@@ -26,18 +26,35 @@ public sealed class ProductionRegressionTests
     }
 
     [Fact]
-    public void MissingCoverageIsInfeasible()
+    public void MissingCoverageProducesPartialSchedule()
     {
         var result = new OrToolsScheduleSolver().Solve(Request(required: 2));
-        Assert.Empty(result.Assignments);
-        Assert.Contains(result.Conflicts, issue => issue.Code == "solverInfeasible");
+        Assert.Equal(2, result.Assignments.Count);
+        Assert.NotEmpty(result.Gaps);
+        Assert.Empty(result.Conflicts);
     }
 
     [Fact]
     public void RestBetweenNewShiftsIsMandatory()
     {
         var result = new OrToolsScheduleSolver().Solve(Request(rest: 20));
-        Assert.Contains(result.Conflicts, issue => issue.Code == "solverInfeasible");
+        Assert.Single(result.Assignments);
+        Assert.NotEmpty(result.Gaps);
+        Assert.Empty(result.Conflicts);
+    }
+
+    [Fact]
+    public void CanCoverClosingWithLaterShiftStart()
+    {
+        var request = Request();
+        request = request with { Document = request.Document with { Company = request.Document.Company with {
+            Coverage = [new("nurse", DayOfWeek.Monday, new(16, 0), new(18, 0), 1)]
+        } } };
+        var result = new OrToolsScheduleSolver().Solve(request);
+        Assert.Empty(result.Gaps);
+        Assert.Empty(result.Conflicts);
+        Assert.Single(result.Assignments);
+        Assert.Equal(new DateTime(2026, 5, 18, 18, 0, 0), result.Assignments[0].End);
     }
 
     [Fact]

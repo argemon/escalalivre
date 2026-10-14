@@ -42,6 +42,7 @@ public sealed class OrToolsScheduleSolver : IScheduleSolver
             model.Add(LinearExpr.Sum(weightedHours) <= (long)Math.Round(rule.WeeklyLimitHours * 60));
         }
 
+        var shortageTerms = new List<LinearExpr>();
         foreach (var coverage in request.Document.Company.Coverage)
         {
             foreach (var day in Days(request.Start, request.End).Where(x => x.DayOfWeek == coverage.Day))
@@ -55,7 +56,9 @@ public sealed class OrToolsScheduleSolver : IScheduleSolver
                         .Select(x => decisionVars[x.Id])
                         .ToArray();
 
-                    model.Add(LinearExpr.Sum(covering) >= coverage.MinimumEmployees);
+                    var shortage = model.NewIntVar(0, coverage.MinimumEmployees, $"shortage_{shortageTerms.Count}");
+                    model.Add(LinearExpr.Sum(covering) + shortage >= coverage.MinimumEmployees);
+                    shortageTerms.Add(LinearExpr.Term(shortage, -(long)((block.End - block.Start).TotalMinutes * 1_000_000_000)));
                 }
             }
         }
@@ -67,7 +70,7 @@ public sealed class OrToolsScheduleSolver : IScheduleSolver
             var lunchBalance = candidate.Break is null ? 0 : -Math.Abs((candidate.Break.Start.TimeOfDay - TimeSpan.FromHours(12)).TotalMinutes) / 30;
             return LinearExpr.Term(decisionVars[candidate.Id], -1_000_000 + Math.Clamp(preferenceWeight + (long)lunchBalance, -1000L, 1000L));
         });
-        model.Maximize(LinearExpr.Sum(objectiveTerms));
+        model.Maximize(LinearExpr.Sum(objectiveTerms.Concat(shortageTerms)));
 
         var solver = new CpSolver
         {
@@ -110,10 +113,16 @@ public sealed class OrToolsScheduleSolver : IScheduleSolver
             {
                 var rule = employee.InheritsCompanyDefaults ? request.Document.Company.DefaultWorkload : employee.Workload;
                 var regime = regimeFactory.Resolve(rule.RegimeType);
-                var start = day.Add(request.Document.Company.OpensAt.ToTimeSpan());
-                var end = start.Add(rule.DefaultShiftDuration);
+                var opening = day.Add(request.Document.Company.OpensAt.ToTimeSpan());
                 var closing = BuildEnd(day, request.Document.Company.OpensAt, request.Document.Company.ClosesAt);
-                if (end > closing) end = closing;
+                var shiftDuration = rule.DefaultShiftDuration < closing - opening ? rule.DefaultShiftDuration : closing - opening;
+                if (shiftDuration <= TimeSpan.Zero) continue;
+                var starts = new SortedSet<DateTime> { opening, closing - shiftDuration };
+                for (var cursor = opening; cursor + shiftDuration <= closing; cursor = cursor.AddMinutes(30)) starts.Add(cursor);
+                foreach (var window in employee.Availability) if (window.Start >= opening && window.Start + shiftDuration <= closing) starts.Add(window.Start);
+                foreach (var start in starts)
+                {
+                var end = start.Add(shiftDuration);
                 if (rule.RegimeType == "hourBased" && end - start > TimeSpan.FromHours(rule.WorkUnits)) continue;
                 if (!employee.AllowsNightWork && IsNight(start, end)) continue;
 
@@ -140,6 +149,7 @@ public sealed class OrToolsScheduleSolver : IScheduleSolver
                     }
 
                     yield return new ShiftAssignment(Guid.NewGuid(), employee.Id, employee.Role, start, end, breakWindow, "solver", tags);
+                }
                 }
             }
         }

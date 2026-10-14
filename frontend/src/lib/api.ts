@@ -1,7 +1,9 @@
 import { documentSchema } from "./documentSchema";
 import type { EscalaLivreDocument, ScheduleResult } from "../types/schedule";
 
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5000";
+const API_URL = (import.meta.env.VITE_API_URL ?? "http://localhost:5003").replace(/\/$/, "");
+export { planningPeriod } from "./analysis";
+import { planningPeriod } from "./analysis";
 
 type ApiEnvelope<T> = {
   success: boolean;
@@ -12,19 +14,18 @@ type ApiEnvelope<T> = {
 };
 
 export async function solveSchedule(document: EscalaLivreDocument): Promise<ScheduleResult> {
-  const response = await fetch(`${API_URL}/solve`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ document, ...planningPeriod(document) })
-  });
-
-  if (!response.ok) {
-    throw new Error("Nao foi possivel gerar a escala.");
+  let response: Response;
+  try {
+    response = await fetch(API_URL + "/solve", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ document, ...planningPeriod(document) }), signal: AbortSignal.timeout(20000)
+    });
+  } catch {
+    throw new Error("Não foi possível conectar à API em " + API_URL + ". Inicie o backend local e tente novamente.");
   }
-
   const envelope = (await response.json()) as ApiEnvelope<ScheduleResult>;
-  if (!envelope.success) {
-    throw new Error(envelope.errors.map((error) => error.message).join(", "));
+  if (!response.ok || !envelope.success || !envelope.data) {
+    throw new Error(envelope.errors?.map(error => error.message).join(", ") || "Não foi possível gerar a escala (HTTP " + response.status + ").");
   }
 
   return envelope.data;
@@ -49,15 +50,4 @@ export async function importNative(file: File): Promise<EscalaLivreDocument> {
 
 function documentRef() {
   return window.document;
-}
-
-export function planningPeriod(document: EscalaLivreDocument) {
-  const first = document.assignments.map(a => a.start).sort()[0];
-  const start = first ? new Date(first) : new Date();
-  start.setHours(0, 0, 0, 0);
-  const end = new Date(start);
-  end.setDate(end.getDate() + 6);
-  end.setHours(23, 59, 59, 0);
-  const local = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}T${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}:${String(d.getSeconds()).padStart(2, "0")}`;
-  return { start: local(start), end: local(end) };
 }

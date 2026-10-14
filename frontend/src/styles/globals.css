@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --background: 210 24% 98%;
-  --foreground: 222 47% 11%;
+  --background: 150 20% 96%;
+  --foreground: 164 24% 16%;
   --card: 0 0% 100%;
   --muted: 214 32% 91%;
-  --border: 214 32% 86%;
-  --primary: 162 72% 42%;
+  --border: 150 14% 86%;
+  --primary: 164 65% 29%;
   --accent: 33 95% 55%;
 }
 
@@ -65,3 +65,37 @@ body {
 .event-solver {
   background: hsl(var(--accent));
 }
+
+/* Shared reading, keyboard navigation and responsive workspace treatment. */
+.text-muted-foreground { color: hsl(var(--foreground) / .68); }
+button, input, select, textarea { font: inherit; }
+button, label:has(input[type="file"]) { -webkit-tap-highlight-color: transparent; }
+:is(button, input, select, textarea, a):focus-visible { outline: 3px solid hsl(var(--primary) / .65); outline-offset: 3px; }
+button:disabled { cursor: not-allowed; }
+.workspace-grid > main, .workspace-grid > div { border-radius: 16px; border: 1px solid hsl(var(--border)); box-shadow: 0 3px 14px hsl(var(--foreground) / .035); }
+.workspace-grid > main { overflow: hidden; }
+.workspace-grid > div > div { border: 0; }
+.fc .fc-button { background: hsl(var(--primary)); border-color: hsl(var(--primary)); border-radius: 9px; }
+.fc .fc-button-primary:not(:disabled).fc-button-active { background: hsl(var(--foreground)); border-color: hsl(var(--foreground)); }
+.fc .fc-toolbar { flex-wrap: wrap; gap: 12px; }
+.fc .fc-col-header-cell { padding-block: 8px; }
+.event-manual { color: white; }
+@media (max-width: 1023px) {
+  .workspace-grid { grid-template-rows: minmax(230px, 35vh) minmax(520px, 1fr); }
+  .app-header h1 { max-width: 75vw; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
+
+/* Status text remains readable on pale surfaces in both themes. */
+.coverage-healthy { background: #d1fae5; color: #065f46; }
+.coverage-warning { background: #fef3c7; color: #78350f; }
+.coverage-uncovered { background: #fee2e2; color: #991b1b; }
+.dark .coverage-healthy { background: #064e3b; color: #a7f3d0; }
+.dark .coverage-warning { background: #78350f; color: #fef3c7; }
+.dark .coverage-uncovered { background: #7f1d1d; color: #fecaca; }
+:root:not(.dark) :is(.text-emerald-300, .text-emerald-400) { color: #065f46; }
+:root:not(.dark) :is(.text-amber-300, .text-amber-400) { color: #78350f; }
+:root:not(.dark) :is(.text-red-300, .text-red-400) { color: #991b1b; }
+:root:not(.dark) :is(.text-sky-300, .text-sky-400) { color: #075985; }
+.event-solver { color: #3b2106; }
+.fc { --fc-button-text-color: #fff; }
