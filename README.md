@@ -4,7 +4,7 @@
 
 **EscalaLivre é uma plataforma aberta de planejamento de equipes que combina geração automática de escalas, análise de cobertura e regras configuráveis em uma interface pensada para RH e pequenos empresários.**
 
-**Sem IA generativa: a geração de escalas usa matemática, algoritmos e otimização por restrições. Não depende de modelos de linguagem nem de serviços de IA.**
+> **Matemática para organizar pessoas.** A geração de escalas usa algoritmos e otimização por restrições, sem IA generativa, modelos de linguagem ou serviços de IA.
 
 **Para usar uma instância já disponibilizada, basta abrir no navegador: sem cadastro e sem instalar nada no seu dispositivo. Salve seu progresso e continue de onde parou quando quiser.**
 
@@ -12,7 +12,7 @@ Uma escala precisa responder a mais do que “quem trabalha hoje?”. É preciso
 
 O EscalaLivre conecta essas perguntas. Você informa como a empresa funciona, quem faz parte da equipe e quantas pessoas precisa em cada período. O sistema busca uma distribuição de turnos, mostra o que ficou descoberto e oferece informações para revisar o planejamento.
 
-[Como funciona](#como-funciona) · [Recursos](#o-que-você-pode-fazer-hoje) · [Executar localmente](#experimente-localmente) · [Potencial](#para-onde-o-projeto-pode-crescer)
+[Primeiros passos](#um-exemplo-vendedores-todos-os-dias) · [Recursos](#o-que-você-pode-fazer-hoje) · [Novidades](#novidades-no-planejamento) · [Algoritmo por dentro](#para-os-nerds-o-algoritmo-por-dentro) · [Executar localmente](#experimente-localmente)
 
 ## O problema que queremos resolver
 
@@ -29,11 +29,13 @@ Montar uma escala manualmente exige conciliar decisões que se afetam o tempo to
 
 Imagine uma loja que precisa de dois vendedores das 9h às 18h, de segunda a sábado.
 
-1. Cadastre o funcionamento da loja e as pessoas da equipe.
+1. Configure o funcionamento da loja, cadastre as funções e adicione as pessoas da equipe.
 2. Crie uma regra de cobertura para **Vendedor**, selecione os seis dias e informe o horário e a quantidade mínima.
 3. Configure jornadas, disponibilidades e restrições individuais.
 4. Abra o **Assistente de escala** e gere o planejamento.
-5. Confira os turnos, os intervalos e os períodos em que ainda faltam pessoas.
+5. Confira os turnos, os intervalos, os feriados e os períodos em que ainda faltam pessoas.
+
+**Exemplo de jornada:** oito horas de trabalho com uma hora de intervalo ocupam nove horas no relógio. Das 9h às 18h, com pausa das 12h às 13h, a pessoa trabalha oito horas — e fica fora da cobertura durante a pausa.
 
 O motor considera alternativas de início de turno e de intervalo. Se a equipe não consegue atender toda a demanda, ele pode retornar uma escala parcial com as lacunas identificadas, preservando as restrições obrigatórias do modelo.
 
@@ -53,7 +55,7 @@ flowchart LR
 
 O núcleo usa **Google OR-Tools CP-SAT**, um motor de otimização por restrições. Ele avalia combinações de turnos e intervalos para reduzir a falta de cobertura, respeitando as regras representadas no modelo.
 
-A busca prioriza reduzir lacunas de cobertura, depois penaliza turnos adicionais e considera pesos de preferência. O resultado inclui turnos, conflitos, cobertura por período, sugestões e explicações baseadas nas regras avaliadas.
+A busca combina pesos para reduzir lacunas, favorecer presença nos períodos de demanda, evitar turnos adicionais e considerar preferências. O resultado inclui turnos, conflitos, cobertura por período, sugestões e explicações baseadas nas regras avaliadas. Os detalhes e os pesos estão na [seção técnica](#para-os-nerds-o-algoritmo-por-dentro).
 
 A execução possui limite de tempo e pode encontrar uma solução viável sem comprovar que ela é a melhor possível. A interface permite revisar o resultado e continuar ajustando o planejamento.
 
@@ -61,12 +63,17 @@ A execução possui limite de tempo e pode encontrar uma solução viável sem c
 
 | Recurso | Utilidade no dia a dia |
 | --- | --- |
-| **Configuração da empresa** | Definir horários, dias de funcionamento, jornada padrão, descanso e intervalos. |
-| **Cadastro da equipe** | Gerenciar funções, regras individuais, disponibilidade e restrições de horário. |
+| **Configuração da empresa** | Definir funcionamento, horas efetivas de trabalho, descanso, limites de intervalo e fechamento para almoço. |
+| **Funções e equipe** | Cadastrar funções e definir, por pessoa, jornada, dias de trabalho, entrada fixa, disponibilidade e restrições. |
+| **Substituições autorizadas** | Informar quais outras funções cada pessoa pode cobrir, sem contar a mesma pessoa duas vezes no mesmo horário. |
 | **Cobertura em vários dias** | Aplicar a mesma necessidade a dias selecionados, a todos os dias ou aos dias de funcionamento. |
+| **Cobertura da equipe inteira** | Exigir uma quantidade mínima de pessoas presentes, independentemente da função. |
+| **Operação fora do expediente** | Autorizar necessidades específicas em outros horários ou dias, como segurança e limpeza. |
+| **Intervalos flexíveis ou fixos** | Deixar o gerador escolher início e duração da pausa, ou fixar o intervalo de uma pessoa. |
+| **Feriados e turnos especiais** | Configurar abertura ou fechamento por data e manter turnos específicos mesmo com a empresa fechada. |
 | **Geração automática** | Buscar turnos e intervalos que atendam à operação dentro das restrições do modelo. |
 | **Análise durante a edição** | Recalcular localmente a cobertura e os conflitos quando o planejamento muda. |
-| **Escala diária, semanal e mensal** | Visualizar horários por pessoa e navegar pelo calendário. |
+| **Escala diária, semanal e mensal** | Consultar pessoas, funções, entradas, saídas e intervalos, distinguindo prévias de turnos salvos. |
 | **Ajustes pelo calendário** | Arrastar turnos para mudar horários e conferir o efeito no planejamento. |
 | **Pessoas por horário** | Comparar quantas pessoas estão escaladas com quantas são necessárias por função e período. |
 | **Onde faltam pessoas** | Identificar lacunas por função e dia em uma visualização com cores. |
@@ -75,6 +82,43 @@ A execução possui limite de tempo e pode encontrar uma solução viável sem c
 | **Temas claro e escuro** | Usar a interface em português, com explicações das abas e contraste adaptado ao tema. |
 
 O backend também oferece exportação XLSX e uma exportação PDF básica pela API. Os controles de importação e exportação da interface usam o formato nativo `.escalalivre`.
+
+## Novidades no planejamento
+
+### Intervalo e fechamento são coisas diferentes
+
+A empresa pode fechar durante o almoço. Nesse período, as regras normais deixam de exigir atendimento. Quem tem um turno atravessando esse fechamento faz uma pausa que cobre o período fechado.
+
+Uma pessoa que precisa continuar trabalhando, como um segurança, pode receber a opção **Trabalha durante o fechamento para intervalo** e fazer sua pausa em outro horário. Regras excepcionais de cobertura continuam podendo exigir pessoas durante o fechamento.
+
+Sem intervalo fixo, o motor compara durações entre o mínimo e o máximo configurados, além de diferentes horários de início. Com intervalo fixo, respeita a pausa individual. Isso permite, por exemplo, avaliar uma pausa maior para alcançar o fechamento da loja sem aumentar as horas efetivamente trabalhadas.
+
+### Uma pessoa pode ajudar em outra função — com autorização
+
+No cadastro, **Substituições autorizadas** define quais outras funções alguém pode cobrir. A autorização tem direção: permitir que um farmacêutico cubra atendimento não autoriza um atendente a cobrir a função de farmacêutico.
+
+Se o mesmo horário exige **um farmacêutico e um atendente**, uma única pessoa habilitada para ambos não resolve as duas necessidades ao mesmo tempo. O sistema distribui as pessoas entre as funções e mostra o que ainda falta. Uma exigência de **equipe inteira** mede o total de pessoas presentes; ela pode coexistir com mínimos por função.
+
+### Feriado fechado, segurança escalada
+
+Na visão mensal, clique no número de um dia ou em **Adicionar feriado**. Informe o nome, escolha se a empresa estará aberta e adicione, edite ou remova turnos específicos.
+
+Com a empresa fechada, o gerador não cria turnos regulares nessa data. Os turnos autorizados no editor de feriado são mantidos na geração, inclusive quando terminam no dia seguinte. Descanso, disponibilidade, intervalos e limites de jornada continuam sendo conferidos; uma exceção de funcionamento não elimina as outras regras.
+
+O calendário inclui uma lista de feriados nacionais de data fixa e permite configurar datas locais. Datas móveis e demais datas específicas da operação precisam ser cadastradas.
+
+### Calendário mais fácil de ler
+
+As visões semanal e mensal exibem também horários estimados a partir dos cadastros. No mês, cada cartão informa pessoa, função, entrada, saída, intervalo e situação:
+
+| Indicação | Como interpretar |
+| --- | --- |
+| **Prévia** | Estimativa baseada na configuração; ainda não é um turno salvo nem uma solução do otimizador. |
+| **Salvo** | Turno cadastrado ou gerado, incluído no planejamento. |
+| **Feriado · Fechada/Aberta** | Exceção de funcionamento configurada para a data. |
+| **Fundo verde no dia** | Destaque da data de hoje. |
+
+A navegação e os nomes dos dias permanecem acima da área de rolagem. Horários preservam os minutos, como **07:30**, e os campos usam o formato **HH:mm**. Turnos salvos podem ser ajustados pelo calendário; prévias servem para consulta.
 
 ## Por que a proposta é diferente
 
@@ -120,6 +164,89 @@ Frontend, API, domínio e infraestrutura estão separados. Essa estrutura permit
 - **Desenvolvedores:** construir novas experiências e integrações sobre uma API e um domínio abertos.
 
 Lojas, equipes de atendimento e operações com horários recorrentes são exemplos de aplicação da proposta. Cada contexto exige configurar e validar as regras adequadas à sua operação.
+
+## Para os nerds: o algoritmo por dentro
+
+O ponto interessante é que **turno, intervalo e função coberta participam da mesma decisão**. Uma pausa que melhora o fechamento pode piorar o atendimento no meio do dia. Uma pessoa polivalente pode ser mais útil protegendo a função que ninguém mais consegue exercer. O modelo compara essas relações em conjunto.
+
+### 1. Construir possibilidades antes de escolher
+
+Para cada pessoa e dia, o motor constrói candidatos que combinam entrada, saída e intervalo. Ele considera funcionamento, janelas excepcionais de cobertura, jornada herdada ou individual, entrada fixa, disponibilidade e restrições.
+
+- Entradas variáveis são exploradas em passos de **30 minutos**, incluindo alternativas de abertura, fechamento e início de disponibilidade. Quando há entrada fixa, ela restringe essa busca.
+- Durações de intervalo incluem os limites configurados e alternativas em passos de **15 minutos**.
+- Inícios de pausa incluem passos de **30 minutos**, limites viáveis e o horário preferido. Um intervalo fixo substitui essa busca.
+- A jornada é calculada em **minutos efetivamente trabalhados**: duração total menos pausa.
+
+Candidatos incompatíveis são descartados antes da otimização. A implementação verifica, entre outras condições, trabalho noturno autorizado, limites diários e intervalo dentro do turno. O fechamento para almoço e a autorização de trabalho durante ele também afetam as pausas possíveis.
+
+Isso torna o problema finito: o solver escolhe entre candidatos construídos pelo código. A melhor solução nesse conjunto pode ser diferente da melhor solução entre todos os horários imagináveis.
+
+### 2. Transformar o calendário em blocos precisos
+
+A demanda usa uma malha de referência de uma hora, subdividida nos pontos em que algo muda: início ou fim de regra, turno, intervalo ou fechamento. Assim, uma pausa às **12:30** cria uma fronteira própria; o cálculo não arredonda a falta de cobertura para a hora inteira.
+
+Uma pessoa cobre um bloco somente se trabalha durante **todo** ele e não está em intervalo. Regras sobrepostas para a mesma função e escopo usam o maior mínimo exigido naquele trecho, evitando somar a mesma necessidade repetida. Fechamentos e feriados fechados retiram a demanda regular correspondente.
+
+### 3. Escolher turnos e distribuir pessoas sem duplicá-las
+
+Cada candidato `c` recebe uma variável binária `x[c]`: **1** seleciona o turno; **0** o descarta. O modelo limita cada pessoa a um turno por dia, impede combinações sem descanso suficiente e restringe minutos semanais e ciclos em dias. No ciclo em dias, turnos anteriores ao período também reduzem a capacidade disponível nas janelas que os alcançam.
+
+Para cada bloco `b` e função `r`, uma variável binária `y[c,b,r]` representa o uso daquele candidato na cobertura específica. Ela só existe para pessoas habilitadas e obedece a:
+
+```text
+y[c,b,r] ≤ x[c]                 só alocar quem foi escalado
+Σ por função y[c,b,r] ≤ x[c]    uma pessoa cobre no máximo uma função por bloco
+Σ por candidato y[c,b,r] + falta[b,r] ≥ mínimo[b,r]
+```
+
+A variável inteira `falta[b,r]` permite devolver cobertura parcial sem transformar toda falta de pessoal em um problema sem solução. Restrições obrigatórias continuam valendo. Para **equipe inteira**, a contagem usa diretamente os turnos presentes, independentemente da função.
+
+Na análise dos turnos existentes, tanto no frontend quanto no backend, a distribuição por função usa **emparelhamento bipartido com caminhos aumentantes**: de um lado estão as pessoas presentes; do outro, as vagas de cobertura. A busca tenta a função principal primeiro e pode realocar uma pessoa para abrir espaço a outra.
+
+```text
+Necessidade: 1 vaga de farmacêutico + 1 vaga de atendente
+Ana: farmacêutica, autorizada a cobrir atendimento
+Bruno: atendente
+
+Ana → farmacêutico    Bruno → atendente    duas vagas cobertas
+Somente Ana presente → uma vaga coberta, uma vaga faltando
+```
+
+Esse remanejamento evita um erro de contagem simples: usar a pessoa mais versátil numa vaga que outra já poderia preencher e deixar descoberta a função que só ela pode atender. A distribuição é recalculada por bloco; o resultado mantém a função principal no turno e informa a cobertura obtida.
+
+### 4. Otimizar com pesos explícitos
+
+O CP-SAT **maximiza uma única função objetivo ponderada**. Os coeficientes atuais são:
+
+| Termo | Peso no objetivo | Efeito |
+| --- | --- | --- |
+| Falta de uma pessoa por minuto de demanda | `−1.000.000.000` | Penalizar fortemente a cobertura insuficiente. |
+| Minuto com pelo menos uma pessoa elegível presente em um bloco de demanda | `+10.000` | Favorecer presença distribuída nos períodos necessários. |
+| Turno selecionado | `−1.000.000` | Evitar adicionar turnos com pouco benefício para a cobertura. |
+| Ajuste por turno | Entre `−1.000` e `+1.000` | Considerar preferências, proximidade da pausa ao horário preferido e bônus de fechamento. |
+
+São pesos de uma soma, não etapas de otimização lexicográfica. Preferências não substituem restrições obrigatórias. A duração dos blocos multiplica os termos de falta e presença, fazendo uma lacuna de 15 minutos pesar menos que uma lacuna igual de uma hora.
+
+O solver está configurado com **limite de 5 segundos e 8 trabalhadores de busca**. Um resultado `Feasible` é viável; `Optimal` comprova o ótimo do modelo construído. O limite de tempo pode terminar sem encontrar solução viável, e múltiplas soluções equivalentes podem produzir escalas diferentes.
+
+Turnos manuais autorizados de feriado são incluídos como decisões fixas (`x = 1`); candidatos regulares para a mesma pessoa e data são retirados. Se essas decisões entram em conflito com outras restrições, o resultado aponta o problema e mantém esses turnos para revisão.
+
+### 5. Medir e explicar o resultado
+
+Depois da escolha, o motor recalcula conflitos, cobertura, lacunas e sugestões. A pontuação usa **pessoa-minutos**, limitando o crédito ao mínimo exigido em cada bloco:
+
+```text
+cobertura = Σ(min(exigido, alocado) × minutos do bloco)
+demanda   = Σ(exigido × minutos do bloco)
+score     = cobertura / demanda
+```
+
+Sem demanda, o score é `1`; o backend arredonda o resultado a três casas decimais. Excesso de pessoas em um horário não compensa uma falta em outro. Quando coexistem mínimos por função e equipe inteira, a pontuação agrega essas exigências.
+
+As explicações são geradas por regras e modelos de texto do projeto. As sugestões de contratação agrupam lacunas por função, com estimativa limitada a 44 horas e até sete janelas no backend; são pistas para revisão, não um segundo solver de contratação nem uma prova da causa de cada decisão.
+
+**Onde ler o código:** [solver CP-SAT](backend/EscalaLivre.Infrastructure/Solver/OrToolsScheduleSolver.cs), [regras de intervalo e feriado](backend/EscalaLivre.Domain/Scheduling/LaborRules.cs), [alocação de cobertura no navegador](frontend/src/lib/coverageAllocation.ts) e [análise local](frontend/src/lib/analysis.ts).
 
 ## Experimente localmente
 
@@ -198,12 +325,13 @@ As operações de planejamento recebem um documento e um período. As respostas 
 
 ## Qualidade e validação
 
-O projeto inclui testes para situações como lacunas durante o almoço, turnos que atravessam a meia-noite, descanso entre jornadas, cobertura parcial e horários de início que atendem ao fechamento.
+O projeto inclui testes para lacunas durante o almoço, turnos que atravessam a meia-noite, descanso, cobertura parcial, substituições em um único sentido, intervalos fixos e variáveis, feriados fechados e preservação de turnos especiais.
 
 Na raiz do repositório:
 
 ```bash
 node --test frontend/tests/planning.test.cjs
+node --test frontend/tests/roles.test.cjs frontend/tests/setup.test.cjs
 dotnet test backend/EscalaLivre.Tests/EscalaLivre.Tests.csproj --configuration Release
 ```
 

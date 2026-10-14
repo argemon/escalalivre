@@ -14,6 +14,11 @@ export type AvailabilityWindow = {
 };
 
 export type Employee = {
+  coverageRoleIds?: string[];
+  coverageRoles?: string[];
+  fixedInterval?: { start:string; end:string };
+  shiftStartsAt?: string;
+  worksDuringLunchClosure?: boolean;
   id: string;
   name: string;
   roleId?: string;
@@ -30,6 +35,7 @@ export type Employee = {
 };
 
 export type CompanyRules = {
+  holidays?: { date:string; name:string; closed:boolean }[];
   middayClosure?: { start: string; end: string };
   name: string;
   opensAt: string;
@@ -46,6 +52,7 @@ export type CompanyRules = {
 };
 
 export type CoverageRequirement = {
+  scope?: "role" | "team";
   daysMode?: "operating" | "custom";
   allowsOutsideHours?: boolean;
   roleId?: string;

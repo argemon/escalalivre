@@ -17,15 +17,16 @@ export const documentSchema = z.object({
   setup: z.object({ companyConfigured: z.boolean() }).optional(),
   schemaVersion: z.literal("1.0.0"), id: z.string().uuid(), updatedAt: date,
   company: z.object({
+    holidays: z.array(z.object({date:z.string().regex(/^\d{4}-\d{2}-\d{2}$/),name:z.string().trim().min(1),closed:z.boolean()})).optional(),
     middayClosure: z.object({ start: time, end: time }).optional(),
     name: z.string().min(1), opensAt: time, closesAt: time, operatingDays: days,
     defaultWorkload: workload, minimumRest: time,
     lunch: z.object({ minimum: time, maximum: time, preferredAfter: time }),
-    coverage: z.array(z.object({ daysMode: z.enum(["operating", "custom"]).optional(), allowsOutsideHours: z.boolean().optional(), roleId: z.string().uuid().optional(), role: z.string().min(1), day: z.number().int().min(0).max(6), start: time, end: time, minimumEmployees: z.number().int().min(0).max(200) })).max(1000)
+    coverage: z.array(z.object({ scope:z.enum(["role","team"]).optional(), daysMode: z.enum(["operating", "custom"]).optional(), allowsOutsideHours: z.boolean().optional(), roleId: z.string().uuid().optional(), role: z.string().min(1), day: z.number().int().min(0).max(6), start: time, end: time, minimumEmployees: z.number().int().min(0).max(200) })).max(1000)
   }),
   employees: z.array(z.object({
     id: z.string().uuid(), name: z.string().min(1), roleId: z.string().uuid().optional(), role: z.string().min(1), inheritsCompanyDefaults: z.boolean(),
-    workload, availability: z.array(windowSchema), restrictions: z.array(windowSchema),
+    coverageRoleIds:z.array(z.string().uuid()).optional(), coverageRoles:z.array(z.string()).optional(), fixedInterval: z.object({start:time,end:time}).optional(), shiftStartsAt: time.optional(), worksDuringLunchClosure: z.boolean().optional(), workload, availability: z.array(windowSchema), restrictions: z.array(windowSchema),
     preferences: z.array(z.object({ code: z.string(), weight: z.number().int(), description: z.string() })),
     allowsOvertime: z.boolean(), allowsNightWork: z.boolean(), preferredDaysOff: days, workingDays: days.min(1, "Selecione ao menos um dia de trabalho.").optional()
   })).max(200),

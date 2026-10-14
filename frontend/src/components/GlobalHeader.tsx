@@ -6,7 +6,7 @@ import { Badge, Button, IconButton } from "./ui";
 
 const viewModes: { mode: ViewMode; label: string; description: string }[] = [
   { mode: "timeline", label: "Escala do dia", description: "Veja os horários de cada pessoa no dia selecionado. Clique em um nome para editar seu cadastro." }, { mode: "week", label: "Escala semanal", description: "Veja os turnos e a disponibilidade de cada pessoa na semana. Clique em um nome para editar." },
-  { mode: "month", label: "Escala mensal", description: "Veja os turnos e os períodos disponíveis de todas as pessoas ao longo do mês. Clique em um turno para abrir o cadastro da pessoa." }, { mode: "coverage", label: "Pessoas por horário", description: "Confira quantas pessoas estão escaladas e quantas são necessárias em cada período e função." },
+  { mode: "month", label: "Escala mensal", description: "Veja os turnos salvos e as prévias estimadas do mês. Clique no número do dia para configurar feriados; clique em um turno para abrir o cadastro da pessoa." }, { mode: "coverage", label: "Pessoas por horário", description: "Confira quantas pessoas estão escaladas e quantas são necessárias em cada período e função." },
   { mode: "heatmap", label: "Onde faltam pessoas", description: "Identifique os dias e as funções que precisam de mais pessoas na escala." }, { mode: "solver", label: "Assistente de escala", description: "Gere uma escala otimizada e revise os conflitos, as faltas de pessoas e as sugestões de ajuste." }
 ];
 

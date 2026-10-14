@@ -20,6 +20,29 @@ public sealed class SetupRegressionTests
     }
 
     [Fact]
+    public void FixedEntryIsRespectedEvenWhenClosingIsUncovered()
+    {
+        var request = Request();
+        request = request with { Document = request.Document with { Employees = request.Document.Employees.Select(e => e with { ShiftStartsAt = new TimeOnly(7,30) }).ToArray() } };
+        var result = new OrToolsScheduleSolver().Solve(request);
+        Assert.NotEmpty(result.Assignments);
+        Assert.All(result.Assignments, a => Assert.Equal(new TimeSpan(7,30,0), a.Start.TimeOfDay));
+        Assert.NotEmpty(result.Gaps);
+    }
+
+    [Fact]
+    public void LunchExceptionWorksThroughClosureAndBreaksElsewhere()
+    {
+        var request = Request(closure:new(new(12,0),new(13,0)));
+        request = request with { Document = request.Document with { Employees = request.Document.Employees.Select((e,i) => e with { WorksDuringLunchClosure = i == 0 }).ToArray() } };
+        var result = new OrToolsScheduleSolver().Solve(request);
+        var exception = Assert.Single(result.Assignments.Where(a => a.EmployeeId == request.Document.Employees[0].Id));
+        Assert.NotNull(exception.Break);
+        Assert.True(exception.Break.End.Hour <= 12 || exception.Break.Start.Hour >= 13);
+        Assert.All(result.Assignments.Where(a => a.EmployeeId != exception.EmployeeId), a => Assert.Equal(12, a.Break!.Start.Hour));
+    }
+
+    [Fact]
     public void TwoEmployeesCover0730To1730WithOnePersonRequired()
     {
         var result = new OrToolsScheduleSolver().Solve(Request());

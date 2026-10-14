@@ -3,7 +3,7 @@ export type CoverageDraft = Omit<CoverageRequirement, "day"> & { days: number[] 
 export function groupCoverageRules(rules: CoverageRequirement[]): CoverageDraft[] {
   const groups = new Map<string, CoverageDraft>();
   for (const { day, ...rule } of rules) {
-    const key = JSON.stringify([rule.role, rule.start, rule.end, rule.minimumEmployees, rule.daysMode, rule.allowsOutsideHours]);
+    const key = JSON.stringify([rule.role, rule.start, rule.end, rule.minimumEmployees, rule.scope, rule.daysMode, rule.allowsOutsideHours]);
     const group = groups.get(key);
     if (group) { if (!group.days.includes(day)) group.days.push(day); }
     else groups.set(key, { ...rule, days: [day] });

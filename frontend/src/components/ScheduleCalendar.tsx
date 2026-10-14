@@ -1,3 +1,6 @@
+import { Button } from "./ui";
+import { holidayOn, authorizedHolidayShift } from "../lib/holidays";
+import { HolidayEditor } from "./HolidayEditor";
 import FullCalendar from "@fullcalendar/react";
 import type { EventDropArg } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -13,6 +16,11 @@ import { useScheduleStore } from "../store/scheduleStore";
 
 export function ScheduleCalendar() {
   const { document, moveAssignment, viewMode, setSelectedEmployeeId } = useScheduleStore();
+  const [visibleDate,setVisibleDate] = useState(() => dateKey(new Date()));
+  const [holidayPickerDate,setHolidayPickerDate] = useState(() => dateKey(new Date()));
+  const [addingHoliday,setAddingHoliday] = useState(false);
+  const [holidayDate,setHolidayDate] = useState<string>();
+  function dateKey(d:Date) { return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-"); }
   const [range,setRange] = useState<{start:Date;end:Date} | null>(null);
   const visibleAssignments = useMemo(() => {
     if (!range) return document.assignments;
@@ -29,12 +37,12 @@ export function ScheduleCalendar() {
         const employee = document.employees.find((item) => item.id === assignment.employeeId);
         return {
           id: assignment.id,
-          title: `${"planned" in assignment && assignment.planned ? "Disponível · " : "Turno · "}${outsideOperatingHours(document.company,new Date(assignment.start).getDay(),assignment.start.slice(11,19),assignment.end.slice(11,19)) ? "⚠ Fora do expediente · " : ""}${employee?.name ?? "Funcionario"} · ${assignment.role}`,
-          extendedProps: {employeeId:assignment.employeeId},
+          title: `${!authorizedHolidayShift(document.company,assignment) && outsideOperatingHours(document.company,new Date(assignment.start).getDay(),assignment.start.slice(11,19),assignment.end.slice(11,19)) ? "⚠ Fora do expediente · " : ""}${employee?.name ?? "Funcionario"} · ${assignment.role}`,
+          extendedProps: {employeeId:assignment.employeeId,role:assignment.role,break:assignment.break,planned:"planned" in assignment && assignment.planned},
           editable: !("planned" in assignment && assignment.planned),
           start: assignment.start,
           end: assignment.end,
-          classNames: [assignment.source === "solver" ? "event-solver" : "event-manual"]
+          classNames: ["month-assignment", "planned" in assignment && assignment.planned ? "month-preview" : "month-saved"]
         };
       }),
     [visibleAssignments, document.employees, document.company]
@@ -51,38 +59,32 @@ export function ScheduleCalendar() {
   if (viewMode === "week") return <WeeklySchedule />;
 
   return (
-    <main className="flex min-w-0 flex-1 flex-col bg-background">
-      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4">
-        <div>
-          <p className="text-xs uppercase text-muted-foreground">Planejamento operacional</p>
-          <h1 className="text-2xl font-semibold tracking-normal">{document.company.name}</h1>
-        </div>
+    <main className="flex min-h-0 min-w-0 flex-1 flex-col bg-background">
+      <div className="flex shrink-0 flex-wrap gap-x-5 gap-y-1 border-b border-border px-5 py-3 text-sm text-muted-foreground" aria-label="Resumo da escala mensal">
+        <span>{document.employees.length} pessoas</span>
+        <span>{document.assignments.length} turnos salvos</span>
+        <span>{new Set(document.employees.map(employee=>employee.role)).size} funções</span>
+        <span>{document.company.coverage.length} regras de cobertura</span>
+      </div>
 
-      </header>
-
-      <section className="grid grid-cols-2 gap-px border-b border-border bg-border md:grid-cols-4">
-        {[
-          ["Funcionarios", document.employees.length],
-          ["Turnos", document.assignments.length],
-          ["Funcoes", new Set(document.employees.map((employee) => employee.role)).size],
-          ["Coberturas", document.company.coverage.length]
-        ].map(([label, value]) => (
-          <div key={label} className="bg-card px-5 py-3">
-            <p className="text-xs text-muted-foreground">{label}</p>
-            <p className="text-xl font-semibold">{value}</p>
-          </div>
-        ))}
-      </section>
-
-      <p className="px-5 py-3 text-sm text-muted-foreground">Turno: horário cadastrado · Disponível: previsão conforme dias, horários e restrições. Gere a escala para definir jornadas e folgas.</p>
-      <section className="min-h-0 flex-1 overflow-auto p-4">
+      <div className="flex shrink-0 flex-wrap items-center gap-3 border-b border-border px-5 py-3">
+        <Button type="button" onClick={()=>{setHolidayPickerDate(visibleDate);setAddingHoliday(true);}}>Adicionar feriado</Button>
+        <p className="text-sm text-muted-foreground">Clique no número de qualquer dia para cadastrar ou editar um feriado e adicionar turnos, como os dos seguranças.</p>
+        <p className="w-full text-xs text-muted-foreground">Prévia = horário estimado, ainda não salvo como turno. Salvo = turno cadastrado ou gerado na escala. O fundo verde do dia marca hoje.</p>
+      </div>
+      {addingHoliday && <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 p-4"><form role="dialog" aria-modal="true" aria-label="Adicionar feriado" className="w-full max-w-sm space-y-4 rounded-xl border border-border bg-card p-5" onSubmit={e=>{e.preventDefault();const chosenDate=String(new FormData(e.currentTarget).get("holidayDate"));setAddingHoliday(false);setHolidayDate(chosenDate);}}><h2 className="text-xl font-semibold">Adicionar feriado</h2><label className="block">Data<input type="date" name="holidayDate" required value={holidayPickerDate} onChange={e=>setHolidayPickerDate(e.target.value)} className="mt-2 w-full rounded border border-border bg-background p-2" /></label><div className="flex gap-2"><Button type="submit">Continuar</Button><Button type="button" onClick={()=>setAddingHoliday(false)}>Cancelar</Button></div></form></div>}
+      <section className="min-h-0 flex-1 overflow-hidden p-4 monthly-calendar">
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView={viewMode === "month" ? "dayGridMonth" : "timeGridWeek"}
           initialDate={document.assignments.map(a => a.start).sort()[0]}
           eventClick={arg => setSelectedEmployeeId(arg.event.extendedProps.employeeId)}
-          datesSet={arg => setRange(previous => previous?.start.getTime() === arg.start.getTime() && previous?.end.getTime() === arg.end.getTime() ? previous : {start:arg.start,end:arg.end})}
-          dayMaxEvents={false}
+          datesSet={arg => {setVisibleDate(dateKey(arg.view.currentStart));setRange(previous => previous?.start.getTime() === arg.start.getTime() && previous?.end.getTime() === arg.end.getTime() ? previous : {start:arg.start,end:arg.end});}}
+          buttonText={{today:"Hoje"}}
+          displayEventTime={false}
+          eventContent={arg => <div className="month-entry"><strong>{arg.event.title}</strong><small className="month-status">{arg.event.extendedProps.planned ? "Prévia" : "Salvo"}</small><span>{arg.event.start?.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}–{arg.event.end?.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}</span>{arg.event.extendedProps.break && <small>Intervalo {new Date(arg.event.extendedProps.break.start).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}–{new Date(arg.event.extendedProps.break.end).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}</small>}</div>}
+          dayMaxEvents={3}
+          expandRows={false}
           headerToolbar={{
             left: "prev,next today",
             center: "title",
@@ -91,10 +93,10 @@ export function ScheduleCalendar() {
           businessHours={{ daysOfWeek: document.company.operatingDays, startTime: document.company.opensAt, endTime: document.company.closesAt }}
           slotMinTime="00:00:00"
           slotMaxTime="24:00:00"
-          dayCellClassNames={arg => document.company.operatingDays.includes(arg.date.getDay()) ? [] : ["bg-muted", "text-muted-foreground"]}
-          dayCellContent={arg => <span>{arg.dayNumberText}{!document.company.operatingDays.includes(arg.date.getDay()) && <small className="ml-1">Fechada</small>}</span>}
+          dayCellClassNames={arg => holidayOn(document.company,dateKey(arg.date)) ? ["calendar-holiday"] : document.company.operatingDays.includes(arg.date.getDay()) ? [] : ["bg-muted", "text-muted-foreground"]}
+          dayCellContent={arg => { const holiday=holidayOn(document.company,dateKey(arg.date)); return <button type="button" className="text-right" title={holiday ? "Editar feriado e turnos: "+holiday.name : "Adicionar feriado ou turnos neste dia"} aria-label={(holiday ? "Editar feriado e turnos em " : "Adicionar feriado em ")+dateKey(arg.date)} onClick={()=>setHolidayDate(dateKey(arg.date))}>{arg.dayNumberText}{holiday ? <small className="block font-semibold">Feriado · {holiday.name}{holiday.closed ? " · Fechada" : " · Aberta"}</small> : !document.company.operatingDays.includes(arg.date.getDay()) && <small className="ml-1">Fechada</small>}</button>; }}
           locale="pt-br"
-          height="auto"
+          height="100%"
           editable
           droppable
           nowIndicator
@@ -102,6 +104,7 @@ export function ScheduleCalendar() {
           eventDrop={handleDrop}
         />
       </section>
+      {holidayDate && <HolidayEditor key={holidayDate} date={holidayDate} onClose={()=>setHolidayDate(undefined)} />}
     </main>
   );
 }

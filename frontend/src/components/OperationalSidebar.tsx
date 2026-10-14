@@ -45,7 +45,7 @@ export function OperationalSidebar() {
             <Metric label="Funcionamento" value={`${document.company.opensAt.slice(0, 5)}-${document.company.closesAt.slice(0, 5)}`} />
             <Metric label="Descanso CLT" value={document.company.minimumRest.slice(0, 5)} />
             <Metric label="Jornada padrão" value={document.company.defaultWorkload.defaultShiftDuration.slice(0, 5)} />
-            <Metric label="Almoço" value={`${document.company.lunch.minimum.slice(0, 5)}-${document.company.lunch.maximum.slice(0, 5)}`} />
+            <Metric label="Intervalo" value={`${document.company.lunch.minimum.slice(0, 5)}-${document.company.lunch.maximum.slice(0, 5)}`} />
           </div>
           <div className="rounded-md border border-border bg-background p-3">
             <p className="text-xs text-muted-foreground">Dias ativos</p>

@@ -16,6 +16,11 @@ const dayLabels = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
 export function OperationalTimeline() {
   const { viewMode, setSelectedEmployeeId } = useScheduleStore();
   const coverage = useScheduleStore((state) => state.analysis.coverage);
+  const document=useScheduleStore(state=>state.document);
+  const dates=[...new Set(document.assignments.map(a=>a.start.slice(0,10)))].sort();
+  const [selectedDate,setSelectedDate]=useState(dates[0] ?? "");
+  const activeDate=dates.includes(selectedDate) ? selectedDate : dates[0] ?? "";
+  const dayCoverage=coverage.filter(b=>b.start.slice(0,10)===activeDate);
 
   return (
     <main className="min-w-0 flex-1 overflow-hidden bg-background">
@@ -39,25 +44,21 @@ export function OperationalTimeline() {
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Linha de cobertura</p>
             <p className="text-xs text-muted-foreground">Verde: coberto · Amarelo: atenção · Vermelho: faltam pessoas</p>
           </div>
-          <div className="grid h-10 grid-cols-12 overflow-hidden rounded-md border border-border">
-            {coverage.slice(0, 12).map((block) => (
-              <CoverageSegment key={`${block.role}-${block.start}`} block={block} />
-            ))}
-          </div>
+          <div className="space-y-2 overflow-auto">{[...new Set(dayCoverage.map(b=>b.role))].map(role=><div key={role}><p className="mb-1 text-xs font-semibold">{role}</p><div className="flex min-h-10 min-w-max overflow-hidden rounded-md border border-border">{dayCoverage.filter(b=>b.role===role).map(block=><CoverageSegment key={block.start} block={block} />)}</div></div>)}</div>
         </section>}
 
         <section className="min-h-0 flex-1 overflow-auto p-5">
-          {viewMode === "coverage" ? <CoverageTable /> : viewMode === "heatmap" ? <Heatmap /> : <TimelineRows onEmployeeClick={setSelectedEmployeeId} />}
+          {viewMode === "coverage" ? <CoverageTable /> : viewMode === "heatmap" ? <Heatmap /> : <TimelineRows onEmployeeClick={setSelectedEmployeeId} selectedDate={activeDate} setSelectedDate={setSelectedDate} />}
         </section>
       </div>
     </main>
   );
 }
 
-function TimelineRows({ onEmployeeClick }: { onEmployeeClick: (id: string) => void }) {
+function TimelineRows({ onEmployeeClick,selectedDate,setSelectedDate }: { onEmployeeClick: (id: string) => void;selectedDate:string;setSelectedDate:(date:string)=>void }) {
   const document = useScheduleStore((state) => state.document);
   const dates = Array.from(new Set(document.assignments.map(a => a.start.slice(0,10)))).sort();
-  const [selectedDate, setSelectedDate] = useState(dates[0] ?? "");
+
   const activeDate = dates.includes(selectedDate) ? selectedDate : dates[0] ?? "";
   const hours = (v: string) => { const [h,m] = v.split(":").map(Number); return h+m/60; };
   const opening = hours(document.company.opensAt), closing = hours(document.company.closesAt)+(hours(document.company.closesAt)<=opening ? 24 : 0);
@@ -117,7 +118,7 @@ function TimelineRows({ onEmployeeClick }: { onEmployeeClick: (id: string) => vo
                           width: `${100 * (lunchEnd - lunchStart) / (end - start)}%`
                         }}
                       >
-                        almoço
+                        intervalo
                       </div>
                     )}
                   </div>
@@ -177,8 +178,8 @@ function CoverageSegment({ block }: { block: CoverageBlock }) {
 
   return (
     <div title={`${block.role}: ${block.assigned} pessoas escaladas de ${block.required} necessárias. ${block.state === "healthy" ? "Coberto" : block.state === "warning" ? "Atenção" : "Faltam pessoas"}`}
-      className={`flex min-w-0 items-center justify-center border-r border-background/40 px-1 text-xs font-semibold last:border-r-0 ${className}`}>
-      {new Date(block.start).getHours()}h {block.assigned}/{block.required}
+      className={`flex min-w-0 items-center justify-center border-r border-background/40 min-w-24 px-2 py-2 text-xs font-semibold last:border-r-0 ${className}`}>
+      {new Date(block.start).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}–{new Date(block.end).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})} · {block.assigned}/{block.required}
     </div>
   );
 }
@@ -198,7 +199,7 @@ function CoverageTable() {
   }
   const time = (v: string) => new Date(v).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
   return <section className="space-y-4 rounded-xl border border-border bg-card p-5">
-    <div><h3 className="text-xl font-semibold">Pessoas por horário</h3><p className="mt-1 text-sm text-muted-foreground">Pessoas em turnos cadastrados, descontando o almoço. Períodos consecutivos com a mesma quantidade aparecem juntos.</p></div>
+    <div><h3 className="text-xl font-semibold">Pessoas por horário</h3><p className="mt-1 text-sm text-muted-foreground">Pessoas em turnos cadastrados, descontando o intervalo. Períodos consecutivos com a mesma quantidade aparecem juntos.</p></div>
     <div className="flex flex-wrap gap-3"><label className="text-sm">Dia<select className="ml-2 rounded-lg border border-border bg-background p-2" value={activeDate} onChange={e => setDate(e.target.value)}>{dates.map(d => <option key={d} value={d}>{d.split("-").reverse().join("/")}</option>)}</select></label><label className="text-sm">Função<select className="ml-2 rounded-lg border border-border bg-background p-2" value={role} onChange={e => setRole(e.target.value)}><option value="">Todas</option>{roles.map(r => <option key={r}>{r}</option>)}</select></label></div>
     {!rows.length ? <p className="text-sm text-muted-foreground">Nenhuma cobertura para este filtro. Configure as regras de cobertura na aba Cobertura.</p> : <div className="overflow-x-auto"><table className="w-full min-w-[620px] text-left text-sm"><thead className="bg-muted"><tr>{["Função","Horário","Escaladas","Necessárias","Situação"].map(t => <th key={t} className="p-3">{t}</th>)}</tr></thead><tbody>{rows.map((b,i) => <tr key={i} className="border-t border-border"><td className="p-3 font-medium">{b.role}</td><td className="p-3">{time(b.start)}–{time(b.end)}{b.end.slice(0,10) !== b.start.slice(0,10) && " (+1 dia)"}</td><td className="p-3">{b.assigned}</td><td className="p-3">{b.required}</td><td className={"p-3 font-medium " + (b.assigned >= b.required ? "text-emerald-600" : "text-red-600")}>{b.assigned >= b.required ? "Coberto" : "Faltam " + (b.required-b.assigned)}</td></tr>)}</tbody></table></div>}
   </section>;

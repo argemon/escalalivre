@@ -17,7 +17,10 @@ public sealed record CompanyRules(
     LunchRule Lunch,
     TimeSpan MinimumRest,
     IReadOnlyList<CoverageRequirement> Coverage,
-    MiddayClosure? MiddayClosure = null);
+    MiddayClosure? MiddayClosure = null,
+    IReadOnlyList<Holiday>? Holidays = null);
+
+public sealed record Holiday(DateOnly Date, string Name, bool Closed = true);
 
 public sealed record MiddayClosure(TimeOnly Start, TimeOnly End);
 
@@ -33,7 +36,11 @@ public sealed record Employee(
     bool AllowsOvertime,
     bool AllowsNightWork,
     IReadOnlyList<DayOfWeek> PreferredDaysOff,
-    IReadOnlyList<DayOfWeek>? WorkingDays = null);
+    IReadOnlyList<DayOfWeek>? WorkingDays = null,
+    TimeOnly? ShiftStartsAt = null,
+    bool WorksDuringLunchClosure = false,
+    MiddayClosure? FixedInterval = null,
+    IReadOnlyList<string>? CoverageRoles = null);
 
 public sealed record WorkloadRule(
     string RegimeType,
@@ -44,7 +51,7 @@ public sealed record WorkloadRule(
 
 public sealed record LunchRule(TimeSpan Minimum, TimeSpan Maximum, TimeSpan PreferredAfter);
 
-public sealed record CoverageRequirement(string Role, DayOfWeek Day, TimeOnly Start, TimeOnly End, int MinimumEmployees, string? DaysMode = null, bool AllowsOutsideHours = false);
+public sealed record CoverageRequirement(string Role, DayOfWeek Day, TimeOnly Start, TimeOnly End, int MinimumEmployees, string? DaysMode = null, bool AllowsOutsideHours = false, string Scope = "role");
 
 public sealed record AvailabilityWindow(DateTime Start, DateTime End);
 

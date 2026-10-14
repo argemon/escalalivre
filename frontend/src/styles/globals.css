@@ -99,3 +99,28 @@ button:disabled { cursor: not-allowed; }
 :root:not(.dark) :is(.text-sky-300, .text-sky-400) { color: #075985; }
 .event-solver { color: #3b2106; }
 .fc { --fc-button-text-color: #fff; }
+
+.monthly-calendar .fc-daygrid-day-frame { min-height:150px; }
+.monthly-calendar .fc-daygrid-event { white-space:normal; margin:4px 6px; }
+.monthly-calendar .month-assignment { border:0; border-left:3px solid hsl(var(--primary)); background:hsl(var(--card)); color:hsl(var(--foreground)); border-radius:6px; box-shadow:0 1px 3px #0001; }
+.month-entry { padding:6px 8px; display:flex; flex-direction:column; gap:2px; min-width:0; }
+.month-entry strong { font-size:12px; overflow-wrap:anywhere; }
+.month-entry span { font-size:12px; font-weight:500; }
+.month-entry small { font-size:10px; opacity:.75; }
+.monthly-calendar .fc-daygrid-day-number { padding:8px; }
+.monthly-calendar .fc-col-header-cell { padding:8px; text-transform:uppercase; font-size:12px; }
+
+.monthly-calendar .calendar-holiday { background:hsl(var(--primary) / .07); }
+.monthly-calendar .calendar-holiday .fc-daygrid-day-top { border-top:3px solid hsl(var(--primary)); }
+.monthly-calendar .fc-daygrid-day-number small { max-width:180px; font-size:10px; white-space:normal; }
+
+/* FullCalendar keeps navigation and weekday labels above its own scrolling body. */
+.monthly-calendar .fc-scrollgrid-section-header > th { background:hsl(var(--card)); }
+.monthly-calendar .fc-col-header-cell { background:hsl(var(--card)); color:hsl(var(--foreground)); }
+.monthly-calendar .month-assignment .fc-event-main { color:inherit; }
+.monthly-calendar .month-preview { border-left-color:hsl(var(--foreground) / .35); border-left-style:dashed; }
+.monthly-calendar .month-status { color:hsl(var(--foreground) / .8); opacity:1; font-weight:600; }
+.monthly-calendar .month-entry span { color:hsl(var(--foreground)); }
+.monthly-calendar .fc-day-today .fc-daygrid-day-number { color:hsl(var(--primary)); font-weight:700; }
+
+.monthly-calendar .fc-scrollgrid-section-header .fc-scroller { overflow-y:hidden !important; }

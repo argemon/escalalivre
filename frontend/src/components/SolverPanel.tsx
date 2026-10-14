@@ -68,7 +68,7 @@ export function SolverPanel() {
           {analysis.gaps.length === 0 && analysis.conflicts.length === 0 && <p className="text-sm text-muted-foreground">{document.company.coverage.length ? "Nenhum buraco ou conflito detectado no planejamento atual." : "Cadastre regras de cobertura mínima para detectar buracos."}</p>}
           {analysis.gaps.map((gap) => (
             <article key={`${gap.role}-${gap.start}`} className="rounded-md border border-red-500/30 bg-red-500/10 p-3">
-              <p className="text-sm font-semibold">Falta {gap.missingEmployees} {gap.role}</p>
+              <p className="text-sm font-semibold">Falta {gap.missingEmployees} {gap.role}</p><p className="text-xs text-muted-foreground">Para cobrir: aloque {gap.missingEmployees} pessoa(s) dessa função ou substitutos autorizados nesse período. Se houver equipe disponível, reveja os intervalos fixos e as restrições.</p>
               <p className="text-xs text-muted-foreground">{new Date(gap.start).toLocaleString()} - {new Date(gap.end).toLocaleTimeString()}</p>
             </article>
           ))}
