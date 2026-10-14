@@ -11,8 +11,10 @@ export function SolverPanel() {
     mutationFn: solveSchedule,
     onMutate: () => setSolverStatus("calculating"),
     onSuccess: (result) => {
-      setAnalysis(result);
+      if (!result.conflicts.some(item => item.code === "solverInfeasible" || item.code === "solverTimeout")) {
       setDocument({ ...document, assignments: result.assignments, updatedAt: new Date().toISOString() });
+      }
+      setAnalysis(result);
       setSolverStatus(result.conflicts.some((item) => item.severity === "error") ? "invalid" : result.gaps.length > 0 ? "partial" : "optimized");
     },
     onError: () => setSolverStatus("invalid")

@@ -59,7 +59,14 @@ export function GlobalHeader() {
             onChange={async (event) => {
               const file = event.target.files?.[0];
               if (file) {
-                setDocument(await importNative(file));
+                try {
+                  const imported = await importNative(file);
+                  if (window.confirm("Abrir este arquivo e substituir o planejamento atual? Salve o atual antes de continuar.")) setDocument(imported);
+                } catch (error) {
+                  window.alert(error instanceof Error ? error.message : "Nao foi possivel abrir o arquivo.");
+                } finally {
+                  event.target.value = "";
+                }
               }
             }}
           />
