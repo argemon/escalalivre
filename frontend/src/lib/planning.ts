@@ -14,7 +14,7 @@ export function timeToHour(value: string) {
   return hours + (minutes ?? 0) / 60;
 }
 
-export function dateToTimelineHour(value: string, baseDay = "2026-05-18") {
+export function dateToTimelineHour(value: string, baseDay = value.slice(0, 10)) {
   const date = new Date(value);
   const base = new Date(`${baseDay}T00:00:00`);
   const dayOffset = Math.round((startOfDay(date).getTime() - startOfDay(base).getTime()) / 86_400_000);
@@ -47,8 +47,13 @@ export function coverageForRequirement(document: EscalaLivreDocument, requiremen
   const requiredEnd = timeToHour(requirement.end);
   const covered = document.assignments.filter((assignment) => {
     const start = dateToTimelineHour(assignment.start);
-    const end = dateToTimelineHour(assignment.end);
-    return assignment.role === requirement.role && start <= requiredStart && end >= requiredEnd;
+    const end = dateToTimelineHour(assignment.end, assignment.start.slice(0, 10));
+    const weekday = new Date(assignment.start).getDay();
+    const effectiveEnd = requiredEnd <= requiredStart ? requiredEnd + 24 : requiredEnd;
+    const pauseStart = assignment.break ? dateToTimelineHour(assignment.break.start, assignment.start.slice(0, 10)) : Infinity;
+    const pauseEnd = assignment.break ? dateToTimelineHour(assignment.break.end, assignment.start.slice(0, 10)) : Infinity;
+    return weekday === requirement.day && assignment.role === requirement.role && start <= requiredStart && end >= effectiveEnd
+      && (!assignment.break || pauseEnd <= requiredStart || pauseStart >= effectiveEnd);
   }).length;
 
   return {

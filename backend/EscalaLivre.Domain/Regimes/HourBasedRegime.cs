@@ -8,6 +8,7 @@ public sealed class HourBasedRegime : IShiftRegime
 
     public bool CanWork(DateTime candidateStart, DateTime candidateEnd, IReadOnlyList<ShiftAssignment> existingAssignments, WorkloadRule rule)
     {
+        if (candidateEnd - candidateStart > TimeSpan.FromHours(rule.WorkUnits)) return false;
         var last = existingAssignments.OrderByDescending(x => x.End).FirstOrDefault();
         if (last is null)
         {

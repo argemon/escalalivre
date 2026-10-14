@@ -1,3 +1,4 @@
+import { documentSchema } from "./documentSchema";
 import type { EscalaLivreDocument, ScheduleResult } from "../types/schedule";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5000";
@@ -14,7 +15,7 @@ export async function solveSchedule(document: EscalaLivreDocument): Promise<Sche
   const response = await fetch(`${API_URL}/solve`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ document, start: "2026-05-18T00:00:00", end: "2026-05-24T23:59:59" })
+    body: JSON.stringify({ document, ...planningPeriod(document) })
   });
 
   if (!response.ok) {
@@ -40,9 +41,23 @@ export function exportNative(document: EscalaLivreDocument) {
 }
 
 export async function importNative(file: File): Promise<EscalaLivreDocument> {
-  return JSON.parse(await file.text()) as EscalaLivreDocument;
+  if (file.size > 10 * 1024 * 1024) throw new Error("Arquivo maior que 10 MB.");
+  const result = documentSchema.safeParse(JSON.parse(await file.text()));
+  if (!result.success) throw new Error("Arquivo invalido ou versao nao suportada: " + result.error.issues[0].message);
+  return result.data;
 }
 
 function documentRef() {
   return window.document;
+}
+
+export function planningPeriod(document: EscalaLivreDocument) {
+  const first = document.assignments.map(a => a.start).sort()[0];
+  const start = first ? new Date(first) : new Date();
+  start.setHours(0, 0, 0, 0);
+  const end = new Date(start);
+  end.setDate(end.getDate() + 6);
+  end.setHours(23, 59, 59, 0);
+  const local = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}T${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}:${String(d.getSeconds()).padStart(2, "0")}`;
+  return { start: local(start), end: local(end) };
 }

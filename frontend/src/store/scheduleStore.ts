@@ -1,7 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { sampleAnalysis, sampleDocument } from "../data/sample";
+import { sampleDocument } from "../data/sample";
 import type { EscalaLivreDocument, ScheduleResult, ShiftAssignment } from "../types/schedule";
+
+const emptyAnalysis: ScheduleResult = { assignments: [], conflicts: [], coverage: [], gaps: [], hiringSuggestions: [], optimizationSuggestions: [], decisions: [], coverageScore: 0 };
 
 type Theme = "light" | "dark";
 export type ViewMode = "timeline" | "week" | "month" | "heatmap" | "coverage" | "solver";
@@ -30,20 +32,22 @@ export const useScheduleStore = create<ScheduleState>()(
   persist(
     (set) => ({
       document: sampleDocument,
-      analysis: sampleAnalysis,
+      analysis: emptyAnalysis,
       theme: "dark",
       viewMode: "timeline",
-      solverStatus: "optimized",
+      solverStatus: "idle",
       selectedRole: "todos",
       setTheme: (theme) => set({ theme }),
       setViewMode: (viewMode) => set({ viewMode }),
       setSolverStatus: (solverStatus) => set({ solverStatus }),
       setSelectedRole: (selectedRole) => set({ selectedRole }),
       setSelectedEmployeeId: (selectedEmployeeId) => set({ selectedEmployeeId }),
-      setDocument: (document) => set({ document }),
+      setDocument: (document) => set({ document, analysis: emptyAnalysis, solverStatus: "idle" }),
       setAnalysis: (analysis) => set({ analysis }),
       moveAssignment: (id, start, end) =>
         set((state) => ({
+          analysis: emptyAnalysis,
+          solverStatus: "idle",
           document: {
             ...state.document,
             updatedAt: new Date().toISOString(),
@@ -54,6 +58,8 @@ export const useScheduleStore = create<ScheduleState>()(
         })),
       upsertAssignment: (assignment) =>
         set((state) => ({
+          analysis: emptyAnalysis,
+          solverStatus: "idle",
           document: {
             ...state.document,
             updatedAt: new Date().toISOString(),
@@ -64,6 +70,6 @@ export const useScheduleStore = create<ScheduleState>()(
           }
         }))
     }),
-    { name: "escalalivre-state" }
+    { name: "escalalivre-state", partialize: (state) => ({ document: state.document, theme: state.theme, viewMode: state.viewMode }) }
   )
 );

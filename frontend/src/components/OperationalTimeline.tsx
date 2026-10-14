@@ -26,7 +26,7 @@ export function OperationalTimeline() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="text-xs uppercase text-muted-foreground">Timeline operacional</p>
-              <h2 className="text-xl font-semibold">Cobertura em tempo real - Seg 18/05</h2>
+              <h2 className="text-xl font-semibold">Cobertura do planejamento</h2>
             </div>
             <div className="flex gap-2">
               <Badge><Layers3 className="mr-1 size-3" /> Turnos reais</Badge>
@@ -83,9 +83,9 @@ function TimelineRows({ onEmployeeClick }: { onEmployeeClick: (id: string) => vo
             <div className="relative min-h-20 bg-[linear-gradient(90deg,hsl(var(--border))_1px,transparent_1px)] bg-[length:4.166%_100%]">
               {assignments.map((assignment) => {
                 const start = dateToTimelineHour(assignment.start);
-                const end = dateToTimelineHour(assignment.end);
-                const lunchStart = assignment.break ? dateToTimelineHour(assignment.break.start) : undefined;
-                const lunchEnd = assignment.break ? dateToTimelineHour(assignment.break.end) : undefined;
+                const end = dateToTimelineHour(assignment.end, assignment.start.slice(0, 10));
+                const lunchStart = assignment.break ? dateToTimelineHour(assignment.break.start, assignment.start.slice(0, 10)) : undefined;
+                const lunchEnd = assignment.break ? dateToTimelineHour(assignment.break.end, assignment.start.slice(0, 10)) : undefined;
                 const overnight = new Date(assignment.end).getDate() !== new Date(assignment.start).getDate();
                 return (
                   <div

@@ -9,8 +9,10 @@ export function InsightPanel() {
   const mutation = useMutation({
     mutationFn: solveSchedule,
     onSuccess: (result) => {
-      setAnalysis(result);
+      if (!result.conflicts.some(item => item.code === "solverInfeasible" || item.code === "solverTimeout")) {
       setDocument({ ...document, assignments: result.assignments, updatedAt: new Date().toISOString() });
+      }
+      setAnalysis(result);
     }
   });
 

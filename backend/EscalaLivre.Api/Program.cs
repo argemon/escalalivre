@@ -35,11 +35,18 @@ app.MapPost("/solve", async (ScheduleRequest request, IScheduleSolver solver, IV
     return Results.Ok(ApiEnvelope<ScheduleResult>.Ok(solver.Solve(request)));
 });
 
-app.MapPost("/validate", (ScheduleRequest request, IScheduleSolver solver) =>
-    ApiEnvelope<ScheduleResult>.Ok(solver.Validate(request)));
+foreach (var endpoint in new[] { "/validate", "/analyze" })
+{
+    app.MapPost(endpoint, async (ScheduleRequest request, IScheduleSolver solver, IValidator<ScheduleRequest> validator) =>
+    {
+        var validation = await validator.ValidateAsync(request);
+        if (!validation.IsValid)
+            return Results.BadRequest(ApiEnvelope<ScheduleResult>.Fail(validation.Errors.Select(x => new ApiMessage(x.ErrorCode, x.ErrorMessage, x.PropertyName)).ToList()));
+        return Results.Ok(ApiEnvelope<ScheduleResult>.Ok(solver.Validate(request)));
+    });
+}
 
-app.MapPost("/analyze", (ScheduleRequest request, IScheduleSolver solver) =>
-    ApiEnvelope<ScheduleResult>.Ok(solver.Analyze(request)));
+app.MapGet("/health", () => Results.Ok(new { status = "healthy" }));
 
 app.MapPost("/import", (ImportRequest request, NativeScheduleSerializer serializer) =>
     ApiEnvelope<object>.Ok(serializer.Import(request)));
