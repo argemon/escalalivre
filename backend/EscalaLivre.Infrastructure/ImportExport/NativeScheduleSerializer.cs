@@ -15,7 +15,7 @@ public sealed class NativeScheduleSerializer
 
     public ExportResult Export(ExportRequest request)
     {
-        var json = JsonSerializer.Serialize(request.Document, JsonOptions);
+        string json = JsonSerializer.Serialize(request.Document, JsonOptions);
         return request.Format.ToLowerInvariant() switch
         {
             "native" or "escalalivre" => new ExportResult("escala.escalalivre", Convert.ToBase64String(Encoding.UTF8.GetBytes(json)), "application/json"),
@@ -27,7 +27,7 @@ public sealed class NativeScheduleSerializer
 
     public EscalaLivreDocument Import(ImportRequest request)
     {
-        var content = Encoding.UTF8.GetString(Convert.FromBase64String(request.ContentBase64));
+        string content = Encoding.UTF8.GetString(Convert.FromBase64String(request.ContentBase64));
         if (request.Format.Equals("native", StringComparison.OrdinalIgnoreCase) || request.FileName.EndsWith(".escalalivre", StringComparison.OrdinalIgnoreCase))
         {
             return JsonSerializer.Deserialize<EscalaLivreDocument>(content, JsonOptions)
@@ -83,7 +83,7 @@ public sealed class NativeScheduleSerializer
         };
         rows.AddRange(document.Assignments.Select(assignment =>
         {
-            var employee = document.Employees.FirstOrDefault(x => x.Id == assignment.EmployeeId);
+            Employee? employee = document.Employees.FirstOrDefault(x => x.Id == assignment.EmployeeId);
             return new[]
             {
                 employee?.Name ?? assignment.EmployeeId.ToString(),
@@ -96,9 +96,9 @@ public sealed class NativeScheduleSerializer
             };
         }));
 
-        var rowXml = rows.Select((row, index) =>
+        IEnumerable<string> rowXml = rows.Select((row, index) =>
         {
-            var cells = row.Select((cell, cellIndex) =>
+            IEnumerable<string> cells = row.Select((cell, cellIndex) =>
                 $"<c r=\"{Column(cellIndex)}{index + 1}\" t=\"inlineStr\"><is><t>{EscapeXml(cell)}</t></is></c>");
             return $"<row r=\"{index + 1}\">{string.Concat(cells)}</row>";
         });
@@ -113,11 +113,11 @@ public sealed class NativeScheduleSerializer
 
     private static byte[] ToPdf(EscalaLivreDocument document)
     {
-        var lines = new[] { $"EscalaLivre - {document.Company.Name}" }
+        string[] lines = new[] { $"EscalaLivre - {document.Company.Name}" }
             .Concat(document.Assignments.Select(x => $"{x.Role} {x.Start:g} - {x.End:g}"))
             .ToArray();
-        var content = string.Join("\\n", lines.Select(EscapePdf));
-        var objects = new[]
+        string content = string.Join("\\n", lines.Select(EscapePdf));
+        string[] objects = new[]
         {
             "1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj\n",
             "2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj\n",
@@ -127,13 +127,13 @@ public sealed class NativeScheduleSerializer
         };
         var builder = new StringBuilder("%PDF-1.4\n");
         var offsets = new List<int> { 0 };
-        foreach (var item in objects)
+        foreach (string? item in objects)
         {
             offsets.Add(Encoding.ASCII.GetByteCount(builder.ToString()));
             builder.Append(item);
         }
 
-        var xrefStart = Encoding.ASCII.GetByteCount(builder.ToString());
+        int xrefStart = Encoding.ASCII.GetByteCount(builder.ToString());
         builder.Append($"xref\n0 {objects.Length + 1}\n0000000000 65535 f \n");
         builder.Append(string.Concat(offsets.Skip(1).Select(offset => $"{offset:0000000000} 00000 n \n")));
         builder.Append($"trailer << /Size {objects.Length + 1} /Root 1 0 R >>\nstartxref\n{xrefStart}\n%%EOF");
@@ -142,7 +142,7 @@ public sealed class NativeScheduleSerializer
 
     private static void WriteEntry(ZipArchive archive, string path, string content)
     {
-        var entry = archive.CreateEntry(path);
+        ZipArchiveEntry entry = archive.CreateEntry(path);
         using var writer = new StreamWriter(entry.Open(), Encoding.UTF8);
         writer.Write(content);
     }

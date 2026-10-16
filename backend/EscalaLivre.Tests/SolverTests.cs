@@ -30,7 +30,7 @@ public sealed class SolverTests
             DateTimeOffset.UtcNow);
 
         var solver = new OrToolsScheduleSolver();
-        var result = solver.Solve(new ScheduleRequest(document, new DateTime(2026, 5, 18), new DateTime(2026, 5, 18, 23, 59, 59)));
+        ScheduleResult result = solver.Solve(new ScheduleRequest(document, new DateTime(2026, 5, 18), new DateTime(2026, 5, 18, 23, 59, 59)));
 
         Assert.NotEmpty(result.Assignments);
         Assert.NotEmpty(result.Coverage);
@@ -58,8 +58,8 @@ public sealed class SolverTests
             DateTimeOffset.UtcNow);
 
         var serializer = new NativeScheduleSerializer();
-        var exported = serializer.Export(new ExportRequest(document, "escalalivre"));
-        var imported = serializer.Import(new ImportRequest(exported.FileName, exported.ContentBase64, "native"));
+        ExportResult exported = serializer.Export(new ExportRequest(document, "escalalivre"));
+        EscalaLivreDocument imported = serializer.Import(new ImportRequest(exported.FileName, exported.ContentBase64, "native"));
 
         Assert.Equal(document.Id, imported.Id);
         Assert.Equal("1.0.0", imported.SchemaVersion);

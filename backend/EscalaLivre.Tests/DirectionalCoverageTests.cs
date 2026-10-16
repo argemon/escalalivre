@@ -13,26 +13,26 @@ public class DirectionalCoverageTests {
   return new(new("1.0.0",Guid.NewGuid(),company,[pharma,attendant],[],DateTimeOffset.UtcNow),new(2026,10,14),new(2026,10,14,23,59,59));
  }
  [Fact] public void AuthorizedPharmacistCoversAttendantDuringStaggeredIntervals() {
-  var result=new OrToolsScheduleSolver().Solve(Request(true));Assert.Empty(result.Gaps);Assert.Empty(result.Conflicts);Assert.Equal(2,result.Assignments.Count);
+        ScheduleResult result =new OrToolsScheduleSolver().Solve(Request(true));Assert.Empty(result.Gaps);Assert.Empty(result.Conflicts);Assert.Equal(2,result.Assignments.Count);
   Assert.All(result.Assignments,a=>Assert.Equal(TimeSpan.FromHours(1),a.Break!.End-a.Break.Start));
  }
  [Fact] public void SubstitutionIsNeverAutomaticOrBidirectional() {
-  var result=new OrToolsScheduleSolver().Solve(Request(false));Assert.Contains(result.Gaps,g=>g.Role=="Atendente" && g.Start.Hour==12);
-  var authorized=new OrToolsScheduleSolver().Solve(Request(true,true));Assert.Contains(authorized.Gaps,g=>g.Role=="Farmacêutico" && g.Start.Hour==11);
+        ScheduleResult result =new OrToolsScheduleSolver().Solve(Request(false));Assert.Contains(result.Gaps,g=>g.Role=="Atendente" && g.Start.Hour==12);
+        ScheduleResult authorized =new OrToolsScheduleSolver().Solve(Request(true,true));Assert.Contains(authorized.Gaps,g=>g.Role=="Farmacêutico" && g.Start.Hour==11);
   Assert.DoesNotContain(authorized.Gaps,g=>g.Role=="Atendente");
  }
  [Fact] public void OnePersonCannotCoverTwoRequiredRolesSimultaneously() {
-  var r=Request(true,true);r=r with {Document=r.Document with {Employees=[r.Document.Employees[0] with {FixedInterval=new(new(13,0),new(14,0))}]}};
-  var result=new OrToolsScheduleSolver().Solve(r);Assert.NotEmpty(result.Gaps);Assert.All(result.Coverage.GroupBy(c=>c.Start),g=>Assert.True(g.Sum(b=>b.Assigned)<=1));
+        ScheduleRequest r =Request(true,true);r=r with {Document=r.Document with {Employees=[r.Document.Employees[0] with {FixedInterval=new(new(13,0),new(14,0))}]}};
+        ScheduleResult result =new OrToolsScheduleSolver().Solve(r);Assert.NotEmpty(result.Gaps);Assert.All(result.Coverage.GroupBy(c=>c.Start),g=>Assert.True(g.Sum(b=>b.Assigned)<=1));
  }
  [Fact] public void TeamCoverageLetsDifferentRolesAlternateWithoutSubstitution() {
-  var r=Request(false);r=r with {Document=r.Document with {Company=r.Document.Company with {Coverage=[new("Equipe",DayOfWeek.Wednesday,new(11,0),new(13,0),1,Scope:"team")]}}};
-  var result=new OrToolsScheduleSolver().Solve(r);Assert.Empty(result.Gaps);Assert.Equal(2,result.Assignments.Count);
+        ScheduleRequest r =Request(false);r=r with {Document=r.Document with {Company=r.Document.Company with {Coverage=[new("Equipe",DayOfWeek.Wednesday,new(11,0),new(13,0),1,Scope:"team")]}}};
+        ScheduleResult result =new OrToolsScheduleSolver().Solve(r);Assert.Empty(result.Gaps);Assert.Equal(2,result.Assignments.Count);
  }
  [Fact] public void AutomaticIntervalsStaggerInsteadOfLeavingNobodyPresent() {
-  var r=Request(true);r=r with {Document=r.Document with {Employees=r.Document.Employees.Select(e=>e with {FixedInterval=null}).ToArray(),Company=r.Document.Company with {Coverage=[new("Farmacêutico",DayOfWeek.Wednesday,new(7,30),new(16,30),1),new("Atendente",DayOfWeek.Wednesday,new(7,30),new(16,30),1)]}}};
-  var result=new OrToolsScheduleSolver().Solve(r);Assert.Equal(2,result.Assignments.Count);
-  var a=result.Assignments[0].Break!;var b=result.Assignments[1].Break!;Assert.True(a.End<=b.Start || b.End<=a.Start);
+        ScheduleRequest r =Request(true);r=r with {Document=r.Document with {Employees=r.Document.Employees.Select(e=>e with {FixedInterval=null}).ToArray(),Company=r.Document.Company with {Coverage=[new("Farmacêutico",DayOfWeek.Wednesday,new(7,30),new(16,30),1),new("Atendente",DayOfWeek.Wednesday,new(7,30),new(16,30),1)]}}};
+        ScheduleResult result =new OrToolsScheduleSolver().Solve(r);Assert.Equal(2,result.Assignments.Count);
+        BreakWindow a =result.Assignments[0].Break!; BreakWindow b =result.Assignments[1].Break!;Assert.True(a.End<=b.Start || b.End<=a.Start);
   Assert.NotEmpty(result.Gaps);
  }
 }

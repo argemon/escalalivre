@@ -15,12 +15,10 @@ const dayLabels = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
 
 export function OperationalTimeline() {
   const { viewMode, setSelectedEmployeeId } = useScheduleStore();
-  const coverage = useScheduleStore((state) => state.analysis.coverage);
   const document=useScheduleStore(state=>state.document);
   const dates=[...new Set(document.assignments.map(a=>a.start.slice(0,10)))].sort();
   const [selectedDate,setSelectedDate]=useState(dates[0] ?? "");
   const activeDate=dates.includes(selectedDate) ? selectedDate : dates[0] ?? "";
-  const dayCoverage=coverage.filter(b=>b.start.slice(0,10)===activeDate);
 
   return (
     <main className="min-w-0 flex-1 overflow-hidden bg-background">
@@ -38,14 +36,6 @@ export function OperationalTimeline() {
             </div>
           </div>
         </section>
-
-        {viewMode === "timeline" && <section className="border-b border-border px-5 py-4">
-          <div className="mb-2 flex items-center justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Linha de cobertura</p>
-            <p className="text-xs text-muted-foreground">Verde: coberto · Amarelo: atenção · Vermelho: faltam pessoas</p>
-          </div>
-          <div className="space-y-2 overflow-auto">{[...new Set(dayCoverage.map(b=>b.role))].map(role=><div key={role}><p className="mb-1 text-xs font-semibold">{role}</p><div className="flex min-h-10 min-w-max overflow-hidden rounded-md border border-border">{dayCoverage.filter(b=>b.role===role).map(block=><CoverageSegment key={block.start} block={block} />)}</div></div>)}</div>
-        </section>}
 
         <section className="min-h-0 flex-1 overflow-auto p-5">
           {viewMode === "coverage" ? <CoverageTable /> : viewMode === "heatmap" ? <Heatmap /> : <TimelineRows onEmployeeClick={setSelectedEmployeeId} selectedDate={activeDate} setSelectedDate={setSelectedDate} />}
@@ -164,22 +154,6 @@ function Heatmap() {
           </Fragment>
         ))}
       </div>
-    </div>
-  );
-}
-
-function CoverageSegment({ block }: { block: CoverageBlock }) {
-  const className =
-    block.state === "healthy"
-      ? "coverage-healthy"
-      : block.state === "warning"
-        ? "coverage-warning"
-        : "coverage-uncovered";
-
-  return (
-    <div title={`${block.role}: ${block.assigned} pessoas escaladas de ${block.required} necessárias. ${block.state === "healthy" ? "Coberto" : block.state === "warning" ? "Atenção" : "Faltam pessoas"}`}
-      className={`flex min-w-0 items-center justify-center border-r border-background/40 min-w-24 px-2 py-2 text-xs font-semibold last:border-r-0 ${className}`}>
-      {new Date(block.start).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}–{new Date(block.end).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})} · {block.assigned}/{block.required}
     </div>
   );
 }

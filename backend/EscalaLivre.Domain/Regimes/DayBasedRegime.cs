@@ -8,9 +8,9 @@ public sealed class DayBasedRegime : IShiftRegime
 
     public bool CanWork(DateTime candidateStart, DateTime candidateEnd, IReadOnlyList<ShiftAssignment> existingAssignments, WorkloadRule rule)
     {
-        var cycle = Math.Max(1, rule.WorkUnits + rule.RestUnits);
-        var cycleStart = candidateStart.Date.AddDays(1 - cycle);
-        var workedDays = existingAssignments.Where(x => x.Start.Date >= cycleStart && x.Start.Date <= candidateStart.Date)
+        int cycle = Math.Max(1, rule.WorkUnits + rule.RestUnits);
+        DateTime cycleStart = candidateStart.Date.AddDays(1 - cycle);
+        int workedDays = existingAssignments.Where(x => x.Start.Date >= cycleStart && x.Start.Date <= candidateStart.Date)
             .Select(x => x.Start.Date).Append(candidateStart.Date).Distinct().Count();
         if (workedDays > rule.WorkUnits)
         {

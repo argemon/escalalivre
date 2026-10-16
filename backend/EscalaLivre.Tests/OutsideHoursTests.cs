@@ -12,7 +12,7 @@ public sealed class OutsideHoursTests {
   var guard = new Employee(Guid.NewGuid(),"Vigia","Segurança Patrimonial",true,workload,[],[],[],false,true,[]);
   var seller = new Employee(Guid.NewGuid(),"Vendedor","Vendedor",true,workload,[],[],[],false,true,[]);
   var document = new EscalaLivreDocument("1.0.0",Guid.NewGuid(),company,[guard,seller],[],DateTimeOffset.UtcNow);
-  var result = new OrToolsScheduleSolver().Solve(new ScheduleRequest(document,new DateTime(2026,10,18),new DateTime(2026,10,18,23,59,59)));
+        ScheduleResult result = new OrToolsScheduleSolver().Solve(new ScheduleRequest(document,new DateTime(2026,10,18),new DateTime(2026,10,18,23,59,59)));
   Assert.DoesNotContain(result.Assignments,a => a.EmployeeId == seller.Id);
   if (authorized) { Assert.Contains(result.Assignments,a => a.EmployeeId == guard.Id); Assert.DoesNotContain(result.Conflicts,c => c.Code == "workingDay"); }
   else Assert.Empty(result.Assignments);

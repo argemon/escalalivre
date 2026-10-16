@@ -19,11 +19,11 @@ public sealed class ProductionRegressionTests
     [Fact]
     public void CustomDaysRestrictGenerationAndInheritedDaysFollowCompany()
     {
-        var request = Request();
-        var employee = request.Document.Employees[0] with { InheritsCompanyDefaults = false, WorkingDays = [DayOfWeek.Tuesday] };
+        ScheduleRequest request = Request();
+        Employee employee = request.Document.Employees[0] with { InheritsCompanyDefaults = false, WorkingDays = [DayOfWeek.Tuesday] };
         request = request with { Document = request.Document with { Employees = [employee] } };
         var solver = new OrToolsScheduleSolver();
-        var custom = solver.Solve(request);
+        ScheduleResult custom = solver.Solve(request);
         Assert.Single(custom.Assignments);
         Assert.All(custom.Assignments, a => Assert.Equal(DayOfWeek.Tuesday, a.Start.DayOfWeek));
         request = request with { Document = request.Document with { Employees = [employee with { InheritsCompanyDefaults = true }] } };
@@ -33,12 +33,12 @@ public sealed class ProductionRegressionTests
     [Fact]
     public void RecognizedClosingPreferenceChangesShiftSelection()
     {
-        var request = Request();
+        ScheduleRequest request = Request();
         request = request with { Document = request.Document with {
             Company = request.Document.Company with { Coverage = [new("nurse", DayOfWeek.Monday, new(10, 0), new(12, 0), 1)] },
             Employees = [request.Document.Employees[0] with { Preferences = [new("closing", 10, "Fechar")] }]
         } };
-        var result = new OrToolsScheduleSolver().Solve(request);
+        ScheduleResult result = new OrToolsScheduleSolver().Solve(request);
         Assert.Single(result.Assignments);
         Assert.Equal(18, result.Assignments[0].End.Hour);
     }
@@ -46,7 +46,7 @@ public sealed class ProductionRegressionTests
     [Fact]
     public void DoesNotAssignUnneededEmployees()
     {
-        var result = new OrToolsScheduleSolver().Solve(Request(employees: 3));
+        ScheduleResult result = new OrToolsScheduleSolver().Solve(Request(employees: 3));
         Assert.Equal(2, result.Assignments.Count);
         Assert.Empty(result.Gaps);
         Assert.Empty(result.Conflicts);
@@ -55,7 +55,7 @@ public sealed class ProductionRegressionTests
     [Fact]
     public void MissingCoverageProducesPartialSchedule()
     {
-        var result = new OrToolsScheduleSolver().Solve(Request(required: 2));
+        ScheduleResult result = new OrToolsScheduleSolver().Solve(Request(required: 2));
         Assert.Equal(2, result.Assignments.Count);
         Assert.NotEmpty(result.Gaps);
         Assert.Empty(result.Conflicts);
@@ -64,7 +64,7 @@ public sealed class ProductionRegressionTests
     [Fact]
     public void RestBetweenNewShiftsIsMandatory()
     {
-        var result = new OrToolsScheduleSolver().Solve(Request(rest: 20));
+        ScheduleResult result = new OrToolsScheduleSolver().Solve(Request(rest: 20));
         Assert.Single(result.Assignments);
         Assert.NotEmpty(result.Gaps);
         Assert.Empty(result.Conflicts);
@@ -73,11 +73,11 @@ public sealed class ProductionRegressionTests
     [Fact]
     public void CanCoverClosingWithLaterShiftStart()
     {
-        var request = Request();
+        ScheduleRequest request = Request();
         request = request with { Document = request.Document with { Company = request.Document.Company with {
             Coverage = [new("nurse", DayOfWeek.Monday, new(16, 0), new(18, 0), 1)]
         } } };
-        var result = new OrToolsScheduleSolver().Solve(request);
+        ScheduleResult result = new OrToolsScheduleSolver().Solve(request);
         Assert.Empty(result.Gaps);
         Assert.Empty(result.Conflicts);
         Assert.Single(result.Assignments);
@@ -88,9 +88,9 @@ public sealed class ProductionRegressionTests
     public void ExistingScheduleDoesNotBlockRegeneration()
     {
         var solver = new OrToolsScheduleSolver();
-        var request = Request();
-        var first = solver.Solve(request);
-        var second = solver.Solve(request with { Document = request.Document with { Assignments = first.Assignments } });
+        ScheduleRequest request = Request();
+        ScheduleResult first = solver.Solve(request);
+        ScheduleResult second = solver.Solve(request with { Document = request.Document with { Assignments = first.Assignments } });
         Assert.Empty(second.Conflicts);
         Assert.Equal(first.Assignments.Count, second.Assignments.Count);
     }

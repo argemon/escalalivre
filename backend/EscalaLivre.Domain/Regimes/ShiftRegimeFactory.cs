@@ -9,7 +9,7 @@ public sealed class ShiftRegimeFactory
     }.ToDictionary(x => x.Type, StringComparer.OrdinalIgnoreCase);
 
     public IShiftRegime Resolve(string type)
-        => regimes.TryGetValue(type, out var regime)
+        => regimes.TryGetValue(type, out IShiftRegime? regime)
             ? regime
             : throw new InvalidOperationException($"Regime '{type}' is not supported.");
 }

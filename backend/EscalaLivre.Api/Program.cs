@@ -3,12 +3,13 @@ using EscalaLivre.Application.Contracts;
 using EscalaLivre.Application.Scheduling;
 using EscalaLivre.Infrastructure.ImportExport;
 using FluentValidation;
+using FluentValidation.Results;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddEscalaLivre();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
@@ -26,7 +27,7 @@ app.MapGet("/", () => ApiEnvelope<object>.Ok(new
 
 app.MapPost("/solve", async (ScheduleRequest request, IScheduleSolver solver, IValidator<ScheduleRequest> validator) =>
 {
-    var validation = await validator.ValidateAsync(request);
+    ValidationResult validation = await validator.ValidateAsync(request);
     if (!validation.IsValid)
     {
         return Results.BadRequest(ApiEnvelope<ScheduleResult>.Fail(validation.Errors.Select(x => new ApiMessage(x.ErrorCode, x.ErrorMessage, x.PropertyName)).ToList()));
@@ -35,11 +36,11 @@ app.MapPost("/solve", async (ScheduleRequest request, IScheduleSolver solver, IV
     return Results.Ok(ApiEnvelope<ScheduleResult>.Ok(solver.Solve(request)));
 });
 
-foreach (var endpoint in new[] { "/validate", "/analyze" })
+foreach (string? endpoint in new[] { "/validate", "/analyze" })
 {
     app.MapPost(endpoint, async (ScheduleRequest request, IScheduleSolver solver, IValidator<ScheduleRequest> validator) =>
     {
-        var validation = await validator.ValidateAsync(request);
+        ValidationResult validation = await validator.ValidateAsync(request);
         if (!validation.IsValid)
             return Results.BadRequest(ApiEnvelope<ScheduleResult>.Fail(validation.Errors.Select(x => new ApiMessage(x.ErrorCode, x.ErrorMessage, x.PropertyName)).ToList()));
         return Results.Ok(ApiEnvelope<ScheduleResult>.Ok(solver.Validate(request)));
