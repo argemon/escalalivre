@@ -1,4 +1,5 @@
 import { Download, FileUp, Moon, Trash2, Sun, Wifi, Printer } from "lucide-react";
+import { Brand } from "./Brand";
 import { PrintSchedule } from "./PrintSchedule";
 import { useState } from "react";
 import { exportNative, importNative } from "../lib/api";
@@ -29,7 +30,7 @@ export function GlobalHeader() {
     <header className="app-header shrink-0 border-b border-border bg-card"><div className="flex flex-wrap items-center justify-between gap-4 px-5 py-4">
       <div className="flex min-w-0 items-center gap-4">
         <div>
-          <p className="text-sm font-bold tracking-wide text-primary">Escala Livre</p>
+          <Brand className="brand-header" />
           <h1 className="break-words text-2xl font-semibold">{document.company.name}</h1>
         </div>
         <div className="hidden items-center gap-2 xl:flex">

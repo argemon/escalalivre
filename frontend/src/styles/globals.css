@@ -201,3 +201,14 @@ button:disabled { cursor: not-allowed; }
   .schedule-list-table tbody td { height:auto; }
   .schedule-list-table tbody th, .schedule-list-table tbody td { padding:.5mm 2mm; line-height:1.15; }
 }
+
+
+/* Escala Livre — Calendário leve. */
+.brand { display:inline-flex; align-items:center; gap:.6em; color:#164e63; vertical-align:middle; }
+.brand-icon { display:block; flex:none; width:2em; height:2em; }
+.brand-name { font-weight:700; letter-spacing:-.035em; line-height:1.15; white-space:nowrap; }
+.brand-header { font-size:1.125rem; margin-bottom:.3rem; }
+.dark .brand { color:#a4dce8; }
+.brand.schedule-print-brand { color:#164e63; font-size:9pt; gap:.45em; }
+.schedule-print-brand .brand-icon { width:1.8em; height:1.8em; }
+@media print { .brand.schedule-print-brand { color:#164e63; print-color-adjust:exact; -webkit-print-color-adjust:exact; } }

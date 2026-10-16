@@ -4,6 +4,7 @@ import { Printer, X } from "lucide-react";
 import { useScheduleStore } from "../store/scheduleStore";
 import { dateKey, displayDate, employeePrintRows, monthBounds } from "../lib/printSchedule";
 import { Button } from "./ui";
+import { Brand } from "./Brand";
 
 export function PrintSchedule({ onClose }: { onClose: () => void }) {
   const document = useScheduleStore(state => state.document);
@@ -37,7 +38,7 @@ export function PrintSchedule({ onClose }: { onClose: () => void }) {
     </div>
     <div className="schedule-print-preview">{bounds&&<section className="schedule-print-sheet schedule-list-sheet" aria-label="Escala mensal por funcionário">
       <table className="schedule-print-table schedule-list-table"><colgroup><col style={{width:"28%"}}/><col style={{width:"32%"}}/><col style={{width:"20%"}}/><col style={{width:"20%"}}/></colgroup>
-        <thead><tr><th colSpan={4} className="schedule-print-heading"><div className="schedule-print-heading-row"><div className="schedule-list-title"><h1>{document.company.name||"Empresa"}</h1><p>Escala · {displayDate(bounds.start)} a {displayDate(bounds.end)}</p></div><span className="schedule-print-brand">Escala Livre</span></div></th></tr><tr className="schedule-print-days"><th scope="col">Funcionário / Função</th><th scope="col">Dias de trabalho</th><th scope="col">Entrada – Saída</th><th scope="col">Intervalo</th></tr></thead>
+        <thead><tr><th colSpan={4} className="schedule-print-heading"><div className="schedule-print-heading-row"><div className="schedule-list-title"><h1>{document.company.name||"Empresa"}</h1><p>Escala · {displayDate(bounds.start)} a {displayDate(bounds.end)}</p></div><Brand className="schedule-print-brand" /></div></th></tr><tr className="schedule-print-days"><th scope="col">Funcionário / Função</th><th scope="col">Dias de trabalho</th><th scope="col">Entrada – Saída</th><th scope="col">Intervalo</th></tr></thead>
         <tbody>{rows.map((row,index)=>{
           const firstForPerson = index===0 || rows[index-1].person.id!==row.person.id;
           const personRowCount = firstForPerson ? rows.filter(item=>item.person.id===row.person.id).length : 0;

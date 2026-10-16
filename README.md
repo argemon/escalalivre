@@ -1,4 +1,6 @@
-# EscalaLivre
+# Escala Livre
+
+![Escala Livre — Calendário leve](frontend/public/brand/logo.svg)
 
 ### Planeje a equipe. Enxergue as lacunas. Tome decisões melhores.
 

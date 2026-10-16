@@ -1,0 +1,3 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 72" role="img" aria-labelledby="title"><title id="title">Escala Livre</title><g transform="translate(0 2)" color="#164e63"><path d="M25 19H39M15 19H14C8.477 19 4 23.477 4 29V49C4 54.523 8.477 59 14 59H50C55.523 59 60 54.523 60 49V45M49 19H50C55.523 19 60 23.477 60 29V32" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="butt" stroke-linejoin="round"/>
+  <path d="M20 11V22M44 11V22" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+  <rect x="18" y="32" width="20" height="20" rx="4" fill="#53b58a"/></g><text x="78" y="52" fill="#164e63" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="48" font-weight="700" letter-spacing="-1.5">Escala Livre</text></svg>
