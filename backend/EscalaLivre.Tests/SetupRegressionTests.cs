@@ -36,7 +36,7 @@ public sealed class SetupRegressionTests
         ScheduleRequest request = Request(closure:new(new(12,0),new(13,0)));
         request = request with { Document = request.Document with { Employees = request.Document.Employees.Select((e,i) => e with { WorksDuringLunchClosure = i == 0 }).ToArray() } };
         ScheduleResult result = new OrToolsScheduleSolver().Solve(request);
-        ShiftAssignment exception = Assert.Single(result.Assignments.Where(a => a.EmployeeId == request.Document.Employees[0].Id));
+        ShiftAssignment exception = Assert.Single(result.Assignments, a => a.EmployeeId == request.Document.Employees[0].Id);
         Assert.NotNull(exception.Break);
         Assert.True(exception.Break.End.Hour <= 12 || exception.Break.Start.Hour >= 13);
         Assert.All(result.Assignments.Where(a => a.EmployeeId != exception.EmployeeId), a => Assert.Equal(12, a.Break!.Start.Hour));
