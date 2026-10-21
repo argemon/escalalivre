@@ -1,3 +1,4 @@
+import { datePart } from "./dateTime";
 import type { CompanyRules, ShiftAssignment } from "../types/schedule";
 export const nationalHolidays: Record<string,string> = {
  "01-01":"Confraternização Universal", "04-21":"Tiradentes", "05-01":"Dia do Trabalho", "09-07":"Independência do Brasil", "10-12":"Nossa Senhora Aparecida", "11-02":"Finados", "11-15":"Proclamação da República", "11-20":"Consciência Negra", "12-25":"Natal"
@@ -10,4 +11,4 @@ export function holidayOn(company: CompanyRules, date: string) {
 }
 export const closedHoliday = (company:CompanyRules,date:string) => holidayOn(company,date)?.closed === true;
 
-export const authorizedHolidayShift = (company:CompanyRules, assignment:ShiftAssignment) => assignment.source === "manual" && Boolean(holidayOn(company,assignment.start.slice(0,10))) && assignment.tags.includes("holiday:"+assignment.start.slice(0,10));
+export const authorizedHolidayShift = (company:CompanyRules, assignment:ShiftAssignment) => assignment.source === "manual" && Boolean(holidayOn(company,datePart(assignment.start,company.timeZone))) && assignment.tags.includes("holiday:"+datePart(assignment.start,company.timeZone));

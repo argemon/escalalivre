@@ -7,24 +7,16 @@ public sealed class ScheduleRequestValidator : AbstractValidator<ScheduleRequest
 {
     public ScheduleRequestValidator()
     {
-        RuleFor(x => x.Document.SchemaVersion).NotEmpty();
-        RuleFor(x => x.Document.Id).NotEmpty();
-        RuleFor(x => x.Start).LessThan(x => x.End);
-        RuleFor(x => x.End).Must((request, end) => end - request.Start <= TimeSpan.FromDays(31)).WithMessage("Periodo maximo: 31 dias.");
-        RuleFor(x => x.Document.Employees.Count).LessThanOrEqualTo(200);
-        RuleFor(x => x.Document.Company.DefaultWorkload.WeeklyLimitHours).GreaterThan(0).LessThanOrEqualTo(44);
-        RuleForEach(x => x.Document.Company.Coverage).ChildRules(coverage =>
+        RuleFor(x => x).Custom((request, context) =>
         {
-            coverage.RuleFor(x => x.MinimumEmployees).InclusiveBetween(0, 200);
-            coverage.RuleFor(x => x.Role).NotEmpty();
-        });
-        RuleFor(x => x.Document.Company.MinimumRest).GreaterThanOrEqualTo(TimeSpan.FromHours(11));
-        RuleForEach(x => x.Document.Employees).ChildRules(employee =>
-        {
-            employee.RuleFor(x => x.Id).NotEmpty();
-            employee.RuleFor(x => x.Name).NotEmpty();
-            employee.RuleFor(x => x.Role).NotEmpty();
-            employee.RuleFor(x => x.Workload.WeeklyLimitHours).GreaterThan(0).LessThanOrEqualTo(44);
+            if (DocumentSafety.Error(request.Document) is { } error) context.AddFailure("Document", error);
+            if (request.Document?.PlanningPeriod is { } period &&
+                (request.Start != period.Start.ToDateTime(TimeOnly.MinValue) || request.End != period.End.ToDateTime(new TimeOnly(23, 59, 59))))
+                context.AddFailure("PlanningPeriod", "O período da requisição deve corresponder ao documento.");
+            if (!DocumentSafety.SafeDate(request.Start) || !DocumentSafety.SafeDate(request.End)
+                || request.End <= request.Start || request.End - request.Start > TimeSpan.FromDays(31)
+                || (request.End.Date - request.Start.Date).TotalDays >= 31)
+                context.AddFailure("End", "Período inválido. Use no máximo 31 dias de calendário, entre 1900 e 2100.");
         });
     }
 }

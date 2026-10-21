@@ -1,24 +1,13 @@
 using EscalaLivre.Domain.Scheduling;
-
 namespace EscalaLivre.Domain.Regimes;
-
 public sealed class HourBasedRegime : IShiftRegime
 {
-    public string Type => "hourBased";
-
-    public bool CanWork(DateTime candidateStart, DateTime candidateEnd, IReadOnlyList<ShiftAssignment> existingAssignments, WorkloadRule rule)
+    public string Type=>"hourBased";
+    public bool CanWork(DateTime candidateStart,DateTime candidateEnd,IReadOnlyList<ShiftAssignment> existingAssignments,WorkloadRule rule,BreakWindow? candidateBreak=null)
     {
-        if (candidateEnd - candidateStart > TimeSpan.FromHours(rule.WorkUnits)) return false;
-        ShiftAssignment? last = existingAssignments.OrderByDescending(x => x.End).FirstOrDefault();
-        if (last is null)
-        {
-            return true;
-        }
-
-        var requiredRest = TimeSpan.FromHours(rule.RestUnits);
-        return candidateStart - last.End >= requiredRest && candidateEnd - candidateStart <= TimeSpan.FromHours(rule.WorkUnits);
+        var work=candidateEnd-candidateStart-(candidateBreak is null?TimeSpan.Zero:candidateBreak.End-candidateBreak.Start);
+        var rest=TimeSpan.FromHours(rule.RestUnits);
+        return candidateEnd>candidateStart&&work<=TimeSpan.FromHours(rule.WorkUnits)&&existingAssignments.All(a=>candidateStart>=a.End+rest||a.Start>=candidateEnd+rest);
     }
-
-    public DateTime GetNextEligibleStart(DateTime lastShiftEnd, WorkloadRule rule)
-        => lastShiftEnd.AddHours(rule.RestUnits);
+    public DateTime GetNextEligibleStart(DateTime lastShiftEnd,WorkloadRule rule)=>lastShiftEnd.AddHours(rule.RestUnits);
 }

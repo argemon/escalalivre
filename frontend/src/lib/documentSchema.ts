@@ -1,10 +1,15 @@
+import { migrateDocument } from "./documentLifecycle";
+import { validCivilDateTime, validTimeZone } from "./dateTime";
 import { z } from "zod";
+import type { EscalaLivreDocument } from "../types/schedule";
+import { migratePlanningPeriod, periodError } from "./planningPeriod";
 
 const time = z.string().regex(/^\d{2}:\d{2}:\d{2}$/).refine(v => {
   const [h, m, s] = v.split(":").map(Number);
   return h < 24 && m < 60 && s < 60;
 }, "Horario invalido");
-const date = z.string().refine(v => Number.isFinite(Date.parse(v)), "Data invalida");
+const date = z.string().refine(validCivilDateTime, "Data e horário civis inválidos");
+const instant = z.string().datetime({offset:true});
 const days = z.array(z.number().int().min(0).max(6));
 const windowSchema = z.object({ start: date, end: date }).refine(v => Date.parse(v.end) > Date.parse(v.start), "Fim deve ser posterior ao inicio");
 const workload = z.object({
@@ -12,11 +17,13 @@ const workload = z.object({
   restUnits: z.number().int().min(0).max(168), weeklyLimitHours: z.number().positive().max(44),
   defaultShiftDuration: time
 });
-export const documentSchema = z.object({
+const canonicalDocumentSchema = z.object({
+  planningPeriod: z.object({ start: z.string(), end: z.string() }).refine(p => !periodError(p), "Período inválido: use de 1 a 31 dias entre 1900 e 2100.").optional(),
   roles: z.array(z.object({ id: z.string().uuid(), name: z.string().trim().min(1) })).optional(),
   setup: z.object({ companyConfigured: z.boolean() }).optional(),
-  schemaVersion: z.literal("1.0.0"), id: z.string().uuid(), updatedAt: date,
+  schemaVersion: z.literal("1.0.0"), id: z.string().uuid(), updatedAt: instant,
   company: z.object({
+    timeZone: z.string().refine(validTimeZone, "Fuso horário inválido"),
     holidays: z.array(z.object({date:z.string().regex(/^\d{4}-\d{2}-\d{2}$/),name:z.string().trim().min(1),closed:z.boolean()})).optional(),
     middayClosure: z.object({ start: time, end: time }).optional(),
     name: z.string().min(1), opensAt: time, closesAt: time, operatingDays: days,
@@ -43,4 +50,8 @@ export const documentSchema = z.object({
     if (a.break && (Date.parse(a.break.start) < Date.parse(a.start) || Date.parse(a.break.end) > Date.parse(a.end)))
       ctx.addIssue({ code: "custom", message: "Intervalo fora do turno" });
   }
-});
+}).transform(migratePlanningPeriod);
+
+export const documentSchema = z.preprocess(input => {
+  try { return migrateDocument(input as EscalaLivreDocument).document; } catch { return input; }
+}, canonicalDocumentSchema);

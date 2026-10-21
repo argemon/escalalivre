@@ -1,4 +1,5 @@
 using System.Text;
+using EscalaLivre.Application.Validation;
 using System.Text.Json;
 using System.IO.Compression;
 using EscalaLivre.Application.Contracts;
@@ -8,33 +9,63 @@ namespace EscalaLivre.Infrastructure.ImportExport;
 
 public sealed class NativeScheduleSerializer
 {
-    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)
+    private static readonly JsonSerializerOptions JsonOptions = CreateJsonOptions();
+    private static JsonSerializerOptions CreateJsonOptions()
     {
-        WriteIndented = true
-    };
+        var options = ScheduleJson.CreateOptions(); options.WriteIndented = true; return options;
+    }
 
     public ExportResult Export(ExportRequest request)
     {
-        string json = JsonSerializer.Serialize(request.Document, JsonOptions);
+        if (request is null || DocumentSafety.Error(request.Document) is not null) throw new FormatException("Documento inválido.");
+        if (request.Format is null) throw new FormatException("Formato inválido.");
+        string json = JsonSerializer.Serialize(WithPlanningPeriod(request.Document), JsonOptions);
+        if (request.Format.ToLowerInvariant() is "native" or "escalalivre")
+        {
+            byte[] native=Encoding.UTF8.GetBytes(json);
+            if(native.Length>NativeDocumentLimits.MaxBytes)
+            {
+                var compactOptions=new JsonSerializerOptions(JsonOptions) { WriteIndented=false };
+                native=JsonSerializer.SerializeToUtf8Bytes(WithPlanningPeriod(request.Document),compactOptions);
+            }
+            if(native.Length>NativeDocumentLimits.MaxBytes) throw new FormatException("Arquivo nativo maior que 1 MiB.");
+            // Check the exact exported bytes with the import validator, including migrations.
+            var roundTrip=JsonSerializer.Deserialize<EscalaLivreDocument>(native,JsonOptions);
+            if(DocumentSafety.Error(roundTrip) is not null) throw new FormatException("Documento exportado inválido.");
+            return new ExportResult("escala.escalalivre",Convert.ToBase64String(native),"application/json");
+        }
         return request.Format.ToLowerInvariant() switch
         {
-            "native" or "escalalivre" => new ExportResult("escala.escalalivre", Convert.ToBase64String(Encoding.UTF8.GetBytes(json)), "application/json"),
             "xlsx" => new ExportResult("escala.xlsx", Convert.ToBase64String(ToXlsx(request.Document)), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
             "pdf" => new ExportResult("escala.pdf", Convert.ToBase64String(ToPdf(request.Document)), "application/pdf"),
-            _ => throw new InvalidOperationException("Formato de exportacao nao suportado.")
+            _ => throw new FormatException("Formato de exportação não suportado.")
         };
     }
 
     public EscalaLivreDocument Import(ImportRequest request)
     {
-        string content = Encoding.UTF8.GetString(Convert.FromBase64String(request.ContentBase64));
+        if (request is null || string.IsNullOrWhiteSpace(request.ContentBase64) || request.ContentBase64.Length > NativeDocumentLimits.MaxBase64Characters
+            || string.IsNullOrWhiteSpace(request.FileName) || request.FileName.Length > 256 || request.Format is null)
+            throw new FormatException("Arquivo inválido ou maior que 1 MiB.");
+        byte[] bytes = Convert.FromBase64String(request.ContentBase64);
+        if (bytes.Length > NativeDocumentLimits.MaxBytes) throw new FormatException("Arquivo maior que 1 MiB.");
+        string content = new UTF8Encoding(false, true).GetString(bytes);
         if (request.Format.Equals("native", StringComparison.OrdinalIgnoreCase) || request.FileName.EndsWith(".escalalivre", StringComparison.OrdinalIgnoreCase))
         {
-            return JsonSerializer.Deserialize<EscalaLivreDocument>(content, JsonOptions)
-                ?? throw new InvalidOperationException("Arquivo nativo invalido.");
+            var document = JsonSerializer.Deserialize<EscalaLivreDocument>(content, JsonOptions);
+            if (DocumentSafety.Error(document) is not null) throw new FormatException("Documento inválido.");
+            return WithPlanningPeriod(document!);
         }
 
-        throw new InvalidOperationException("Importacao parcial de XLSX esta reservada para o adaptador de planilhas.");
+        throw new FormatException("Formato de importação não suportado.");
+    }
+
+    private static EscalaLivreDocument WithPlanningPeriod(EscalaLivreDocument document)
+    {
+        if (document.PlanningPeriod is not null) return document;
+        var first = document.Assignments.Count > 0 ? document.Assignments.Min(a => a.Start) : TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(document.Company.TimeZone)).DateTime;
+        var start = DateOnly.FromDateTime(first);
+        return document with { PlanningPeriod = new(start, start.AddDays(6)) };
     }
 
     private static byte[] ToXlsx(EscalaLivreDocument document)

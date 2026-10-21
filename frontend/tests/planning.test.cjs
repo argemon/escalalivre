@@ -33,7 +33,7 @@ test('splits coverage at minute boundaries', () => {
   assert.equal(a.gaps.length,1);
   assert.equal(a.gaps[0].start,'2026-05-18T13:15:00');
   assert.equal(a.gaps[0].end,'2026-05-18T13:45:00');
-  assert.equal(a.coverageScore,7.5/8);
+  assert.equal(a.coverageScore,0.938);
 });
 test('covers overnight requirements and discounts cross-day lunch', () => {
   const d = document();

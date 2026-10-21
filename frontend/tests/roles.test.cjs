@@ -8,7 +8,7 @@ const ts = require(root + 'node_modules/typescript');
 function load(file) {
   const exports = {};
   const code = ts.transpileModule(fs.readFileSync(root+'src/'+file,'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText;
-  vm.runInNewContext(code, { exports, crypto, Set, Map, Date });
+  vm.runInNewContext(code, { exports, crypto, Set, Map, Date, require: r => load(require("node:path").posix.normalize(require("node:path").posix.join(require("node:path").posix.dirname(file),r))+".ts") });
   return exports;
 }
 const { normalizeRoles } = load('lib/roles.ts');

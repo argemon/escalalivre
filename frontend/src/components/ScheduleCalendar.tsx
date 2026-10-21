@@ -1,3 +1,5 @@
+import { timePart, formatCivilDateTime } from "../lib/dateTime";
+import { exclusivePeriodEnd } from "../lib/planningPeriod";
 import { Button } from "./ui";
 import { holidayOn, authorizedHolidayShift } from "../lib/holidays";
 import { HolidayEditor } from "./HolidayEditor";
@@ -37,7 +39,7 @@ export function ScheduleCalendar() {
         const employee = document.employees.find((item) => item.id === assignment.employeeId);
         return {
           id: assignment.id,
-          title: `${!authorizedHolidayShift(document.company,assignment) && outsideOperatingHours(document.company,new Date(assignment.start).getDay(),assignment.start.slice(11,19),assignment.end.slice(11,19)) ? "⚠ Fora do expediente · " : ""}${employee?.name ?? "Funcionario"} · ${assignment.role}`,
+          title: `${!authorizedHolidayShift(document.company,assignment) && outsideOperatingHours(document.company,new Date(assignment.start).getDay(),timePart(assignment.start),timePart(assignment.end)) ? "⚠ Fora do expediente · " : ""}${employee?.name ?? "Funcionario"} · ${assignment.role}`,
           extendedProps: {employeeId:assignment.employeeId,role:assignment.role,break:assignment.break,planned:"planned" in assignment && assignment.planned},
           editable: !("planned" in assignment && assignment.planned),
           start: assignment.start,
@@ -53,7 +55,7 @@ export function ScheduleCalendar() {
       return;
     }
 
-    moveAssignment(arg.event.id, arg.event.start.toISOString(), arg.event.end.toISOString());
+    moveAssignment(arg.event.id, formatCivilDateTime(arg.event.start), formatCivilDateTime(arg.event.end));
   }
 
   if (viewMode === "week") return <WeeklySchedule />;
@@ -74,7 +76,9 @@ export function ScheduleCalendar() {
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView={viewMode === "month" ? "dayGridMonth" : "timeGridWeek"}
-          initialDate={document.assignments.map(a => a.start).sort()[0]}
+          key={document.id+document.planningPeriod.start+document.planningPeriod.end}
+          initialDate={document.planningPeriod.start}
+          validRange={{start:document.planningPeriod.start,end:exclusivePeriodEnd(document)}}
           eventClick={arg => setSelectedEmployeeId(arg.event.extendedProps.employeeId)}
           datesSet={arg => {setVisibleDate(dateKey(arg.view.currentStart));setRange(previous => previous?.start.getTime() === arg.start.getTime() && previous?.end.getTime() === arg.end.getTime() ? previous : {start:arg.start,end:arg.end});}}
           buttonText={{today:"Hoje"}}
@@ -92,6 +96,7 @@ export function ScheduleCalendar() {
           slotMaxTime="24:00:00"
           dayCellClassNames={arg => holidayOn(document.company,dateKey(arg.date)) ? ["calendar-holiday"] : document.company.operatingDays.includes(arg.date.getDay()) ? [] : ["bg-muted", "text-muted-foreground"]}
           dayCellContent={arg => { const holiday=holidayOn(document.company,dateKey(arg.date)); return <button type="button" className="text-right" title={holiday ? "Editar feriado e turnos: "+holiday.name : "Adicionar feriado ou turnos neste dia"} aria-label={(holiday ? "Editar feriado e turnos em " : "Adicionar feriado em ")+dateKey(arg.date)} onClick={()=>setHolidayDate(dateKey(arg.date))}>{arg.dayNumberText}{holiday ? <small className="block font-semibold">Feriado · {holiday.name}{holiday.closed ? " · Fechada" : " · Aberta"}</small> : !document.company.operatingDays.includes(arg.date.getDay()) && <small className="ml-1">Fechada</small>}</button>; }}
+          timeZone="local"
           locale="pt-br"
           firstDay={0}
           height="100%"

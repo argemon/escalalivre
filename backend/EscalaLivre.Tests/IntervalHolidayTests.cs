@@ -59,6 +59,6 @@ public class IntervalHolidayTests {
         ScheduleRequest r =Request(4,new(2026,10,12)); Employee e =r.Document.Employees[0];
   var shift=new ShiftAssignment(Guid.NewGuid(),e.Id,e.Role,r.Start.AddHours(8),r.Start.AddHours(12),null,"manual",["holiday:2026-10-12"]);
   r=r with {Document=r.Document with {Employees=[e with {Restrictions=[new(shift.Start,shift.End)]}],Assignments=[shift]}};
-  Assert.Contains(new OrToolsScheduleSolver().Validate(r).Conflicts,c=>c.Code=="invalidShift");
+  Assert.Contains(new OrToolsScheduleSolver().Validate(r).Conflicts,c=>c.Code=="availability");
  }
 }

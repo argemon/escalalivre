@@ -5,15 +5,10 @@ import { useScheduleStore } from "../store/scheduleStore";
 import { Badge, Button, IconButton, Panel } from "./ui";
 
 export function InsightPanel() {
-  const { document, analysis, setAnalysis, setDocument, theme, setTheme } = useScheduleStore();
+  const { document, analysis, applyGeneratedSchedule, importDocument, theme, setTheme } = useScheduleStore();
   const mutation = useMutation({
     mutationFn: solveSchedule,
-    onSuccess: (result) => {
-      if (!result.conflicts.some(item => item.code === "solverInfeasible" || item.code === "solverTimeout")) {
-      setDocument({ ...document, assignments: result.assignments, updatedAt: new Date().toISOString() });
-      }
-      setAnalysis(result);
-    }
+    onSuccess: (result, submitted) => applyGeneratedSchedule(submitted, result)
   });
 
   return (
@@ -45,7 +40,7 @@ export function InsightPanel() {
         </Button>
 
         <div className="grid grid-cols-2 gap-2">
-          <Button className="bg-card text-foreground dark:bg-card dark:text-foreground" onClick={() => exportNative(document)}>
+          <Button className="bg-card text-foreground dark:bg-card dark:text-foreground" onClick={() => {try {exportNative(document);} catch(error) {window.alert(error instanceof Error ? error.message : "Não foi possível exportar.");}}}>
             <Download className="size-4" />
             Exportar
           </Button>
@@ -59,7 +54,7 @@ export function InsightPanel() {
               onChange={async (event) => {
                 const file = event.target.files?.[0];
                 if (file) {
-                  setDocument(await importNative(file));
+                  try {importDocument(await importNative(file));} catch(error) {window.alert(error instanceof Error ? error.message : "Não foi possível importar.");} finally {event.target.value="";}
                 }
               }}
             />

@@ -1,3 +1,5 @@
+import { datePart, timePart } from "../lib/dateTime";
+import { planningDays } from "../lib/planningPeriod";
 import { outsideOperatingHours } from "../lib/coverageRules";
 import { Activity, Flame, Layers3 } from "lucide-react";
 import { Fragment, useState } from "react";
@@ -16,7 +18,7 @@ const dayLabels = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
 export function OperationalTimeline() {
   const { viewMode, setSelectedEmployeeId } = useScheduleStore();
   const document=useScheduleStore(state=>state.document);
-  const dates=[...new Set(document.assignments.map(a=>a.start.slice(0,10)))].sort();
+  const dates=planningDays(document);
   const [selectedDate,setSelectedDate]=useState(dates[0] ?? "");
   const activeDate=dates.includes(selectedDate) ? selectedDate : dates[0] ?? "";
 
@@ -47,12 +49,12 @@ export function OperationalTimeline() {
 
 function TimelineRows({ onEmployeeClick,selectedDate,setSelectedDate }: { onEmployeeClick: (id: string) => void;selectedDate:string;setSelectedDate:(date:string)=>void }) {
   const document = useScheduleStore((state) => state.document);
-  const dates = Array.from(new Set(document.assignments.map(a => a.start.slice(0,10)))).sort();
+  const dates = planningDays(document);
 
   const activeDate = dates.includes(selectedDate) ? selectedDate : dates[0] ?? "";
   const hours = (v: string) => { const [h,m] = v.split(":").map(Number); return h+m/60; };
   const opening = hours(document.company.opensAt), closing = hours(document.company.closesAt)+(hours(document.company.closesAt)<=opening ? 24 : 0);
-  const shifts = document.assignments.filter(a => a.start.slice(0,10) === activeDate);
+  const shifts = document.assignments.filter(a => datePart(a.start) === activeDate);
   const startHour = Math.floor(Math.min(opening,...shifts.map(a => dateToTimelineHour(a.start,activeDate))));
   const endHour = Math.ceil(Math.max(closing,...shifts.map(a => dateToTimelineHour(a.end,activeDate))));
   const span = Math.max(1,endHour-startHour);
@@ -75,7 +77,7 @@ function TimelineRows({ onEmployeeClick,selectedDate,setSelectedDate }: { onEmpl
       </div>
 
       {document.employees.map((employee) => {
-        const assignments = assignmentForEmployee(document, employee.id).filter(a => a.start.slice(0,10) === activeDate);
+        const assignments = assignmentForEmployee(document, employee.id).filter(a => datePart(a.start) === activeDate);
         return (
           <div key={employee.id} className="grid min-h-20 grid-cols-[180px_1fr] border-b border-border last:border-b-0">
             <button className="border-r border-border px-3 py-3 text-left hover:bg-muted" onClick={() => onEmployeeClick(employee.id)}>
@@ -85,19 +87,19 @@ function TimelineRows({ onEmployeeClick,selectedDate,setSelectedDate }: { onEmpl
             <div className="relative min-h-20 bg-[linear-gradient(90deg,hsl(var(--border))_1px,transparent_1px)] bg-[length:4.166%_100%]">
               {assignments.map((assignment) => {
                 const start = dateToTimelineHour(assignment.start);
-                const end = dateToTimelineHour(assignment.end, assignment.start.slice(0, 10));
-                const lunchStart = assignment.break ? dateToTimelineHour(assignment.break.start, assignment.start.slice(0, 10)) : undefined;
-                const lunchEnd = assignment.break ? dateToTimelineHour(assignment.break.end, assignment.start.slice(0, 10)) : undefined;
+                const end = dateToTimelineHour(assignment.end, datePart(assignment.start));
+                const lunchStart = assignment.break ? dateToTimelineHour(assignment.break.start, datePart(assignment.start)) : undefined;
+                const lunchEnd = assignment.break ? dateToTimelineHour(assignment.break.end, datePart(assignment.start)) : undefined;
                 const overnight = new Date(assignment.end).getDate() !== new Date(assignment.start).getDate();
                 return (
                   <div
                     key={assignment.id}
                     className={`absolute top-4 h-11 rounded-md border px-2 py-1 shadow-sm ${overnight ? "border-sky-400/60 bg-sky-500/25" : assignment.source === "solver" ? "border-emerald-400/60 bg-emerald-500/25" : "border-violet-400/60 bg-violet-500/25"}`}
                     style={{ left: `${percentAt(start)}%`, width: `${durationPercent(start, end)}%` }}
-                    title={assignmentLabel(assignment) + (outsideOperatingHours(document.company,new Date(assignment.start).getDay(),assignment.start.slice(11,19),assignment.end.slice(11,19)) ? " · Fora do expediente" : "")}
+                    title={assignmentLabel(assignment) + (outsideOperatingHours(document.company,new Date(assignment.start).getDay(),timePart(assignment.start),timePart(assignment.end)) ? " · Fora do expediente" : "")}
                   >
                     <div className="flex items-center justify-between gap-2 text-xs font-semibold">
-                      <span>{assignmentLabel(assignment)}{outsideOperatingHours(document.company,new Date(assignment.start).getDay(),assignment.start.slice(11,19),assignment.end.slice(11,19)) && " · Fora do expediente"}</span>
+                      <span>{assignmentLabel(assignment)}{outsideOperatingHours(document.company,new Date(assignment.start).getDay(),timePart(assignment.start),timePart(assignment.end)) && " · Fora do expediente"}</span>
                       {overnight && <span>+1d</span>}
                     </div>
                     {lunchStart !== undefined && lunchEnd !== undefined && (
@@ -160,13 +162,13 @@ function Heatmap() {
 
 function CoverageTable() {
   const coverage = useScheduleStore(state => state.analysis.coverage);
-  const dates = [...new Set(coverage.map(b => b.start.slice(0,10)))].sort();
+  const dates = [...new Set(coverage.map(b => datePart(b.start)))].sort();
   const [date,setDate] = useState("");
   const [role,setRole] = useState("");
   const activeDate = dates.includes(date) ? date : dates[0] ?? "";
   const roles = [...new Set(coverage.map(b => b.role))].sort();
   const rows: CoverageBlock[] = [];
-  for (const block of coverage.filter(b => b.start.slice(0,10) === activeDate && (!role || b.role === role)).sort((a,b) => a.role.localeCompare(b.role) || a.start.localeCompare(b.start))) {
+  for (const block of coverage.filter(b => datePart(b.start) === activeDate && (!role || b.role === role)).sort((a,b) => a.role.localeCompare(b.role) || a.start.localeCompare(b.start))) {
     const previous = rows[rows.length-1];
     if (previous && previous.role === block.role && previous.end === block.start && previous.required === block.required && previous.assigned === block.assigned && previous.state === block.state) previous.end = block.end;
     else rows.push({...block});
@@ -175,6 +177,6 @@ function CoverageTable() {
   return <section className="space-y-4 rounded-xl border border-border bg-card p-5">
     <div><h3 className="text-xl font-semibold">Pessoas por horário</h3><p className="mt-1 text-sm text-muted-foreground">Pessoas em turnos cadastrados, descontando o intervalo. Períodos consecutivos com a mesma quantidade aparecem juntos.</p></div>
     <div className="flex flex-wrap gap-3"><label className="text-sm">Dia<select className="ml-2 rounded-lg border border-border bg-background p-2" value={activeDate} onChange={e => setDate(e.target.value)}>{dates.map(d => <option key={d} value={d}>{d.split("-").reverse().join("/")}</option>)}</select></label><label className="text-sm">Função<select className="ml-2 rounded-lg border border-border bg-background p-2" value={role} onChange={e => setRole(e.target.value)}><option value="">Todas</option>{roles.map(r => <option key={r}>{r}</option>)}</select></label></div>
-    {!rows.length ? <p className="text-sm text-muted-foreground">Nenhuma cobertura para este filtro. Configure as regras de cobertura na aba Cobertura.</p> : <div className="overflow-x-auto"><table className="w-full min-w-[620px] text-left text-sm"><thead className="bg-muted"><tr>{["Função","Horário","Escaladas","Necessárias","Situação"].map(t => <th key={t} className="p-3">{t}</th>)}</tr></thead><tbody>{rows.map((b,i) => <tr key={i} className="border-t border-border"><td className="p-3 font-medium">{b.role}</td><td className="p-3">{time(b.start)}–{time(b.end)}{b.end.slice(0,10) !== b.start.slice(0,10) && " (+1 dia)"}</td><td className="p-3">{b.assigned}</td><td className="p-3">{b.required}</td><td className={"p-3 font-medium " + (b.assigned >= b.required ? "text-emerald-600" : "text-red-600")}>{b.assigned >= b.required ? "Coberto" : "Faltam " + (b.required-b.assigned)}</td></tr>)}</tbody></table></div>}
+    {!rows.length ? <p className="text-sm text-muted-foreground">Nenhuma cobertura para este filtro. Configure as regras de cobertura na aba Cobertura.</p> : <div className="overflow-x-auto"><table className="w-full min-w-[620px] text-left text-sm"><thead className="bg-muted"><tr>{["Função","Horário","Escaladas","Necessárias","Situação"].map(t => <th key={t} className="p-3">{t}</th>)}</tr></thead><tbody>{rows.map((b,i) => <tr key={i} className="border-t border-border"><td className="p-3 font-medium">{b.role}</td><td className="p-3">{time(b.start)}–{time(b.end)}{datePart(b.end) !== datePart(b.start) && " (+1 dia)"}</td><td className="p-3">{b.assigned}</td><td className="p-3">{b.required}</td><td className={"p-3 font-medium " + (b.assigned >= b.required ? "text-emerald-600" : "text-red-600")}>{b.assigned >= b.required ? "Coberto" : "Faltam " + (b.required-b.assigned)}</td></tr>)}</tbody></table></div>}
   </section>;
 }

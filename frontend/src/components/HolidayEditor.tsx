@@ -1,3 +1,4 @@
+import { datePart, timePart, displayClock, nowInstant } from "../lib/dateTime";
 import { useState } from "react";
 import { useScheduleStore } from "../store/scheduleStore";
 import { holidayOn } from "../lib/holidays";
@@ -12,7 +13,7 @@ export function HolidayEditor({date,onClose}:{date:string;onClose:()=>void}) {
   const current=holidayOn(document.company,date);
   const [name,setName]=useState(current?.name ?? "");
   const [closed,setClosed]=useState(current?.closed ?? true);
-  const initial=document.assignments.filter(a=>a.start.slice(0,10)===date);
+  const initial=document.assignments.filter(a=>datePart(a.start)===date);
   const [shifts,setShifts]=useState<ShiftAssignment[]>(initial);
   const [employeeId,setEmployeeId]=useState(document.employees[0]?.id ?? "");
   const [startsAt,setStartsAt]=useState(document.company.opensAt);
@@ -34,7 +35,7 @@ export function HolidayEditor({date,onClose}:{date:string;onClose:()=>void}) {
   const save=()=>{
     if(editingId) {setError("Aplique a edição do turno antes de salvar o feriado.");return;}
     if(!name.trim()) {setError("Informe o nome do feriado.");return;}
-    setDocument({...document,company:{...document.company,holidays:[...(document.company.holidays ?? []).filter(h=>h.date!==date),{date,name:name.trim(),closed}]},assignments:[...document.assignments.filter(a=>!initial.some(i=>i.id===a.id)),...shifts],updatedAt:new Date().toISOString()});onClose();
+    setDocument({...document,company:{...document.company,holidays:[...(document.company.holidays ?? []).filter(h=>h.date!==date),{date,name:name.trim(),closed}]},assignments:[...document.assignments.filter(a=>!initial.some(i=>i.id===a.id)),...shifts],updatedAt:nowInstant()});onClose();
   };
   const inputClass="w-full rounded border border-border bg-background p-2";
   return <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 p-4">
@@ -58,12 +59,12 @@ export function HolidayEditor({date,onClose}:{date:string;onClose:()=>void}) {
         </>}
         {shifts.length===0 && <p className="text-sm text-muted-foreground">Nenhuma pessoa escalada neste feriado.</p>}
         <ul className="space-y-2">{shifts.map(a=><li key={a.id} className="flex flex-wrap items-center justify-between gap-2 rounded border border-border p-3">
-          <div><strong>{document.employees.find(e=>e.id===a.employeeId)?.name ?? "Pessoa removida"} · {a.role}</strong><p className="text-sm">{a.start.slice(11,16)}–{a.end.slice(11,16)}{a.end.slice(0,10)!==date && " (dia seguinte)"}{a.break && " · Intervalo "+a.break.start.slice(11,16)+"–"+a.break.end.slice(11,16)}</p></div>
-          <div className="flex gap-2"><Button type="button" onClick={()=>{setEditingId(a.id);setEmployeeId(a.employeeId);setStartsAt(a.start.slice(11,19));setEndsAt(a.end.slice(11,19));setError("");}}>Editar</Button><Button type="button" onClick={()=>{setShifts(rows=>rows.filter(s=>s.id!==a.id));if(editingId===a.id)setEditingId(undefined);}}>Remover</Button></div>
+          <div><strong>{document.employees.find(e=>e.id===a.employeeId)?.name ?? "Pessoa removida"} · {a.role}</strong><p className="text-sm">{displayClock(a.start)}–{displayClock(a.end)}{datePart(a.end)!==date && " (dia seguinte)"}{a.break && " · Intervalo "+displayClock(a.break.start)+"–"+displayClock(a.break.end)}</p></div>
+          <div className="flex gap-2"><Button type="button" onClick={()=>{setEditingId(a.id);setEmployeeId(a.employeeId);setStartsAt(timePart(a.start));setEndsAt(timePart(a.end));setError("");}}>Editar</Button><Button type="button" onClick={()=>{setShifts(rows=>rows.filter(s=>s.id!==a.id));if(editingId===a.id)setEditingId(undefined);}}>Remover</Button></div>
         </li>)}</ul>
       </section>
       {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
-      <div className="flex flex-wrap gap-2"><Button type="submit">Salvar feriado e escala</Button><Button type="button" onClick={onClose}>Cancelar</Button>{current && !current.national && <Button type="button" onClick={()=>{setDocument({...document,company:{...document.company,holidays:document.company.holidays?.filter(h=>h.date!==date)},updatedAt:new Date().toISOString()});onClose();}}>Remover feriado local</Button>}</div>
+      <div className="flex flex-wrap gap-2"><Button type="submit">Salvar feriado e escala</Button><Button type="button" onClick={onClose}>Cancelar</Button>{current && !current.national && <Button type="button" onClick={()=>{setDocument({...document,company:{...document.company,holidays:document.company.holidays?.filter(h=>h.date!==date)},updatedAt:nowInstant()});onClose();}}>Remover feriado local</Button>}</div>
     </form>
   </div>;
 }

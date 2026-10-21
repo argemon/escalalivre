@@ -6,7 +6,10 @@ public sealed record EscalaLivreDocument(
     CompanyRules Company,
     IReadOnlyList<Employee> Employees,
     IReadOnlyList<ShiftAssignment> Assignments,
-    DateTimeOffset UpdatedAt);
+    DateTimeOffset UpdatedAt,
+    PlanningPeriod? PlanningPeriod = null);
+
+public sealed record PlanningPeriod(DateOnly Start, DateOnly End);
 
 public sealed record CompanyRules(
     string Name,
@@ -18,7 +21,8 @@ public sealed record CompanyRules(
     TimeSpan MinimumRest,
     IReadOnlyList<CoverageRequirement> Coverage,
     MiddayClosure? MiddayClosure = null,
-    IReadOnlyList<Holiday>? Holidays = null);
+    IReadOnlyList<Holiday>? Holidays = null,
+    string TimeZone = "America/Cuiaba");
 
 public sealed record Holiday(DateOnly Date, string Name, bool Closed = true);
 
@@ -69,7 +73,7 @@ public sealed record ShiftAssignment(
 
 public sealed record BreakWindow(DateTime Start, DateTime End);
 
-public sealed record ScheduleIssue(string Severity, string Code, string Message, DateTime? Start = null, DateTime? End = null, string? Role = null);
+public sealed record ScheduleIssue(string Severity, string Code, string Message, DateTime? Start = null, DateTime? End = null, string? Role = null, Guid? EmployeeId = null);
 
 public sealed record CoverageBlock(DateTime Start, DateTime End, string Role, int Required, int Assigned, string State);
 

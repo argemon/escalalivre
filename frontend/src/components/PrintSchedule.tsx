@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Printer, X } from "lucide-react";
 import { useScheduleStore } from "../store/scheduleStore";
-import { dateKey, displayDate, employeePrintRows, monthBounds } from "../lib/printSchedule";
+import { displayDate, employeePrintRows, monthBounds } from "../lib/printSchedule";
 import { Button } from "./ui";
 import { Brand } from "./Brand";
 
 export function PrintSchedule({ onClose }: { onClose: () => void }) {
   const document = useScheduleStore(state => state.document);
-  const initialDate = document.assignments.map(a=>a.start.slice(0,10)).sort()[0] ?? dateKey(new Date());
+  const initialDate = document.planningPeriod.start;
   const [month,setMonth] = useState(initialDate.slice(0,7));
   const bounds = monthBounds(month);
   const rows = employeePrintRows(document,month);

@@ -1,3 +1,4 @@
+import { normalizeDocumentTimes, datePart, displayClock } from "./dateTime";
 import type { EscalaLivreDocument, ShiftAssignment } from "../types/schedule";
 
 export function dateKey(date: Date): string {
@@ -24,6 +25,7 @@ export function periodDays(start: string, end: string): string[] {
 }
 
 export function printWeeks(document: EscalaLivreDocument, start: string, end: string) {
+  document = normalizeDocumentTimes(document);
   const selectedDays = periodDays(start, end);
   if (!selectedDays.length) return [];
   const days: string[] = [];
@@ -34,7 +36,7 @@ export function printWeeks(document: EscalaLivreDocument, start: string, end: st
       cursor.setDate(cursor.getDate() + 1);
     }
   }
-  const shifts = document.assignments.filter(a => a.start.slice(0, 10) >= start && a.start.slice(0, 10) <= end)
+  const shifts = document.assignments.filter(a => datePart(a.start) >= start && datePart(a.start) <= end)
     .sort((a, b) => a.start.localeCompare(b.start));
   const people = document.employees.map(e => ({ id: e.id, name: e.name, role: e.role }));
   for (const shift of shifts) {
@@ -45,7 +47,7 @@ export function printWeeks(document: EscalaLivreDocument, start: string, end: st
     const week = days.slice(i, i + 7);
     weeks.push({ days: week, rows: people.map(person => ({
       person,
-      cells: week.map(day => shifts.filter(a => a.employeeId === person.id && a.start.slice(0, 10) === day))
+      cells: week.map(day => shifts.filter(a => a.employeeId === person.id && datePart(a.start) === day))
     })) });
   }
   return weeks;
@@ -59,16 +61,17 @@ export function monthBounds(month: string): { start: string; end: string } | und
   last.setMonth(last.getMonth() + 1, 0);
   return { start, end: dateKey(last) };
 }
-export const displayTime = (value: string) => value.slice(11, 16);
+export const displayTime = (value: string) => displayClock(value);
 export function dayOffset(value: string, start: string) {
-  const days = Math.round((+new Date(`${value.slice(0, 10)}T12:00:00`) - +new Date(`${start.slice(0, 10)}T12:00:00`)) / 86400000);
+  const days = Math.round((+new Date(`${datePart(value)}T12:00:00`) - +new Date(`${datePart(start)}T12:00:00`)) / 86400000);
   return days > 0 ? ` (+${days}d)` : "";
 }
 
 export function employeePrintRows(document: EscalaLivreDocument, month: string) {
+  document = normalizeDocumentTimes(document);
   const bounds = monthBounds(month);
   if (!bounds) return [];
-  const shifts = document.assignments.filter(a => a.start.slice(0,10) >= bounds.start && a.start.slice(0,10) <= bounds.end);
+  const shifts = document.assignments.filter(a => datePart(a.start) >= bounds.start && datePart(a.start) <= bounds.end);
   const people = document.employees.map(e=>({id:e.id,name:e.name,role:e.role}));
   for (const shift of shifts) if (!people.some(e=>e.id===shift.employeeId)) people.push({id:shift.employeeId,name:"Pessoa não cadastrada",role:shift.role});
   people.sort((a,b)=>a.name.localeCompare(b.name,"pt-BR")||a.id.localeCompare(b.id));
@@ -76,7 +79,7 @@ export function employeePrintRows(document: EscalaLivreDocument, month: string) 
     const groups: { person: typeof person; start: string; end: string; hours: string; interval: string; role: string }[] = [];
     const sorted = shifts.filter(a=>a.employeeId===person.id).sort((a,b)=>a.start.localeCompare(b.start));
     for (const shift of sorted) {
-      const day = shift.start.slice(0,10);
+      const day = datePart(shift.start);
       const hours = `${displayTime(shift.start)}–${displayTime(shift.end)}${dayOffset(shift.end,shift.start)}`;
       const interval = shift.break ? `${displayTime(shift.break.start)}${dayOffset(shift.break.start,shift.start)}–${displayTime(shift.break.end)}${dayOffset(shift.break.end,shift.start)}` : "Sem intervalo";
       const previous = groups.at(-1);

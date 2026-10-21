@@ -1,4 +1,4 @@
-import { AlertTriangle, Building2, Clock3, ShieldCheck, Users } from "lucide-react";
+import { AlertTriangle, ArrowRight, Check, Clock3, ShieldCheck, Users } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { RolesEditor } from "./RolesEditor";
 import { CompanyEditor } from "./CompanyEditor";
@@ -13,31 +13,38 @@ export function OperationalSidebar() {
   const [section, setSection] = useState<"company" | "roles" | "coverage" | "team">("company");
   const [search, setSearch] = useState("");
   const [editor,setEditor] = useState<"company" | "coverage" | null>(null);
+  const steps = [
+    { id: "company", label: "Empresa", done: document.setup?.companyConfigured ?? (document.employees.length > 0 || document.company.coverage.length > 0), description: "Defina os dias e horários de funcionamento." },
+    { id: "roles", label: "Funções", done: Boolean(document.roles?.length), description: "Cadastre os cargos usados na cobertura e na equipe." },
+    { id: "coverage", label: "Cobertura", done: document.company.coverage.length > 0, description: "Informe quantas pessoas precisa por função e horário." },
+    { id: "team", label: "Equipe", done: document.employees.length > 0, description: "Adicione as pessoas e suas jornadas de trabalho." },
+  ] as const;
+  const completed = steps.filter(step => step.done).length;
+  const currentIndex = steps.findIndex(step => step.id === section);
+  const nextPending = steps.find(step => !step.done);
+  const currentStep = steps[currentIndex];
   return (
     <Panel className="flex h-full min-h-0 w-full flex-col border-r">
-      <div className="border-b border-border p-4">
-        <div className="flex items-center gap-2">
-          <Building2 className="size-4 text-primary" />
-          <h2 className="break-words text-lg font-semibold">{document.company.name}</h2>
-        </div>
+      <div className="setup-heading">
+        <div className="flex items-center justify-between gap-2"><h2 className="text-sm font-semibold">Configure sua escala</h2><span className="text-xs text-primary" role="status">{completed}/4 concluídas</span></div>
+        {nextPending && <p className="text-xs text-muted-foreground">Preencha as etapas em ordem para gerar.</p>}
+        <progress className="setup-progress" value={completed} max={4} aria-label="Etapas de cadastro concluídas" />
       </div>
-
-      <div className="space-y-2 border-b border-border p-3">
-        <p className="text-sm font-semibold">Configure seu planejamento</p>
-        <ol className="space-y-1 text-xs">
-          {([
-            ['company', 'Empresa', document.setup?.companyConfigured ?? (document.employees.length > 0 || document.company.coverage.length > 0), 'Definir funcionamento'],
-            ['roles', 'Funções', Boolean(document.roles?.length), 'Cadastrar funções'],
-            ['coverage', 'Cobertura', document.company.coverage.length > 0, 'Definir cobertura'],
-            ['team', 'Equipe', document.employees.length > 0, 'Adicionar funcionários'],
-          ] as const).map(([id, label, done, pending], index) => <li key={id}><button className="flex w-full items-center justify-between gap-2 rounded p-1 text-left hover:bg-muted" onClick={() => setSection(id)}><span>{index + 1}. {label}</span><span className={done ? 'text-emerald-600' : 'text-muted-foreground'}>{done ? 'Cadastrado' : pending}</span></button></li>)}
+      <nav aria-label="Etapas de configuração" className="setup-steps">
+        <ol>
+          {steps.map((step, index) => <li key={step.id}>
+            <button className={"setup-step " + (section === step.id ? "is-current" : "")} aria-current={section === step.id ? "step" : undefined} aria-label={`${index + 1}. ${step.label}: ${step.done ? "Concluída" : nextPending?.id === step.id ? "Próximo passo" : "Pendente"}`} title={step.description} onClick={() => setSection(step.id)}>
+              <span className={"setup-step-number " + (step.done ? "is-done" : "")}>{index + 1}</span>
+              <span className="setup-step-label">{step.label}</span>
+              {step.done && <Check className="size-3 text-primary" aria-hidden="true" />}
+            </button>
+          </li>)}
+          <li><button className="setup-step setup-generate" onClick={() => {if(nextPending) setSection(nextPending.id);else useScheduleStore.getState().setViewMode("solver");}}><span className="setup-step-number">5</span><span className="setup-step-label">Revisar e gerar</span><ArrowRight className="size-4" /></button></li>
         </ol>
-        <button className="text-xs font-medium text-primary" onClick={() => useScheduleStore.getState().setViewMode("solver")}>5. Revisar e gerar escala →</button>
-      </div>
-      <nav aria-label="Dados do planejamento" className="flex gap-1 border-b border-border p-2">
-        {([['company', 'Empresa'], ['roles', 'Funções'], ['coverage', 'Cobertura'], ['team', 'Equipe']] as const).map(([id, label]) => <button key={id} aria-pressed={section === id} onClick={() => setSection(id)} className={"flex-1 rounded-lg px-2 py-2 text-sm font-medium transition " + (section === id ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted')}>{label}</button>)}
       </nav>
-      <div className="min-h-0 flex-1 space-y-4 overflow-auto p-4">
+      <div className="setup-content min-h-0 flex-1 space-y-4 overflow-auto p-3">
+        <div className="setup-current-description"><h3 className="text-sm font-semibold">Etapa {currentIndex + 1} · {currentStep.label}</h3><p className="text-xs text-muted-foreground">{currentStep.description}</p></div>
+
         {section === "roles" && <RolesEditor />}
         {section === "company" && <section className="space-y-2">
           <SectionTitle icon={<Clock3 className="size-4" />} title={document.company.name} /><Button className="w-full" onClick={() => setEditor("company")}>Configurar empresa</Button>
@@ -57,7 +64,7 @@ export function OperationalSidebar() {
 
         {section === "coverage" && <section className="space-y-2">
           <SectionTitle icon={<ShieldCheck className="size-4" />} title="Cobertura mínima" /><Button className="w-full" disabled={!document.roles?.length} onClick={() => setEditor("coverage")}>Editar cobertura mínima</Button>
-          {!document.roles?.length && <p className="text-sm text-muted-foreground">Primeiro, cadastre as funções na aba Funções.</p>}
+          {!document.roles?.length && <p className="text-sm text-muted-foreground">Primeiro, complete a etapa 2: Funções.</p>}
           {!document.company.coverage.length && <p className="text-sm text-muted-foreground">Nenhuma cobertura definida. Informe quantas pessoas são necessárias por função e horário.</p>}
           {document.company.coverage.map((requirement,index) => {
             const blocks = analysis.coverage.filter(b => b.role === requirement.role && new Date(b.start).getDay() === requirement.day && (() => {
@@ -123,6 +130,10 @@ export function OperationalSidebar() {
           {search && !document.employees.some(employee => (employee.name + " " + employee.role).toLocaleLowerCase("pt-BR").includes(search.toLocaleLowerCase("pt-BR"))) && <p className="text-sm text-muted-foreground">Nenhuma pessoa encontrada.</p>}
         </section>}
       </div>
+        <div className="setup-continue shrink-0 p-3">
+          <Button className="w-full" disabled={!currentStep.done} onClick={() => {const next=steps[currentIndex+1];if(next) setSection(next.id);else if(nextPending) setSection(nextPending.id);else useScheduleStore.getState().setViewMode("solver");}}>{currentIndex < 3 ? "Continuar para " + steps[currentIndex+1].label : nextPending ? "Completar " + nextPending.label : "Revisar e gerar escala"}<ArrowRight className="size-4" /></Button>
+          {!currentStep.done && <p className="mt-2 text-xs text-muted-foreground">Salve este cadastro para continuar.</p>}
+        </div>
       {editor && <CompanyEditor tab={editor} onClose={() => setEditor(null)} onSaved={() => { if (editor === "company") setSection("roles"); }} />}
     </Panel>
   );

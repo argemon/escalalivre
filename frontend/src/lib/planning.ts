@@ -1,3 +1,5 @@
+import { civilDateTime } from "./dateTime";
+import { datePart, displayClock } from "./dateTime";
 import type { CoverageRequirement, Employee, EscalaLivreDocument, ShiftAssignment } from "../types/schedule";
 
 export const dayLabels = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
@@ -14,8 +16,8 @@ export function timeToHour(value: string) {
   return hours + (minutes ?? 0) / 60;
 }
 
-export function dateToTimelineHour(value: string, baseDay = value.slice(0, 10)) {
-  const date = new Date(value);
+export function dateToTimelineHour(value: string, baseDay = datePart(value)) {
+  const date = new Date(civilDateTime(value));
   const base = new Date(`${baseDay}T00:00:00`);
   const dayOffset = Math.round((startOfDay(date).getTime() - startOfDay(base).getTime()) / 86_400_000);
   return date.getHours() + date.getMinutes() / 60 + dayOffset * 24;
@@ -47,11 +49,11 @@ export function coverageForRequirement(document: EscalaLivreDocument, requiremen
   const requiredEnd = timeToHour(requirement.end);
   const covered = document.assignments.filter((assignment) => {
     const start = dateToTimelineHour(assignment.start);
-    const end = dateToTimelineHour(assignment.end, assignment.start.slice(0, 10));
+    const end = dateToTimelineHour(assignment.end, datePart(assignment.start));
     const weekday = new Date(assignment.start).getDay();
     const effectiveEnd = requiredEnd <= requiredStart ? requiredEnd + 24 : requiredEnd;
-    const pauseStart = assignment.break ? dateToTimelineHour(assignment.break.start, assignment.start.slice(0, 10)) : Infinity;
-    const pauseEnd = assignment.break ? dateToTimelineHour(assignment.break.end, assignment.start.slice(0, 10)) : Infinity;
+    const pauseStart = assignment.break ? dateToTimelineHour(assignment.break.start, datePart(assignment.start)) : Infinity;
+    const pauseEnd = assignment.break ? dateToTimelineHour(assignment.break.end, datePart(assignment.start)) : Infinity;
     return weekday === requirement.day && assignment.role === requirement.role && start <= requiredStart && end >= effectiveEnd
       && (!assignment.break || pauseEnd <= requiredStart || pauseStart >= effectiveEnd);
   }).length;
@@ -64,10 +66,7 @@ export function coverageForRequirement(document: EscalaLivreDocument, requiremen
 }
 
 export function assignmentLabel(assignment: ShiftAssignment) {
-  const start = new Date(assignment.start);
-  const end = new Date(assignment.end);
-  const clock = (d: Date) => `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
-  return `${clock(start)}–${clock(end)}`;
+  return `${displayClock(assignment.start)}–${displayClock(assignment.end)}`;
 }
 
 function startOfDay(value: Date) {

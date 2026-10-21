@@ -1,0 +1,104 @@
+# Proteção da API pública
+
+As proteções são habilitadas por padrão. Não substituem proteção contra DDoS na
+infraestrutura, nem representam uma garantia de disponibilidade.
+
+## Limites iniciais
+
+| Controle | Padrão |
+| --- | --- |
+| Solicitações por IP | 60 por minuto |
+| Gerações por IP | 6 por minuto, compartilhadas entre as variações de maiúsculas da rota |
+| Requisições em execução na API | 8, sem fila adicional |
+| Processos de cálculo simultâneos | 1 |
+| Pedidos aguardando cálculo | 2 |
+| Espera máxima na fila | 3 segundos |
+| Prazo por processo, incluindo preparação, cálculo e resultado | 12 segundos |
+| Memória residente por processo | encerramento ao detectar mais de 512 MB |
+| Corpo HTTP | 2 MB, inclusive sem Content-Length |
+| Prazo HTTP total, incluindo leitura do corpo | prazo do worker + espera na fila + 5 segundos (20 por padrão), com encerramento da conexão após mais 1 segundo |
+| Arquivo nativo importado | 1 MB decodificado |
+| Funcionários / turnos / regras de cobertura | 200 / 20.000 / 1.000 |
+| Período de geração | 31 dias de calendário |
+| Candidatos / operações de montagem mais caras | 30.000 / 300.000 |
+
+Os valores de tráfego, concorrência, espera e recursos estão em
+`backend/EscalaLivre.Api/appsettings.json`, seção `Protection`. Podem ser alterados
+por variáveis como `Protection__SolvesPerMinute=6`. As opções são validadas ao
+iniciar. Aumente os limites somente após medir CPU, memória e latência sob carga.
+
+Os limites de taxa, concorrência e fila são **por instância da API**. Com várias
+réplicas, configure também cotas globais no gateway ou armazenamento compartilhado.
+Limites por IP podem afetar empresas que compartilham uma conexão; ajuste-os com
+base no uso real. Não há identidade de usuário confiável no modo sem cadastro.
+
+## Cálculos isolados
+
+`/solve`, `/validate` e `/analyze` compartilham a mesma fila e executam em processos
+filhos, usando o próprio executável da API com `--calculation-worker`. Não há shell
+nem dados do usuário nos argumentos. A entrada e a saída usam pipes. O CP-SAT usa
+um trabalhador de busca, com limite interno de cinco segundos. O prazo externo
+também inclui a construção do modelo e a análise dos resultados.
+
+O processo é encerrado e aguardado ao exceder o prazo, a memória, o tamanho da
+saída ou ao desconectar o cliente. O slot só é liberado depois que o filho termina.
+O encerramento normal da aplicação também cancela os cálculos. A publicação deve
+preservar o executável .NET e permitir criar processos filhos; não use um ambiente
+serverless que proíba esse recurso sem adaptar a execução para workers externos.
+
+A memória é observada a cada 50 ms: pode haver um pico antes do encerramento.
+`num_search_workers:1` controla o paralelismo da busca; não é uma cota de CPU do
+sistema operacional. Configure limites rígidos de memória e CPU no container,
+cgroup ou serviço de hospedagem, abrangendo a API e os filhos. Dimensione a
+memória total considerando API, workers, entradas e respostas simultâneas.
+
+## Domínio, proxy e TLS
+
+Em produção, CORS não permite origens externas por padrão. Hospedar frontend e API
+na mesma origem dispensa CORS. Para domínios separados, configure o endereço real,
+sem barra final, por exemplo `Protection__AllowedOrigins__0=https://escala.exemplo.com`.
+No frontend, configure `VITE_API_URL` com a URL da API. Sem essa variável, o build de
+produção usa a própria origem; desenvolvimento usa localhost:5003.
+
+`Protection:TrustedProxies` fica vazio por padrão. Somente endereços explicitamente
+configurados podem fornecer X-Forwarded-For e X-Forwarded-Proto. Exemplo para um
+proxy local: `Protection__TrustedProxies__0=127.0.0.1`. Há limite de um salto:
+configure o proxy imediatamente anterior para enviar o IP real verificado e
+sobrescrever cabeçalhos recebidos do público. Não confie em qualquer proxy.
+
+Antes de publicar, configure HTTPS, os domínios aceitos em `AllowedHosts`, proteção
+DDoS/WAF e firewall para impedir acesso direto à origem. HSTS é aplicado em HTTPS
+em produção; atrás de proxy, a identificação de HTTPS depende da configuração
+de proxies confiáveis. CORS não autentica nem bloqueia scripts fora do navegador.
+Os cabeçalhos CSP são da API; configure uma política própria no host do frontend.
+
+## Respostas, privacidade e operação
+
+Pedidos inválidos retornam 400; excesso de corpo, 413; complexidade/memória, 422;
+limite de chamadas, 429; fila cheia/espera excedida, 503; prazo do cálculo, 504.
+429 e 503 incluem Retry-After. O frontend apresenta mensagens de espera e não
+repete automaticamente cálculos dispendiosos. A importação valida Base64, UTF-8,
+profundidade JSON, estrutura, referências, identificadores e limites dos dados.
+
+Os logs da aplicação incluem rota conhecida, status, duração e bloqueios. Não
+registram documentos, nomes, corpos ou mensagens de exceções contendo a entrada.
+Não habilite logging de corpos no proxy ou APM. Configure retenção e alertas de
+429/503/504, memória, CPU, tempo de cálculo, indisponibilidade e despesas na
+hospedagem. Health indica que a API responde, sem iniciar um cálculo.
+
+## Validação
+
+```sh
+dotnet build EscalaLivre.slnx
+dotnet test EscalaLivre.slnx --no-build
+node backend/security.integration.cjs
+cd frontend
+npm run build
+node --test tests/*.test.cjs
+```
+
+Os testes HTTP iniciam instâncias locais em portas temporárias e verificam
+geração real, importação/exportação, entradas inválidas, corpo excessivo, CORS,
+limites de taxa, cabeçalhos de IP forjados, sobrecarga, prazo, memória e cancelamento.
+Para build Release, defina `SECURITY_BUILD_CONFIGURATION=Release` no teste HTTP.
+Teste a capacidade da hospedagem escolhida em ambiente separado antes de divulgar.

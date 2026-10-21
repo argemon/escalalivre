@@ -4,17 +4,21 @@
 
 ### Planeje a equipe. Enxergue as lacunas. Tome decisões melhores.
 
-**EscalaLivre é uma plataforma aberta de planejamento de equipes que combina geração automática de escalas, análise de cobertura e regras configuráveis em uma interface pensada para RH e pequenos empresários.**
+**Escala Livre é uma plataforma aberta para montar escalas de trabalho, conferir a cobertura da operação e ajustar jornadas, intervalos e disponibilidades. Feita para RH, gestores e pequenos empresários.**
 
 > **Matemática para organizar pessoas.** A geração de escalas usa algoritmos e otimização por restrições, sem IA generativa, modelos de linguagem ou serviços de IA.
 
-**Para usar uma instância já disponibilizada, basta abrir no navegador: sem cadastro e sem instalar nada no seu dispositivo. Salve seu progresso e continue de onde parou quando quiser.**
+Use uma instância já disponibilizada pelo navegador, **sem cadastro nem instalação**. O planejamento fica no dispositivo e pode ser levado para outro computador em um arquivo `.escalalivre`. Para hospedar sua própria instância, veja [como executar localmente](#experimente-localmente) e as [proteções da API](docs/SECURITY.md).
 
 Uma escala precisa responder a mais do que “quem trabalha hoje?”. É preciso saber se haverá pessoas suficientes na abertura, durante o almoço e no fechamento — sem ignorar disponibilidade, descanso e limites de jornada.
 
 O EscalaLivre conecta essas perguntas. Você informa como a empresa funciona, quem faz parte da equipe e quantas pessoas precisa em cada período. O sistema busca uma distribuição de turnos, mostra o que ficou descoberto e oferece informações para revisar o planejamento.
 
-[Primeiros passos](#um-exemplo-vendedores-todos-os-dias) · [Recursos](#o-que-você-pode-fazer-hoje) · [Novidades](#novidades-no-planejamento) · [Algoritmo por dentro](#para-os-nerds-o-algoritmo-por-dentro) · [Executar localmente](#experimente-localmente)
+[Primeiros passos](#primeiros-passos) · [Recursos](#o-que-você-pode-fazer-hoje) · [Período e geração](#período-de-planejamento-e-geração) · [Salvar e recuperar](#salvar-exportar-e-recuperar) · [Executar localmente](#experimente-localmente) · [Algoritmo por dentro](#para-os-nerds-o-algoritmo-por-dentro)
+
+![Interface do Escala Livre: etapas de configuração compactas, tabela semanal com uma linha por pessoa e botão Assistente de escala destacado](docs/images/visao-geral.png)
+
+*Exemplo com dados de demonstração. A tabela distingue horários estimados de turnos salvos.*
 
 ## O problema que queremos resolver
 
@@ -27,14 +31,35 @@ Montar uma escala manualmente exige conciliar decisões que se afetam o tempo to
 
 **O objetivo é tornar essas relações visíveis e reduzir o trabalho de tentativa e erro.** A escala passa a ser um planejamento que pode ser analisado, ajustado e levado de um dispositivo para outro.
 
+## Primeiros passos
+
+Na lateral **Configure sua escala**, preencha os quatro cadastros na ordem indicada. Os números, as marcações de conclusão e o contador ajudam a acompanhar o progresso; o botão **Continuar** leva à próxima etapa.
+
+| Etapa | O que preencher |
+| --- | --- |
+| **1. Empresa** | Nome, dias e horários de funcionamento, jornada padrão, descanso e intervalos. |
+| **2. Funções** | Os cargos usados na operação, como Vendedor, Caixa ou Segurança. |
+| **3. Cobertura** | Quantas pessoas são necessárias em cada função, dia e faixa de horário. |
+| **4. Equipe** | Pessoas, funções, jornadas e eventuais disponibilidades ou restrições individuais. |
+
+Depois dos cadastros:
+
+1. No cabeçalho, escolha **Início** e **Fim (inclusive)** e clique em **Aplicar período**.
+2. Abra o botão verde **Assistente de escala**, com o ícone de brilho, e clique em **Gerar escala otimizada**. A etapa **5. Revisar e gerar** também abre o assistente quando os quatro cadastros estão completos.
+3. Revise a cobertura atendida, os conflitos e as sugestões. Uma escala parcial pode ter horários válidos e ainda deixar demanda descoberta.
+4. Consulte a escala diária, semanal ou mensal. Na semana, cada pessoa aparece uma única vez, com os horários nas colunas dos dias.
+5. Use **Dados e opções → Exportar** para guardar uma cópia ou **Imprimir** para preparar a escala para o mural.
+
+**O Assistente de escala é onde a geração acontece.** As prévias exibidas antes da geração são estimativas dos cadastros; não confirmam jornada, folgas ou descanso. Para gerar, é necessário ter pessoas cadastradas e ao menos uma regra de cobertura com quantidade maior que zero, além da API disponível.
+
 ## Um exemplo: vendedores todos os dias
 
 Imagine uma loja que precisa de dois vendedores das 9h às 18h, de segunda a sábado.
 
-1. Configure o funcionamento da loja, cadastre as funções e adicione as pessoas da equipe.
-2. Crie uma regra de cobertura para **Vendedor**, selecione os seis dias e informe o horário e a quantidade mínima.
-3. Configure jornadas, disponibilidades e restrições individuais.
-4. Abra o **Assistente de escala** e gere o planejamento.
+1. Em **Empresa**, configure o funcionamento da loja; em **Funções**, cadastre **Vendedor**.
+2. Em **Cobertura**, crie uma regra para **Vendedor**, selecione os seis dias e informe o horário e a quantidade mínima de duas pessoas.
+3. Em **Equipe**, cadastre as pessoas e configure jornadas, disponibilidades e restrições individuais.
+4. Aplique o período desejado e use **Assistente de escala → Gerar escala otimizada**.
 5. Confira os turnos, os intervalos, os feriados e os períodos em que ainda faltam pessoas.
 
 **Exemplo de jornada:** oito horas de trabalho com uma hora de intervalo ocupam nove horas no relógio. Das 9h às 18h, com pausa das 12h às 13h, a pessoa trabalha oito horas — e fica fora da cobertura durante a pausa.
@@ -75,18 +100,51 @@ A execução possui limite de tempo e pode encontrar uma solução viável sem c
 | **Feriados e turnos especiais** | Configurar abertura ou fechamento por data e manter turnos específicos mesmo com a empresa fechada. |
 | **Geração automática** | Buscar turnos e intervalos que atendam à operação dentro das restrições do modelo. |
 | **Análise durante a edição** | Recalcular localmente a cobertura e os conflitos quando o planejamento muda. |
-| **Escala diária, semanal e mensal** | Consultar pessoas, funções, entradas, saídas e intervalos, distinguindo prévias de turnos salvos. |
-| **Ajustes pelo calendário** | Arrastar turnos para mudar horários e conferir o efeito no planejamento. |
+| **Escala diária, semanal e mensal** | Consultar horários; na semana, comparar os dias em uma tabela com uma linha por pessoa, sem repetir nomes. |
+| **Período de planejamento** | Definir de 1 a 31 dias, com datas inclusivas, para consulta, análise e geração. |
+| **Ajustes pelo calendário mensal** | Arrastar turnos salvos e conferir o efeito no planejamento; na semana, clicar no nome ou horário para abrir o cadastro da pessoa. |
 | **Pessoas por horário** | Comparar quantas pessoas estão escaladas com quantas são necessárias por função e período. |
 | **Onde faltam pessoas** | Identificar lacunas por função e dia em uma visualização com cores. |
-| **Assistente de escala** | Revisar conflitos, explicações dos turnos e sugestões de ajuste e contratação. |
-| **Arquivo `.escalalivre`** | Exportar e reabrir empresa, equipe, regras e turnos em um documento portátil. |
-| **Impressão para o mural** | Escolher um período e imprimir os turnos salvos, com empresa em destaque, datas e marca Escala Livre discreta. |
+| **Assistente de escala** | Gerar a escala otimizada e revisar cobertura, conflitos, explicações e sugestões de ajuste e contratação. |
+| **Arquivo `.escalalivre`** | Exportar e reabrir empresa, equipe, regras, período e turnos em um documento portátil. |
+| **Cópias e recuperação** | Baixar ou restaurar cópias anteriores e recuperar dados quando o armazenamento apresenta falhas. |
+| **Impressão para o mural** | Escolher um mês e imprimir os turnos salvos, com empresa em destaque, datas e marca Escala Livre discreta. |
 | **Temas claro e escuro** | Usar a interface em português, com explicações das abas e contraste adaptado ao tema. |
 
 O backend também oferece exportação XLSX e uma exportação PDF básica pela API. Os controles de importação e exportação da interface usam o formato nativo `.escalalivre`.
 
-## Novidades no planejamento
+## Período de planejamento e geração
+
+O período do cabeçalho vale para as visualizações, a análise de cobertura e o Assistente de escala. Escolha de **1 a 31 dias**, incluindo as datas de início e fim, e clique em **Aplicar período**. Navegar entre semanas ou meses não altera esse período.
+
+Ao aplicar uma geração, o sistema substitui os turnos **pela data em que começam**:
+
+- Um turno que começa dentro do período é substituído por inteiro, mesmo que termine no dia seguinte ao fim do período.
+- Turnos que começam antes ou depois são preservados e considerados nas regras de descanso, jornada e cobertura.
+- Uma geração inviável, uma falha ou um tempo limite sem solução viável mantém os turnos atuais. Uma solução parcial com lacunas pode ser aplicada.
+
+Por exemplo, gerar de **19/10 a 21/10** substitui um turno iniciado às 22h de 21/10 e encerrado às 6h de 22/10. Um turno iniciado às 22h de 18/10 permanece intacto.
+
+Antes de importar um documento ou aplicar uma geração, a aplicação cria uma cópia recuperável do planejamento anterior. Os detalhes estão em [preservação de turnos](docs/generation-preservation.md) e [período de planejamento](docs/planning-period.md).
+
+## Salvar, exportar e recuperar
+
+O salvamento é automático no navegador. **Salvo neste dispositivo** indica que a gravação foi confirmada; um aviso de armazenamento exige atenção. Dados locais dependem do navegador e do dispositivo usados e podem ser removidos ao limpar os dados do site.
+
+No menu **Dados e opções**, no cabeçalho:
+
+| Ação | Quando usar |
+| --- | --- |
+| **Exportar** | Baixar um arquivo `.escalalivre` para guardar uma cópia ou continuar em outro dispositivo. |
+| **Importar** | Abrir um arquivo `.escalalivre` e confirmar a substituição do planejamento atual. |
+| **Cópias e recuperação de dados** | Baixar ou restaurar cópias anteriores, exportar os dados disponíveis ou tentar salvar novamente após uma falha. |
+| **Limpar tudo** | Apagar o planejamento atual após digitar a confirmação solicitada. Exporte antes o que deseja guardar. |
+
+São mantidas até **três cópias de planejamento** para recuperação, além dos conteúdos preservados em falhas. Se não for possível confirmar a cópia anterior, a importação ou aplicação da geração é bloqueada para proteger o documento atual. Arquivos nativos têm limite de **1 MiB**; downloads brutos de recuperação em `.json` podem precisar de reparo antes de serem usados como planejamento.
+
+**Edição, análise local e importação/exportação nativa funcionam sem consultar a API. A geração automática precisa do backend.** Ao gerar, o documento é enviado à API configurada. Consulte [recuperação de dados](docs/recovery.md) para o comportamento em falhas.
+
+## Recursos em detalhe
 
 ### Intervalo e fechamento são coisas diferentes
 
@@ -112,7 +170,9 @@ O calendário inclui uma lista de feriados nacionais de data fixa e permite conf
 
 ### Calendário mais fácil de ler
 
-As visões semanal e mensal exibem também horários estimados a partir dos cadastros. No mês, cada cartão informa pessoa, função, entrada, saída, intervalo e situação:
+A **escala semanal** mostra uma linha por pessoa e uma coluna por dia, com entrada, saída e intervalo. Dias fora do período ficam identificados; **Sem turno** indica ausência de turno ou prévia naquele dia, sem confirmar folga. Clique no nome ou horário para abrir o cadastro da pessoa.
+
+A **escala mensal** apresenta cartões por dia, com pessoa, função, entrada, saída, intervalo e situação. Ambas as visões também exibem horários estimados a partir dos cadastros. No mês:
 
 | Indicação | Como interpretar |
 | --- | --- |
@@ -121,7 +181,7 @@ As visões semanal e mensal exibem também horários estimados a partir dos cada
 | **Feriado · Fechada/Aberta** | Exceção de funcionamento configurada para a data. |
 | **Fundo verde no dia** | Destaque da data de hoje. |
 
-A navegação e os nomes dos dias permanecem acima da área de rolagem. Horários preservam os minutos, como **07:30**, e os campos usam o formato **HH:mm**. Turnos salvos podem ser ajustados pelo calendário; prévias servem para consulta.
+Os cabeçalhos dos dias permanecem visíveis durante a rolagem. Horários preservam os minutos, como **07:30**, e os campos usam o formato **HH:mm**. **+1d** indica que o turno termina no dia seguinte. No calendário mensal, turnos salvos podem ser arrastados; prévias servem para consulta.
 
 ### Imprima e leve para o mural
 
@@ -152,18 +212,6 @@ Quando não é possível cobrir toda a operação com a equipe disponível, uma 
 ### Regras compartilhadas, exceções individuais
 
 A empresa define padrões, e cada pessoa pode herdá-los ou ter uma jornada própria. O domínio possui regimes configuráveis em dias e em horas, permitindo evoluir as regras sem prender a arquitetura a um único formato de escala.
-
-### Comece sem cadastro e retome quando quiser
-
-O usuário acessa a interface pelo navegador, sem criar conta, baixar aplicativo ou instalar programas. As instruções de instalação deste README são para quem quer executar ou desenvolver sua própria instância do projeto.
-
-O planejamento é salvo automaticamente no navegador para continuar no mesmo dispositivo. Para guardar uma cópia ou retomar em outro computador, clique em **Exportar** e salve o arquivo `.escalalivre`. Depois, use **Importar** para recuperar a empresa, a equipe, as regras e os turnos e continuar de onde parou.
-
-### Dados locais e portáteis
-
-O uso local não exige conta nem banco de dados. O planejamento fica salvo no navegador e pode ser exportado para um arquivo que reúne o contexto completo da escala.
-
-**A edição e a análise local funcionam sem consultar a API; a geração automática precisa do backend em execução.** Ao gerar a escala, o documento é enviado à API configurada. O armazenamento no navegador depende daquele dispositivo e pode ser apagado com os dados do site; o arquivo nativo permite manter uma cópia independente.
 
 ### Uma base aberta para novas soluções
 
@@ -241,9 +289,9 @@ O CP-SAT **maximiza uma única função objetivo ponderada**. Os coeficientes at
 
 São pesos de uma soma, não etapas de otimização lexicográfica. Preferências não substituem restrições obrigatórias. A duração dos blocos multiplica os termos de falta e presença, fazendo uma lacuna de 15 minutos pesar menos que uma lacuna igual de uma hora.
 
-O solver está configurado com **limite de 5 segundos e 8 trabalhadores de busca**. Um resultado `Feasible` é viável; `Optimal` comprova o ótimo do modelo construído. O limite de tempo pode terminar sem encontrar solução viável, e múltiplas soluções equivalentes podem produzir escalas diferentes.
+O solver está configurado com **limite interno de 5 segundos e 1 trabalhador de busca**. Um resultado `Feasible` é viável; `Optimal` comprova o ótimo do modelo construído. O limite de tempo pode terminar sem encontrar solução viável, e múltiplas soluções equivalentes podem produzir escalas diferentes.
 
-Turnos manuais autorizados de feriado são incluídos como decisões fixas (`x = 1`); candidatos regulares para a mesma pessoa e data são retirados. Se essas decisões entram em conflito com outras restrições, o resultado aponta o problema e mantém esses turnos para revisão.
+Turnos preservados fora do período e turnos manuais autorizados de feriado são incluídos como decisões fixas (`x = 1`); candidatos regulares para a mesma pessoa e data são retirados. Se essas decisões entram em conflito com outras restrições, o resultado aponta o problema e mantém esses turnos para revisão.
 
 ### 5. Medir e explicar o resultado
 
@@ -297,7 +345,19 @@ Para usar outra API, crie `frontend/.env.local`:
 VITE_API_URL=http://localhost:5003
 ```
 
-Reinicie o Vite após mudar essa configuração. Para testar com seus próprios dados, configure a empresa, ajuste a equipe e cadastre a cobertura mínima antes de gerar a escala.
+Reinicie o Vite após mudar essa configuração. Para testar com seus próprios dados, siga [Primeiros passos](#primeiros-passos). Em produção, sem `VITE_API_URL`, o frontend usa a mesma origem da página; a variável é incorporada ao build.
+
+### Problemas comuns
+
+| Situação | O que conferir |
+| --- | --- |
+| **Gerar escala otimizada** está desabilitado | Cadastre pessoas e ao menos uma regra de cobertura com quantidade maior que zero. |
+| A geração não conecta | Verifique a API em `http://localhost:5003/health`, a URL configurada e as origens permitidas no backend. O ambiente de desenvolvimento permite o frontend na porta 5173. |
+| O serviço está ocupado ou atingiu o limite | Aguarde o prazo informado antes de tentar novamente. Para hospedar, consulte os limites em [SECURITY.md](docs/SECURITY.md). |
+| O cálculo atingiu o tempo limite | Tente um período menor ou simplifique as regras de cobertura, sem retirar restrições obrigatórias da operação. |
+| Os horários aparecem como **Prévia** | Abra o Assistente de escala e gere o planejamento; estimativas não são turnos salvos. |
+| A impressão não contém os horários esperados | Confira o mês escolhido e se os turnos foram salvos; prévias não entram na impressão. |
+| Há aviso de armazenamento | Abra **Dados e opções → Cópias e recuperação de dados**, exporte o conteúdo disponível e confira as opções de recuperação. |
 
 ## Arquitetura e tecnologias
 
@@ -334,18 +394,16 @@ docs/                           Documentação técnica
 | `POST /export` | Exportar em formato nativo, XLSX ou PDF básico. |
 | `GET /health` | Verificar se a API está disponível. |
 
-As operações de planejamento recebem um documento e um período. As respostas dessas operações usam um envelope com `success`, `data`, `errors`, `warnings` e `metadata`. Exemplos de chamadas estão em [EscalaLivre.Api.http](backend/EscalaLivre.Api/EscalaLivre.Api.http).
+As operações `/solve`, `/validate` e `/analyze` recebem um documento e um período. As respostas dessas operações usam um envelope com `success`, `data`, `errors`, `warnings` e `metadata`. Em desenvolvimento, o contrato OpenAPI está disponível em [http://localhost:5003/openapi/v1.json](http://localhost:5003/openapi/v1.json). `GET /health` retorna um objeto simples com o estado do serviço.
 
 ## Qualidade e validação
 
-O projeto inclui testes para lacunas durante o almoço, turnos que atravessam a meia-noite, descanso, cobertura parcial, substituições em um único sentido, intervalos fixos e variáveis, feriados fechados e preservação de turnos especiais.
+O projeto inclui testes de cobertura, intervalos, descanso, turnos noturnos, substituições autorizadas, feriados, impressão, período de planejamento, datas e horários, recuperação, preservação de turnos e segurança.
 
 Na raiz do repositório:
 
 ```bash
-node --test frontend/tests/planning.test.cjs
-node --test frontend/tests/roles.test.cjs frontend/tests/setup.test.cjs
-node --test frontend/tests/print.test.cjs
+node --test frontend/tests/*.test.cjs
 dotnet test backend/EscalaLivre.Tests/EscalaLivre.Tests.csproj --configuration Release
 ```
 
@@ -356,7 +414,16 @@ npm run lint
 npm run build
 ```
 
-O GitHub Actions executa lint e compilação do frontend, além de compilação e testes do backend.
+Para o teste de integração de segurança, compile a API em Debug e execute na raiz do repositório:
+
+```bash
+dotnet build backend/EscalaLivre.Api/EscalaLivre.Api.csproj
+node backend/security.integration.cjs
+```
+
+O script inicia sua própria API de teste e verifica as proteções HTTP. Para usar uma compilação em Release, defina `SECURITY_BUILD_CONFIGURATION=Release` no ambiente.
+
+O GitHub Actions executa lint, compilação e todos os testes do frontend, além de compilação da API, testes do backend e integração de segurança em Release.
 
 ## Para onde o projeto pode crescer
 
@@ -386,6 +453,13 @@ A validação cobre regras implementadas, como descanso e limite semanal. Ela n�
 - [Regras de negócio](docs/business-rules.md)
 - [Regimes de jornada](docs/regimes.md)
 - [Importação e exportação](docs/import-export.md)
+- [Período de planejamento](docs/planning-period.md)
+- [Geração e preservação de turnos](docs/generation-preservation.md)
+- [Salvamento e recuperação](docs/recovery.md)
+- [Datas, horários e fuso da empresa](docs/date-time.md)
+- [Regras compartilhadas entre frontend e backend](docs/rule-parity.md)
+- [Segurança e publicação da API](docs/SECURITY.md)
+- [Identidade visual](docs/brand.md)
 
 Contribuições podem melhorar a interface, os testes, a documentação, os regimes e o motor de planejamento. Para propor uma mudança, descreva o problema e um exemplo de uso em uma issue. Em pull requests, explique o comportamento esperado e execute as verificações relevantes.
 

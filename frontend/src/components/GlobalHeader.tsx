@@ -1,4 +1,6 @@
-import { Download, FileUp, Moon, Trash2, Sun, Wifi, Printer } from "lucide-react";
+import { RecoveryPanel, StorageBadge } from "./RecoveryPanel";
+import { Download, FileUp, Moon, Trash2, Sun, Wifi, Printer, ChevronDown, HelpCircle, Sparkles } from "lucide-react";
+import { PlanningPeriodEditor } from "./PlanningPeriodEditor";
 import { Brand } from "./Brand";
 import { PrintSchedule } from "./PrintSchedule";
 import { useState } from "react";
@@ -21,19 +23,19 @@ const solverLabels: Record<SolverStatus, string> = {
 };
 
 export function GlobalHeader() {
-  const { document, analysis, theme, setTheme, viewMode, setViewMode, solverStatus, setDocument, clearAll } = useScheduleStore();
+  const { document, analysis, theme, setTheme, viewMode, setViewMode, solverStatus, importDocument, clearAll } = useScheduleStore();
 
   const [clearing,setClearing] = useState(false);
   const [printing,setPrinting] = useState(false);
   const [confirmation,setConfirmation] = useState("");
   return (
-    <header className="app-header shrink-0 border-b border-border bg-card"><div className="flex flex-wrap items-center justify-between gap-4 px-5 py-4">
-      <div className="flex min-w-0 items-center gap-4">
-        <div>
+    <header className="app-header shrink-0 border-b border-border bg-card"><div className="header-toolbar">
+      <div className="header-identity">
+        <div className="header-brand-company">
           <Brand className="brand-header" />
-          <h1 className="break-words text-2xl font-semibold">{document.company.name}</h1>
+          <h1 className="header-company" title={document.company.name}>{document.company.name}</h1>
         </div>
-        <div className="hidden items-center gap-2 xl:flex">
+        <div className="header-metrics">
           <Badge>{document.company.opensAt.slice(0, 5)}-{document.company.closesAt.slice(0, 5)}</Badge>
           <Badge>{Math.round(analysis.coverageScore * 100)}% cobertura</Badge>
           <Badge>{solverLabels[solverStatus]}</Badge>
@@ -42,15 +44,18 @@ export function GlobalHeader() {
 
 
 
-      <div className="flex items-center gap-2">
+      <div className="header-actions">
         <Button onClick={() => setPrinting(true)}><Printer className="size-4" />Imprimir</Button>
-        <Badge className="hidden md:inline-flex">Salvo neste dispositivo</Badge>
-        <Badge className="hidden gap-1 md:inline-flex"><Wifi className="size-3" /> Disponível offline</Badge>
-        <Button className="hidden bg-card text-foreground dark:bg-card dark:text-foreground md:inline-flex" onClick={() => exportNative(document)}>
+        <StorageBadge />
+        <details className="header-tools" onKeyDown={e => {if(e.key === "Escape") {e.currentTarget.open=false;e.currentTarget.querySelector("summary")?.focus();}}}>
+          <summary><ChevronDown className="size-4" /> Dados e opções</summary>
+          <div className="header-tools-content">
+        <p className="flex items-center gap-1 text-xs text-muted-foreground"><Wifi className="size-3" /> Disponível offline</p>
+        <Button className="w-full bg-card text-foreground dark:bg-card dark:text-foreground" onClick={() => {try {exportNative(document);} catch(error) {window.alert(error instanceof Error ? error.message : "Não foi possível exportar. Use a recuperação para baixar os dados disponíveis.");}}}>
           <Download className="size-4" />
           Exportar
         </Button>
-        <label className="hidden h-9 cursor-pointer items-center justify-center gap-2 rounded-md border border-border bg-card px-3 text-sm font-medium md:inline-flex">
+        <label className="flex h-9 cursor-pointer items-center justify-center gap-2 rounded-md border border-border bg-card px-3 text-sm font-medium">
           <FileUp className="size-4" />
           Importar
           <input
@@ -62,7 +67,7 @@ export function GlobalHeader() {
               if (file) {
                 try {
                   const imported = await importNative(file);
-                  if (window.confirm("Abrir este arquivo e substituir o planejamento atual? Salve o atual antes de continuar.")) setDocument(imported);
+                  if (window.confirm("Abrir este arquivo e substituir o planejamento atual? Uma cópia recuperável será criada antes da substituição.")) importDocument(imported);
                 } catch (error) {
                   window.alert(error instanceof Error ? error.message : "Nao foi possivel abrir o arquivo.");
                 } finally {
@@ -74,11 +79,15 @@ export function GlobalHeader() {
         </label>
 
         <Button className="bg-card text-red-600 dark:bg-card dark:text-red-400" onClick={() => {setConfirmation("");setClearing(true);}}><Trash2 className="size-4" />Limpar tudo</Button>
+        <RecoveryPanel />
+          </div>
+        </details>
         <IconButton title={theme === "dark" ? "Usar tema claro" : "Usar tema escuro"} onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
           {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
         </IconButton>
       </div>
       </div>
+      <PlanningPeriodEditor key={document.id+document.planningPeriod.start+document.planningPeriod.end} />
       {printing && <PrintSchedule onClose={() => setPrinting(false)} />}
       {clearing && <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onKeyDown={e => {if(e.key === "Escape") setClearing(false);}}>
         <form role="dialog" aria-modal="true" aria-labelledby="clear-title" className="w-full max-w-md space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xl" onSubmit={e => {e.preventDefault();if(confirmation === "LIMPAR") {clearAll();setClearing(false);}}}>
@@ -88,21 +97,25 @@ export function GlobalHeader() {
           <div className="flex justify-end gap-2"><Button type="button" onClick={() => setClearing(false)}>Cancelar</Button><Button type="submit" disabled={confirmation !== "LIMPAR"} className="bg-red-600 dark:bg-red-600 dark:text-white">Apagar tudo</Button></div>
         </form>
       </div>}
-      <nav aria-label="Visualizações da escala" className="flex gap-1 overflow-x-auto border-t border-border px-5 py-2">
+      <nav aria-label="Visualizações da escala" className="header-view-nav">
         {viewModes.map(({ mode, label, description }) => (
           <button
             key={mode}
             title={description}
             aria-describedby="view-description"
             aria-current={viewMode === mode ? "page" : undefined}
-            className={`h-10 shrink-0 rounded-xl px-4 text-sm font-medium transition ${viewMode === mode ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
+            className={`inline-flex h-9 shrink-0 items-center gap-2 rounded-lg px-3 text-sm transition ${mode === "solver" ? `border border-primary bg-primary font-semibold text-white shadow-sm hover:brightness-110 dark:text-slate-950 ${viewMode === mode ? "ring-2 ring-primary ring-offset-2 ring-offset-card" : ""}` : `font-medium ${viewMode === mode ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}`}
             onClick={() => setViewMode(mode)}
           >
+            {mode === "solver" && <Sparkles className="size-4" aria-hidden="true" />}
             {label}
           </button>
         ))}
       </nav>
-      <p id="view-description" className="border-t border-border bg-background px-5 py-3 text-sm text-muted-foreground">{viewModes.find(item => item.mode === viewMode)?.description}</p>
+      <details className="header-view-help">
+        <summary aria-label="Ajuda sobre esta visualização"><HelpCircle className="size-4" /> Ajuda</summary>
+        <p id="view-description">{viewModes.find(item => item.mode === viewMode)?.description}</p>
+      </details>
     </header>
   );
 }

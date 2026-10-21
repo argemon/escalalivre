@@ -1,30 +1,19 @@
 import { useMutation } from "@tanstack/react-query";
 import { BrainCircuit, BriefcaseBusiness, CheckCircle2, CircleAlert, Loader2, Wand2 } from "lucide-react";
 import type { ReactNode } from "react";
-import { analyzeDocument } from "../lib/analysis";
 import { solveSchedule } from "../lib/api";
 import { useScheduleStore } from "../store/scheduleStore";
 import { Badge, Button, Panel } from "./ui";
 
 export function SolverPanel() {
-  const { document, analysis, setAnalysis, setDocument, solverStatus, setSolverStatus } = useScheduleStore();
+  const { document, analysis, applyGeneratedSchedule, solverStatus, setSolverStatus } = useScheduleStore();
   const mutation = useMutation({
     mutationFn: solveSchedule,
     onMutate: () => setSolverStatus("calculating"),
-    onSuccess: (result, submitted) => {
-      if (useScheduleStore.getState().document !== submitted) { setSolverStatus("idle"); return; }
-      if (!result.conflicts.some(item => item.code === "solverInfeasible" || item.code === "solverTimeout")) {
-      const next = { ...submitted, assignments: result.assignments, updatedAt: new Date().toISOString() };
-      setDocument(next);
-      }
-      const failed = result.conflicts.some(item => item.code === "solverInfeasible" || item.code === "solverTimeout");
-      if (failed) {
-        const current = analyzeDocument(submitted);
-        setAnalysis({ ...current, conflicts: [...current.conflicts, ...result.conflicts.filter(item => item.code === "solverInfeasible" || item.code === "solverTimeout")] });
-      } else setAnalysis(result);
-      setSolverStatus(result.conflicts.some((item) => item.severity === "error") ? "invalid" : result.gaps.length > 0 ? "partial" : "optimized");
-    },
-    onError: () => setSolverStatus("invalid")
+    onSuccess: (result, submitted) => applyGeneratedSchedule(submitted, result),
+    onError: (_error, submitted) => {
+      if (useScheduleStore.getState().document === submitted) setSolverStatus("invalid");
+    }
   });
 
   const hardViolations = analysis.conflicts.filter((item) => item.severity === "error").length;
@@ -61,6 +50,7 @@ export function SolverPanel() {
           {mutation.isPending ? "Preparando sua escala…" : "Gerar escala otimizada"}
         </Button>
 
+        <p className="text-xs text-muted-foreground">A geração substitui por inteiro os turnos que começam de {document.planningPeriod.start.split("-").reverse().join("/")} a {document.planningPeriod.end.split("-").reverse().join("/")}, inclusive os que terminam no dia seguinte. Os demais turnos serão preservados.</p>
         {(!document.employees.length || !document.company.coverage.some(r => r.minimumEmployees > 0)) && <p className="text-sm text-muted-foreground">Para gerar a escala, cadastre funcionários e ao menos uma regra de cobertura com quantidade maior que zero.</p>}
         {mutation.isError && <p role="alert" className="text-red-400">{mutation.error.message} Verifique se a API está em execução e tente novamente.</p>}
         <section className="space-y-2">

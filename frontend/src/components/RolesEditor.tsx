@@ -1,3 +1,4 @@
+import { nowInstant } from "../lib/dateTime";
 import { useState } from "react";
 import { useScheduleStore } from "../store/scheduleStore";
 import { Button } from "./ui";
@@ -12,7 +13,7 @@ export function RolesEditor() {
     const trimmed = name.trim();
     if (!trimmed) { setError("Informe o nome da função."); return; }
     if (roles.some(r => r.id !== editing && r.name.toLocaleLowerCase("pt-BR") === trimmed.toLocaleLowerCase("pt-BR"))) { setError("Esta função já está cadastrada."); return; }
-    setDocument({ ...document, roles: editing ? roles.map(r => r.id === editing ? { ...r, name: trimmed } : r) : [...roles, { id: crypto.randomUUID(), name: trimmed }], updatedAt: new Date().toISOString() });
+    setDocument({ ...document, roles: editing ? roles.map(r => r.id === editing ? { ...r, name: trimmed } : r) : [...roles, { id: crypto.randomUUID(), name: trimmed }], updatedAt: nowInstant() });
     setName(""); setEditing(undefined); setError("");
   }
   return <section className="space-y-3">
@@ -32,7 +33,7 @@ export function RolesEditor() {
       return <article key={role.id} className="space-y-2 rounded border border-border p-3">
         <h4 className="font-medium">{role.name}</h4>
         <p className="text-xs text-muted-foreground">{people} funcionários · {rules ? "Cobertura definida" : "Sem cobertura definida"}</p>
-        <div className="flex gap-2"><Button onClick={() => { setEditing(role.id); setName(role.name); setError(""); }}>Editar</Button><Button disabled={used} title={used ? "Remova os vínculos antes de excluir a função." : "Excluir função"} onClick={() => { setDocument({ ...document, roles: roles.filter(r => r.id !== role.id), updatedAt: new Date().toISOString() }); if (editing === role.id) { setEditing(undefined); setName(""); } }}>Excluir</Button></div>
+        <div className="flex gap-2"><Button onClick={() => { setEditing(role.id); setName(role.name); setError(""); }}>Editar</Button><Button disabled={used} title={used ? "Remova os vínculos antes de excluir a função." : "Excluir função"} onClick={() => { setDocument({ ...document, roles: roles.filter(r => r.id !== role.id), updatedAt: nowInstant() }); if (editing === role.id) { setEditing(undefined); setName(""); } }}>Excluir</Button></div>
         {used && <p className="text-xs text-muted-foreground">Para excluir, remova os vínculos com equipe, cobertura e turnos.</p>}
       </article>;
     })}

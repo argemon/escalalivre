@@ -47,7 +47,7 @@ test('CLT interval thresholds use worked hours',()=>{
  assert.match(intervalProblem(a),/60/);
 });
 test('national and local holidays exclude previews unless open',()=>{
- const doc=structuredClone(sampleDocument);doc.assignments=[];doc.employees.forEach(e=>e.inheritsCompanyDefaults=true);
+ const doc=structuredClone(sampleDocument);doc.planningPeriod={start:"2026-10-12",end:"2026-10-18"};doc.assignments=[];doc.employees.forEach(e=>e.inheritsCompanyDefaults=true);
  assert.equal(holidayOn(doc.company,'2026-10-12').name,'Nossa Senhora Aparecida');
  assert.equal(weeklyCoverage(doc,'2026-10-12').length,0);
  doc.company.holidays=[{date:'2026-10-12',name:'Nossa Senhora Aparecida',closed:false},{date:'2026-10-14',name:'Aniversário municipal',closed:true}];
@@ -55,7 +55,7 @@ test('national and local holidays exclude previews unless open',()=>{
  assert.equal(weeklyCoverage(doc,'2026-10-14').length,0);
 });
 test('every preview has a valid interval even without company closure',()=>{
- const doc=structuredClone(sampleDocument);doc.assignments=[];doc.employees.forEach(e=>e.inheritsCompanyDefaults=true);
+ const doc=structuredClone(sampleDocument);doc.planningPeriod={start:"2026-10-12",end:"2026-10-18"};doc.assignments=[];doc.employees.forEach(e=>e.inheritsCompanyDefaults=true);
  doc.company.opensAt='07:30:00';doc.company.closesAt='17:30:00';doc.company.coverage=[];
  for(const hours of [4,5,6,8]) {
   doc.company.defaultWorkload.defaultShiftDuration=String(hours).padStart(2,'0')+':00:00';
@@ -69,7 +69,7 @@ test('every preview has a valid interval even without company closure',()=>{
 });
 
 test('preview evaluates the maximum interval to cover the end of the day',()=>{
- const doc=structuredClone(sampleDocument);doc.assignments=[];doc.employees.forEach(e=>e.inheritsCompanyDefaults=true);
+ const doc=structuredClone(sampleDocument);doc.planningPeriod={start:"2026-10-12",end:"2026-10-18"};doc.assignments=[];doc.employees.forEach(e=>e.inheritsCompanyDefaults=true);
  doc.company.opensAt='07:30:00';doc.company.closesAt='17:30:00';doc.company.coverage=[];
  doc.company.lunch={minimum:'01:00:00',maximum:'02:00:00',preferredAfter:'04:00:00'};
  for(const a of weeklyCoverage(doc,'2026-10-14')) {assert.equal(a.end.slice(11,16),'17:30');assert.equal((Date.parse(a.break.end)-Date.parse(a.break.start))/3600000,2);}
@@ -80,7 +80,7 @@ test('preview evaluates the maximum interval to cover the end of the day',()=>{
 
 const { coverageAllocation }=load('lib/coverageAllocation.ts');
 test('directional substitution covers attendant but never replaces pharmacist in reverse',()=>{
- const doc=structuredClone(sampleDocument);const pharmacy=doc.employees[0],attendant=doc.employees[1];doc.employees=[pharmacy,attendant];
+ const doc=structuredClone(sampleDocument);doc.planningPeriod={start:"2026-10-12",end:"2026-10-18"};const pharmacy=doc.employees[0],attendant=doc.employees[1];doc.employees=[pharmacy,attendant];
  pharmacy.role='Farmacêutico';pharmacy.coverageRoles=['Atendente'];attendant.role='Atendente';
  doc.assignments=[{...doc.assignments[0],employeeId:pharmacy.id,role:pharmacy.role,start:'2026-10-14T07:30:00',end:'2026-10-14T16:30:00',break:{start:'2026-10-14T11:00:00',end:'2026-10-14T12:00:00'}},{...doc.assignments[0],id:'other',employeeId:attendant.id,role:attendant.role,start:'2026-10-14T07:30:00',end:'2026-10-14T16:30:00',break:{start:'2026-10-14T12:00:00',end:'2026-10-14T13:00:00'}}];
  const rules=[{role:'Farmacêutico',minimumEmployees:1},{role:'Atendente',minimumEmployees:1}];
@@ -92,7 +92,7 @@ test('directional substitution covers attendant but never replaces pharmacist in
 });
 
 test('authorized holiday shift keeps company closed and preserves other safeguards',()=>{
- const doc=structuredClone(sampleDocument);const person=doc.employees[0];
+ const doc=structuredClone(sampleDocument);doc.planningPeriod={start:"2026-10-12",end:"2026-10-18"};const person=doc.employees[0];
  doc.company.holidays=[{date:'2026-10-12',name:'Feriado',closed:true}];doc.company.operatingDays=[];
  doc.assignments=[{id:'holiday-shift',employeeId:person.id,role:person.role,start:'2026-10-12T08:00:00',end:'2026-10-12T12:00:00',source:'manual',tags:['holiday:2026-10-12']}];
  person.inheritsCompanyDefaults=true;person.restrictions=[{start:'2026-10-12T08:00:00',end:'2026-10-12T12:00:00'}];

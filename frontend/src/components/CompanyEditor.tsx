@@ -1,3 +1,4 @@
+import { nowInstant } from "../lib/dateTime";
 import { TimeInput } from "./TimeInput";
 import { useEditorDismiss } from "../lib/useEditorDismiss";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
@@ -42,7 +43,7 @@ export function CompanyEditor({ tab, onClose, onSaved }: { tab: "company" | "cov
     if (tab === "coverage" && coverage.some(rule => !rule.allowsOutsideHours && rule.days.some(day => outsideOperatingHours(company, day, rule.start, rule.end)))) { setError("Cobertura fora do expediente: ajuste os dias/horários ou marque explicitamente a autorização para esta função."); return; }
     if (tab === "coverage" && coverage.some(rule => rule.scope !== "team" && !document.roles?.some(r => r.id === rule.roleId))) { setError("Selecione uma função cadastrada para cada regra."); return; }
     const normalized = { ...company,name:company.name.trim(),coverage:tab === "coverage" ? expandCoverageRules(coverage) : syncOperatingCoverage(document.company, company) };
-    const next = { ...document, setup: { companyConfigured: tab === "company" || document.setup?.companyConfigured === true },company:normalized,employees: document.employees.map(e => e.inheritsCompanyDefaults ? { ...e,workload: { ...company.defaultWorkload } } : e), updatedAt:new Date().toISOString() };
+    const next = { ...document, setup: { companyConfigured: tab === "company" || document.setup?.companyConfigured === true },company:normalized,employees: document.employees.map(e => e.inheritsCompanyDefaults ? { ...e,workload: { ...company.defaultWorkload } } : e), updatedAt:nowInstant() };
     const validation = documentSchema.safeParse(next);
     if (!validation.success) { setError(validation.error.issues[0].message); return; }
     setDocument(next); onSaved?.(); onClose();
@@ -56,6 +57,7 @@ export function CompanyEditor({ tab, onClose, onSaved }: { tab: "company" | "cov
 
       {tab === "company" ? <>
         <Field label="Nome da empresa"><input autoFocus required value={company.name} onChange={e => patch({name:e.target.value})} /></Field>
+        <Field label="Fuso horário da empresa"><input required value={company.timeZone ?? "America/Cuiaba"} onChange={e => patch({timeZone:e.target.value.trim()})} placeholder="America/Cuiaba" /><p className="text-xs text-muted-foreground">Use um fuso IANA, por exemplo America/Cuiaba ou America/Sao_Paulo. Os horários cadastrados mantêm o mesmo horário de relógio.</p></Field>
         <div className="grid grid-cols-2 gap-3">{time("Abertura",company.opensAt,v => patch({opensAt:v}))}{time("Fechamento",company.closesAt,v => patch({closesAt:v}))}</div>
         {intervalClosure}
         <fieldset><legend>Dias de funcionamento</legend><div className="mt-2 flex flex-wrap gap-2"><Button type="button" aria-pressed={company.operatingDays.length === 7} className={company.operatingDays.length === 7 ? "ring-2 ring-primary ring-offset-2" : "bg-muted text-foreground"} onClick={() => patch({operatingDays:[0,1,2,3,4,5,6]})}>Todos os dias</Button><Button type="button" aria-pressed={company.operatingDays.length === 5 && [1,2,3,4,5].every(d => company.operatingDays.includes(d))} className={company.operatingDays.length === 5 && [1,2,3,4,5].every(d => company.operatingDays.includes(d)) ? "ring-2 ring-primary ring-offset-2" : "bg-muted text-foreground"} onClick={() => patch({operatingDays:[1,2,3,4,5]})}>Dias de semana (seg–sex)</Button></div><div className="mt-2 flex flex-wrap gap-3">{dayLabels.map((d,i) => <label key={d}><input type="checkbox" checked={company.operatingDays.includes(i)} onChange={e => patch({operatingDays:e.target.checked ? [...company.operatingDays,i].sort() : company.operatingDays.filter(v => v !== i)})} /> {d}</label>)}</div></fieldset>

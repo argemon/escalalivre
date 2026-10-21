@@ -1,58 +1,107 @@
+using System.Diagnostics;
+using System.Net;
+using System.Text.Json;
 using EscalaLivre.Api;
 using EscalaLivre.Application.Contracts;
-using EscalaLivre.Application.Scheduling;
+using EscalaLivre.Application.Validation;
 using EscalaLivre.Infrastructure.ImportExport;
 using FluentValidation;
-using FluentValidation.Results;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Http.Timeouts;
+
+if (args.Length == 2 && args[0] == "--calculation-worker")
+{
+    Environment.ExitCode = await CalculationWorker.ExecuteAsync(args[1]);
+    return;
+}
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+var protection = builder.Configuration.GetSection("Protection").Get<ProtectionOptions>() ?? new();
+protection.Validate();
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Limits.MaxRequestBodySize = 2 * 1024 * 1024;
+    options.Limits.MaxConcurrentConnections = 100;
+    options.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(10);
+    options.AddServerHeader = false;
+});
+builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.MaxDepth = 32);
+builder.Services.Configure<RouteHandlerOptions>(options => options.ThrowOnBadRequest = true);
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.ForwardLimit = 1;
+    options.KnownIPNetworks.Clear();
+    options.KnownProxies.Clear();
+    foreach (string address in builder.Configuration.GetSection("Protection:TrustedProxies").Get<string[]>() ?? [])
+        options.KnownProxies.Add(IPAddress.Parse(address));
+});
 builder.Services.AddOpenApi();
-builder.Services.AddEscalaLivre();
-
-WebApplication app = builder.Build();
-
-if (app.Environment.IsDevelopment())
+builder.Services.AddEscalaLivre(protection);
+builder.Services.AddRequestTimeouts(options => options.DefaultPolicy = new RequestTimeoutPolicy
 {
-    app.MapOpenApi();
-}
-
-app.UseCors();
-
-app.MapGet("/", () => ApiEnvelope<object>.Ok(new
-{
-    product = "EscalaLivre",
-    mode = "local-first",
-    endpoints = new[] { "/solve", "/validate", "/analyze", "/import", "/export" }
-}));
-
-app.MapPost("/solve", async (ScheduleRequest request, IScheduleSolver solver, IValidator<ScheduleRequest> validator) =>
-{
-    ValidationResult validation = await validator.ValidateAsync(request);
-    if (!validation.IsValid)
-    {
-        return Results.BadRequest(ApiEnvelope<ScheduleResult>.Fail(validation.Errors.Select(x => new ApiMessage(x.ErrorCode, x.ErrorMessage, x.PropertyName)).ToList()));
-    }
-
-    return Results.Ok(ApiEnvelope<ScheduleResult>.Ok(solver.Solve(request)));
+    Timeout = TimeSpan.FromSeconds(protection.WorkerTimeoutSeconds + protection.QueueWaitSeconds + 5),
+    TimeoutStatusCode = 504,
+    WriteTimeoutResponse = context => context.Response.WriteAsJsonAsync(ApiFailure.Envelope("requestTimeout", "A solicitação atingiu o tempo limite. Tente novamente."))
 });
 
-foreach (string? endpoint in new[] { "/validate", "/analyze" })
+WebApplication app = builder.Build();
+// Do not enable forwarded headers unless specific proxy addresses were configured.
+if ((builder.Configuration.GetSection("Protection:TrustedProxies").Get<string[]>() ?? []).Length > 0) app.UseForwardedHeaders();
+if (!app.Environment.IsDevelopment()) app.UseHsts();
+app.Use(async (context, next) =>
 {
-    app.MapPost(endpoint, async (ScheduleRequest request, IScheduleSolver solver, IValidator<ScheduleRequest> validator) =>
+    context.Response.Headers.XContentTypeOptions = "nosniff";
+    context.Response.Headers.XFrameOptions = "DENY";
+    context.Response.Headers["Content-Security-Policy"] = "default-src 'none'; frame-ancestors 'none'";
+    context.Response.Headers["Referrer-Policy"] = "no-referrer";
+    context.Response.Headers.CacheControl = "no-store";
+    var clock = Stopwatch.StartNew();
+    // A client can stall while the JSON binder is still reading. Abort the
+    // transport after a short grace period even if cooperative timeout handling
+    // has not returned from that read yet.
+    using var hardDeadline = new CancellationTokenSource(TimeSpan.FromSeconds(protection.WorkerTimeoutSeconds + protection.QueueWaitSeconds + 6));
+    using var abortTransport = hardDeadline.Token.Register(context.Abort);
+    try { await next(context); }
+    catch (OperationCanceledException) when (context.RequestAborted.IsCancellationRequested) { context.Response.StatusCode = 499; }
+    catch (Exception exception) when (!context.Response.HasStarted)
     {
-        ValidationResult validation = await validator.ValidateAsync(request);
+        var (status, code, message) = exception switch
+        {
+            ApiFailure failure => (failure.Status, failure.Code, failure.Message),
+            BadHttpRequestException bad => (bad.StatusCode, "invalidRequest", bad.StatusCode == 413 ? "Arquivo ou pedido maior que 2 MB." : "Pedido inválido ou incompleto."),
+            JsonException or FormatException or System.Text.DecoderFallbackException => (400, "invalidFile", "Arquivo ou conteúdo inválido."),
+            _ => (500, "internalError", "Não foi possível concluir a solicitação.")
+        };
+        // Never log the exception message: JSON parsers can include personal input.
+        app.Logger.LogWarning("API failure {Code}, type {ExceptionType}", code, exception.GetType().Name);
+        context.Response.StatusCode = status;
+        if (status is 429 or 503) context.Response.Headers.RetryAfter = "5";
+        await context.Response.WriteAsJsonAsync(ApiFailure.Envelope(code, message), context.RequestAborted);
+    }
+    finally
+    {
+        string route = context.GetEndpoint()?.DisplayName ?? "unmatched";
+        app.Logger.LogInformation("API {Route} returned {Status} in {DurationMs}ms", route, context.Response.StatusCode, clock.ElapsedMilliseconds);
+    }
+});
+app.UseRouting();
+app.UseRequestTimeouts();
+app.UseCors();
+app.UseRateLimiter();
+if (app.Environment.IsDevelopment()) app.MapOpenApi();
+app.MapGet("/", () => ApiEnvelope<object>.Ok(new { product = "EscalaLivre", mode = "local-first", endpoints = new[] { "/solve", "/validate", "/analyze", "/import", "/export" } }));
+app.MapGet("/health", () => Results.Ok(new { status = "healthy" }));
+foreach (string operation in new[] { "solve", "validate", "analyze" })
+{
+    app.MapPost("/" + operation, async (ScheduleRequest request, CalculationWorker worker, IValidator<ScheduleRequest> validator, CancellationToken cancellation) =>
+    {
+        var validation = await validator.ValidateAsync(request, cancellation);
         if (!validation.IsValid)
-            return Results.BadRequest(ApiEnvelope<ScheduleResult>.Fail(validation.Errors.Select(x => new ApiMessage(x.ErrorCode, x.ErrorMessage, x.PropertyName)).ToList()));
-        return Results.Ok(ApiEnvelope<ScheduleResult>.Ok(solver.Validate(request)));
+            return Results.BadRequest(ApiEnvelope<ScheduleResult>.Fail(validation.Errors.Select(e => new ApiMessage("invalidRequest", e.ErrorMessage, e.PropertyName)).ToList()));
+        return Results.Ok(ApiEnvelope<ScheduleResult>.Ok(await worker.RunAsync(operation, request, cancellation)));
     });
 }
-
-app.MapGet("/health", () => Results.Ok(new { status = "healthy" }));
-
-app.MapPost("/import", (ImportRequest request, NativeScheduleSerializer serializer) =>
-    ApiEnvelope<object>.Ok(serializer.Import(request)));
-
-app.MapPost("/export", (ExportRequest request, NativeScheduleSerializer serializer) =>
-    ApiEnvelope<ExportResult>.Ok(serializer.Export(request)));
-
+app.MapPost("/import", (ImportRequest request, NativeScheduleSerializer serializer) => ApiEnvelope<object>.Ok(serializer.Import(request)));
+app.MapPost("/export", (ExportRequest request, NativeScheduleSerializer serializer) => ApiEnvelope<ExportResult>.Ok(serializer.Export(request)));
 app.Run();

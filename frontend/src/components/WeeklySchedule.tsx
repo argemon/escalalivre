@@ -1,34 +1,80 @@
-import { holidayOn } from "../lib/holidays";
+import { useState } from "react";
+import { datePart, displayClock, timePart } from "../lib/dateTime";
+import { authorizedHolidayShift, holidayOn } from "../lib/holidays";
 import { weekStart } from "../lib/printSchedule";
 import { weeklyCoverage } from "../lib/weeklyCoverage";
-import { useState } from "react";
-import { useScheduleStore } from "../store/scheduleStore";
 import { outsideOperatingHours } from "../lib/coverageRules";
 import { dayLabels } from "../lib/planning";
+import { useScheduleStore } from "../store/scheduleStore";
 import { Button } from "./ui";
-const dateKey = (d: Date) => [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");
+
+const dateKey = (day: Date) => [day.getFullYear(), String(day.getMonth() + 1).padStart(2, "0"), String(day.getDate()).padStart(2, "0")].join("-");
+
 export function WeeklySchedule() {
   const { document, setSelectedEmployeeId } = useScheduleStore();
-  const [anchor,setAnchor] = useState(() => document.assignments.map(a => a.start.slice(0,10)).sort()[0] ?? dateKey(new Date()));
-  const first = weekStart(new Date(anchor+"T00:00:00"));
-  const dates = Array.from({length:7},(_,i) => { const day = new Date(first); day.setDate(day.getDate()+i); return day; });
-  const changeWeek = (offset: number) => { const d = new Date(first); d.setDate(d.getDate()+offset); setAnchor(dateKey(d)); };
-  const weekRows = dates.map(day => ({day,key:dateKey(day),shifts:weeklyCoverage(document,dateKey(day))}));
-  const hours = (value: string) => { const [h,m] = value.split(":").map(Number); return h+m/60; };
-  const opening = hours(document.company.opensAt), closing = hours(document.company.closesAt)+(hours(document.company.closesAt)<=opening ? 24 : 0);
-  const startHour = Math.floor(Math.min(opening,...weekRows.flatMap(row => row.shifts.map(a => (Date.parse(a.start)-Date.parse(row.key+"T00:00:00"))/3600000))));
-  const endHour = Math.ceil(Math.max(closing,...weekRows.flatMap(row => row.shifts.map(a => (Date.parse(a.end)-Date.parse(row.key+"T00:00:00"))/3600000))));
-  const span = Math.max(1,endHour-startHour);
-  const position = (value: string, day: string) => (Date.parse(value)-Date.parse(day+"T00:00:00"))/3600000;
-  return <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-background"><header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-border p-4"><div><h2 className="text-xl font-semibold">Escala semanal</h2><p className="text-sm text-muted-foreground">{document.company.name} · {document.company.opensAt.slice(0,5)}–{document.company.closesAt.slice(0,5)} · {document.company.operatingDays.map(d => dayLabels[d]).join(", ")}</p></div><div className="flex gap-2"><Button onClick={() => changeWeek(-7)}>Anterior</Button><Button onClick={() => setAnchor(dateKey(new Date()))}>Hoje</Button><Button onClick={() => changeWeek(7)}>Próxima</Button></div></header><section className="min-h-0 flex-1 overflow-auto px-5 pb-5"><p className="mb-3 pt-5 text-sm text-muted-foreground">Tracejado: cobertura prevista pelos dias da função e do funcionário · Sólido: turno cadastrado · Âmbar: fora do expediente · +1d: dia seguinte</p><p className="mb-3 text-xs text-muted-foreground">A cobertura prevista indica os períodos em comum. Gere a escala para aplicar limites de jornada, folgas e descanso.</p><div className="min-w-[960px] rounded border border-border bg-card"><div className="sticky top-0 z-10 grid grid-cols-[180px_1fr] border-b border-border bg-card"><div className="p-3 text-sm">Dia / Pessoa</div><div className="relative h-10">{Array.from({length:span},(_,i) => startHour+i).map(h => <span key={h} className="absolute border-l border-border px-1 py-2 text-xs" style={{left:(h-startHour)/span*100+"%"}}>{String(h%24).padStart(2,"0")}h{h>=24 ? " +1d" : ""}</span>)}</div></div>{weekRows.map(({day,key,shifts}) => {
-    const holiday=holidayOn(document.company,key);
-    const open = document.company.operatingDays.includes(day.getDay()) && !holiday?.closed;
-    return <div key={key}><div className="border-b border-border bg-muted px-3 py-2 text-sm font-semibold">{dayLabels[day.getDay()]} · {day.toLocaleDateString("pt-BR")} · {open ? "Em funcionamento" : "Empresa fechada"}{holiday && " · Feriado: "+holiday.name}</div>{shifts.length === 0 && <div className="p-3 text-sm text-muted-foreground">Sem turnos ou cobertura prevista neste dia</div>}{shifts.map(a => {
-      const employee = document.employees.find(e => e.id === a.employeeId);
-      const from = position(a.start,key), to = position(a.end,key);
-      const outside = outsideOperatingHours(document.company,day.getDay(),a.start.slice(11,19),a.end.slice(11,19));
-      const label = a.start.slice(11,16)+"–"+a.end.slice(11,16)+(to>=24 ? " +1d" : "");
-      return <div key={a.id} className="grid grid-cols-[180px_1fr] border-b border-border"><button className="border-r border-border p-3 text-left text-sm hover:bg-muted" onClick={() => setSelectedEmployeeId(a.employeeId)}>{employee?.name}<span className="block text-xs text-muted-foreground">{a.role}</span></button><div className="relative h-20 bg-[linear-gradient(90deg,hsl(var(--border))_1px,transparent_1px)] bg-[length:4.166%_100%]"><button onClick={() => setSelectedEmployeeId(a.employeeId)} title={label+(a.planned ? " · Cobertura prevista; gere a escala para definir jornada, intervalo e descanso" : " · Turno cadastrado")+(outside ? " · Fora do expediente" : "")} className={"absolute top-3 h-14 overflow-hidden rounded border px-2 text-left text-xs "+(a.planned ? "border-dashed " : "")+(outside ? "border-amber-500 bg-amber-500/20" : "border-emerald-500 bg-emerald-500/20")} style={{left:(Math.max(startHour,from)-startHour)/span*100+"%",width:Math.max(1,(Math.min(endHour,to)-Math.max(startHour,from))/span*100)+"%"}}>{label}{a.planned && <span className="block">Cobertura prevista</span>}{outside && <span className="block font-semibold">Fora do expediente</span>}{a.break && <span className="absolute bottom-0 h-2 bg-amber-400" title={"Intervalo: "+a.break.start.slice(11,16)+"–"+a.break.end.slice(11,16)} style={{left:(position(a.break.start,key)-from)/(to-from)*100+"%",width:(position(a.break.end,key)-position(a.break.start,key))/(to-from)*100+"%"}} />}</button></div></div>;
-    })}</div>;
-  })}</div></section></main>;
+  const [anchor, setAnchor] = useState(() => document.planningPeriod.start);
+  const first = weekStart(new Date(anchor + "T00:00:00"));
+  const days = Array.from({ length: 7 }, (_, index) => {
+    const day = new Date(first);
+    day.setDate(day.getDate() + index);
+    const key = dateKey(day);
+    const inPeriod = key >= document.planningPeriod.start && key <= document.planningPeriod.end;
+    const holiday = holidayOn(document.company, key);
+    return { day, key, inPeriod, holiday, closed: !document.company.operatingDays.includes(day.getDay()) || Boolean(holiday?.closed), shifts: inPeriod ? weeklyCoverage(document, key) : [] };
+  });
+  const changeWeek = (offset: number) => {
+    const day = new Date(first);
+    day.setDate(day.getDate() + offset);
+    setAnchor(dateKey(day));
+  };
+  const dateLabel = (day: Date) => day.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+
+  return <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-background">
+    <header className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3">
+      <div><h2 className="text-lg font-semibold">Escala semanal</h2><p className="text-xs text-muted-foreground">{dateLabel(first)} a {dateLabel(days[6].day)} · {document.employees.length} pessoas</p></div>
+      <div className="flex gap-2">
+        <Button className="h-8 px-3 text-xs" disabled={dateKey(first) <= document.planningPeriod.start} onClick={() => changeWeek(-7)}>Anterior</Button>
+        <Button className="h-8 px-3 text-xs" onClick={() => { const today = dateKey(new Date()); setAnchor(today < document.planningPeriod.start || today > document.planningPeriod.end ? document.planningPeriod.start : today); }}>Hoje</Button>
+        <Button className="h-8 px-3 text-xs" disabled={days[6].key >= document.planningPeriod.end} onClick={() => changeWeek(7)}>Próxima</Button>
+      </div>
+    </header>
+    <section className="min-h-0 flex-1 overflow-auto p-3" aria-label="Horários da semana por pessoa">
+      <table className="w-full min-w-[820px] table-fixed border-separate border-spacing-0 text-left text-xs">
+        <caption className="pb-3 text-left text-xs text-muted-foreground">Uma linha por pessoa. Prévia: horário estimado; gere a escala para confirmar. +1d: termina no dia seguinte.</caption>
+        <thead className="sticky top-0 z-10">
+          <tr>
+            <th scope="col" className="sticky left-0 z-20 w-40 border border-border bg-card px-3 py-2 font-semibold">Pessoa / Função</th>
+            {days.map(({ day, key, inPeriod, holiday, closed }) => <th key={key} scope="col" title={holiday?.name} className={"border-y border-r border-border px-2 py-2 font-semibold " + (!inPeriod || closed ? "bg-muted" : "bg-card")}>
+              <span className="block">{dayLabels[day.getDay()]} · {dateLabel(day)}</span>
+              {!inPeriod ? <span className="block text-[10px] font-normal text-muted-foreground">Fora do período</span> : holiday ? <span className="block text-[10px] font-normal text-muted-foreground">{holiday.name}{closed ? " · Fechada" : ""}</span> : closed ? <span className="block text-[10px] font-normal text-muted-foreground">Empresa fechada</span> : null}
+            </th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {document.employees.map(employee => <tr key={employee.id}>
+            <th scope="row" className="sticky left-0 z-[1] border-x border-b border-border bg-card px-3 py-3 align-top font-normal">
+              <button className="text-left hover:text-primary" onClick={() => setSelectedEmployeeId(employee.id)}><span className="block break-words text-sm font-semibold">{employee.name}</span><span className="block text-xs text-muted-foreground">{employee.role}</span></button>
+            </th>
+            {days.map(({ day, key, inPeriod, closed, shifts }) => {
+              const personShifts = shifts.filter(shift => shift.employeeId === employee.id).sort((a, b) => a.start.localeCompare(b.start));
+              return <td key={key} className={"border-r border-b border-border px-2 py-3 align-top " + (!inPeriod || closed && !personShifts.length ? "bg-muted/40" : "bg-card")}>
+                {personShifts.length ? <div className="space-y-2">{personShifts.map(shift => {
+                  const overnight = datePart(shift.end) > datePart(shift.start);
+                  const label = displayClock(shift.start) + "–" + displayClock(shift.end) + (overnight ? " +1d" : "");
+                  const outside = !authorizedHolidayShift(document.company, shift) && outsideOperatingHours(document.company, day.getDay(), timePart(shift.start), timePart(shift.end));
+                  return <button key={shift.id} className={"block w-full rounded border-l-2 pl-2 text-left " + (outside ? "border-amber-500" : shift.planned ? "border-dashed border-border" : "border-primary")} title={employee.name + " · " + dateLabel(day) + " · " + label} onClick={() => setSelectedEmployeeId(employee.id)}>
+                    <span className="block font-semibold tabular-nums">{label}</span>
+                    {shift.break && <span className="block text-[10px] text-muted-foreground">Int. {displayClock(shift.break.start)}–{displayClock(shift.break.end)}</span>}
+                    {shift.planned && <span className="block text-[10px] text-muted-foreground">Prévia</span>}
+                    {outside && <span className="block text-[10px] text-amber-700 dark:text-amber-300">Fora do expediente</span>}
+                  </button>;
+                })}</div> : <span className="text-muted-foreground">{!inPeriod ? "—" : closed ? "Fechada" : "Sem turno"}</span>}
+              </td>;
+            })}
+          </tr>)}
+          {!document.employees.length && <tr><td colSpan={8} className="border-x border-b border-border bg-card p-5 text-center text-muted-foreground">Adicione pessoas na etapa Equipe para visualizar a escala semanal.</td></tr>}
+        </tbody>
+      </table>
+    </section>
+  </main>;
 }

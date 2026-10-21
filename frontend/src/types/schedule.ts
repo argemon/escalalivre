@@ -35,6 +35,8 @@ export type Employee = {
 };
 
 export type CompanyRules = {
+  /** IANA zone used only to interpret qualified legacy datetimes; schedules use civil time. */
+  timeZone?: string;
   holidays?: { date:string; name:string; closed:boolean }[];
   middayClosure?: { start: string; end: string };
   name: string;
@@ -76,6 +78,7 @@ export type ShiftAssignment = {
 };
 
 export type EscalaLivreDocument = {
+  planningPeriod: { start: string; end: string };
   roles?: { id: string; name: string }[];
   setup?: { companyConfigured: boolean };
   schemaVersion: string;
@@ -105,6 +108,7 @@ export type CoverageBlock = {
 };
 
 export type ScheduleIssue = {
+  employeeId?: string;
   severity: "error" | "warning" | "info";
   code: string;
   message: string;

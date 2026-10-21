@@ -1,3 +1,4 @@
+import { datePart, formatCivilDateTime } from "./dateTime";
 import { canCover } from "./coverageAllocation";
 import { closedHoliday } from "./holidays";
 import { intervalFor, minutesOf, previewPause } from "./intervals";
@@ -5,7 +6,8 @@ import type { EscalaLivreDocument, ShiftAssignment } from "../types/schedule";
 import { outsideOperatingHours } from "./coverageRules";
 export type WeeklyCoverage = ShiftAssignment & { planned?: boolean };
 export function weeklyCoverage(document: EscalaLivreDocument, date: string): WeeklyCoverage[] {
-  const actual = document.assignments.filter(a => a.start.slice(0,10) === date);
+  if (document.planningPeriod && (date < document.planningPeriod.start || date > document.planningPeriod.end)) return [];
+  const actual = document.assignments.filter(a => datePart(a.start) === date);
   if (closedHoliday(document.company,date)) return actual;
   const day = new Date(date+"T00:00:00").getDay();
   const predicted: WeeklyCoverage[] = [];
@@ -32,7 +34,7 @@ export function weeklyCoverage(document: EscalaLivreDocument, date: string): Wee
         const pause=previewPause(document.company,employee,work,window.start,window.end);
         window.end=Math.min(window.end,window.start+(work+pause)*60000);
         const interval=intervalFor(document.company,employee,window.start,window.end,pause);
-        const local = (n: number) => { const d = new Date(n); const pad = (v: number) => String(v).padStart(2,"0"); return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+"T"+pad(d.getHours())+":"+pad(d.getMinutes())+":00"; };
+        const local = (n: number) => formatCivilDateTime(new Date(n));
         if (predicted.some(a => a.employeeId === employee.id && Date.parse(a.start) === window.start && Date.parse(a.end) === window.end)) continue;
         predicted.push({id:"preview-"+date+"-"+employee.id+"-"+index+"-"+part,employeeId:employee.id,role:employee.role,start:local(window.start),end:local(window.end),source:"manual",tags:[],break:interval,planned:true});
       }

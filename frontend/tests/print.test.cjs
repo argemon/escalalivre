@@ -7,7 +7,11 @@ const root = path.join(__dirname, '..');
 const ts = require(path.join(root, 'node_modules/typescript'));
 const exportsObject = {};
 const code = ts.transpileModule(fs.readFileSync(path.join(root, 'src/lib/printSchedule.ts'), 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText;
-vm.runInNewContext(code, { exports: exportsObject, Date });
+function dependency(file) {
+  const exports={};const code=ts.transpileModule(fs.readFileSync(path.join(root,'src/lib',file+'.ts'),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText;
+  vm.runInNewContext(code,{exports,Date,Intl,require:r=>dependency(r.replace('./',''))});return exports;
+}
+vm.runInNewContext(code, { exports: exportsObject, Date, require: r => dependency(r.replace('./','')) });
 const { periodDays, printWeeks, displayTime, dayOffset, weekStart } = exportsObject;
 const { monthBounds } = exportsObject;
 const { employeePrintRows } = exportsObject;
