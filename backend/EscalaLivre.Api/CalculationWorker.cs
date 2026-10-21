@@ -49,6 +49,7 @@ public sealed class CalculationWorker(ProtectionOptions options, ILogger<Calcula
             try
             {
                 process.Start();
+                logger.LogDebug("Calculation {Operation} started", operation);
                 output = ReadBoundedAsync(process.StandardOutput, 32 * 1024 * 1024, deadline.Token);
                 errors = ReadBoundedAsync(process.StandardError, 64 * 1024, deadline.Token);
                 await process.StandardInput.WriteLineAsync(JsonSerializer.Serialize(request, JsonOptions).AsMemory(), deadline.Token);

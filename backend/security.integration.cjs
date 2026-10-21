@@ -44,7 +44,7 @@ async function withServer(options, run) {
   const url = `http://127.0.0.1:${port}`;
   const env = { ...process.env, ASPNETCORE_ENVIRONMENT: 'Production', ASPNETCORE_URLS: url,
     Protection__AllowedOrigins__0: 'https://allowed.example', Protection__RequestsPerMinute: '1000', Protection__SolvesPerMinute: '1000',
-    Logging__LogLevel__Default: 'Information' };
+    Logging__LogLevel__Default: 'Information', 'Logging__LogLevel__EscalaLivre.Api.CalculationWorker': 'Debug' };
   for (const [key, value] of Object.entries(options)) env[`Protection__${key}`] = String(value);
   const child = spawn('dotnet', [assembly], { cwd: apiDirectory, env, windowsHide: true });
   let logs = '';
@@ -59,7 +59,15 @@ async function withServer(options, run) {
       await sleep(100);
     }
     assert.ok(ready, 'Server must start');
-    await run({ url, post, logs: () => logs });
+    const waitForLog = async message => {
+      const deadline = Date.now() + 10000;
+      while (!logs.includes(message)) {
+        assert.equal(child.exitCode, null, 'Server must remain running');
+        assert.ok(Date.now() < deadline, 'Missing server event: ' + message);
+        await sleep(20);
+      }
+    };
+    await run({ url, post, logs: () => logs, waitForLog });
   } catch (error) {
     throw new Error(error.stack + '\nServer output:\n' + logs);
   } finally {
@@ -142,31 +150,31 @@ test('wall-clock deadline includes result analysis and the API recovers', async 
 });
 
 test('queue wait has its own deadline and cancellation removes the active job', async () => {
-  await withServer({ ConcurrentWorkers: 1, QueueLimit: 1, QueueWaitSeconds: 1 }, async ({ url, post }) => {
+  await withServer({ ConcurrentWorkers: 1, QueueLimit: 1, QueueWaitSeconds: 1 }, async ({ url, post, waitForLog }) => {
     const abort = new AbortController();
     const running = fetch(url + '/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(expensiveAnalysis()), signal: abort.signal });
     const rejected = assert.rejects(running);
     try {
-      await sleep(150);
+      // Validation can take longer on CI; wait until the worker owns its slot.
+      await waitForLog('Calculation analyze started');
       const waiting = await post('/solve', request());
       assert.equal(waiting.status, 503);
       assert.equal((await waiting.json()).errors[0].code, 'busy');
     } finally { abort.abort(); await rejected; }
-    await sleep(300);
+    await waitForLog('Calculation analyze completed');
     assert.equal((await post('/solve', request())).status, 200);
   });
 });
 
 test('disconnecting the caller stops its worker and releases capacity', async () => {
-  await withServer({ ConcurrentWorkers: 1, QueueLimit: 0 }, async ({ url, post }) => {
+  await withServer({ ConcurrentWorkers: 1, QueueLimit: 0 }, async ({ url, post, waitForLog }) => {
     const heavy = request(200, 7);
     const abort = new AbortController();
     const running = fetch(url + '/solve', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(heavy), signal: abort.signal });
     const rejected = assert.rejects(running);
-    await sleep(150);
-    abort.abort();
-    await rejected;
-    await sleep(300);
+    try { await waitForLog('Calculation solve started'); }
+    finally { abort.abort(); await rejected; }
+    await waitForLog('Calculation solve completed');
     assert.equal((await post('/solve', request())).status, 200);
   });
 });
