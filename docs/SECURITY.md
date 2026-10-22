@@ -102,3 +102,25 @@ geração real, importação/exportação, entradas inválidas, corpo excessivo,
 limites de taxa, cabeçalhos de IP forjados, sobrecarga, prazo, memória e cancelamento.
 Para build Release, defina `SECURITY_BUILD_CONFIGURATION=Release` no teste HTTP.
 Teste a capacidade da hospedagem escolhida em ambiente separado antes de divulgar.
+
+### Corpo HTTP e mensagem no cliente
+
+O limite de corpo é 2 MiB (2.097.152 bytes). O cliente mede em UTF-8 o JSON
+completo enviado a /solve e rejeita o excesso antes de iniciar fetch. Isso evita
+que uma conexão encerrada durante o upload esconda a mensagem de limite.
+Um status 413 no log do servidor confirma a rejeição local; não comprova que
+o cliente recebeu a resposta. Para Content-Length acima do limite, a API rejeita
+antes do binding, preserva CORS e permite que o Kestrel descarte o corpo declarado
+sem provocar um segundo erro de tamanho. Somente esse pedido já rejeitado recebe
+o limite de drenagem igual ao tamanho declarado; nenhum conteúdo chega ao solver.
+Os limites de taxa continuam aplicados. A drenagem tem o timeout de cinco segundos
+do [Kestrel](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/request-draining?view=aspnetcore-10.0).
+Uploads sem Content-Length continuam sujeitos ao limite de leitura do Kestrel e
+podem observar erro de transporte se a conexão for encerrada durante o envio.
+Não há repetição automática. O teste HTTP repete cinco uploads, incluindo 4 MiB,
+verifica status, JSON e CORS e gera uma escala válida em seguida.
+
+Os testes de integração também usam as ações reais de edição e persistência
+do frontend, recarregam o documento e geram via HTTP com o solver real.
+Cobrem autorização/revogação, troca de função e durações de 36 e 168 horas.
+Essa camada não simula cliques nem substitui testes de interface no navegador.

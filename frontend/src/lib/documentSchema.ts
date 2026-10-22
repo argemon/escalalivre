@@ -1,3 +1,4 @@
+import { normalizeCoverageRoles } from "./roles";
 import limits from "../../../shared/document-validation-limits.json";
 import { civilMillis, clockMillis } from "./civilTime";
 import { migrateDocument } from "./documentLifecycle";
@@ -71,4 +72,4 @@ const canonicalDocumentSchema = z.object({
 
 export const documentSchema=z.preprocess(input=>{
   try{return migrateDocument(input as EscalaLivreDocument).document;}catch{return input;}
-},canonicalDocumentSchema);
+},canonicalDocumentSchema.transform(normalizeCoverageRoles));

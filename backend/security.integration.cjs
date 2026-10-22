@@ -95,8 +95,13 @@ test('API rejects abusive inputs and keeps normal scheduling and exports working
     for (const contentBase64 of ['bad base64', 'e30=', 'bnVsbA=='])
       assert.equal((await post('/import', { fileName: 'x.escalalivre', format: 'native', contentBase64 })).status, 400);
     assert.equal((await post('/export', { document: null, format: 'native' })).status, 400);
-    const tooLarge = await post('/import', JSON.stringify({ pad: 'x'.repeat(2 * 1024 * 1024) }));
-    assert.equal(tooLarge.status, 413);
+    for(let attempt=0;attempt<5;attempt++){
+      const tooLarge = await post('/import', JSON.stringify({ pad: 'x'.repeat((attempt===4?4:2) * 1024 * 1024) }), {Origin:'https://allowed.example'});
+      assert.equal(tooLarge.status, 413);
+      assert.equal(tooLarge.headers.get('access-control-allow-origin'),'https://allowed.example');
+      assert.equal((await tooLarge.json()).success,false);
+    }
+    assert.equal((await post('/solve', request())).status,200);
     const allowed = await fetch(url + '/health', { headers: { Origin: 'https://allowed.example' } });
     assert.equal(allowed.headers.get('access-control-allow-origin'), 'https://allowed.example');
     assert.equal(allowed.headers.get('x-content-type-options'), 'nosniff');
@@ -257,6 +262,111 @@ test('shared documents produce equivalent browser and HTTP diagnostics, coverage
         const {data:result}=await response.json();assert.ok(result.assignments.length,scenario.id);assert.ok(!result.conflicts.some(c=>c.severity==='error'),scenario.id+': '+JSON.stringify(result.conflicts));
         const checked=analyzeDocument({...scenario.request.document,assignments:result.assignments});assert.deepEqual(digest(result),digest(checked),scenario.id+' generated diagnostics');
       }
+    }
+  });
+});
+
+// App save actions, persisted reload, actual HTTP/worker generation, and result application.
+function editingFixture() {
+  const r=request();
+  const own={id:randomUUID(),name:'Farmacêutico'},covered={id:randomUUID(),name:'Atendente'};
+  r.document.roles=[own,covered];
+  r.document.planningPeriod={start:'2026-10-14',end:'2026-10-14'};
+  r.document.company={...r.document.company,timeZone:'America/Cuiaba',opensAt:'07:30:00',closesAt:'16:30:00',operatingDays:[3],
+    coverage:[{role:covered.name,roleId:covered.id,day:3,start:'11:00:00',end:'13:00:00',minimumEmployees:1}]};
+  const base=r.document.employees[0];
+  r.document.employees=[
+    {...base,role:own.name,roleId:own.id,coverageRoleIds:[],coverageRoles:[],shiftStartsAt:'07:30:00',fixedInterval:{start:'11:00:00',end:'12:00:00'}},
+    {...base,id:randomUUID(),role:covered.name,roleId:covered.id,coverageRoleIds:[],coverageRoles:[],shiftStartsAt:'07:30:00',fixedInterval:{start:'12:00:00',end:'13:00:00'}},
+  ];
+  return {document:r.document,covered,employeeId:base.id};
+}
+function editingClient(url) {
+  const data=new Map();
+  const storage={getItem:key=>data.get(key)??null,setItem:(key,value)=>data.set(key,value),removeItem:key=>data.delete(key)};
+  let load,store,payload;
+  const reload=()=>{
+    load=require('../frontend/tests/source-loader.cjs')(storage,{fetch:async(route,options)=>{
+      payload=JSON.parse(options.body);
+      return fetch(url+route,options);
+    }});
+    store=load('store/scheduleStore.ts').useScheduleStore;
+    return store;
+  };
+  reload();
+  return {
+    get store(){return store;},get load(){return load;},get payload(){return payload;},reload,
+    async generate(){
+      const submitted=store.getState().document;
+      const result=await load('lib/api.ts').solveSchedule(submitted);
+      store.getState().applyGeneratedSchedule(submitted,result);
+      assert.ok(!result.conflicts.some(c=>['invalidShift','solverInvalid','solverTimeout','solverInfeasible'].includes(c.code)),JSON.stringify(result.conflicts));
+      return result;
+    },
+  };
+}
+test('editing flow: authorize, save, generate, revoke, save, reload and generate with real solver',async()=>{
+  await withServer({},async({url})=>{
+    const {document,covered,employeeId}=editingFixture(),client=editingClient(url);
+    client.store.getState().setDocument(document);
+    const person=()=>client.store.getState().document.employees.find(e=>e.id===employeeId);
+    client.store.getState().upsertEmployee({...person(),coverageRoleIds:[covered.id]});
+    client.reload();
+    assert.deepEqual(Array.from(person().coverageRoleIds),[covered.id]);
+    const authorized=await client.generate();
+    assert.equal(authorized.gaps.length,0);
+    assert.ok(authorized.assignments.length);
+    client.store.getState().upsertEmployee({...person(),coverageRoleIds:[]});
+    assert.deepEqual(Array.from(person().coverageRoles),[]);
+    client.reload();
+    const native=client.load('lib/nativeDocument.ts');
+    client.store.getState().setDocument(native.parseNativeText(native.serializeNative(client.store.getState().document)));
+    const revoked=await client.generate();
+    const sent=client.payload.document.employees.find(e=>e.id===employeeId);
+    assert.deepEqual(sent.coverageRoleIds,[]);assert.deepEqual(sent.coverageRoles,[]);
+    assert.ok(revoked.gaps.some(g=>g.role===covered.name&&g.start==='2026-10-14T12:00:00'),JSON.stringify(revoked.gaps));
+    assert.ok(client.store.getState().analysis.gaps.some(g=>g.role===covered.name));
+    const local=client.load('lib/analysis.ts').analyzeDocument(client.store.getState().document);
+    assert.ok(local.gaps.some(g=>g.role===covered.name&&g.start==='2026-10-14T12:00:00'));
+  });
+});
+test('editing flow: generate, change employee role, save, reload and regenerate consistently',async()=>{
+  await withServer({},async({url})=>{
+    const {document,covered,employeeId}=editingFixture(),client=editingClient(url);
+    client.store.getState().setDocument(document);
+    const original=client.store.getState().document.employees.find(e=>e.id===employeeId);
+    client.store.getState().upsertEmployee({...original,coverageRoleIds:[covered.id]});
+    await client.generate();
+    const employee=client.store.getState().document.employees.find(e=>e.id===employeeId);
+    assert.ok(client.store.getState().document.assignments.some(a=>a.employeeId===employeeId));
+    client.store.getState().upsertEmployee({...employee,role:covered.name,roleId:covered.id});
+    client.reload();
+    const check=()=>{
+      for(const a of client.store.getState().document.assignments.filter(a=>a.employeeId===employeeId)){
+        assert.equal(a.roleId,covered.id);assert.equal(a.role,covered.name);
+      }
+      assert.ok(!client.store.getState().analysis.conflicts.some(c=>c.code==='invalidShift'));
+    };
+    check();await client.generate();check();
+    assert.equal(client.payload.document.employees.find(e=>e.id===employeeId).roleId,covered.id);
+  });
+});
+test('editing flow: long duration input, save, persisted reload and generation preserve all hour digits',async()=>{
+  await withServer({},async({url})=>{
+    const {document}=editingFixture(),client=editingClient(url);
+    client.store.getState().setDocument(document);
+    for(const hours of ['36','168']){
+      let duration;
+      const {DurationInput}=client.load('components/DurationInput.tsx');
+      DurationInput({value:client.store.getState().document.company.minimumRest,onChange:value=>{duration=value;}})
+        .props.onChange({currentTarget:{value:hours+':00'}});
+      const current=client.store.getState().document;
+      const next=client.load('lib/documentSchema.ts').documentSchema.parse({...current,company:{...current.company,minimumRest:duration}});
+      client.store.getState().setDocument(next);client.reload();
+      assert.equal(client.store.getState().document.company.minimumRest,hours+':00:00');
+      await client.generate();
+      assert.equal(client.payload.document.company.minimumRest,hours+':00:00');
+      assert.equal(client.store.getState().document.company.minimumRest,hours+':00:00');
     }
   });
 });

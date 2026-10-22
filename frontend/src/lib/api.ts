@@ -17,11 +17,15 @@ type ApiEnvelope<T> = {
 
 export async function solveSchedule(document: EscalaLivreDocument): Promise<ScheduleResult> {
   document = normalizeDocumentTimes(document);
+  // Measure the exact serialized UTF-8 body before opening the connection.
+  const body = JSON.stringify({ document, ...planningPeriod(document) });
+  if (new TextEncoder().encode(body).byteLength > 2 * 1024 * 1024)
+    throw new Error("O planejamento é maior que o limite de 2 MB.");
   let response: Response;
   try {
     response = await fetch(API_URL + "/solve", {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ document, ...planningPeriod(document) }), signal: AbortSignal.timeout(20000)
+      body, signal: AbortSignal.timeout(20000)
     });
   } catch (error) {
     if (error instanceof DOMException && error.name === "TimeoutError")

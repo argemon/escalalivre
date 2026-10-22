@@ -60,7 +60,7 @@ test('API generation sends the saved period rather than assignment dates',async(
   const exports={};let payload;
   const source=fs.readFileSync(path.join(__dirname,'../src/lib/api.ts'),'utf8').replaceAll('import.meta.env','testEnv');
   const code=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
-  vm.runInNewContext(code,{exports,testEnv:{DEV:false},AbortSignal,DOMException,require:r=>load('lib/'+r.slice(2)+'.ts'),fetch:async(url,options)=>{payload=JSON.parse(options.body);return Response.json({success:true,data:{assignments:[]}});}});
+  vm.runInNewContext(code,{exports,testEnv:{DEV:false},AbortSignal,DOMException,TextEncoder,require:r=>load('lib/'+r.slice(2)+'.ts'),fetch:async(url,options)=>{payload=JSON.parse(options.body);return Response.json({success:true,data:{assignments:[]}});}});
   const d=clone();d.planningPeriod={start:'2026-10-19',end:'2026-10-19'};
   await exports.solveSchedule(d);
   assert.equal(payload.start,'2026-10-19T00:00:00');assert.equal(payload.end,'2026-10-19T23:59:59');

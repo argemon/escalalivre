@@ -81,9 +81,9 @@ test('preview evaluates the maximum interval to cover the end of the day',()=>{
 const { coverageAllocation }=load('lib/coverageAllocation.ts');
 test('directional substitution covers attendant but never replaces pharmacist in reverse',()=>{
  const doc=structuredClone(sampleDocument);doc.planningPeriod={start:"2026-10-12",end:"2026-10-18"};const pharmacy=doc.employees[0],attendant=doc.employees[1];doc.employees=[pharmacy,attendant];
- pharmacy.role='Farmacêutico';pharmacy.coverageRoles=['Atendente'];attendant.role='Atendente';
+ pharmacy.role='Farmacêutico';pharmacy.coverageRoleIds=['attendant'];attendant.role='Atendente';
  doc.assignments=[{...doc.assignments[0],employeeId:pharmacy.id,role:pharmacy.role,start:'2026-10-14T07:30:00',end:'2026-10-14T16:30:00',break:{start:'2026-10-14T11:00:00',end:'2026-10-14T12:00:00'}},{...doc.assignments[0],id:'other',employeeId:attendant.id,role:attendant.role,start:'2026-10-14T07:30:00',end:'2026-10-14T16:30:00',break:{start:'2026-10-14T12:00:00',end:'2026-10-14T13:00:00'}}];
- const rules=[{role:'Farmacêutico',minimumEmployees:1},{role:'Atendente',minimumEmployees:1}];
+ const rules=[{role:'Farmacêutico',minimumEmployees:1},{role:'Atendente',roleId:'attendant',minimumEmployees:1}];
  const first=coverageAllocation(doc,Date.parse('2026-10-14T11:00:00'),Date.parse('2026-10-14T12:00:00'),rules);
  assert.equal(first.find(b=>b.rule.role==='Farmacêutico').assigned,0);
  const second=coverageAllocation(doc,Date.parse('2026-10-14T12:00:00'),Date.parse('2026-10-14T13:00:00'),rules);

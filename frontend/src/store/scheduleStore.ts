@@ -87,7 +87,8 @@ export const useScheduleStore = create<ScheduleState>()(persist((set, get) => ({
   }),
   upsertEmployee:employee => set(state => ({...presentDocument({...state.document,updatedAt:nowInstant(),
     employees:[...state.document.employees.filter(e => e.id !== employee.id),employee],
-    assignments:state.document.assignments.map(a => a.employeeId === employee.id ? {...a,role:employee.role} : a)
+    // All registered shifts follow the employee role, including shifts outside the planning period.
+    assignments:state.document.assignments.map(a => a.employeeId === employee.id ? {...a,roleId:employee.roleId,role:employee.role} : a)
   }),selectedEmployeeId:undefined})),
   deleteEmployee:id => set(state => ({...presentDocument({...state.document,updatedAt:nowInstant(),
     employees:state.document.employees.filter(e => e.id !== id),assignments:state.document.assignments.filter(a => a.employeeId !== id)

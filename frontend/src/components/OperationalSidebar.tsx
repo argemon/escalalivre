@@ -1,3 +1,4 @@
+import { formatDuration } from "../lib/duration";
 import { AlertTriangle, ArrowRight, Check, Clock3, ShieldCheck, Users } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { RolesEditor } from "./RolesEditor";
@@ -50,9 +51,9 @@ export function OperationalSidebar() {
           <SectionTitle icon={<Clock3 className="size-4" />} title={document.company.name} /><Button className="w-full" onClick={() => setEditor("company")}>Configurar empresa</Button>
           <div className="grid grid-cols-2 gap-2">
             <Metric label="Funcionamento" value={`${document.company.opensAt.slice(0, 5)}-${document.company.closesAt.slice(0, 5)}`} />
-            <Metric label="Descanso CLT" value={document.company.minimumRest.slice(0, 5)} />
-            <Metric label="Jornada padrão" value={document.company.defaultWorkload.defaultShiftDuration.slice(0, 5)} />
-            <Metric label="Intervalo" value={`${document.company.lunch.minimum.slice(0, 5)}-${document.company.lunch.maximum.slice(0, 5)}`} />
+            <Metric label="Descanso CLT" value={formatDuration(document.company.minimumRest)} />
+            <Metric label="Jornada padrão" value={formatDuration(document.company.defaultWorkload.defaultShiftDuration)} />
+            <Metric label="Intervalo" value={`${formatDuration(document.company.lunch.minimum)}-${formatDuration(document.company.lunch.maximum)}`} />
           </div>
           <div className="rounded-md border border-border bg-background p-3">
             <p className="text-xs text-muted-foreground">Dias ativos</p>

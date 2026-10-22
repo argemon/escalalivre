@@ -10,7 +10,7 @@ function api(fetch) {
   const source = fs.readFileSync(path.join(__dirname, '../src/lib/api.ts'), 'utf8')
     .replaceAll('import.meta.env', 'testEnv');
   const code = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
-  vm.runInNewContext(code, { exports, testEnv: { DEV: false }, fetch, AbortSignal, DOMException,
+  vm.runInNewContext(code, { exports, testEnv: { DEV: false }, fetch, AbortSignal, DOMException,TextEncoder,
     require: name => name === './analysis' ? { planningPeriod: () => ({ start: '', end: '' }) } : name === './dateTime' ? { normalizeDocumentTimes: d => d, normalizeResultTimes: r => r } : {} });
   return exports;
 }
@@ -33,4 +33,24 @@ test('production uses the same origin by default and successful results still re
   const service = api(async url => { requested = url; return Response.json({ success: true, data: { assignments: [] } }); });
   assert.deepEqual(JSON.parse(JSON.stringify(await service.solveSchedule({}))), { assignments: [] });
   assert.equal(requested, '/solve');
+});
+
+test('UTF-8 request boundary is checked before fetch, including the complete JSON envelope', async () => {
+  const limit=2*1024*1024;
+  for(const size of [limit-1,limit,limit+1]) {
+    const overhead=Buffer.byteLength(JSON.stringify({document:{pad:''},start:'',end:''}),'utf8');
+    const remaining=size-overhead;
+    const document={pad:'é'.repeat(Math.floor(remaining/2))+'x'.repeat(remaining%2)};
+    let calls=0;
+    const service=api(async(_url,options)=>{
+      calls++;assert.equal(Buffer.byteLength(options.body,'utf8'),size);
+      return Response.json({success:true,data:{assignments:[]}});
+    });
+    if(size>limit){await assert.rejects(service.solveSchedule(document),/limite de 2 MB/);assert.equal(calls,0);}
+    else {await service.solveSchedule(document);assert.equal(calls,1);}
+  }
+});
+
+test('connection errors below the request limit remain connection errors',async()=>{
+  await assert.rejects(api(async()=>{throw new TypeError('fetch failed');}).solveSchedule({}),/Não foi possível conectar/);
 });

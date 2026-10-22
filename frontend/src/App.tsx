@@ -1,11 +1,12 @@
-import { useEffect } from "react";
-import { ScheduleCalendar } from "./components/ScheduleCalendar";
+import { lazy, Suspense, useEffect } from "react";
 import { EmployeeDrawer } from "./components/EmployeeDrawer";
 import { GlobalHeader } from "./components/GlobalHeader";
 import { OperationalSidebar } from "./components/OperationalSidebar";
 import { OperationalTimeline } from "./components/OperationalTimeline";
 import { SolverPanel } from "./components/SolverPanel";
 import { useScheduleStore } from "./store/scheduleStore";
+
+const ScheduleCalendar = lazy(() => import("./components/ScheduleCalendar").then(module => ({ default: module.ScheduleCalendar })));
 
 export default function App() {
   const viewMode = useScheduleStore((state) => state.viewMode);
@@ -25,7 +26,7 @@ export default function App() {
         <div className="workspace-sidebar min-h-0 overflow-auto rounded-2xl border border-border">
           <OperationalSidebar />
         </div>
-        {viewMode === "week" || viewMode === "month" ? <ScheduleCalendar key={viewMode+periodKey} /> : viewMode === "solver" ? <SolverPanel /> : <OperationalTimeline />}
+        {viewMode === "week" || viewMode === "month" ? <Suspense fallback={<p role="status" className="p-4">Carregando calendário…</p>}><ScheduleCalendar key={viewMode+periodKey} /></Suspense> : viewMode === "solver" ? <SolverPanel /> : <OperationalTimeline />}
 
       </div>
       <EmployeeDrawer />

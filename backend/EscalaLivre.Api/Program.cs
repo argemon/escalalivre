@@ -7,6 +7,7 @@ using EscalaLivre.Application.Validation;
 using EscalaLivre.Infrastructure.ImportExport;
 using FluentValidation;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http.Timeouts;
 
 if (args.Length == 2 && args[0] == "--calculation-worker")
@@ -15,12 +16,13 @@ if (args.Length == 2 && args[0] == "--calculation-worker")
     return;
 }
 
+const long maxRequestBodyBytes = 2 * 1024 * 1024;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 var protection = builder.Configuration.GetSection("Protection").Get<ProtectionOptions>() ?? new();
 protection.Validate();
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.Limits.MaxRequestBodySize = 2 * 1024 * 1024;
+    options.Limits.MaxRequestBodySize = maxRequestBodyBytes;
     options.Limits.MaxConcurrentConnections = 100;
     options.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(10);
     options.AddServerHeader = false;
@@ -89,6 +91,23 @@ app.UseRouting();
 app.UseRequestTimeouts();
 app.UseCors();
 app.UseRateLimiter();
+app.Use(async (context, next) =>
+{
+    // Reject declared oversized bodies before the JSON binder asks Kestrel to read.
+    // Keep Kestrel's independent limit for streamed bodies without Content-Length.
+    if (context.Request.ContentLength > maxRequestBodyBytes)
+    {
+        context.Response.StatusCode = StatusCodes.Status413PayloadTooLarge;
+        // This request is already rejected and never reaches binding or calculation.
+        // Allow Kestrel to discard its declared body within the server's bounded
+        // drain timeout, rather than abort the connection with a second size error.
+        var bodyLimit = context.Features.Get<IHttpMaxRequestBodySizeFeature>();
+        if (bodyLimit is { IsReadOnly: false }) bodyLimit.MaxRequestBodySize = context.Request.ContentLength;
+        await context.Response.WriteAsJsonAsync(ApiFailure.Envelope("invalidRequest", "Arquivo ou pedido maior que 2 MB."), context.RequestAborted);
+        return;
+    }
+    await next(context);
+});
 if (app.Environment.IsDevelopment()) app.MapOpenApi();
 app.MapGet("/", () => ApiEnvelope<object>.Ok(new { product = "EscalaLivre", mode = "local-first", endpoints = new[] { "/solve", "/validate", "/analyze", "/import", "/export" } }));
 app.MapGet("/health", () => Results.Ok(new { status = "healthy" }));
