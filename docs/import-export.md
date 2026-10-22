@@ -22,3 +22,5 @@ XLSX e uma exportacao humana para visualizacao e conferencia. A importacao XLSX 
 ## PDF
 
 PDF e somente impressao/publicacao. Nao deve ser usado para reconstruir estado.
+
+O PDF do backend é renderizado por PDFsharp/MigraDoc 6.2.4 (MIT), com fontes Noto Sans incorporadas (SIL OFL), páginas A4 horizontais, cabeçalho de tabela repetido e numeração. Inclui todos os turnos salvos, com funcionário, função, datas e horários civis, intervalo e origem. A renderização não depende das fontes instaladas no servidor. A impressão mensal do navegador continua disponível pela interface.

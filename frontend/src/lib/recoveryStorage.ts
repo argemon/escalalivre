@@ -6,11 +6,20 @@ import { nowInstant } from "./dateTime";
 export const STATE_KEY = "escalalivre-state";
 export const RECOVERY_KEY = "escalalivre-recovery";
 export type SavedSchedule = { document:EscalaLivreDocument; theme:"light"|"dark"; viewMode:string };
-export type RecoveryCopy = { id:string; createdAt:string; reason:string; contents:string; native:boolean; durable:boolean; downloaded:boolean; original?:boolean };
+export type RecoveryCopy = { id:string; createdAt:string; reason:string; contents:string; native:boolean; durable:boolean; downloaded:boolean; restorable:boolean; original?:boolean };
 type Phase = "ready"|"saved"|"read-error"|"invalid"|"write-error"|"backup-error";
 export type RecoveryStatus = { phase:Phase; message:string; copies:RecoveryCopy[]; protected:boolean };
 type BrowserStorage = Pick<Storage,"getItem"|"setItem"|"removeItem">;
 const modes = new Set(["timeline","week","month","heatmap","coverage","solver"]);
+
+// Browser recovery shares the native schema, but is limited by storage quota rather than file size.
+export function parseRecoveryDocument(contents:string):EscalaLivreDocument {
+  return validateNativeDocument(JSON.parse(contents));
+}
+function serializeRecoveryDocument(document:EscalaLivreDocument):string {
+  // Preserve raw data as a download even when it cannot be restored as a valid document.
+  try {return serializeNative(document);}catch {return JSON.stringify(document);}
+}
 
 export function createRecoveryStorage(provider:()=>BrowserStorage = ()=>window.localStorage) {
   let status:RecoveryStatus={phase:"ready",message:"",copies:[],protected:false};
@@ -18,11 +27,11 @@ export function createRecoveryStorage(provider:()=>BrowserStorage = ()=>window.l
   let newlyReadable:string|undefined;
   const listeners=new Set<()=>void>();
   const publish=(patch:Partial<RecoveryStatus>)=>{status={...status,...patch};for(const listener of listeners)listener();};
-  const classify=(contents:string)=>{try {parseNativeText(contents);return true;}catch{return false;}};
+  const classify=(contents:string,parse=parseNativeText)=>{try {parse(contents);return true;}catch{return false;}};
   function addCopy(contents:string,reason:string,original=false):RecoveryCopy {
     const previous=status.copies.find(c=>c.contents===contents);
     if(previous)return previous;
-    const copy={id:crypto.randomUUID(),createdAt:nowInstant(),reason,contents,native:classify(contents),durable:false,downloaded:false,original};
+    const copy={id:crypto.randomUUID(),createdAt:nowInstant(),reason,contents,native:classify(contents),restorable:classify(contents,parseRecoveryDocument),durable:false,downloaded:false,original};
     const originals=[copy,...status.copies].filter(c=>c.original);
     const snapshots=[copy,...status.copies].filter(c=>!c.original).slice(0,3);
     publish({copies:[...originals,...snapshots]});return copy;
@@ -33,8 +42,6 @@ export function createRecoveryStorage(provider:()=>BrowserStorage = ()=>window.l
     const saved=value as {state?:Partial<SavedSchedule>;version?:number};
     if (saved.version!==undefined && (!Number.isInteger(saved.version)||saved.version<0||saved.version>2)) throw new Error("Versão de armazenamento não suportada.");
     const document=validateNativeDocument(saved.state?.document);
-    // Recovered documents follow exactly the same schema and limit as native files.
-    serializeNative(document);
     return {version:saved.version??0,state:{document,theme:saved.state?.theme==="dark"?"dark":"light",viewMode:modes.has(saved.state?.viewMode??"")?saved.state!.viewMode!:"timeline"}};
   }
   function readCopies():void {
@@ -69,8 +76,7 @@ export function createRecoveryStorage(provider:()=>BrowserStorage = ()=>window.l
     }
   }
   function checkpoint(document:EscalaLivreDocument,reason:string):boolean {
-    let contents:string;
-    try {contents=serializeNative(document);}catch {contents=JSON.stringify(document,null,2);}
+    const contents=serializeRecoveryDocument(document);
     readCopies();
     const existing=status.copies.find(c=>c.contents===contents&&(c.durable||c.downloaded));
     if(existing){
@@ -102,9 +108,9 @@ export function createRecoveryStorage(provider:()=>BrowserStorage = ()=>window.l
         if(raw!==null)addCopy(raw,"Conteúdo original do navegador",true);
         readCopies();
         publish({phase:raw===null?"read-error":"invalid",protected:true,message:raw===null?"Não foi possível ler o armazenamento. Os dados disponíveis podem ser exportados e as cópias podem ser recuperadas.":"O documento do navegador é inválido. O conteúdo original foi preservado para download; use uma cópia válida para recuperar o planejamento."});
-        const backup=status.copies.find(c=>c.native);
+        const backup=status.copies.find(c=>c.restorable);
         if(backup) {
-          try {publish({message:status.message+" Uma cópia válida foi carregada nesta sessão."});return {version:2,state:{document:parseNativeText(backup.contents),theme:"light",viewMode:"timeline"}};}catch{/* Keep original contents available. */}
+          try {publish({message:status.message+" Uma cópia válida foi carregada nesta sessão."});return {version:2,state:{document:parseRecoveryDocument(backup.contents),theme:"light",viewMode:"timeline"}};}catch{/* Keep original contents available. */}
         }
         void error;return null;
       }
@@ -113,7 +119,10 @@ export function createRecoveryStorage(provider:()=>BrowserStorage = ()=>window.l
       pending=value;
       if(status.protected)return;
       try {
-        const text=JSON.stringify(value),target=provider();target.setItem(STATE_KEY,text);
+        const text=JSON.stringify(value);
+        // Apply the reader's validation before replacing the previous saved bytes.
+        parseState(text);
+        const target=provider();target.setItem(STATE_KEY,text);
         if(target.getItem(STATE_KEY)!==text)throw new Error("Gravação não confirmada.");
         if(status.phase!=="backup-error")publish({phase:"saved",message:""});
       } catch {if(status.phase!=="backup-error")publish({phase:"write-error",message:"Não foi possível salvar no navegador. O planejamento continua disponível nesta sessão; exporte uma cópia para guardá-lo."});}
@@ -129,7 +138,7 @@ export function createRecoveryStorage(provider:()=>BrowserStorage = ()=>window.l
         if(status.protected && newlyReadable!==raw) {
           try {
             const recovered=parseState(raw);
-            addCopy(serializeNative(recovered.state.document),"Documento reencontrado no navegador");
+            addCopy(serializeRecoveryDocument(recovered.state.document),"Documento reencontrado no navegador");
             newlyReadable=raw;saveCopies();
             publish({phase:"read-error",message:"A leitura voltou a funcionar e uma cópia do documento anterior está disponível. Restaure essa cópia ou tente salvar novamente para manter o planejamento desta sessão."});
             return false;

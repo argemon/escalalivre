@@ -45,7 +45,7 @@ Na lateral **Configure sua escala**, preencha os quatro cadastros na ordem indic
 Depois dos cadastros:
 
 1. No cabeçalho, escolha **Início** e **Fim (inclusive)** e clique em **Aplicar período**.
-2. Abra o botão verde **Assistente de escala**, com o ícone de brilho, e clique em **Gerar escala otimizada**. A etapa **5. Revisar e gerar** também abre o assistente quando os quatro cadastros estão completos.
+2. Abra o botão verde **Assistente de escala**, com o ícone de brilho, e clique em **Gerar escala**. A etapa **5. Revisar e gerar** também abre o assistente quando os quatro cadastros estão completos.
 3. Revise a cobertura atendida, os conflitos e as sugestões. Uma escala parcial pode ter horários válidos e ainda deixar demanda descoberta.
 4. Consulte a escala diária, semanal ou mensal. Na semana, cada pessoa aparece uma única vez, com os horários nas colunas dos dias.
 5. Use **Dados e opções → Exportar** para guardar uma cópia ou **Imprimir** para preparar a escala para o mural.
@@ -59,7 +59,7 @@ Imagine uma loja que precisa de dois vendedores das 9h às 18h, de segunda a sá
 1. Em **Empresa**, configure o funcionamento da loja; em **Funções**, cadastre **Vendedor**.
 2. Em **Cobertura**, crie uma regra para **Vendedor**, selecione os seis dias e informe o horário e a quantidade mínima de duas pessoas.
 3. Em **Equipe**, cadastre as pessoas e configure jornadas, disponibilidades e restrições individuais.
-4. Aplique o período desejado e use **Assistente de escala → Gerar escala otimizada**.
+4. Aplique o período desejado e use **Assistente de escala → Gerar escala**.
 5. Confira os turnos, os intervalos, os feriados e os períodos em que ainda faltam pessoas.
 
 **Exemplo de jornada:** oito horas de trabalho com uma hora de intervalo ocupam nove horas no relógio. Das 9h às 18h, com pausa das 12h às 13h, a pessoa trabalha oito horas — e fica fora da cobertura durante a pausa.
@@ -351,7 +351,7 @@ Reinicie o Vite após mudar essa configuração. Para testar com seus próprios 
 
 | Situação | O que conferir |
 | --- | --- |
-| **Gerar escala otimizada** está desabilitado | Cadastre pessoas e ao menos uma regra de cobertura com quantidade maior que zero. |
+| **Gerar escala** está desabilitado | Cadastre pessoas e ao menos uma regra de cobertura com quantidade maior que zero. |
 | A geração não conecta | Verifique a API em `http://localhost:5003/health`, a URL configurada e as origens permitidas no backend. O ambiente de desenvolvimento permite o frontend na porta 5173. |
 | O serviço está ocupado ou atingiu o limite | Aguarde o prazo informado antes de tentar novamente. Para hospedar, consulte os limites em [SECURITY.md](docs/SECURITY.md). |
 | O cálculo atingiu o tempo limite | Tente um período menor ou simplifique as regras de cobertura, sem retirar restrições obrigatórias da operação. |

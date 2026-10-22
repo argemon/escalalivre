@@ -1,3 +1,4 @@
+import { documentSchema } from "../lib/documentSchema";
 import { datePart, timePart, displayClock, nowInstant } from "../lib/dateTime";
 import { useState } from "react";
 import { useScheduleStore } from "../store/scheduleStore";
@@ -35,7 +36,9 @@ export function HolidayEditor({date,onClose}:{date:string;onClose:()=>void}) {
   const save=()=>{
     if(editingId) {setError("Aplique a edição do turno antes de salvar o feriado.");return;}
     if(!name.trim()) {setError("Informe o nome do feriado.");return;}
-    setDocument({...document,company:{...document.company,holidays:[...(document.company.holidays ?? []).filter(h=>h.date!==date),{date,name:name.trim(),closed}]},assignments:[...document.assignments.filter(a=>!initial.some(i=>i.id===a.id)),...shifts],updatedAt:nowInstant()});onClose();
+    const validation=documentSchema.safeParse({...document,company:{...document.company,holidays:[...(document.company.holidays ?? []).filter(h=>h.date!==date),{date,name:name.trim(),closed}]},assignments:[...document.assignments.filter(a=>!initial.some(i=>i.id===a.id)),...shifts],updatedAt:nowInstant()});
+    if(!validation.success){setError(validation.error.issues[0].message);return;}
+    setDocument(validation.data);onClose();
   };
   const inputClass="w-full rounded border border-border bg-background p-2";
   return <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 p-4">

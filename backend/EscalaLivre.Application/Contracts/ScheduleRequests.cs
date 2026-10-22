@@ -12,7 +12,10 @@ public sealed record ScheduleResult(
     IReadOnlyList<HiringSuggestion> HiringSuggestions,
     IReadOnlyList<OptimizationSuggestion> OptimizationSuggestions,
     IReadOnlyList<SolverDecision> Decisions,
-    double CoverageScore);
+    double CoverageScore,
+    OptimizationInfo? Optimization = null);
+
+public sealed record OptimizationInfo(string Status);
 
 public sealed record ImportRequest(string FileName, string ContentBase64, string Format);
 

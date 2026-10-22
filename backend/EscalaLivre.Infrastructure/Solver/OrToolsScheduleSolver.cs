@@ -140,16 +140,17 @@ public sealed class OrToolsScheduleSolver : IScheduleSolver
             return result with
             {
                 Decisions = [],
+                Optimization = new(status == CpSolverStatus.Unknown ? "timeout" : status == CpSolverStatus.Infeasible ? "infeasible" : "invalid"),
                 Conflicts = result.Conflicts.Concat(
                 [
-                    new ScheduleIssue("error", status == CpSolverStatus.Unknown ? "solverTimeout" : "solverInfeasible", status == CpSolverStatus.Unknown ? "O limite de tempo terminou sem uma escala viavel." : "Nenhuma escala satisfaz todas as restricoes obrigatorias no periodo informado.", request.Start, request.End)
+                    new ScheduleIssue("error", status == CpSolverStatus.Unknown ? "solverTimeout" : status == CpSolverStatus.Infeasible ? "solverInfeasible" : "solverInvalid", status == CpSolverStatus.Unknown ? "O limite de tempo terminou sem uma escala viavel." : status == CpSolverStatus.Infeasible ? "Nenhuma escala satisfaz todas as restricoes obrigatorias no periodo informado." : "O modelo de otimização não pôde ser validado.", request.Start, request.End)
                 ]).ToList()
             };
         }
 
         var assignments = candidates.Where(x => solver.Value(decisionVars[x.Id]) == 1).ToList();
         return BuildResult(request, ScheduleWindow.Replace(request.Document.Assignments, assignments, request.Start, request.End))
-            with { Decisions = BuildDecisions(request, assignments).ToList() };
+            with { Decisions = BuildDecisions(request, assignments).ToList(), Optimization = new(status == CpSolverStatus.Optimal ? "optimal" : "feasible") };
     }
 
     public ScheduleResult Validate(ScheduleRequest request)
@@ -242,21 +243,14 @@ public sealed class OrToolsScheduleSolver : IScheduleSolver
             if(previous>=0&&gaps[previous].End==block.Start&&gaps[previous].MissingEmployees==missing)gaps[previous]=gaps[previous] with {End=block.End};
             else gaps.Add(new(block.Start,block.End,block.Role,missing));
         }
-        var suggestions = gaps
-            .GroupBy(x => x.Role)
-            .Select(group => new HiringSuggestion(
-                group.Key,
-                Math.Min(44, group.Sum(x => (x.End - x.Start).TotalHours * x.MissingEmployees)),
-                group.Select(x => new AvailabilityWindow(x.Start, x.End)).Take(7).ToList(),
-                $"Cobertura insuficiente recorrente para {group.Key}."))
-            .ToList();
+        var suggestions = HiringDemand.Suggest(gaps,request.Document.Company.DefaultWorkload.WeeklyLimitHours);
 
         var optimizationSuggestions = BuildOptimizationSuggestions(assignments, coverage).ToList();
         var decisions = BuildDecisions(request, assignments).ToList();
         double requiredMinutes = coverage.Sum(x => Math.Max(0, x.Required) * (x.End - x.Start).TotalMinutes);
         double coveredMinutes = coverage.Sum(x => Math.Min(x.Required, x.Assigned) * (x.End - x.Start).TotalMinutes);
         double score = requiredMinutes == 0 ? 1 : Math.Max(0, coveredMinutes / requiredMinutes);
-        return new ScheduleResult(assignments, conflicts, coverage, gaps, suggestions, optimizationSuggestions, decisions, Math.Round(score, 3, MidpointRounding.AwayFromZero));
+        return new ScheduleResult(assignments, conflicts, coverage, gaps, suggestions, optimizationSuggestions, decisions, Math.Round(score, 3, MidpointRounding.AwayFromZero),new("not-run"));
     }
 
     private static IEnumerable<ScheduleIssue> DetectConflicts(ScheduleRequest request,IReadOnlyList<ShiftAssignment> assignments)

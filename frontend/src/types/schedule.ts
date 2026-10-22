@@ -120,7 +120,12 @@ export type ScheduleIssue = {
 export type HiringSuggestion = {
   roleId?: string;
   role: string;
+  totalHours: number;
   weeklyHours: number;
+  referenceWeeklyHours: number;
+  minimumPeople: number;
+  peakMissingEmployees: number;
+  weeklyDemand: {weekStart:string;hours:number}[];
   idealWindows: AvailabilityWindow[];
   rationale: string;
 };
@@ -141,7 +146,10 @@ export type SolverDecision = {
   factors: string[];
 };
 
+export type OptimizationInfo={status:"not-run"|"feasible"|"optimal"|"infeasible"|"timeout"|"invalid"};
+
 export type ScheduleResult = {
+  optimization?: OptimizationInfo;
   assignments: ShiftAssignment[];
   conflicts: ScheduleIssue[];
   coverage: CoverageBlock[];

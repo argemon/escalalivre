@@ -1,3 +1,5 @@
+import { solverLabels, solverDescriptions } from "../lib/solverStatus";
+import { HiringSuggestionCard } from "./HiringSuggestionCard";
 import { useMutation } from "@tanstack/react-query";
 import { BrainCircuit, BriefcaseBusiness, CheckCircle2, CircleAlert, Loader2, Wand2 } from "lucide-react";
 import type { ReactNode } from "react";
@@ -27,11 +29,12 @@ export function SolverPanel() {
             <p className="text-xs uppercase text-muted-foreground">Ajuda para planejar melhor</p>
             <h2 className="text-lg font-semibold">Assistente de escala</h2>
           </div>
-          <Badge>{({idle:"Pronto",calculating:"Calculando",optimized:"Otimizado",partial:"Revisar",invalid:"Revisar"})[solverStatus]}</Badge>
+          <Badge>{solverLabels[solverStatus]}</Badge>
         </div>
       </header>
 
       <div className="min-h-0 flex-1 space-y-4 overflow-auto p-4">
+        {solverDescriptions[solverStatus] && <p role="status" className="text-xs text-muted-foreground">{solverDescriptions[solverStatus]}</p>}
         <section className="rounded-md border border-border bg-background p-4">
           <div className="flex items-center justify-between">
             <BrainCircuit className="size-5 text-primary" />
@@ -47,7 +50,7 @@ export function SolverPanel() {
 
         <Button className="w-full" onClick={() => mutation.mutate(document)} disabled={solverStatus === "calculating" || !document.employees.length || !document.company.coverage.some(r => r.minimumEmployees > 0)}>
           <Wand2 className="size-4" />
-          {mutation.isPending ? "Preparando sua escala…" : "Gerar escala otimizada"}
+          {mutation.isPending ? "Preparando sua escala…" : "Gerar escala"}
         </Button>
 
         <p className="text-xs text-muted-foreground">A geração substitui por inteiro os turnos que começam de {document.planningPeriod.start.split("-").reverse().join("/")} a {document.planningPeriod.end.split("-").reverse().join("/")}, inclusive os que terminam no dia seguinte. Os demais turnos serão preservados.</p>
@@ -90,13 +93,7 @@ export function SolverPanel() {
 
         <section className="space-y-2">
           <Title icon={<BriefcaseBusiness className="size-4" />} text="Sugestões para a equipe" />
-          {analysis.hiringSuggestions.map((suggestion) => (
-            <article key={suggestion.role} className="rounded-md border border-border bg-background p-3">
-              <p className="text-sm font-semibold">1 {suggestion.role} parcial</p>
-              <p className="mt-1 text-xs text-muted-foreground">{suggestion.weeklyHours}h semanais - janelas criticas detectadas</p>
-              <p className="mt-2 text-sm">{suggestion.rationale}</p>
-            </article>
-          ))}
+          {analysis.hiringSuggestions.map(suggestion=><HiringSuggestionCard key={suggestion.role} suggestion={suggestion} />)}
         </section>
       </div>
     </Panel>

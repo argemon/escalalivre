@@ -1,0 +1,2661 @@
+{
+  "document": {
+    "planningPeriod": {
+      "start": "2026-05-18",
+      "end": "2026-05-24"
+    },
+    "schemaVersion": "1.0.0",
+    "id": "4e8a2937-f61a-46bf-a33f-9ce0f7b13279",
+    "company": {
+      "timeZone": "America/Cuiaba",
+      "name": "Meu planejamento",
+      "opensAt": "08:00:00",
+      "closesAt": "22:00:00",
+      "operatingDays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "defaultWorkload": {
+        "regimeType": "dayBased",
+        "workUnits": 5,
+        "restUnits": 2,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "08:00:00"
+      },
+      "lunch": {
+        "minimum": "01:00:00",
+        "maximum": "02:00:00",
+        "preferredAfter": "04:00:00"
+      },
+      "minimumRest": "11:00:00",
+      "coverage": [
+        {
+          "role": "vendedor",
+          "day": 1,
+          "start": "09:00:00",
+          "end": "18:00:00",
+          "minimumEmployees": 2,
+          "roleId": "bd80b241-5b30-4873-a6d3-65a6fed50850"
+        }
+      ],
+      "holidays": [
+        {
+          "date": "2026-05-18",
+          "name": "Feriado local",
+          "closed": true
+        }
+      ]
+    },
+    "employees": [
+      {
+        "id": "6dc2656b-ad7f-48ca-8204-a6dce313f00c",
+        "name": "Ana Costa",
+        "role": "vendedor",
+        "inheritsCompanyDefaults": true,
+        "workload": {
+          "regimeType": "dayBased",
+          "workUnits": 5,
+          "restUnits": 2,
+          "weeklyLimitHours": 44,
+          "defaultShiftDuration": "08:00:00"
+        },
+        "availability": [
+          {
+            "start": "2026-05-18T08:00:00",
+            "end": "2026-05-18T18:00:00"
+          }
+        ],
+        "restrictions": [
+          {
+            "start": "2026-05-18T19:00:00",
+            "end": "2026-05-18T20:00:00"
+          }
+        ],
+        "preferences": [
+          {
+            "code": "morning",
+            "weight": 4,
+            "description": "Prefere abrir loja"
+          }
+        ],
+        "allowsOvertime": false,
+        "allowsNightWork": false,
+        "preferredDaysOff": [
+          0
+        ],
+        "roleId": "bd80b241-5b30-4873-a6d3-65a6fed50850",
+        "coverageRoles": [
+          "caixa"
+        ],
+        "workingDays": [
+          1
+        ],
+        "coverageRoleIds": [
+          "b957c9cc-2776-4f8e-93bd-12d0790fd2fd"
+        ]
+      }
+    ],
+    "assignments": [
+      {
+        "id": "b95a1083-e871-4d96-9ba3-8475ec8763a5",
+        "employeeId": "6dc2656b-ad7f-48ca-8204-a6dce313f00c",
+        "role": "vendedor",
+        "start": "2026-05-18T09:00:00",
+        "end": "2026-05-18T17:00:00",
+        "break": {
+          "start": "2026-05-18T13:00:00",
+          "end": "2026-05-18T14:00:00"
+        },
+        "source": "manual",
+        "tags": [
+          "preferencia"
+        ],
+        "roleId": "bd80b241-5b30-4873-a6d3-65a6fed50850"
+      }
+    ],
+    "updatedAt": "2026-05-16T17:00:00.000Z",
+    "roles": [
+      {
+        "id": "bd80b241-5b30-4873-a6d3-65a6fed50850",
+        "name": "vendedor"
+      },
+      {
+        "id": "b957c9cc-2776-4f8e-93bd-12d0790fd2fd",
+        "name": "caixa"
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "baseline",
+      "accepted": true,
+      "changes": []
+    },
+    {
+      "id": "company.name-text-limit",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "name"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "company.name-text-over-limit",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "name"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "company.name-empty",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "name"
+          ],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "company.name-spaces",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "name"
+          ],
+          "value": "   "
+        }
+      ]
+    },
+    {
+      "id": "employees.0.name-text-limit",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "name"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.name-text-over-limit",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "name"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.name-empty",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "name"
+          ],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "employees.0.name-spaces",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "name"
+          ],
+          "value": "   "
+        }
+      ]
+    },
+    {
+      "id": "employees.0.role-text-limit",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "role"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.role-text-over-limit",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "role"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.role-empty",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "role"
+          ],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "employees.0.role-spaces",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "role"
+          ],
+          "value": "   "
+        }
+      ]
+    },
+    {
+      "id": "company.coverage.0.role-text-limit",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "coverage",
+            "0",
+            "role"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "company.coverage.0.role-text-over-limit",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "coverage",
+            "0",
+            "role"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "company.coverage.0.role-empty",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "coverage",
+            "0",
+            "role"
+          ],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "company.coverage.0.role-spaces",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "coverage",
+            "0",
+            "role"
+          ],
+          "value": "   "
+        }
+      ]
+    },
+    {
+      "id": "assignments.0.role-text-limit",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "assignments",
+            "0",
+            "role"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "assignments.0.role-text-over-limit",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "assignments",
+            "0",
+            "role"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "assignments.0.role-empty",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "assignments",
+            "0",
+            "role"
+          ],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "assignments.0.role-spaces",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "assignments",
+            "0",
+            "role"
+          ],
+          "value": "   "
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferences.0.code-text-limit",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferences",
+            "0",
+            "code"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferences.0.code-text-over-limit",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferences",
+            "0",
+            "code"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferences.0.code-empty",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferences",
+            "0",
+            "code"
+          ],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferences.0.code-spaces",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferences",
+            "0",
+            "code"
+          ],
+          "value": "   "
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferences.0.description-text-limit",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferences",
+            "0",
+            "description"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferences.0.description-text-over-limit",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferences",
+            "0",
+            "description"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferences.0.description-empty",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferences",
+            "0",
+            "description"
+          ],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferences.0.description-spaces",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferences",
+            "0",
+            "description"
+          ],
+          "value": "   "
+        }
+      ]
+    },
+    {
+      "id": "company.holidays.0.name-text-limit",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "holidays",
+            "0",
+            "name"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "company.holidays.0.name-text-over-limit",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "holidays",
+            "0",
+            "name"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "company.holidays.0.name-empty",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "holidays",
+            "0",
+            "name"
+          ],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "company.holidays.0.name-spaces",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "holidays",
+            "0",
+            "name"
+          ],
+          "value": "   "
+        }
+      ]
+    },
+    {
+      "id": "roles.0.name-text-limit",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "roles",
+            "0",
+            "name"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "roles.0.name-text-over-limit",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "roles",
+            "0",
+            "name"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "roles.0.name-empty",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "roles",
+            "0",
+            "name"
+          ],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "roles.0.name-spaces",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "roles",
+            "0",
+            "name"
+          ],
+          "value": "   "
+        }
+      ]
+    },
+    {
+      "id": "employees.0.coverageRoles.0-text-limit",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "coverageRoles",
+            "0"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.coverageRoles.0-text-over-limit",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "coverageRoles",
+            "0"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.coverageRoles.0-empty",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "coverageRoles",
+            "0"
+          ],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "employees.0.coverageRoles.0-spaces",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "coverageRoles",
+            "0"
+          ],
+          "value": "   "
+        }
+      ]
+    },
+    {
+      "id": "assignments.0.tags.0-text-limit",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "assignments",
+            "0",
+            "tags",
+            "0"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "assignments.0.tags.0-text-over-limit",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "assignments",
+            "0",
+            "tags",
+            "0"
+          ],
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    },
+    {
+      "id": "assignments.0.tags.0-empty",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "assignments",
+            "0",
+            "tags",
+            "0"
+          ],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "assignments.0.tags.0-spaces",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "assignments",
+            "0",
+            "tags",
+            "0"
+          ],
+          "value": "   "
+        }
+      ]
+    },
+    {
+      "id": "unicode-limit",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "name"
+          ],
+          "value": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀"
+        }
+      ]
+    },
+    {
+      "id": "unicode-over",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "name"
+          ],
+          "value": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀"
+        }
+      ]
+    },
+    {
+      "id": "employees-count-200",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees"
+          ],
+          "repeat": 200,
+          "uniqueIds": true
+        }
+      ]
+    },
+    {
+      "id": "employees-count-201",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees"
+          ],
+          "repeat": 201,
+          "uniqueIds": true
+        }
+      ]
+    },
+    {
+      "id": "assignments-count-20000",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "assignments"
+          ],
+          "repeat": 20000,
+          "uniqueIds": true
+        }
+      ]
+    },
+    {
+      "id": "assignments-count-20001",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "assignments"
+          ],
+          "repeat": 20001,
+          "uniqueIds": true
+        }
+      ]
+    },
+    {
+      "id": "roles-count-1000",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "roles"
+          ],
+          "repeat": 1000,
+          "uniqueIds": true
+        }
+      ]
+    },
+    {
+      "id": "roles-count-1001",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "roles"
+          ],
+          "repeat": 1001,
+          "uniqueIds": true
+        }
+      ]
+    },
+    {
+      "id": "company.coverage-count-1000",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "coverage"
+          ],
+          "repeat": 1000,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "company.coverage-count-1001",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "coverage"
+          ],
+          "repeat": 1001,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "company.holidays-count-366",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "holidays"
+          ],
+          "repeat": 366,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "company.holidays-count-367",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "holidays"
+          ],
+          "repeat": 367,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "employees.0.availability-count-366",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "availability"
+          ],
+          "repeat": 366,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "employees.0.availability-count-367",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "availability"
+          ],
+          "repeat": 367,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "employees.0.restrictions-count-366",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "restrictions"
+          ],
+          "repeat": 366,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "employees.0.restrictions-count-367",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "restrictions"
+          ],
+          "repeat": 367,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferences-count-50",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferences"
+          ],
+          "repeat": 50,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferences-count-51",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferences"
+          ],
+          "repeat": 51,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "employees.0.coverageRoles-count-50",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "coverageRoles"
+          ],
+          "repeat": 50,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "employees.0.coverageRoles-count-51",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "coverageRoles"
+          ],
+          "repeat": 51,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "employees.0.coverageRoleIds-count-50",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "coverageRoleIds"
+          ],
+          "repeat": 50,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "employees.0.coverageRoleIds-count-51",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "coverageRoleIds"
+          ],
+          "repeat": 51,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "assignments.0.tags-count-50",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "assignments",
+            "0",
+            "tags"
+          ],
+          "repeat": 50,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "assignments.0.tags-count-51",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "assignments",
+            "0",
+            "tags"
+          ],
+          "repeat": 51,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "company.operatingDays-seven",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "operatingDays"
+          ],
+          "value": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "id": "company.operatingDays-duplicates",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "operatingDays"
+          ],
+          "value": [
+            1,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "company.operatingDays-invalid-day",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "operatingDays"
+          ],
+          "value": [
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "company.operatingDays-empty",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "operatingDays"
+          ],
+          "value": []
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferredDaysOff-seven",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferredDaysOff"
+          ],
+          "value": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferredDaysOff-duplicates",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferredDaysOff"
+          ],
+          "value": [
+            1,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferredDaysOff-invalid-day",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferredDaysOff"
+          ],
+          "value": [
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferredDaysOff-empty",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferredDaysOff"
+          ],
+          "value": []
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workingDays-seven",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workingDays"
+          ],
+          "value": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workingDays-duplicates",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workingDays"
+          ],
+          "value": [
+            1,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workingDays-invalid-day",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workingDays"
+          ],
+          "value": [
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workingDays-empty",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workingDays"
+          ],
+          "value": []
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.workUnits-1",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "workUnits"
+          ],
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.workUnits-168",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "workUnits"
+          ],
+          "value": 168
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.workUnits-0",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "workUnits"
+          ],
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.workUnits-169",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "workUnits"
+          ],
+          "value": 169
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.workUnits-1.5",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "workUnits"
+          ],
+          "value": 1.5
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.restUnits-0",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "restUnits"
+          ],
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.restUnits-168",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "restUnits"
+          ],
+          "value": 168
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.restUnits--1",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "restUnits"
+          ],
+          "value": -1
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.restUnits-169",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "restUnits"
+          ],
+          "value": 169
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.weeklyLimitHours-44",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "weeklyLimitHours"
+          ],
+          "value": 44
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.weeklyLimitHours-0",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "weeklyLimitHours"
+          ],
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.weeklyLimitHours-44.1",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "weeklyLimitHours"
+          ],
+          "value": 44.1
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.defaultShiftDuration-00:00:01",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "defaultShiftDuration"
+          ],
+          "value": "00:00:01"
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.defaultShiftDuration-24:00:00",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "defaultShiftDuration"
+          ],
+          "value": "24:00:00"
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.defaultShiftDuration-1.00:00:00",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "defaultShiftDuration"
+          ],
+          "value": "1.00:00:00"
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.defaultShiftDuration-00:00:00",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "defaultShiftDuration"
+          ],
+          "value": "00:00:00"
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.defaultShiftDuration-24:00:01",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "defaultShiftDuration"
+          ],
+          "value": "24:00:01"
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.defaultShiftDuration--01:00:00",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "defaultShiftDuration"
+          ],
+          "value": "-01:00:00"
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.defaultShiftDuration-08:60:00",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "defaultShiftDuration"
+          ],
+          "value": "08:60:00"
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.regimeType-hourBased",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "regimeType"
+          ],
+          "value": "hourBased"
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.regimeType-other",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "regimeType"
+          ],
+          "value": "other"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.workUnits-1",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "workUnits"
+          ],
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.workUnits-168",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "workUnits"
+          ],
+          "value": 168
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.workUnits-0",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "workUnits"
+          ],
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.workUnits-169",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "workUnits"
+          ],
+          "value": 169
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.workUnits-1.5",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "workUnits"
+          ],
+          "value": 1.5
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.restUnits-0",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "restUnits"
+          ],
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.restUnits-168",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "restUnits"
+          ],
+          "value": 168
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.restUnits--1",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "restUnits"
+          ],
+          "value": -1
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.restUnits-169",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "restUnits"
+          ],
+          "value": 169
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.weeklyLimitHours-44",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "weeklyLimitHours"
+          ],
+          "value": 44
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.weeklyLimitHours-0",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "weeklyLimitHours"
+          ],
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.weeklyLimitHours-44.1",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "weeklyLimitHours"
+          ],
+          "value": 44.1
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.defaultShiftDuration-00:00:01",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "defaultShiftDuration"
+          ],
+          "value": "00:00:01"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.defaultShiftDuration-24:00:00",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "defaultShiftDuration"
+          ],
+          "value": "24:00:00"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.defaultShiftDuration-1.00:00:00",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "defaultShiftDuration"
+          ],
+          "value": "1.00:00:00"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.defaultShiftDuration-00:00:00",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "defaultShiftDuration"
+          ],
+          "value": "00:00:00"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.defaultShiftDuration-24:00:01",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "defaultShiftDuration"
+          ],
+          "value": "24:00:01"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.defaultShiftDuration--01:00:00",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "defaultShiftDuration"
+          ],
+          "value": "-01:00:00"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.defaultShiftDuration-08:60:00",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "defaultShiftDuration"
+          ],
+          "value": "08:60:00"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.regimeType-hourBased",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "regimeType"
+          ],
+          "value": "hourBased"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.regimeType-other",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "regimeType"
+          ],
+          "value": "other"
+        }
+      ]
+    },
+    {
+      "id": "company.minimumRest-11:00:00",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "minimumRest"
+          ],
+          "value": "11:00:00"
+        }
+      ]
+    },
+    {
+      "id": "company.minimumRest-168:00:00",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "minimumRest"
+          ],
+          "value": "168:00:00"
+        }
+      ]
+    },
+    {
+      "id": "company.minimumRest-7.00:00:00",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "minimumRest"
+          ],
+          "value": "7.00:00:00"
+        }
+      ]
+    },
+    {
+      "id": "company.minimumRest-10:59:59",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "minimumRest"
+          ],
+          "value": "10:59:59"
+        }
+      ]
+    },
+    {
+      "id": "company.minimumRest-168:00:01",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "minimumRest"
+          ],
+          "value": "168:00:01"
+        }
+      ]
+    },
+    {
+      "id": "company.lunch.maximum-02:00:00",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "lunch",
+            "maximum"
+          ],
+          "value": "02:00:00"
+        }
+      ]
+    },
+    {
+      "id": "company.lunch.maximum-02:00:01",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "lunch",
+            "maximum"
+          ],
+          "value": "02:00:01"
+        }
+      ]
+    },
+    {
+      "id": "company.lunch.maximum-00:30:00",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "lunch",
+            "maximum"
+          ],
+          "value": "00:30:00"
+        }
+      ]
+    },
+    {
+      "id": "company.lunch.minimum-00:00:00",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "lunch",
+            "minimum"
+          ],
+          "value": "00:00:00"
+        }
+      ]
+    },
+    {
+      "id": "company.lunch.minimum-02:00:01",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "lunch",
+            "minimum"
+          ],
+          "value": "02:00:01"
+        }
+      ]
+    },
+    {
+      "id": "company.lunch.preferredAfter-00:00:00",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "lunch",
+            "preferredAfter"
+          ],
+          "value": "00:00:00"
+        }
+      ]
+    },
+    {
+      "id": "company.lunch.preferredAfter-24:00:00",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "lunch",
+            "preferredAfter"
+          ],
+          "value": "24:00:00"
+        }
+      ]
+    },
+    {
+      "id": "company.lunch.preferredAfter-24:00:01",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "lunch",
+            "preferredAfter"
+          ],
+          "value": "24:00:01"
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferences.0.weight-1000",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferences",
+            "0",
+            "weight"
+          ],
+          "value": 1000
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferences.0.weight--1000",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferences",
+            "0",
+            "weight"
+          ],
+          "value": -1000
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferences.0.weight-1001",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferences",
+            "0",
+            "weight"
+          ],
+          "value": 1001
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferences.0.weight--1001",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferences",
+            "0",
+            "weight"
+          ],
+          "value": -1001
+        }
+      ]
+    },
+    {
+      "id": "employees.0.preferences.0.weight-1.5",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "preferences",
+            "0",
+            "weight"
+          ],
+          "value": 1.5
+        }
+      ]
+    },
+    {
+      "id": "company.coverage.0.minimumEmployees-0",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "coverage",
+            "0",
+            "minimumEmployees"
+          ],
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "company.coverage.0.minimumEmployees-200",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "coverage",
+            "0",
+            "minimumEmployees"
+          ],
+          "value": 200
+        }
+      ]
+    },
+    {
+      "id": "company.coverage.0.minimumEmployees--1",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "coverage",
+            "0",
+            "minimumEmployees"
+          ],
+          "value": -1
+        }
+      ]
+    },
+    {
+      "id": "company.coverage.0.minimumEmployees-201",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "coverage",
+            "0",
+            "minimumEmployees"
+          ],
+          "value": 201
+        }
+      ]
+    },
+    {
+      "id": "company.coverage.0.scope-team",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "coverage",
+            "0",
+            "scope"
+          ],
+          "value": "team"
+        }
+      ]
+    },
+    {
+      "id": "company.coverage.0.scope-other",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "coverage",
+            "0",
+            "scope"
+          ],
+          "value": "other"
+        }
+      ]
+    },
+    {
+      "id": "company.coverage.0.daysMode-custom",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "coverage",
+            "0",
+            "daysMode"
+          ],
+          "value": "custom"
+        }
+      ]
+    },
+    {
+      "id": "company.coverage.0.daysMode-operating",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "coverage",
+            "0",
+            "daysMode"
+          ],
+          "value": "operating"
+        }
+      ]
+    },
+    {
+      "id": "company.coverage.0.daysMode-null",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "coverage",
+            "0",
+            "daysMode"
+          ],
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "company.coverage.0.daysMode-other",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "coverage",
+            "0",
+            "daysMode"
+          ],
+          "value": "other"
+        }
+      ]
+    },
+    {
+      "id": "assignments.0.source-solver",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "assignments",
+            "0",
+            "source"
+          ],
+          "value": "solver"
+        }
+      ]
+    },
+    {
+      "id": "assignments.0.source-other",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "assignments",
+            "0",
+            "source"
+          ],
+          "value": "other"
+        }
+      ]
+    },
+    {
+      "id": "company.opensAt-23:59:59",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "opensAt"
+          ],
+          "value": "23:59:59"
+        }
+      ]
+    },
+    {
+      "id": "company.opensAt-24:00:00",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "opensAt"
+          ],
+          "value": "24:00:00"
+        }
+      ]
+    },
+    {
+      "id": "company.timeZone-UTC",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "timeZone"
+          ],
+          "value": "UTC"
+        }
+      ]
+    },
+    {
+      "id": "company.timeZone-invalid/zone",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "timeZone"
+          ],
+          "value": "invalid/zone"
+        }
+      ]
+    },
+    {
+      "id": "company.holidays.0.date-2024-02-29",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "holidays",
+            "0",
+            "date"
+          ],
+          "value": "2024-02-29"
+        }
+      ]
+    },
+    {
+      "id": "company.holidays.0.date-2026-02-30",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "holidays",
+            "0",
+            "date"
+          ],
+          "value": "2026-02-30"
+        }
+      ]
+    },
+    {
+      "id": "company.holidays.0.date-1899-12-31",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "holidays",
+            "0",
+            "date"
+          ],
+          "value": "1899-12-31"
+        }
+      ]
+    },
+    {
+      "id": "company.holidays.0.date-2101-01-01",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "holidays",
+            "0",
+            "date"
+          ],
+          "value": "2101-01-01"
+        }
+      ]
+    },
+    {
+      "id": "shift-duration-2026-05-20T09:00:00",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "assignments",
+            "0",
+            "end"
+          ],
+          "value": "2026-05-20T09:00:00"
+        }
+      ]
+    },
+    {
+      "id": "shift-duration-2026-05-20T09:00:01",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "assignments",
+            "0",
+            "end"
+          ],
+          "value": "2026-05-20T09:00:01"
+        }
+      ]
+    },
+    {
+      "id": "empty-guid-id",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "id"
+          ],
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      ]
+    },
+    {
+      "id": "empty-guid-employees.0.id",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "id"
+          ],
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      ]
+    },
+    {
+      "id": "empty-guid-employees.0.roleId",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "roleId"
+          ],
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      ]
+    },
+    {
+      "id": "empty-guid-employees.0.coverageRoleIds.0",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "coverageRoleIds",
+            "0"
+          ],
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      ]
+    },
+    {
+      "id": "empty-guid-assignments.0.id",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "assignments",
+            "0",
+            "id"
+          ],
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      ]
+    },
+    {
+      "id": "empty-guid-assignments.0.roleId",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "assignments",
+            "0",
+            "roleId"
+          ],
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      ]
+    },
+    {
+      "id": "empty-guid-company.coverage.0.roleId",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "coverage",
+            "0",
+            "roleId"
+          ],
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      ]
+    },
+    {
+      "id": "empty-guid-roles.0.id",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "roles",
+            "0",
+            "id"
+          ],
+          "value": "00000000-0000-0000-0000-000000000000"
+        }
+      ]
+    },
+    {
+      "id": "duplicate-roles",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "roles"
+          ],
+          "repeat": 2,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "duplicate-employees",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees"
+          ],
+          "repeat": 2,
+          "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "duplicate-assignments",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "assignments"
+          ],
+          "repeat": 2,
+          "uniqueIds": false
+        }
+      ]
+    }
+  ]
+}

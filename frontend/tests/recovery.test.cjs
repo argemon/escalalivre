@@ -26,7 +26,7 @@ test('native exports enforce their exact UTF-8 byte limit and every accepted exp
   const exact=text+' '.repeat(padding);assert.equal(native.nativeBytes(exact),native.MAX_NATIVE_BYTES);
   assert.equal(native.parseNativeText(exact).company.name,d.company.name);
   assert.throws(()=>native.parseNativeText(exact+' '),/1 MiB/);
-  d.company.name='😀'.repeat(native.MAX_NATIVE_BYTES/2);
+  Object.assign(d,largeFixture(load));
   assert.throws(()=>native.serializeNative(d),/1 MiB/);
 });
 test('an invalid browser document preserves the original bytes and loads a valid backup',()=>{
@@ -160,4 +160,61 @@ test('a checkpoint removed from browser storage is not trusted from a stale in-m
   storage.removeItem('escalalivre-recovery');storage.setItem=()=>{throw new Error('Quota');};
   assert.equal(recovery.checkpoint(d,'Nova substituição'),false);
   assert.equal(recovery.getSnapshot().copies.find(c=>c.reason==='Primeira cópia').durable,false);
+});
+
+function largeFixture(load) {
+  const d=fixture(load);d.company.name='Planejamento volumoso';
+  d.assignments=Array.from({length:110},()=>({...d.assignments[0],id:crypto.randomUUID(),tags:Array.from({length:50},()=> 'a'.repeat(256))}));
+  assert.ok(Buffer.byteLength(JSON.stringify(d),'utf8')>load('lib/nativeDocument.ts').MAX_NATIVE_BYTES);
+  return d;
+}
+test('a saved browser document above 1 MiB reopens in a fresh session with preferences intact',()=>{
+  const storage=memory(),{load}=session(storage),d=largeFixture(load);
+  const {useScheduleStore:store}=load('store/scheduleStore.ts');
+  store.getState().setDocument(d);store.getState().setTheme('dark');store.getState().setViewMode('month');
+  assert.equal(load('lib/recoveryStorage.ts').recovery.getSnapshot().phase,'saved');
+  const expected=plain(store.getState().document);
+  const fresh=session(storage),{useScheduleStore:reloaded}=fresh.load('store/scheduleStore.ts');
+  assert.deepEqual(plain(reloaded.getState().document),expected);
+  assert.equal(reloaded.getState().theme,'dark');assert.equal(reloaded.getState().viewMode,'month');
+  assert.equal(fresh.load('lib/recoveryStorage.ts').recovery.getSnapshot().phase,'saved');
+  assert.equal(fresh.load('lib/recoveryStorage.ts').recovery.getSnapshot().protected,false);
+  assert.throws(()=>fresh.load('lib/nativeDocument.ts').serializeNative(reloaded.getState().document),/1 MiB/);
+});
+test('legacy oversized primary documents reopen without modifying the original bytes',()=>{
+  const storage=memory(),{load}=session(storage),d=largeFixture(load),raw=saved(d);
+  storage.setItem('escalalivre-state',raw);
+  const fresh=session(storage),{recovery}=fresh.load('lib/recoveryStorage.ts');
+  assert.deepEqual(plain(recovery.storage.getItem('escalalivre-state').state.document),plain(d));
+  assert.equal(storage.getItem('escalalivre-state'),raw);assert.equal(recovery.getSnapshot().phase,'saved');
+});
+test('oversized checkpoints support automatic recovery and manual restore across sessions',()=>{
+  const storage=memory(),{load}=session(storage),d=largeFixture(load);
+  const {useScheduleStore:store}=load('store/scheduleStore.ts');store.getState().setDocument(d);
+  const expected=plain(store.getState().document);
+  assert.equal(store.getState().importDocument(fixture(load)),true);
+  const fresh=session(storage),{useScheduleStore:reloaded}=fresh.load('store/scheduleStore.ts'),{recovery}=fresh.load('lib/recoveryStorage.ts');
+  const copy=recovery.getSnapshot().copies.find(c=>c.reason==='Antes da importação');
+  assert.ok(copy.restorable&&copy.durable);assert.equal(copy.native,false);
+  assert.equal(reloaded.getState().restoreRecovery(copy.contents),true);
+  assert.deepEqual(plain(reloaded.getState().document),expected);
+  const corrupted=memory({'escalalivre-state':'broken JSON','escalalivre-recovery':JSON.stringify({version:1,copies:[{contents:copy.contents,reason:'Antes da importação'}]})});
+  const next=session(corrupted),{useScheduleStore:recovered}=next.load('store/scheduleStore.ts');
+  assert.deepEqual(plain(recovered.getState().document),expected);
+  assert.equal(next.load('lib/recoveryStorage.ts').recovery.getSnapshot().protected,true);
+});
+test('invalid writes cannot replace a readable document or report saved',()=>{
+  const storage=memory(),{load}=session(storage),{recovery}=load('lib/recoveryStorage.ts'),d=fixture(load),raw=saved(d);
+  storage.setItem('escalalivre-state',raw);recovery.storage.getItem('escalalivre-state');
+  d.employees=null;assert.doesNotThrow(()=>recovery.storage.setItem('escalalivre-state',{version:2,state:{document:d}}));
+  assert.equal(recovery.getSnapshot().phase,'write-error');assert.equal(storage.getItem('escalalivre-state'),raw);
+});
+test('retry offers an oversized document rediscovered after a read failure before overwrite',()=>{
+  const storage=memory(),{load}=session(storage),d=largeFixture(load),raw=saved(d);
+  storage.setItem('escalalivre-state',raw);const get=storage.getItem;let denied=true;
+  storage.getItem=key=>{if(denied&&key==='escalalivre-state')throw new Error('Denied');return get(key);};
+  const {useScheduleStore:store}=load('store/scheduleStore.ts'),{recovery}=load('lib/recoveryStorage.ts');
+  denied=false;assert.equal(store.getState().retryStorage(),false);assert.equal(storage.getItem('escalalivre-state'),raw);
+  const copy=recovery.getSnapshot().copies.find(c=>c.reason==='Documento reencontrado no navegador');assert.ok(copy.restorable);
+  assert.equal(store.getState().restoreRecovery(copy.contents),true);assert.equal(store.getState().document.company.name,d.company.name);
 });

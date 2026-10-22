@@ -1,3 +1,4 @@
+import { documentSchema } from "../lib/documentSchema";
 import { nowInstant } from "../lib/dateTime";
 import { useState } from "react";
 import { useScheduleStore } from "../store/scheduleStore";
@@ -13,7 +14,9 @@ export function RolesEditor() {
     const trimmed = name.trim();
     if (!trimmed) { setError("Informe o nome da função."); return; }
     if (roles.some(r => r.id !== editing && r.name.toLocaleLowerCase("pt-BR") === trimmed.toLocaleLowerCase("pt-BR"))) { setError("Esta função já está cadastrada."); return; }
-    setDocument({ ...document, roles: editing ? roles.map(r => r.id === editing ? { ...r, name: trimmed } : r) : [...roles, { id: crypto.randomUUID(), name: trimmed }], updatedAt: nowInstant() });
+    const validation=documentSchema.safeParse({ ...document, roles: editing ? roles.map(r => r.id === editing ? { ...r, name: trimmed } : r) : [...roles, { id: crypto.randomUUID(), name: trimmed }], updatedAt: nowInstant() });
+    if(!validation.success){setError(validation.error.issues[0].message);return;}
+    setDocument(validation.data);
     setName(""); setEditing(undefined); setError("");
   }
   return <section className="space-y-3">

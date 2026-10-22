@@ -144,7 +144,7 @@ export const sampleAnalysis: ScheduleResult = {
   hiringSuggestions: [
     {
       role: "vendedor",
-      weeklyHours: 20,
+      totalHours:20,weeklyHours:20,referenceWeeklyHours:44,minimumPeople:1,peakMissingEmployees:1,weeklyDemand:[{weekStart:"2026-05-17",hours:20}],
       idealWindows: [{ start: "2026-05-19T18:00:00", end: "2026-05-23T22:00:00" }],
       rationale: "Demanda de fechamento concentrada entre terca e sabado."
     }

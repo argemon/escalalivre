@@ -26,7 +26,7 @@ export function RecoveryPanel() {
     <ul className="max-h-44 space-y-2 overflow-auto">{status.copies.map(copy=><li key={copy.id} className="flex flex-wrap items-center gap-2 rounded border border-border p-2">
       <span className="mr-auto">{copy.reason} · {new Date(copy.createdAt).toLocaleString("pt-BR")} · {copy.durable ? "Cópia no navegador" : copy.downloaded ? "Cópia baixada" : "Disponível nesta sessão"}</span>
       <Button type="button" className="h-8 text-xs" onClick={()=>action(()=>{downloadText(copy.contents,copy.native?"copia-recuperacao.escalalivre":"conteudo-original.json");recovery.markDownloaded(copy.id);})}>Baixar cópia</Button>
-      {copy.native && <Button type="button" className="h-8 text-xs" onClick={()=>action(()=>{restoreRecovery(copy.contents);})}>Restaurar cópia</Button>}
+      {copy.restorable && <Button type="button" className="h-8 text-xs" onClick={()=>action(()=>{restoreRecovery(copy.contents);})}>Restaurar cópia</Button>}
     </li>)}</ul>
     {error && <p role="alert" className="mt-2 text-red-600">{error}</p>}
   </details>;

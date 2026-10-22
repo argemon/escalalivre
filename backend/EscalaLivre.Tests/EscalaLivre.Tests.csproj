@@ -1,6 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <None Include="../../shared/document-validation-scenarios.json" Link="document-validation-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../shared/hiring-demand-scenarios.json" Link="hiring-demand-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../shared/rule-scenarios.json" Link="rule-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 

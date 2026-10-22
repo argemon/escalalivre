@@ -7,7 +7,12 @@ public sealed record EscalaLivreDocument(
     IReadOnlyList<Employee> Employees,
     IReadOnlyList<ShiftAssignment> Assignments,
     DateTimeOffset UpdatedAt,
-    PlanningPeriod? PlanningPeriod = null);
+    PlanningPeriod? PlanningPeriod = null,
+    IReadOnlyList<DocumentRole>? Roles = null,
+    DocumentSetup? Setup = null);
+
+public sealed record DocumentRole(Guid Id, string Name);
+public sealed record DocumentSetup(bool CompanyConfigured);
 
 public sealed record PlanningPeriod(DateOnly Start, DateOnly End);
 
@@ -44,7 +49,9 @@ public sealed record Employee(
     TimeOnly? ShiftStartsAt = null,
     bool WorksDuringLunchClosure = false,
     MiddayClosure? FixedInterval = null,
-    IReadOnlyList<string>? CoverageRoles = null);
+    IReadOnlyList<string>? CoverageRoles = null,
+    Guid? RoleId = null,
+    IReadOnlyList<Guid>? CoverageRoleIds = null);
 
 public sealed record WorkloadRule(
     string RegimeType,
@@ -55,7 +62,7 @@ public sealed record WorkloadRule(
 
 public sealed record LunchRule(TimeSpan Minimum, TimeSpan Maximum, TimeSpan PreferredAfter);
 
-public sealed record CoverageRequirement(string Role, DayOfWeek Day, TimeOnly Start, TimeOnly End, int MinimumEmployees, string? DaysMode = null, bool AllowsOutsideHours = false, string Scope = "role");
+public sealed record CoverageRequirement(string Role, DayOfWeek Day, TimeOnly Start, TimeOnly End, int MinimumEmployees, string? DaysMode = null, bool AllowsOutsideHours = false, string Scope = "role", Guid? RoleId = null);
 
 public sealed record AvailabilityWindow(DateTime Start, DateTime End);
 
@@ -69,7 +76,8 @@ public sealed record ShiftAssignment(
     DateTime End,
     BreakWindow? Break,
     string Source,
-    IReadOnlyList<string> Tags);
+    IReadOnlyList<string> Tags,
+    Guid? RoleId = null);
 
 public sealed record BreakWindow(DateTime Start, DateTime End);
 
@@ -79,7 +87,10 @@ public sealed record CoverageBlock(DateTime Start, DateTime End, string Role, in
 
 public sealed record CoverageGap(DateTime Start, DateTime End, string Role, int MissingEmployees);
 
-public sealed record HiringSuggestion(string Role, double WeeklyHours, IReadOnlyList<AvailabilityWindow> IdealWindows, string Rationale);
+public sealed record WeeklyHiringDemand(DateOnly WeekStart, double Hours);
+public sealed record HiringSuggestion(string Role, double TotalHours, double WeeklyHours, double ReferenceWeeklyHours,
+    int MinimumPeople, int PeakMissingEmployees, IReadOnlyList<WeeklyHiringDemand> WeeklyDemand,
+    IReadOnlyList<AvailabilityWindow> IdealWindows, string Rationale);
 
 public sealed record OptimizationSuggestion(string Code, string Message, string Impact, Guid? EmployeeId = null, DateTime? Start = null, DateTime? End = null);
 

@@ -1,0 +1,23 @@
+{
+  "text": 256,
+  "timeZone": 128,
+  "employees": 200,
+  "assignments": 20000,
+  "coverage": 1000,
+  "roles": 1000,
+  "holidays": 366,
+  "days": 7,
+  "windows": 366,
+  "preferences": 50,
+  "coverageRoles": 50,
+  "tags": 50,
+  "preferenceWeight": 1000,
+  "workUnits": 168,
+  "weeklyHours": 44,
+  "minimumRestSeconds": 39600,
+  "maximumRestSeconds": 604800,
+  "shiftDurationSeconds": 86400,
+  "lunchSeconds": 7200,
+  "preferredAfterSeconds": 86400,
+  "assignmentSeconds": 172800
+}

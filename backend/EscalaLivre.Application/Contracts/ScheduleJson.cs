@@ -13,18 +13,19 @@ public static class ScheduleJson
     public const string DefaultTimeZone = "America/Cuiaba";
     public static void Configure(JsonSerializerOptions options)
     {
+        options.Converters.Add(new ScheduleDurationConverter());
         options.Converters.Add(new DocumentConverter());
         options.Converters.Add(new RequestConverter());
     }
     public static JsonSerializerOptions CreateOptions()
     {
-        var options = new JsonSerializerOptions(JsonSerializerDefaults.Web) { MaxDepth = 32 };
+        var options = new JsonSerializerOptions(JsonSerializerDefaults.Web) { MaxDepth = 32, DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull };
         Configure(options);
         return options;
     }
     public static bool ValidTimeZone(string? zone)
     {
-        if (string.IsNullOrWhiteSpace(zone) || zone.Length > 128) return false;
+        if (string.IsNullOrWhiteSpace(zone) || zone.Length > DocumentValidationLimits.TimeZone) return false;
         try { TimeZoneInfo.FindSystemTimeZoneById(zone); return true; }
         catch (TimeZoneNotFoundException) { return false; }
         catch (InvalidTimeZoneException) { return false; }
@@ -60,6 +61,23 @@ public static class ScheduleJson
                 else NormalizeWindows(obj[key], zone);
             }
         }
+    }
+    // Durations use total hours on the wire, including 24h shifts and multi-day rest.
+    // Legacy TimeSpan day notation remains readable.
+    private sealed class ScheduleDurationConverter : JsonConverter<TimeSpan>
+    {
+        public override TimeSpan Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
+        {
+            if (reader.TokenType != JsonTokenType.String) throw new JsonException("Duração inválida.");
+            var match=System.Text.RegularExpressions.Regex.Match(reader.GetString()!, @"^(?:(\d+)\.)?(\d{2,3}):(\d{2}):(\d{2})$");
+            if (!match.Success || !int.TryParse(match.Groups[1].Success ? match.Groups[1].Value : "0",out var days)
+                || !int.TryParse(match.Groups[2].Value,out var hours) || !int.TryParse(match.Groups[3].Value,out var minutes)
+                || !int.TryParse(match.Groups[4].Value,out var seconds) || minutes >= 60 || seconds >= 60
+                || (match.Groups[1].Success && hours >= 24) || days > 7) throw new JsonException("Duração inválida.");
+            return TimeSpan.FromSeconds((long)days*86400+(long)hours*3600+minutes*60+seconds);
+        }
+        public override void Write(Utf8JsonWriter writer, TimeSpan value, JsonSerializerOptions options)
+            => writer.WriteStringValue($"{(long)value.TotalHours:00}:{value.Minutes:00}:{value.Seconds:00}");
     }
     private sealed class DocumentConverter : JsonConverter<EscalaLivreDocument>
     {

@@ -1,4 +1,5 @@
-import { BriefcaseBusiness, Download, FileUp, Moon, Sparkles, Sun } from "lucide-react";
+import { HiringSuggestionCard } from "./HiringSuggestionCard";
+import { Download, FileUp, Moon, Sparkles, Sun } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { exportNative, importNative, solveSchedule } from "../lib/api";
 import { useScheduleStore } from "../store/scheduleStore";
@@ -85,15 +86,7 @@ export function InsightPanel() {
 
         <section>
           <h3 className="mb-2 text-sm font-semibold">Contratacao sugerida</h3>
-          {analysis.hiringSuggestions.map((suggestion) => (
-            <div key={suggestion.role} className="rounded-md border border-border bg-background p-3">
-              <div className="flex items-center gap-2">
-                <BriefcaseBusiness className="size-4 text-emerald-500" />
-                <p className="text-sm font-medium">{suggestion.role} parcial</p>
-              </div>
-              <p className="mt-2 text-sm text-muted-foreground">{suggestion.weeklyHours}h semanais. {suggestion.rationale}</p>
-            </div>
-          ))}
+          {analysis.hiringSuggestions.map(suggestion=><HiringSuggestionCard key={suggestion.role} suggestion={suggestion} />)}
         </section>
       </div>
     </Panel>

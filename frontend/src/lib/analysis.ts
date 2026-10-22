@@ -1,3 +1,4 @@
+import { buildHiringSuggestions } from "./hiringDemand";
 import { normalizeDocumentTimes } from "./dateTime";
 import { civilMillis, civilDay, civilString, clockMillis, endOn } from "./civilTime";
 import { diagnoseSchedule, closureOn } from "./laborRules";
@@ -10,7 +11,7 @@ export { formatCivilDateTime as localDate } from "./dateTime";
 
 export function analyzeDocument(input:EscalaLivreDocument):ScheduleResult {
   const document=normalizeDocumentTimes(input);
-  const result:ScheduleResult={assignments:input.assignments,coverage:[],gaps:[],conflicts:diagnoseSchedule(document),decisions:[],hiringSuggestions:[],optimizationSuggestions:[],coverageScore:1};
+  const result:ScheduleResult={assignments:input.assignments,coverage:[],gaps:[],conflicts:diagnoseSchedule(document),decisions:[],hiringSuggestions:[],optimizationSuggestions:[],coverageScore:1,optimization:{status:"not-run"}};
   const period=planningPeriod(document);
   const windows:{rule:typeof document.company.coverage[number];from:number;to:number;closure?:{start:number;end:number}}[]=[];
   for(let day=civilDay(civilMillis(period.start));day<=civilMillis(period.end);day+=86400000) {
@@ -37,5 +38,6 @@ export function analyzeDocument(input:EscalaLivreDocument):ScheduleResult {
   const required=result.coverage.reduce((n,b)=>n+b.required*(civilMillis(b.end)-civilMillis(b.start)),0);
   const covered=result.coverage.reduce((n,b)=>n+Math.min(b.required,b.assigned)*(civilMillis(b.end)-civilMillis(b.start)),0);
   result.coverageScore=required?Math.round(covered/required*1000)/1000:1;
+  result.hiringSuggestions=buildHiringSuggestions(result.gaps,document.company.defaultWorkload.weeklyLimitHours);
   return result;
 }

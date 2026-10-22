@@ -37,7 +37,7 @@ public sealed class NativeScheduleSerializer
         return request.Format.ToLowerInvariant() switch
         {
             "xlsx" => new ExportResult("escala.xlsx", Convert.ToBase64String(ToXlsx(request.Document)), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
-            "pdf" => new ExportResult("escala.pdf", Convert.ToBase64String(ToPdf(request.Document)), "application/pdf"),
+            "pdf" => new ExportResult("escala.pdf", Convert.ToBase64String(SchedulePdfExporter.Export(request.Document)), "application/pdf"),
             _ => throw new FormatException("Formato de exportação não suportado.")
         };
     }
@@ -142,35 +142,6 @@ public sealed class NativeScheduleSerializer
             """;
     }
 
-    private static byte[] ToPdf(EscalaLivreDocument document)
-    {
-        string[] lines = new[] { $"EscalaLivre - {document.Company.Name}" }
-            .Concat(document.Assignments.Select(x => $"{x.Role} {x.Start:g} - {x.End:g}"))
-            .ToArray();
-        string content = string.Join("\\n", lines.Select(EscapePdf));
-        string[] objects = new[]
-        {
-            "1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj\n",
-            "2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj\n",
-            "3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >> endobj\n",
-            "4 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj\n",
-            $"5 0 obj << /Length {content.Length + 42} >> stream\nBT /F1 12 Tf 48 792 Td ({content}) Tj ET\nendstream endobj\n"
-        };
-        var builder = new StringBuilder("%PDF-1.4\n");
-        var offsets = new List<int> { 0 };
-        foreach (string? item in objects)
-        {
-            offsets.Add(Encoding.ASCII.GetByteCount(builder.ToString()));
-            builder.Append(item);
-        }
-
-        int xrefStart = Encoding.ASCII.GetByteCount(builder.ToString());
-        builder.Append($"xref\n0 {objects.Length + 1}\n0000000000 65535 f \n");
-        builder.Append(string.Concat(offsets.Skip(1).Select(offset => $"{offset:0000000000} 00000 n \n")));
-        builder.Append($"trailer << /Size {objects.Length + 1} /Root 1 0 R >>\nstartxref\n{xrefStart}\n%%EOF");
-        return Encoding.ASCII.GetBytes(builder.ToString());
-    }
-
     private static void WriteEntry(ZipArchive archive, string path, string content)
     {
         ZipArchiveEntry entry = archive.CreateEntry(path);
@@ -184,6 +155,4 @@ public sealed class NativeScheduleSerializer
     private static string EscapeXml(string value)
         => value.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
 
-    private static string EscapePdf(string value)
-        => value.Replace("\\", "\\\\").Replace("(", "\\(").Replace(")", "\\)");
 }

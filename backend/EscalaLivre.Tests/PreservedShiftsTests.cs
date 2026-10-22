@@ -195,6 +195,7 @@ public sealed class PreservedShiftsTests
         r=r with {Document=r.Document with {Company=r.Document.Company with {Holidays=[new(DateOnly.FromDateTime(Monday),"Feriado")],MinimumRest=TimeSpan.FromHours(13)}}};
         var result=new OrToolsScheduleSolver().Solve(r);
         Assert.Contains(result.Conflicts,c=>c.Code=="solverInfeasible");
+        Assert.Equal("infeasible",result.Optimization?.Status);
         Assert.Equal(r.Document.Assignments,result.Assignments);Assert.Empty(result.Decisions);
     }
 }

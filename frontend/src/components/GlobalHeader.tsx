@@ -1,3 +1,4 @@
+import { solverLabels, solverDescriptions } from "../lib/solverStatus";
 import { RecoveryPanel, StorageBadge } from "./RecoveryPanel";
 import { Download, FileUp, Moon, Trash2, Sun, Wifi, Printer, ChevronDown, HelpCircle, Sparkles } from "lucide-react";
 import { PlanningPeriodEditor } from "./PlanningPeriodEditor";
@@ -5,22 +6,16 @@ import { Brand } from "./Brand";
 import { PrintSchedule } from "./PrintSchedule";
 import { useState } from "react";
 import { exportNative, importNative } from "../lib/api";
-import { useScheduleStore, type SolverStatus, type ViewMode } from "../store/scheduleStore";
+import { useScheduleStore, type ViewMode } from "../store/scheduleStore";
 import { Badge, Button, IconButton } from "./ui";
 
 const viewModes: { mode: ViewMode; label: string; description: string }[] = [
   { mode: "timeline", label: "Escala do dia", description: "Veja os horários de cada pessoa no dia selecionado. Clique em um nome para editar seu cadastro." }, { mode: "week", label: "Escala semanal", description: "Veja os turnos e a disponibilidade de cada pessoa na semana. Clique em um nome para editar." },
   { mode: "month", label: "Escala mensal", description: "Veja os turnos salvos e as prévias estimadas do mês. Clique no número do dia para configurar feriados; clique em um turno para abrir o cadastro da pessoa." }, { mode: "coverage", label: "Pessoas por horário", description: "Confira quantas pessoas estão escaladas e quantas são necessárias em cada período e função." },
-  { mode: "heatmap", label: "Onde faltam pessoas", description: "Identifique os dias e as funções que precisam de mais pessoas na escala." }, { mode: "solver", label: "Assistente de escala", description: "Gere uma escala otimizada e revise os conflitos, as faltas de pessoas e as sugestões de ajuste." }
+  { mode: "heatmap", label: "Onde faltam pessoas", description: "Identifique os dias e as funções que precisam de mais pessoas na escala." }, { mode: "solver", label: "Assistente de escala", description: "Gere uma escala e revise os conflitos, as faltas de pessoas e as sugestões de ajuste." }
 ];
 
-const solverLabels: Record<SolverStatus, string> = {
-  idle: "Pronto",
-  calculating: "Calculando",
-  optimized: "Otimizado",
-  partial: "Precisa de ajustes",
-  invalid: "Revisar escala"
-};
+
 
 export function GlobalHeader() {
   const { document, analysis, theme, setTheme, viewMode, setViewMode, solverStatus, importDocument, clearAll } = useScheduleStore();
@@ -38,7 +33,7 @@ export function GlobalHeader() {
         <div className="header-metrics">
           <Badge>{document.company.opensAt.slice(0, 5)}-{document.company.closesAt.slice(0, 5)}</Badge>
           <Badge>{Math.round(analysis.coverageScore * 100)}% cobertura</Badge>
-          <Badge>{solverLabels[solverStatus]}</Badge>
+          <Badge title={solverDescriptions[solverStatus]}>{solverLabels[solverStatus]}</Badge>
         </div>
       </div>
 

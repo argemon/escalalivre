@@ -1,6 +1,9 @@
+import { buildHiringSuggestions } from "../lib/hiringDemand";
+import { generationStatus, type SolverStatus } from "../lib/solverStatus";
+export type { SolverStatus } from "../lib/solverStatus";
 import { migrateDocument, normalizeDocument, replaceAssignment } from "../lib/documentLifecycle";
-import { recovery, type SavedSchedule } from "../lib/recoveryStorage";
-import { parseNativeText, validateNativeDocument } from "../lib/nativeDocument";
+import { recovery, parseRecoveryDocument, type SavedSchedule } from "../lib/recoveryStorage";
+import { validateNativeDocument } from "../lib/nativeDocument";
 import { nowInstant, normalizeResultTimes, moveShift } from "../lib/dateTime";
 import { replacePeriodAssignments } from "../lib/scheduleWindow";
 import { periodError, type PlanningPeriod } from "../lib/planningPeriod";
@@ -12,7 +15,6 @@ import type { Employee, EscalaLivreDocument, ScheduleResult, ShiftAssignment } f
 
 type Theme = "light" | "dark";
 export type ViewMode = "timeline" | "week" | "month" | "heatmap" | "coverage" | "solver";
-export type SolverStatus = "idle" | "calculating" | "optimized" | "partial" | "invalid";
 type ScheduleState = {
   document: EscalaLivreDocument; analysis: ScheduleResult; theme: Theme; viewMode: ViewMode;
   solverStatus: SolverStatus; selectedRole: string; selectedEmployeeId?: string;
@@ -51,7 +53,7 @@ export const useScheduleStore = create<ScheduleState>()(persist((set, get) => ({
     set({...next,selectedEmployeeId:undefined,selectedRole:"todos"});return true;
   },
   restoreRecovery: contents => {
-    const document=parseNativeText(contents);
+    const document=parseRecoveryDocument(contents);
     if(!recovery.checkpoint(get().document,"Antes da recuperação"))return false;
     recovery.prepareRestore();
     set({...recovered(document),selectedEmployeeId:undefined,selectedRole:"todos"});return true;
@@ -68,10 +70,10 @@ export const useScheduleStore = create<ScheduleState>()(persist((set, get) => ({
   applyGeneratedSchedule: (submitted, result) => set(state => {
     if (state.document !== submitted) return {};
     result = normalizeResultTimes(result,submitted.company.timeZone);
-    const failures = result.conflicts.filter(c => c.code === "solverInfeasible" || c.code === "solverTimeout");
-    if (failures.length) {
+    const failures = result.conflicts.filter(c => c.code === "solverInfeasible" || c.code === "solverTimeout" || c.code === "solverInvalid");
+    if (failures.length || ["infeasible","timeout","invalid"].includes(result.optimization?.status??"")) {
       const analysis = analyzeDocument(submitted);
-      return {analysis:{...analysis,conflicts:[...analysis.conflicts,...failures]},solverStatus:"invalid"};
+      return {analysis:{...analysis,optimization:result.optimization,conflicts:[...analysis.conflicts,...failures]},solverStatus:"invalid"};
     }
     // Preserve outside objects verbatim. Re-running legacy normalization here can edit history.
     const assignments = replacePeriodAssignments(submitted, result.assignments).map(a => {
@@ -81,7 +83,7 @@ export const useScheduleStore = create<ScheduleState>()(persist((set, get) => ({
     });
     if(!recovery.checkpoint(submitted,"Antes da geração"))return {solverStatus:"idle"};
     const document = {...submitted,assignments,updatedAt:nowInstant()};
-    return {document,analysis:{...result,assignments},solverStatus:result.conflicts.some(c => c.severity === "error") ? "invalid" : result.gaps.length ? "partial" : "optimized"};
+    return {document,analysis:{...result,assignments,hiringSuggestions:buildHiringSuggestions(result.gaps,document.company.defaultWorkload.weeklyLimitHours)},solverStatus:generationStatus(result)};
   }),
   upsertEmployee:employee => set(state => ({...presentDocument({...state.document,updatedAt:nowInstant(),
     employees:[...state.document.employees.filter(e => e.id !== employee.id),employee],
