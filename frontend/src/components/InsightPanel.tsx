@@ -1,16 +1,14 @@
 import { HiringSuggestionCard } from "./HiringSuggestionCard";
 import { Download, FileUp, Moon, Sparkles, Sun } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
-import { exportNative, importNative, solveSchedule } from "../lib/api";
+import { useGenerationStore } from "../store/generationStore";
+import { GenerationProgress } from "./GenerationProgress";
+import { exportNative, importNative } from "../lib/api";
 import { useScheduleStore } from "../store/scheduleStore";
 import { Badge, Button, IconButton, Panel } from "./ui";
 
 export function InsightPanel() {
-  const { document, analysis, applyGeneratedSchedule, importDocument, theme, setTheme } = useScheduleStore();
-  const mutation = useMutation({
-    mutationFn: solveSchedule,
-    onSuccess: (result, submitted) => applyGeneratedSchedule(submitted, result)
-  });
+  const { document, analysis, importDocument, theme, setTheme } = useScheduleStore();
+  const { active, start } = useGenerationStore();
 
   return (
     <Panel className="flex h-full min-h-0 w-full flex-col border-l">
@@ -35,11 +33,12 @@ export function InsightPanel() {
           </div>
         </section>
 
-        <Button className="w-full" onClick={() => mutation.mutate(document)} disabled={mutation.isPending}>
+        <Button className="w-full" onClick={() => void start()} disabled={active}>
           <Sparkles className="size-4" />
-          {mutation.isPending ? "Gerando..." : "Gerar escala"}
+          {active ? "Gerando..." : "Gerar escala"}
         </Button>
 
+        <GenerationProgress />
         <div className="grid grid-cols-2 gap-2">
           <Button className="bg-card text-foreground dark:bg-card dark:text-foreground" onClick={() => {try {exportNative(document);} catch(error) {window.alert(error instanceof Error ? error.message : "Não foi possível exportar.");}}}>
             <Download className="size-4" />

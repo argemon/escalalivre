@@ -123,4 +123,16 @@ foreach (string operation in new[] { "solve", "validate", "analyze" })
 }
 app.MapPost("/import", (ImportRequest request, NativeScheduleSerializer serializer) => ApiEnvelope<object>.Ok(serializer.Import(request)));
 app.MapPost("/export", (ExportRequest request, NativeScheduleSerializer serializer) => ApiEnvelope<ExportResult>.Ok(serializer.Export(request)));
+app.MapPost("/solve/jobs", async (ScheduleRequest request, ScheduleJobQueue jobs, IValidator<ScheduleRequest> validator, HttpContext context) =>
+{
+    var validation = await validator.ValidateAsync(request, context.RequestAborted);
+    if (!validation.IsValid)
+        return Results.BadRequest(ApiEnvelope<JobProgress>.Fail(validation.Errors.Select(e => new ApiMessage("invalidRequest", e.ErrorMessage, e.PropertyName)).ToList()));
+    var progress = jobs.Enqueue(request);
+    return Results.Json(ApiEnvelope<JobProgress>.Ok(progress), statusCode: 202);
+});
+app.MapGet("/solve/jobs/{id}", (string id, ScheduleJobQueue jobs) =>
+    ApiEnvelope<JobProgress>.Ok(jobs.Get(id)));
+app.MapDelete("/solve/jobs/{id}", (string id, ScheduleJobQueue jobs) =>
+    ApiEnvelope<JobProgress>.Ok(jobs.Cancel(id)));
 app.Run();

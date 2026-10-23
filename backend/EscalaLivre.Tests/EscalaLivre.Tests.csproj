@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EscalaLivre.Api\EscalaLivre.Api.csproj" />
     <ProjectReference Include="..\EscalaLivre.Application\EscalaLivre.Application.csproj" />
     <ProjectReference Include="..\EscalaLivre.Domain\EscalaLivre.Domain.csproj" />
     <ProjectReference Include="..\EscalaLivre.Infrastructure\EscalaLivre.Infrastructure.csproj" />

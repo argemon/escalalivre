@@ -99,6 +99,8 @@ A execução possui limite de tempo e pode encontrar uma solução viável sem c
 | **Intervalos flexíveis ou fixos** | Deixar o gerador escolher início e duração da pausa, ou fixar o intervalo de uma pessoa. |
 | **Feriados e turnos especiais** | Configurar abertura ou fechamento por data e manter turnos específicos mesmo com a empresa fechada. |
 | **Geração automática** | Buscar turnos e intervalos que atendam à operação dentro das restrições do modelo. |
+| **Fila e tempo de espera** | Acompanhar a posição real, os pedidos à frente, a estimativa de espera e o tempo decorrido até receber a escala. |
+| **Cancelamento de geração** | Cancelar um pedido na fila ou em processamento, mantendo os turnos atuais. |
 | **Análise durante a edição** | Recalcular localmente a cobertura e os conflitos quando o planejamento muda. |
 | **Escala diária, semanal e mensal** | Consultar horários; na semana, comparar os dias em uma tabela com uma linha por pessoa, sem repetir nomes. |
 | **Período de planejamento** | Definir de 1 a 31 dias, com datas inclusivas, para consulta, análise e geração. |
@@ -126,6 +128,21 @@ Ao aplicar uma geração, o sistema substitui os turnos **pela data em que come�
 Por exemplo, gerar de **19/10 a 21/10** substitui um turno iniciado às 22h de 21/10 e encerrado às 6h de 22/10. Um turno iniciado às 22h de 18/10 permanece intacto.
 
 Antes de importar um documento ou aplicar uma geração, a aplicação cria uma cópia recuperável do planejamento anterior. Os detalhes estão em [preservação de turnos](docs/generation-preservation.md) e [período de planejamento](docs/planning-period.md).
+
+### Fila, estimativa de tempo e cancelamento
+
+Ao clicar em **Gerar escala**, o pedido entra na fila do servidor. O Assistente de escala mostra a **posição real na fila**, a quantidade de pedidos à frente, a **estimativa de espera** e o **tempo já decorrido**. Quando chega sua vez, o indicador muda para **Processando sua escala**. O cabeçalho também informa se o pedido está aguardando ou em processamento.
+
+Os tempos são **aproximados**, calculados a partir das gerações recentes, e podem mudar conforme o planejamento e a carga do servidor. Se o processamento superar a estimativa, a interface avisa e continua acompanhando o pedido. A estimativa não representa um prazo garantido nem um percentual de conclusão.
+
+- **Cancelar geração:** retira o pedido da fila ou solicita a interrupção do cálculo em andamento, sem substituir os turnos atuais.
+- **Consultar outras abas do app:** mantém a geração em acompanhamento e impede o envio de outro pedido enquanto ela estiver ativa.
+- **Falha temporária de conexão:** o app tenta consultar novamente o mesmo pedido, sem reenviar o planejamento; a posição exibida fica identificada como a última confirmada.
+- **Alterações durante a espera:** um resultado antigo não sobrescreve o planejamento alterado; a interface orienta a gerar novamente com os dados atuais.
+
+O Escala Livre é gratuito e usa uma fila para economizar recursos de hospedagem. Na configuração padrão, atende **um cálculo por vez, com até 20 pedidos aguardando**. Se a fila estiver cheia, o app informa que é preciso aguardar e tentar novamente. A espera na fila é separada do limite de tempo de cada cálculo; planos mais complexos continuam sujeitos aos limites do gerador.
+
+**Mantenha esta página aberta durante a espera.** Recarregar ou fechar a página não recupera o acompanhamento do pedido, embora ele possa terminar no servidor. A fila fica em memória: se o servidor reiniciar, pedidos pendentes e resultados são perdidos e será necessário gerar novamente. Consulte os [detalhes da fila de processamento](docs/processing-queue.md).
 
 ## Salvar, exportar e recuperar
 
@@ -388,6 +405,9 @@ docs/                           Documentação técnica
 | Endpoint | Função |
 | --- | --- |
 | `POST /solve` | Gerar uma escala e retornar a análise do resultado. |
+| `POST /solve/jobs` | Entrar na fila de geração e receber um token de acompanhamento. |
+| `GET /solve/jobs/{id}` | Consultar posição, estimativa, estado e resultado do pedido. |
+| `DELETE /solve/jobs/{id}` | Cancelar um pedido de geração. |
 | `POST /validate` | Verificar o planejamento enviado. |
 | `POST /analyze` | Analisar os turnos existentes, sem gerar uma nova escala. |
 | `POST /import` | Ler um documento no formato nativo. |
@@ -395,6 +415,8 @@ docs/                           Documentação técnica
 | `GET /health` | Verificar se a API está disponível. |
 
 As operações `/solve`, `/validate` e `/analyze` recebem um documento e um período. As respostas dessas operações usam um envelope com `success`, `data`, `errors`, `warnings` e `metadata`. Em desenvolvimento, o contrato OpenAPI está disponível em [http://localhost:5003/openapi/v1.json](http://localhost:5003/openapi/v1.json). `GET /health` retorna um objeto simples com o estado do serviço.
+
+A interface usa a geração assíncrona: `POST /solve/jobs` recebe documento e período e retorna **HTTP 202** com um token de acompanhamento. `GET /solve/jobs/{id}` informa o estado, a posição e as estimativas, incluindo o resultado quando concluído; `DELETE /solve/jobs/{id}` solicita o cancelamento. O endpoint síncrono `/solve` continua disponível por compatibilidade. Para publicar este recurso, atualize **frontend e backend juntos**; a configuração da fila está em [fila de geração](docs/processing-queue.md).
 
 ## Qualidade e validação
 
@@ -459,6 +481,7 @@ A validação cobre regras implementadas, como descanso e limite semanal. Ela n�
 - [Datas, horários e fuso da empresa](docs/date-time.md)
 - [Regras compartilhadas entre frontend e backend](docs/rule-parity.md)
 - [Segurança e publicação da API](docs/SECURITY.md)
+- [Fila, estimativas e cancelamento de geração](docs/processing-queue.md)
 - [Identidade visual](docs/brand.md)
 
 Contribuições podem melhorar a interface, os testes, a documentação, os regimes e o motor de planejamento. Para propor uma mudança, descreva o problema e um exemplo de uso em uma issue. Em pull requests, explique o comportamento esperado e execute as verificações relevantes.

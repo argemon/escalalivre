@@ -9,7 +9,7 @@ using EscalaLivre.Infrastructure.Solver;
 namespace EscalaLivre.Api;
 
 // Slots stay occupied until the child exits, including after cancellation.
-public sealed class CalculationWorker(ProtectionOptions options, ILogger<CalculationWorker> logger, IHostApplicationLifetime lifetime) : IDisposable
+public sealed class CalculationWorker(ProtectionOptions options, ILogger<CalculationWorker> logger, IHostApplicationLifetime lifetime) : ICalculationRunner, IDisposable
 {
     private static readonly JsonSerializerOptions JsonOptions = ScheduleJson.CreateOptions();
     private readonly ConcurrencyLimiter limiter = new(new()

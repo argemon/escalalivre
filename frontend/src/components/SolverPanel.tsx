@@ -1,22 +1,15 @@
 import { solverLabels, solverDescriptions } from "../lib/solverStatus";
 import { HiringSuggestionCard } from "./HiringSuggestionCard";
-import { useMutation } from "@tanstack/react-query";
+import { useGenerationStore } from "../store/generationStore";
+import { GenerationProgress } from "./GenerationProgress";
 import { BrainCircuit, BriefcaseBusiness, CheckCircle2, CircleAlert, Loader2, Wand2 } from "lucide-react";
 import type { ReactNode } from "react";
-import { solveSchedule } from "../lib/api";
 import { useScheduleStore } from "../store/scheduleStore";
 import { Badge, Button, Panel } from "./ui";
 
 export function SolverPanel() {
-  const { document, analysis, applyGeneratedSchedule, solverStatus, setSolverStatus } = useScheduleStore();
-  const mutation = useMutation({
-    mutationFn: solveSchedule,
-    onMutate: () => setSolverStatus("calculating"),
-    onSuccess: (result, submitted) => applyGeneratedSchedule(submitted, result),
-    onError: (_error, submitted) => {
-      if (useScheduleStore.getState().document === submitted) setSolverStatus("invalid");
-    }
-  });
+  const { document, analysis, solverStatus } = useScheduleStore();
+  const { active, start } = useGenerationStore();
 
   const hardViolations = analysis.conflicts.filter((item) => item.severity === "error").length;
   const softViolations = analysis.conflicts.filter((item) => item.severity !== "error").length + analysis.gaps.length;
@@ -38,7 +31,7 @@ export function SolverPanel() {
         <section className="rounded-md border border-border bg-background p-4">
           <div className="flex items-center justify-between">
             <BrainCircuit className="size-5 text-primary" />
-            {mutation.isPending && <Loader2 className="size-4 animate-spin text-primary" />}
+            {active && <Loader2 className="size-4 animate-spin text-primary" />}
           </div>
           <p className="mt-3 text-3xl font-semibold">{Math.round(analysis.coverageScore * 100)}%</p>
           <p className="text-sm text-muted-foreground">da cobertura necessária atendida</p>
@@ -48,14 +41,14 @@ export function SolverPanel() {
           </div>
         </section>
 
-        <Button className="w-full" onClick={() => mutation.mutate(document)} disabled={solverStatus === "calculating" || !document.employees.length || !document.company.coverage.some(r => r.minimumEmployees > 0)}>
+        <Button className="w-full" onClick={() => void start()} disabled={active || !document.employees.length || !document.company.coverage.some(r => r.minimumEmployees > 0)}>
           <Wand2 className="size-4" />
-          {mutation.isPending ? "Preparando sua escala…" : "Gerar escala"}
+          {active ? "Preparando sua escala…" : "Gerar escala"}
         </Button>
 
+        <GenerationProgress />
         <p className="text-xs text-muted-foreground">A geração substitui por inteiro os turnos que começam de {document.planningPeriod.start.split("-").reverse().join("/")} a {document.planningPeriod.end.split("-").reverse().join("/")}, inclusive os que terminam no dia seguinte. Os demais turnos serão preservados.</p>
         {(!document.employees.length || !document.company.coverage.some(r => r.minimumEmployees > 0)) && <p className="text-sm text-muted-foreground">Para gerar a escala, cadastre funcionários e ao menos uma regra de cobertura com quantidade maior que zero.</p>}
-        {mutation.isError && <p role="alert" className="text-red-400">{mutation.error.message} Verifique se a API está em execução e tente novamente.</p>}
         <section className="space-y-2">
           <Title icon={<CircleAlert className="size-4" />} text="O que precisa de atenção" />
           {analysis.gaps.length === 0 && analysis.conflicts.length === 0 && <p className="text-sm text-muted-foreground">{document.company.coverage.length ? "Nenhum buraco ou conflito detectado no planejamento atual." : "Cadastre regras de cobertura mínima para detectar buracos."}</p>}

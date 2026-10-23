@@ -10,6 +10,33 @@ const net = require('node:net');
 const apiDirectory = path.join(__dirname, 'EscalaLivre.Api');
 const assembly = path.join(apiDirectory, `bin/${process.env.SECURITY_BUILD_CONFIGURATION || 'Debug'}/net10.0/EscalaLivre.Api.dll`);
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+test('asynchronous generation returns a private ticket, survives polling and supports cancellation', async () => {
+  await withServer({}, async ({url, post}) => {
+    assert.equal((await post('/solve/jobs', {})).status, 400);
+    assert.equal((await fetch(url + '/solve/jobs/' + '0'.repeat(64))).status, 404);
+    const accepted = await post('/solve/jobs', request(3, 1));
+    assert.equal(accepted.status, 202);
+    const first = (await accepted.json()).data;
+    assert.match(first.id, /^[0-9a-f]{64}$/);
+    const second = (await (await post('/solve/jobs', request())).json()).data;
+    assert.notEqual(second.id, first.id);
+    assert.equal(second.result, null);
+    const cancelled = await fetch(url + '/solve/jobs/' + second.id, {method:'DELETE', headers:{Origin:'https://allowed.example'}});
+    assert.equal(cancelled.status, 200);
+    assert.equal(cancelled.headers.get('access-control-allow-origin'), 'https://allowed.example');
+    let result;
+    for(let i=0;i<100;i++) {
+      result=(await (await fetch(url+'/solve/jobs/'+first.id)).json()).data;
+      if(['completed','failed'].includes(result.state))break;
+      await sleep(200);
+    }
+    assert.equal(result.state, 'completed', result.error);
+    assert.ok(result.result.assignments.length);
+    assert.equal((await (await fetch(url+'/solve/jobs/'+second.id)).json()).data.state, 'cancelled');
+    assert.equal((await fetch(url+'/health')).status, 200);
+  });
+});
 function request(people = 1, days = 1) {
   const workload = { regimeType: 'dayBased', workUnits: 7, restUnits: 0, weeklyLimitHours: 44, defaultShiftDuration: '08:00:00' };
   return {

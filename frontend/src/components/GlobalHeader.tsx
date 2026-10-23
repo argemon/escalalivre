@@ -1,3 +1,4 @@
+import { useGenerationStore } from "../store/generationStore";
 import { solverLabels, solverDescriptions } from "../lib/solverStatus";
 import { RecoveryPanel, StorageBadge } from "./RecoveryPanel";
 import { Download, FileUp, Moon, Trash2, Sun, Wifi, Printer, ChevronDown, HelpCircle, Sparkles } from "lucide-react";
@@ -20,6 +21,8 @@ const viewModes: { mode: ViewMode; label: string; description: string }[] = [
 export function GlobalHeader() {
   const { document, analysis, theme, setTheme, viewMode, setViewMode, solverStatus, importDocument, clearAll } = useScheduleStore();
 
+  const generation = useGenerationStore();
+  const generationLabel = generation.active ? (generation.progress?.state === "queued" ? `Na fila · ${generation.progress.position}ª posição` : "Gerando escala…") : solverLabels[solverStatus];
   const [clearing,setClearing] = useState(false);
   const [printing,setPrinting] = useState(false);
   const [confirmation,setConfirmation] = useState("");
@@ -33,7 +36,7 @@ export function GlobalHeader() {
         <div className="header-metrics">
           <Badge>{document.company.opensAt.slice(0, 5)}-{document.company.closesAt.slice(0, 5)}</Badge>
           <Badge>{Math.round(analysis.coverageScore * 100)}% cobertura</Badge>
-          <Badge title={solverDescriptions[solverStatus]}>{solverLabels[solverStatus]}</Badge>
+          <Badge title={solverDescriptions[solverStatus]}>{generationLabel}</Badge>
         </div>
       </div>
 
