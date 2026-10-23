@@ -57,8 +57,13 @@ public sealed class CalculationWorker(ProtectionOptions options, ILogger<Calcula
                 while (!process.HasExited)
                 {
                     deadline.Token.ThrowIfCancellationRequested();
-                    process.Refresh();
-                    if (process.WorkingSet64 > options.WorkerMemoryMb * 1024L * 1024)
+                    var memory = ProcessMemorySample.Read(() =>
+                    {
+                        process.Refresh();
+                        return process.WorkingSet64;
+                    }, () => process.HasExited);
+                    if (memory is null) break;
+                    if (memory.Value > options.WorkerMemoryMb * 1024L * 1024)
                         throw new ApiFailure(422, "complexityLimit", "O planejamento excedeu o limite de memória. Reduza o período ou as regras.");
                     if (output.IsFaulted) await output;
                     if (errors.IsFaulted) await errors;
