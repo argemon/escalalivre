@@ -1,0 +1,412 @@
+BUILD baseline
+BUILD final
+PAIR baseline-eight-work-hours analyze 1/5
+PAIR baseline-eight-work-hours analyze 2/5
+PAIR baseline-eight-work-hours analyze 3/5
+PAIR baseline-eight-work-hours analyze 4/5
+PAIR baseline-eight-work-hours analyze 5/5
+PAIR baseline-eight-work-hours solve 1/5
+PAIR baseline-eight-work-hours solve 2/5
+PAIR baseline-eight-work-hours solve 3/5
+PAIR baseline-eight-work-hours solve 4/5
+PAIR baseline-eight-work-hours solve 5/5
+PAIR four-hours-no-legal-break analyze 1/5
+PAIR four-hours-no-legal-break analyze 2/5
+PAIR four-hours-no-legal-break analyze 3/5
+PAIR four-hours-no-legal-break analyze 4/5
+PAIR four-hours-no-legal-break analyze 5/5
+PAIR four-hours-no-legal-break solve 1/5
+PAIR four-hours-no-legal-break solve 2/5
+PAIR four-hours-no-legal-break solve 3/5
+PAIR four-hours-no-legal-break solve 4/5
+PAIR four-hours-no-legal-break solve 5/5
+[
+  {
+    "scenario": "baseline-eight-work-hours",
+    "operation": "analyze",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "min": 0.2582,
+          "median": 0.2704,
+          "max": 0.3531
+        },
+        "final": {
+          "min": 0.2943,
+          "median": 0.338,
+          "max": 0.4104
+        },
+        "exceedsObservedBaselineMaximum": false
+      },
+      "allocatedManagedBytes": {
+        "baseline": {
+          "min": 39968,
+          "median": 39968,
+          "max": 39968
+        },
+        "final": {
+          "min": 40808,
+          "median": 40808,
+          "max": 40808
+        },
+        "exceedsObservedBaselineMaximum": true
+      },
+      "peakWorkingSetBytes": {
+        "baseline": {
+          "min": 42012672,
+          "median": 42156032,
+          "max": 42225664
+        },
+        "final": {
+          "min": 43237376,
+          "median": 43356160,
+          "max": 43409408
+        },
+        "exceedsObservedBaselineMaximum": true
+      },
+      "privateBytes": {
+        "baseline": {
+          "min": 13828096,
+          "median": 13914112,
+          "max": 14004224
+        },
+        "final": {
+          "min": 13832192,
+          "median": 13918208,
+          "max": 14176256
+        },
+        "exceedsObservedBaselineMaximum": false
+      },
+      "modelVariables": {
+        "baseline": {
+          "min": 0,
+          "median": 0,
+          "max": 0
+        },
+        "final": {
+          "min": 0,
+          "median": 0,
+          "max": 0
+        },
+        "exceedsObservedBaselineMaximum": false
+      },
+      "modelConstraints": {
+        "baseline": {
+          "min": 0,
+          "median": 0,
+          "max": 0
+        },
+        "final": {
+          "min": 0,
+          "median": 0,
+          "max": 0
+        },
+        "exceedsObservedBaselineMaximum": false
+      },
+      "modelSerializedBytes": {
+        "baseline": {
+          "min": 0,
+          "median": 0,
+          "max": 0
+        },
+        "final": {
+          "min": 0,
+          "median": 0,
+          "max": 0
+        },
+        "exceedsObservedBaselineMaximum": false
+      }
+    }
+  },
+  {
+    "scenario": "baseline-eight-work-hours",
+    "operation": "solve",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "min": 13.9887,
+          "median": 14.0791,
+          "max": 14.7316
+        },
+        "final": {
+          "min": 6.7496,
+          "median": 7.0278,
+          "max": 7.5258
+        },
+        "exceedsObservedBaselineMaximum": false
+      },
+      "allocatedManagedBytes": {
+        "baseline": {
+          "min": 1137784,
+          "median": 1137784,
+          "max": 1137784
+        },
+        "final": {
+          "min": 832216,
+          "median": 832216,
+          "max": 832216
+        },
+        "exceedsObservedBaselineMaximum": false
+      },
+      "peakWorkingSetBytes": {
+        "baseline": {
+          "min": 63586304,
+          "median": 63660032,
+          "max": 64143360
+        },
+        "final": {
+          "min": 62095360,
+          "median": 62234624,
+          "max": 63606784
+        },
+        "exceedsObservedBaselineMaximum": false
+      },
+      "privateBytes": {
+        "baseline": {
+          "min": 22978560,
+          "median": 23027712,
+          "max": 23678976
+        },
+        "final": {
+          "min": 20312064,
+          "median": 20443136,
+          "max": 21409792
+        },
+        "exceedsObservedBaselineMaximum": false
+      },
+      "modelVariables": {
+        "baseline": {
+          "min": 396,
+          "median": 396,
+          "max": 396
+        },
+        "final": {
+          "min": 106,
+          "median": 106,
+          "max": 106
+        },
+        "exceedsObservedBaselineMaximum": false
+      },
+      "modelConstraints": {
+        "baseline": {
+          "min": 744,
+          "median": 744,
+          "max": 744
+        },
+        "final": {
+          "min": 476,
+          "median": 476,
+          "max": 476
+        },
+        "exceedsObservedBaselineMaximum": false
+      },
+      "modelSerializedBytes": {
+        "baseline": {
+          "min": 50758,
+          "median": 50758,
+          "max": 50758
+        },
+        "final": {
+          "min": 23989,
+          "median": 23989,
+          "max": 23989
+        },
+        "exceedsObservedBaselineMaximum": false
+      }
+    }
+  },
+  {
+    "scenario": "four-hours-no-legal-break",
+    "operation": "analyze",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "min": 0.3139,
+          "median": 0.3282,
+          "max": 0.3821
+        },
+        "final": {
+          "min": 0.3114,
+          "median": 0.319,
+          "max": 0.3295
+        },
+        "exceedsObservedBaselineMaximum": false
+      },
+      "allocatedManagedBytes": {
+        "baseline": {
+          "min": 37032,
+          "median": 37032,
+          "max": 37032
+        },
+        "final": {
+          "min": 38000,
+          "median": 38000,
+          "max": 38000
+        },
+        "exceedsObservedBaselineMaximum": true
+      },
+      "peakWorkingSetBytes": {
+        "baseline": {
+          "min": 42049536,
+          "median": 42078208,
+          "max": 42414080
+        },
+        "final": {
+          "min": 43319296,
+          "median": 43368448,
+          "max": 43405312
+        },
+        "exceedsObservedBaselineMaximum": true
+      },
+      "privateBytes": {
+        "baseline": {
+          "min": 13905920,
+          "median": 13938688,
+          "max": 14225408
+        },
+        "final": {
+          "min": 13815808,
+          "median": 13885440,
+          "max": 13950976
+        },
+        "exceedsObservedBaselineMaximum": false
+      },
+      "modelVariables": {
+        "baseline": {
+          "min": 0,
+          "median": 0,
+          "max": 0
+        },
+        "final": {
+          "min": 0,
+          "median": 0,
+          "max": 0
+        },
+        "exceedsObservedBaselineMaximum": false
+      },
+      "modelConstraints": {
+        "baseline": {
+          "min": 0,
+          "median": 0,
+          "max": 0
+        },
+        "final": {
+          "min": 0,
+          "median": 0,
+          "max": 0
+        },
+        "exceedsObservedBaselineMaximum": false
+      },
+      "modelSerializedBytes": {
+        "baseline": {
+          "min": 0,
+          "median": 0,
+          "max": 0
+        },
+        "final": {
+          "min": 0,
+          "median": 0,
+          "max": 0
+        },
+        "exceedsObservedBaselineMaximum": false
+      }
+    }
+  },
+  {
+    "scenario": "four-hours-no-legal-break",
+    "operation": "solve",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "min": 1.2239,
+          "median": 1.2556,
+          "max": 1.4287
+        },
+        "final": {
+          "min": 1.5187,
+          "median": 1.5384,
+          "max": 2.1514
+        },
+        "exceedsObservedBaselineMaximum": true
+      },
+      "allocatedManagedBytes": {
+        "baseline": {
+          "min": 179504,
+          "median": 179504,
+          "max": 179504
+        },
+        "final": {
+          "min": 219008,
+          "median": 219008,
+          "max": 219008
+        },
+        "exceedsObservedBaselineMaximum": true
+      },
+      "peakWorkingSetBytes": {
+        "baseline": {
+          "min": 60297216,
+          "median": 60485632,
+          "max": 60829696
+        },
+        "final": {
+          "min": 60317696,
+          "median": 60596224,
+          "max": 60891136
+        },
+        "exceedsObservedBaselineMaximum": false
+      },
+      "privateBytes": {
+        "baseline": {
+          "min": 20652032,
+          "median": 20840448,
+          "max": 21458944
+        },
+        "final": {
+          "min": 18644992,
+          "median": 19017728,
+          "max": 19398656
+        },
+        "exceedsObservedBaselineMaximum": false
+      },
+      "modelVariables": {
+        "baseline": {
+          "min": 19,
+          "median": 19,
+          "max": 19
+        },
+        "final": {
+          "min": 23,
+          "median": 23,
+          "max": 23
+        },
+        "exceedsObservedBaselineMaximum": true
+      },
+      "modelConstraints": {
+        "baseline": {
+          "min": 35,
+          "median": 35,
+          "max": 35
+        },
+        "final": {
+          "min": 43,
+          "median": 43,
+          "max": 43
+        },
+        "exceedsObservedBaselineMaximum": true
+      },
+      "modelSerializedBytes": {
+        "baseline": {
+          "min": 1630,
+          "median": 1630,
+          "max": 1630
+        },
+        "final": {
+          "min": 2082,
+          "median": 2082,
+          "max": 2082
+        },
+        "exceedsObservedBaselineMaximum": true
+      }
+    }
+  }
+]

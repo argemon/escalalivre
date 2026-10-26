@@ -47,7 +47,7 @@ test('store applies a full response without duplicates or normalizing preserved 
 });
 test('failed or stale generation never replaces the current schedule',()=>{
   store.getState().setDocument(document());const submitted=store.getState().document;
-  for(const code of ['solverInfeasible','solverTimeout']){
+  for(const code of ['solverInfeasible','solverTimeout','solverInvalid']){
     store.getState().applyGeneratedSchedule(submitted,{...result([]),conflicts:[{code,severity:'error',message:'Failure'}]});
     assert.equal(store.getState().document,submitted);assert.equal(store.getState().solverStatus,'invalid');
   }

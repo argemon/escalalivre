@@ -1,7 +1,8 @@
 import { buildHiringSuggestions } from "./hiringDemand";
 import { normalizeDocumentTimes } from "./dateTime";
 import { civilMillis, civilDay, civilString, clockMillis, endOn } from "./civilTime";
-import { diagnoseSchedule, closureOn } from "./laborRules";
+import { diagnoseSchedule } from "./laborRules";
+import { closureOn } from "./policies/interval";
 import { coverageAllocation } from "./coverageAllocation";
 import { closedHoliday } from "./holidays";
 import { planningPeriod } from "./planningPeriod";

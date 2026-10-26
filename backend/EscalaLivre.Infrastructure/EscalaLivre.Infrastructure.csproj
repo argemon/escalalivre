@@ -1,4 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup><InternalsVisibleTo Include="EscalaLivre.Adapter.Tests" /></ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EscalaLivre.Application\EscalaLivre.Application.csproj" />

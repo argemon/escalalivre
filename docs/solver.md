@@ -1,47 +1,23 @@
-# Solver
+# Otimização e avaliação
 
-EscalaLivre uses `OrToolsScheduleSolver` with OR-Tools CP-SAT to transform company rules, employee rules, configurable regimes and coverage requirements into operational schedules.
+OrToolsScheduleOptimizer implementa IScheduleOptimizer; GenerateSchedule é o caso de uso que protege a aplicação do resultado. AnalyzeSchedule e ValidateSchedule usam o mesmo avaliador puro e não invocam o otimizador. A fachada OrToolsScheduleSolver não existe mais no código de produção.
 
-## Responsibilities
+## Construção e execução
 
-- Generate shift candidates by employee, day, role, regime and availability.
-- Generate flexible break candidates inside eligible shifts.
-- Enforce one assignment per employee per day.
-- Enforce weekly hour limits by employee.
-- Enforce coverage requirements per role and hourly block when enough feasible candidates exist.
-- Reject infeasible models with hard solver errors.
-- Analyze existing assignments without regenerating the plan.
-- Produce coverage blocks, coverage gaps, hiring suggestions, optimization suggestions and solver decisions.
+ScheduleCandidateGenerator produz entradas e pausas com as regras/granularidades anteriores. OptimizationBudget limita candidatos/fixos e passos de construção. ScheduleModelInput conserva o histórico dos dois lados; ScheduleModelBuilder cria variáveis e aplica as famílias registradas: atribuições fixas, exclusividade diária, descanso, trabalho semanal, ciclo móvel e cobertura. As políticas do domínio fornecem elegibilidade, janelas e saldos; somente Infrastructure traduz para CpModel/BoolVar/LinearExpr e executa CpSolver.
 
-## Hard Constraints
+ScheduleObjective mantém penalidade de déficit por minuto × 1.000.000.000, recompensa de presença × 10.000, custo por turno 1.000.000 e ajuste limitado de preferências/pausa/fechamento. OrToolsExecution usa 5s e um worker. Grade e limites de busca são operacionais, não regras legais; aceitar um documento não garante que o gerador reproduza exatamente seus horários.
 
-- Minimum rest between shifts.
-- Employee availability and restriction windows.
-- Company operating days and operating hours.
-- Weekly hour limits.
-- Day-based and hour-based regime eligibility.
-- Required coverage by role, day and time block.
+## Restrições e cobertura parcial
 
-## Soft Optimization
+O modelo impõe exclusividade diária, descanso, saldo semanal e ciclo; candidatos usam diagnóstico canônico para jornada, pausa, disponibilidade, dias/horários, noite, entrada fixa e autorizações. Cobertura insuficiente é uma penalidade no objetivo, não uma obrigação matemática de cobertura integral. Portanto optimal pode coexistir com lacunas. Esse texto corrige a descrição antiga que classificava toda cobertura como restrição obrigatória; o comportamento não mudou.
 
-- Preference weighting through employee preference tags.
-- Lunch positioning near preferred operational windows.
-- Reduced coverage loss during break periods.
-- Assignment scoring that favors operational coverage while preserving constraints.
+Atribuições preservadas continuam fixas. CoverageConstraints usa o OR das atribuições por pessoa/bloco; não duplica a capacidade de uma pessoa com turnos sobrepostos. Alocações direcionais de funções compartilham uma capacidade por pessoa, enquanto equipe conta presença. Pausa não cobre, e histórico não é apagado para ocultar conflito.
 
-## Break Optimization
+## Leitura e admissão
 
-Breaks are represented as candidate `BreakWindow` values attached to shift candidates. The solver can choose between different break starts and legal break durations. Coverage calculations exclude employees whose break overlaps a coverage block, which allows the engine to detect and suggest lunch movements that recover staffing during peak windows.
+ScheduleResultReader mapeia Optimal/Feasible/Unknown/Infeasible/ModelInvalid para os status anteriores. GenerateSchedule confere a fronteira pelo agregado, reavalia o documento proposto e recusa novas violações obrigatórias ou agravamento de conflitos herdados. Falha devolve atribuições originais; invalid/solverInvalid também é reconhecido pelo store. Uma lacuna isolada permite escala parcial.
 
-## Explainability
+Cobertura, lacunas, score, contratação e sugestões pertencem à avaliação pura. HiringDemand considera horas-pessoa por semana civil, sem extrapolar semanas parciais nem limitar demanda a 44h; quantidade estimada é limite inferior por carga/simultaneidade. ScheduleExplanation descreve seleções aplicadas. Editar o documento remove a prova de otimização anterior.
 
-Solver output includes `SolverDecision` records. Each decision links an assignment to the employee, reason and factors such as coverage protection, availability, rest compliance, weekly limit compliance and break placement.
-
-
-## Demanda de contratação e estado da solução
-
-As sugestões informam horas-pessoa faltantes no período completo, horas-pessoa por semana civil (domingo a sábado) e a maior demanda semanal. Semanas parciais não são extrapoladas. Uma janela que cruza o sábado à meia-noite é dividida entre as semanas. Nenhuma demanda é cortada em 44 horas.
-
-A estimativa mínima de pessoas é o maior valor entre o pico de faltas simultâneas e a maior carga semanal dividida pela jornada semanal padrão da empresa, arredondada para cima. É um limite inferior por carga e simultaneidade; horários, disponibilidade e descansos podem exigir mais pessoas. Não representa automaticamente um contrato parcial.
-
-O resultado inclui optimization.status: not-run para análise/validação, feasible para uma solução viável sem prova de otimalidade, optimal somente para CpSolverStatus.Optimal, e infeasible, timeout ou invalid nas falhas. Ótimo comprovado se refere ao objetivo do modelo e às opções discretas de turnos avaliadas. Pode existir um ótimo com faltas de cobertura. Respostas antigas sem esse campo não recebem o selo de ótimo. Editar o planejamento remove a indicação de prova da geração anterior.
+Detalhes: [arquitetura](architecture.md), [paridade](rule-parity.md), [ADR 007](decisions/007-optimization-translators-and-admission.md), [testes](testing.md) e [medição](decisions/stage-6-performance.md).

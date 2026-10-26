@@ -1,5 +1,10 @@
+using EscalaLivre.Domain.Regimes;
 using System.Threading.RateLimiting;
 using EscalaLivre.Application.Validation;
+using EscalaLivre.Application.Scheduling;
+using EscalaLivre.Application.Planning;
+using EscalaLivre.Domain.Scheduling;
+using EscalaLivre.Infrastructure.Solver;
 using EscalaLivre.Infrastructure.ImportExport;
 using FluentValidation;
 
@@ -7,6 +12,38 @@ namespace EscalaLivre.Api;
 
 public static class ServiceCollectionExtensions
 {
+    // Used in the child process. The HTTP host keeps calculations behind CalculationWorker.
+    public static IServiceCollection AddScheduleAnalysis(this IServiceCollection services)
+    {
+        services.AddSingleton<IShiftRegime, DayBasedRegime>();
+        services.AddSingleton<IShiftRegime, HourBasedRegime>();
+        services.AddSingleton<ShiftRegimeFactory>();
+        services.AddSingleton<ScheduleEvaluator>();
+        services.AddSingleton<IScheduleAnalyzer, ScheduleAnalyzer>();
+        services.AddSingleton<AnalyzeSchedule>();
+        services.AddSingleton<ValidateSchedule>();
+        services.AddSingleton<PlanningEditor>();
+        return services;
+    }
+
+    public static IServiceCollection AddScheduleOptimization(this IServiceCollection services)
+    {
+        services.AddSingleton<ScheduleCandidateGenerator>();
+        services.AddSingleton<IScheduleConstraintTranslator, FixedAssignmentConstraints>();
+        services.AddSingleton<IScheduleConstraintTranslator, DailyExclusivityConstraints>();
+        services.AddSingleton<IScheduleConstraintTranslator, RestConstraints>();
+        services.AddSingleton<IScheduleConstraintTranslator, WeeklyWorkConstraints>();
+        services.AddSingleton<IScheduleConstraintTranslator, DayCycleConstraints>();
+        services.AddSingleton<IScheduleConstraintTranslator, CoverageConstraints>();
+        services.AddSingleton<ScheduleObjective>();
+        services.AddSingleton<ScheduleModelBuilder>();
+        services.AddSingleton<OrToolsExecution>();
+        services.AddSingleton<ScheduleResultReader>();
+        services.AddSingleton<IScheduleOptimizer, OrToolsScheduleOptimizer>();
+        services.AddSingleton<GenerateSchedule>();
+        return services;
+    }
+
     private static bool IsJobPoll(HttpContext context) =>
         (HttpMethods.IsGet(context.Request.Method) || HttpMethods.IsDelete(context.Request.Method))
         && context.Request.Path.StartsWithSegments("/solve/jobs");

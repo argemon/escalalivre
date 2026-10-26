@@ -1,0 +1,472 @@
+{
+  "description": "Partial regime contracts; true does not certify global schedule eligibility. Civil seconds, complete same-employee history excluding candidate.",
+  "scenarios": [
+    {
+      "id": "hour-empty-exact-work",
+      "rule": {
+        "regimeType": "hourBased",
+        "workUnits": 4,
+        "restUnits": 11,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T12:00:00"
+      },
+      "pause": null,
+      "history": [],
+      "expectedAllowed": true,
+      "expectedWorkSeconds": 14400,
+      "expectedEstimate": "2026-10-19T23:00:00"
+    },
+    {
+      "id": "hour-work-one-second-over",
+      "rule": {
+        "regimeType": "hourBased",
+        "workUnits": 4,
+        "restUnits": 11,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T12:00:01"
+      },
+      "pause": null,
+      "history": [],
+      "expectedAllowed": false,
+      "expectedWorkSeconds": 14401,
+      "expectedEstimate": "2026-10-19T23:00:01"
+    },
+    {
+      "id": "hour-pause-reduces-net-work",
+      "rule": {
+        "regimeType": "hourBased",
+        "workUnits": 4,
+        "restUnits": 11,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T13:00:00"
+      },
+      "pause": {
+        "start": "2026-10-19T10:00:00",
+        "end": "2026-10-19T11:00:00"
+      },
+      "history": [],
+      "expectedAllowed": true,
+      "expectedWorkSeconds": 14400,
+      "expectedEstimate": "2026-10-20T00:00:00"
+    },
+    {
+      "id": "hour-pause-one-second-short",
+      "rule": {
+        "regimeType": "hourBased",
+        "workUnits": 4,
+        "restUnits": 11,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T13:00:00"
+      },
+      "pause": {
+        "start": "2026-10-19T10:00:00",
+        "end": "2026-10-19T10:59:59"
+      },
+      "history": [],
+      "expectedAllowed": false,
+      "expectedWorkSeconds": 14401,
+      "expectedEstimate": "2026-10-20T00:00:00"
+    },
+    {
+      "id": "hour-previous-rest-equal",
+      "rule": {
+        "regimeType": "hourBased",
+        "workUnits": 4,
+        "restUnits": 11,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T12:00:00"
+      },
+      "pause": null,
+      "history": [
+        {
+          "start": "2026-10-18T19:00:00",
+          "end": "2026-10-18T21:00:00"
+        }
+      ],
+      "expectedAllowed": true,
+      "expectedWorkSeconds": 14400,
+      "expectedEstimate": "2026-10-19T23:00:00"
+    },
+    {
+      "id": "hour-previous-rest-one-second-short",
+      "rule": {
+        "regimeType": "hourBased",
+        "workUnits": 4,
+        "restUnits": 11,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T12:00:00"
+      },
+      "pause": null,
+      "history": [
+        {
+          "start": "2026-10-18T19:00:00",
+          "end": "2026-10-18T21:00:01"
+        }
+      ],
+      "expectedAllowed": false,
+      "expectedWorkSeconds": 14400,
+      "expectedEstimate": "2026-10-19T23:00:00"
+    },
+    {
+      "id": "hour-future-rest-equal",
+      "rule": {
+        "regimeType": "hourBased",
+        "workUnits": 4,
+        "restUnits": 11,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T12:00:00"
+      },
+      "pause": null,
+      "history": [
+        {
+          "start": "2026-10-19T23:00:00",
+          "end": "2026-10-20T01:00:00"
+        }
+      ],
+      "expectedAllowed": true,
+      "expectedWorkSeconds": 14400,
+      "expectedEstimate": "2026-10-19T23:00:00"
+    },
+    {
+      "id": "hour-future-rest-one-second-short",
+      "rule": {
+        "regimeType": "hourBased",
+        "workUnits": 4,
+        "restUnits": 11,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T12:00:00"
+      },
+      "pause": null,
+      "history": [
+        {
+          "start": "2026-10-19T22:59:59",
+          "end": "2026-10-20T01:00:00"
+        }
+      ],
+      "expectedAllowed": false,
+      "expectedWorkSeconds": 14400,
+      "expectedEstimate": "2026-10-19T23:00:00"
+    },
+    {
+      "id": "hour-overlap",
+      "rule": {
+        "regimeType": "hourBased",
+        "workUnits": 4,
+        "restUnits": 11,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T12:00:00"
+      },
+      "pause": null,
+      "history": [
+        {
+          "start": "2026-10-19T11:00:00",
+          "end": "2026-10-19T13:00:00"
+        }
+      ],
+      "expectedAllowed": false,
+      "expectedWorkSeconds": 14400,
+      "expectedEstimate": "2026-10-19T23:00:00"
+    },
+    {
+      "id": "hour-company-rest-not-in-this-capability",
+      "rule": {
+        "regimeType": "hourBased",
+        "workUnits": 4,
+        "restUnits": 1,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T12:00:00"
+      },
+      "pause": null,
+      "history": [
+        {
+          "start": "2026-10-18T22:00:00",
+          "end": "2026-10-19T00:00:00"
+        }
+      ],
+      "expectedAllowed": true,
+      "expectedWorkSeconds": 14400,
+      "expectedEstimate": "2026-10-19T13:00:00"
+    },
+    {
+      "id": "day-empty",
+      "rule": {
+        "regimeType": "dayBased",
+        "workUnits": 1,
+        "restUnits": 1,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T12:00:00"
+      },
+      "pause": null,
+      "history": [],
+      "expectedAllowed": true,
+      "expectedWorkSeconds": 14400,
+      "expectedEstimate": "2026-10-20T12:00:00"
+    },
+    {
+      "id": "day-previous-in-cycle",
+      "rule": {
+        "regimeType": "dayBased",
+        "workUnits": 1,
+        "restUnits": 1,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T12:00:00"
+      },
+      "pause": null,
+      "history": [
+        {
+          "start": "2026-10-18T08:00:00",
+          "end": "2026-10-18T12:00:00"
+        }
+      ],
+      "expectedAllowed": false,
+      "expectedWorkSeconds": 14400,
+      "expectedEstimate": "2026-10-20T12:00:00"
+    },
+    {
+      "id": "day-future-in-cycle",
+      "rule": {
+        "regimeType": "dayBased",
+        "workUnits": 1,
+        "restUnits": 1,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T12:00:00"
+      },
+      "pause": null,
+      "history": [
+        {
+          "start": "2026-10-20T08:00:00",
+          "end": "2026-10-20T12:00:00"
+        }
+      ],
+      "expectedAllowed": false,
+      "expectedWorkSeconds": 14400,
+      "expectedEstimate": "2026-10-20T12:00:00"
+    },
+    {
+      "id": "day-outside-cycle-boundary",
+      "rule": {
+        "regimeType": "dayBased",
+        "workUnits": 1,
+        "restUnits": 1,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T12:00:00"
+      },
+      "pause": null,
+      "history": [
+        {
+          "start": "2026-10-17T08:00:00",
+          "end": "2026-10-17T12:00:00"
+        },
+        {
+          "start": "2026-10-21T08:00:00",
+          "end": "2026-10-21T12:00:00"
+        }
+      ],
+      "expectedAllowed": true,
+      "expectedWorkSeconds": 14400,
+      "expectedEstimate": "2026-10-20T12:00:00"
+    },
+    {
+      "id": "day-same-date-duplicates-do-not-consume-days",
+      "rule": {
+        "regimeType": "dayBased",
+        "workUnits": 1,
+        "restUnits": 1,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T12:00:00"
+      },
+      "pause": null,
+      "history": [
+        {
+          "start": "2026-10-19T01:00:00",
+          "end": "2026-10-19T02:00:00"
+        },
+        {
+          "start": "2026-10-19T03:00:00",
+          "end": "2026-10-19T04:00:00"
+        }
+      ],
+      "expectedAllowed": true,
+      "expectedWorkSeconds": 14400,
+      "expectedEstimate": "2026-10-20T12:00:00"
+    },
+    {
+      "id": "day-duplicate-history-date",
+      "rule": {
+        "regimeType": "dayBased",
+        "workUnits": 2,
+        "restUnits": 1,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T12:00:00"
+      },
+      "pause": null,
+      "history": [
+        {
+          "start": "2026-10-18T01:00:00",
+          "end": "2026-10-18T02:00:00"
+        },
+        {
+          "start": "2026-10-18T03:00:00",
+          "end": "2026-10-18T04:00:00"
+        }
+      ],
+      "expectedAllowed": true,
+      "expectedWorkSeconds": 14400,
+      "expectedEstimate": "2026-10-20T12:00:00"
+    },
+    {
+      "id": "day-one-window-spans-both-sides",
+      "rule": {
+        "regimeType": "dayBased",
+        "workUnits": 2,
+        "restUnits": 1,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T12:00:00"
+      },
+      "pause": null,
+      "history": [
+        {
+          "start": "2026-10-18T08:00:00",
+          "end": "2026-10-18T12:00:00"
+        },
+        {
+          "start": "2026-10-20T08:00:00",
+          "end": "2026-10-20T12:00:00"
+        }
+      ],
+      "expectedAllowed": false,
+      "expectedWorkSeconds": 14400,
+      "expectedEstimate": "2026-10-20T12:00:00"
+    },
+    {
+      "id": "day-overnight-uses-start-date",
+      "rule": {
+        "regimeType": "dayBased",
+        "workUnits": 1,
+        "restUnits": 1,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T12:00:00"
+      },
+      "pause": null,
+      "history": [
+        {
+          "start": "2026-10-17T23:00:00",
+          "end": "2026-10-19T01:00:00"
+        }
+      ],
+      "expectedAllowed": true,
+      "expectedWorkSeconds": 14400,
+      "expectedEstimate": "2026-10-20T12:00:00"
+    },
+    {
+      "id": "day-daily-hours-not-in-this-capability",
+      "rule": {
+        "regimeType": "dayBased",
+        "workUnits": 1,
+        "restUnits": 1,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T21:00:00"
+      },
+      "pause": null,
+      "history": [],
+      "expectedAllowed": true,
+      "expectedWorkSeconds": 46800,
+      "expectedEstimate": "2026-10-20T21:00:00"
+    },
+    {
+      "id": "day-zero-rest-estimate-still-advances",
+      "rule": {
+        "regimeType": "dayBased",
+        "workUnits": 7,
+        "restUnits": 0,
+        "weeklyLimitHours": 44,
+        "defaultShiftDuration": "04:00:00"
+      },
+      "candidate": {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T12:00:00"
+      },
+      "pause": null,
+      "history": [],
+      "expectedAllowed": true,
+      "expectedWorkSeconds": 14400,
+      "expectedEstimate": "2026-10-20T12:00:00"
+    }
+  ]
+}

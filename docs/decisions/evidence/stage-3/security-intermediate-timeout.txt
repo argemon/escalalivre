@@ -1,0 +1,73 @@
+✔ asynchronous generation returns a private ticket, survives polling and supports cancellation (2345.9755ms)
+✔ API rejects abusive inputs and keeps normal scheduling and exports working (3984.2846ms)
+✔ solve limit cannot be bypassed by forging a forwarded IP or changing path case (1208.7866ms)
+✔ global per-IP rate limit includes invalid requests (939.8526ms)
+✔ bounded queue rejects excess jobs while the API remains responsive (1653.4602ms)
+✖ wall-clock deadline includes result analysis and the API recovers (2756.0117ms)
+✔ queue wait has its own deadline and cancellation removes the active job (2408.4516ms)
+✔ disconnecting the caller stops its worker and releases capacity (2188.5487ms)
+✔ memory watchdog stops the child and releases its slot (1324.1922ms)
+✔ an unfinished request body cannot occupy an API slot indefinitely (8502.8946ms)
+✔ civil 09h and overnight dates survive the HTTP API, worker and native round trip (2733.2455ms)
+✔ shared documents produce equivalent browser and HTTP diagnostics, coverage and gaps (60235.5883ms)
+✔ editing flow: authorize, save, generate, revoke, save, reload and generate with real solver (2323.7406ms)
+✔ editing flow: generate, change employee role, save, reload and regenerate consistently (1711.0534ms)
+✔ editing flow: long duration input, save, persisted reload and generation preserve all hour digits (1898.8183ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 14
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 96221.8862
+
+✖ failing tests:
+
+test at backend\security.integration.cjs:174:1
+✖ wall-clock deadline includes result analysis and the API recovers (2756.0117ms)
+  Error: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  504 !== 200
+
+      at C:\Users\eargemon\source\repos\escalalivre\backend\security.integration.cjs:180:12
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async withServer (C:\Users\eargemon\source\repos\escalalivre\backend\security.integration.cjs:97:5)
+      at async TestContext.<anonymous> (C:\Users\eargemon\source\repos\escalalivre\backend\security.integration.cjs:175:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+  Server output:
+  info: Microsoft.Hosting.Lifetime[14]
+        Now listening on: http://127.0.0.1:50112
+  info: Microsoft.Hosting.Lifetime[0]
+        Application started. Press Ctrl+C to shut down.
+  info: Microsoft.Hosting.Lifetime[0]
+        Hosting environment: Production
+  info: Microsoft.Hosting.Lifetime[0]
+        Content root path: C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Api
+  info: EscalaLivre.Api[0]
+        API HTTP: GET /health returned 200 in 108ms
+  dbug: EscalaLivre.Api.CalculationWorker[0]
+        Calculation analyze started
+  info: EscalaLivre.Api.CalculationWorker[0]
+        Calculation analyze completed in 1027ms
+  warn: EscalaLivre.Api[0]
+        API failure calculationTimeout, type ApiFailure
+  info: EscalaLivre.Api[0]
+        API HTTP: POST /analyze returned 504 in 1161ms
+  info: EscalaLivre.Api[0]
+        API HTTP: GET /health returned 200 in 0ms
+  dbug: EscalaLivre.Api.CalculationWorker[0]
+        Calculation solve started
+  info: EscalaLivre.Api.CalculationWorker[0]
+        Calculation solve completed in 1044ms
+  warn: EscalaLivre.Api[0]
+        API failure calculationTimeout, type ApiFailure
+  info: EscalaLivre.Api[0]
+        API HTTP: POST /solve returned 504 in 1047ms
+
+      at withServer (C:\Users\eargemon\source\repos\escalalivre\backend\security.integration.cjs:99:11)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (C:\Users\eargemon\source\repos\escalalivre\backend\security.integration.cjs:175:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)

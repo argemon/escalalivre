@@ -1,0 +1,6 @@
+
+> escalalivre-frontend@0.1.0 build
+> tsc -b && vite build
+
+src/lib/laborRules.ts(40,33): error TS2345: Argument of type 'boolean | undefined' is not assignable to parameter of type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.

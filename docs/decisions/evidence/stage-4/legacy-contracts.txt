@@ -1,0 +1,21 @@
+PASS legacy hour-empty-exact-work
+PASS legacy hour-work-one-second-over
+PASS legacy hour-pause-reduces-net-work
+PASS legacy hour-pause-one-second-short
+PASS legacy hour-previous-rest-equal
+PASS legacy hour-previous-rest-one-second-short
+PASS legacy hour-future-rest-equal
+PASS legacy hour-future-rest-one-second-short
+PASS legacy hour-overlap
+PASS legacy hour-company-rest-not-in-this-capability
+PASS legacy day-empty
+PASS legacy day-previous-in-cycle
+PASS legacy day-future-in-cycle
+PASS legacy day-outside-cycle-boundary
+PASS legacy day-same-date-duplicates-do-not-consume-days
+PASS legacy day-duplicate-history-date
+PASS legacy day-one-window-spans-both-sides
+PASS legacy day-overnight-uses-start-date
+PASS legacy day-daily-hours-not-in-this-capability
+PASS legacy day-zero-rest-estimate-still-advances
+Original regime implementations: 20/20 contracts passed.

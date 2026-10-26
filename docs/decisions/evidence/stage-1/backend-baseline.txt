@@ -1,0 +1,12 @@
+  Determinando os projetos a serem restaurados...
+  C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Tests\EscalaLivre.Tests.csproj restaurado (em 1,84 seg).
+  4 de 5 projetos estão atualizados para restauração.
+  EscalaLivre.Domain -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Domain\bin\Release\net10.0\EscalaLivre.Domain.dll
+  EscalaLivre.Application -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Application\bin\Release\net10.0\EscalaLivre.Application.dll
+  EscalaLivre.Infrastructure -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Infrastructure\bin\Release\net10.0\EscalaLivre.Infrastructure.dll
+  EscalaLivre.Api -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Api\bin\Release\net10.0\EscalaLivre.Api.dll
+  EscalaLivre.Tests -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Tests\bin\Release\net10.0\EscalaLivre.Tests.dll
+Execução de teste para C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Tests\bin\Release\net10.0\EscalaLivre.Tests.dll (.NETCoreApp,Version=v10.0)
+1 arquivos de teste no total corresponderam ao padrão especificado.
+
+Aprovado!  – Com falha:     0, Aprovado:   336, Ignorado:     0, Total:   336, Duração: 6 s - EscalaLivre.Tests.dll (net10.0)

@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using EscalaLivre.Domain.Scheduling;
+using EscalaLivre.Application.Contracts.Documents;
 
 namespace EscalaLivre.Application.Contracts;
 
@@ -102,12 +103,12 @@ public static class ScheduleJson
             }
             if (updated is not null && !(updated.EndsWith('Z') || (updated.Length >= 6 && updated[^6] is '+' or '-')))
                 throw new JsonException("A atualização deve informar um instante com fuso horário.");
-            var document = node.Deserialize<EscalaLivreDocument>(Plain(options));
+            var document = ScheduleDocumentMapper.ToProjection(node.Deserialize<EscalaLivreDocumentDto>(Plain(options)));
             return document is null ? null : document with { UpdatedAt = document.UpdatedAt.ToUniversalTime(), Company = document.Company is null ? null! : document.Company with { TimeZone = zone } };
         }
         public override void Write(Utf8JsonWriter writer, EscalaLivreDocument document, JsonSerializerOptions options)
         {
-            var node = JsonSerializer.SerializeToNode(document with { UpdatedAt = document.UpdatedAt.ToUniversalTime() }, Plain(options))!;
+            var node = JsonSerializer.SerializeToNode(ScheduleDocumentMapper.ToDto(document with { UpdatedAt = document.UpdatedAt.ToUniversalTime() }), Plain(options))!;
             var zone = document.Company?.TimeZone ?? DefaultTimeZone;
             if (!ValidTimeZone(zone)) throw new JsonException("Fuso horário inválido.");
             NormalizeWindows(node, zone);

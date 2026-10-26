@@ -1,0 +1,59 @@
+✖ wall-clock deadline includes result analysis and the API recovers (3211.6094ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3532.4077
+
+✖ failing tests:
+
+test at backend\security.integration.cjs:174:1
+✖ wall-clock deadline includes result analysis and the API recovers (3211.6094ms)
+  Error: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  504 !== 200
+
+      at C:\Users\eargemon\Documents\escalalivre-stage3\comparison\backend\security.integration.cjs:180:12
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async withServer (C:\Users\eargemon\Documents\escalalivre-stage3\comparison\backend\security.integration.cjs:97:5)
+      at async TestContext.<anonymous> (C:\Users\eargemon\Documents\escalalivre-stage3\comparison\backend\security.integration.cjs:175:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+  Server output:
+  info: Microsoft.Hosting.Lifetime[14]
+        Now listening on: http://127.0.0.1:59083
+  info: Microsoft.Hosting.Lifetime[0]
+        Application started. Press Ctrl+C to shut down.
+  info: Microsoft.Hosting.Lifetime[0]
+        Hosting environment: Production
+  info: Microsoft.Hosting.Lifetime[0]
+        Content root path: C:\Users\eargemon\Documents\escalalivre-stage3\comparison\backend\EscalaLivre.Api
+  info: EscalaLivre.Api[0]
+        API HTTP: GET /health returned 200 in 109ms
+  dbug: EscalaLivre.Api.CalculationWorker[0]
+        Calculation analyze started
+  info: EscalaLivre.Api.CalculationWorker[0]
+        Calculation analyze completed in 1031ms
+  warn: EscalaLivre.Api[0]
+        API failure calculationTimeout, type ApiFailure
+  info: EscalaLivre.Api[0]
+        API HTTP: POST /analyze returned 504 in 1158ms
+  info: EscalaLivre.Api[0]
+        API HTTP: GET /health returned 200 in 0ms
+  dbug: EscalaLivre.Api.CalculationWorker[0]
+        Calculation solve started
+  info: EscalaLivre.Api.CalculationWorker[0]
+        Calculation solve completed in 1028ms
+  warn: EscalaLivre.Api[0]
+        API failure calculationTimeout, type ApiFailure
+  info: EscalaLivre.Api[0]
+        API HTTP: POST /solve returned 504 in 1030ms
+
+      at withServer (C:\Users\eargemon\Documents\escalalivre-stage3\comparison\backend\security.integration.cjs:99:11)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (C:\Users\eargemon\Documents\escalalivre-stage3\comparison\backend\security.integration.cjs:175:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)

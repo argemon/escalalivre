@@ -40,7 +40,7 @@ test('predicted weekly coverage excludes the lunch closure', () => {
 });
 
 const { holidayOn } = load('lib/holidays.ts');
-const { requiredInterval, intervalProblem } = load('lib/intervals.ts');
+const { requiredBreakMinutes: requiredInterval, intervalIssue: intervalProblem } = load('lib/policies/interval.ts');
 test('CLT interval thresholds use worked hours',()=>{
  for(const [work,expected] of [[240,0],[241,15],[360,15],[361,60]]) assert.equal(requiredInterval(work),expected);
  const a={start:'2026-10-14T07:30:00',end:'2026-10-14T15:30:00'};

@@ -1,0 +1,1515 @@
+{
+  "metadata": {
+    "baselineRevision": "66659daa2bbfc2384605946ec5b553e0bcd51eed",
+    "generatedAtUtc": "2026-10-26T15:18:56.329Z",
+    "platform": "win32",
+    "release": "10.0.26100",
+    "architecture": "x64",
+    "cpu": "Intel(R) Core(TM) i5-10505 CPU @ 3.20GHz",
+    "logicalProcessors": 12,
+    "node": "v24.17.0",
+    "dotnet": "10.0.402",
+    "runtime": "Microsoft.AspNetCore.App 8.0.28 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\nMicrosoft.AspNetCore.App 8.0.31 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\nMicrosoft.AspNetCore.App 10.0.12 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\nMicrosoft.AspNetCore.App 10.0.13 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\nMicrosoft.NETCore.App 8.0.28 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\nMicrosoft.NETCore.App 8.0.31 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\nMicrosoft.NETCore.App 10.0.12 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\nMicrosoft.NETCore.App 10.0.13 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\nMicrosoft.WindowsDesktop.App 8.0.28 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]\r\nMicrosoft.WindowsDesktop.App 8.0.31 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]\r\nMicrosoft.WindowsDesktop.App 10.0.12 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]\r\nMicrosoft.WindowsDesktop.App 10.0.13 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]",
+    "environment": {
+      "DOTNET_PROCESSOR_COUNT": 1,
+      "OMP_NUM_THREADS": 1,
+      "DOTNET_TieredCompilation": 0,
+      "TZ": "America/Cuiaba"
+    },
+    "fixtureSha256": "06e85506cf5ee07fc536d11f9db0ecfc22597bac32b13e75900052e0253db050",
+    "sourceManifest": [
+      {
+        "file": "backend/EscalaLivre.Domain/EscalaLivre.Domain.csproj",
+        "sha256": "61e3f2d043e37f0db4be1d8083dd31bebbfbb8fde2cf027327db2556c16bc385"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Planning/PlanningSchedule.cs",
+        "sha256": "c91166e6b77cceaf91d66347a860542b812ff5f5e3587b3f7d83315808b4acae"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Planning/PlanningSettings.cs",
+        "sha256": "e3f7a4e9b0f3fad949510c34433346111e5dbc82fe014cba795bec97f9f9fdb9"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Planning/RegimeConfiguration.cs",
+        "sha256": "7bf71980c8fd31e5eeb1edd38f678cb458ba90b12c6a662a08d328641b979e4d"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Planning/ScheduledAssignment.cs",
+        "sha256": "4fc18190dc6698827d8c6e19260745a28b2add47db9db0f09a0af7146dad0997"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Planning/TemporalValues.cs",
+        "sha256": "d529b4cc81fc3df8e2cafe749d7fdf88d32eb055d4cbac67e7037a170cd80dd4"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Regimes/DayBasedRegime.cs",
+        "sha256": "6b06eb26561bc4abd89cc9d0417b8278417ff1207eead15f94a53ca780ae9302"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Regimes/HourBasedRegime.cs",
+        "sha256": "62d376b4a9b2719254e377453d8b5af2648239595fae5db06cb2916290e4ff0b"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Regimes/IShiftRegime.cs",
+        "sha256": "b7c95ccb2705b7d3e21c2235c9b5352902a0d068c8dcc6ae037220a5a0a5f7d1"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Regimes/ShiftRegimeFactory.cs",
+        "sha256": "4aa4ee15859926cf0a2e48283de6c55bc3dc87600680dcd17ebcb0e3760aff48"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/AvailabilityPolicy.cs",
+        "sha256": "de7200234de7dc5c982e4fbf940cd52f34c2566655c921028ef1332dca3a6efd"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/CoverageDemand.cs",
+        "sha256": "e978f84d69a0471ede4f4b6ba6a58ccd23a9d5261bf97be550b773435ea0e348"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/DayCyclePolicy.cs",
+        "sha256": "5ca002cb4d47e1cdbf97586d8348751ff3d67034b23b909b9f5ccd97ea3cfc9d"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/EffectiveWorkPolicy.cs",
+        "sha256": "15ead46899ee840dc125d5e3d3b88c9c0a641d7a87c348dd326f71371802c9c5"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/GenerationConformance.cs",
+        "sha256": "a98360d836dbb75ed82bc4b344cc8ddeb3aa5fa4dbd8d3bb5a81104d8ea31e92"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/HiringDemand.cs",
+        "sha256": "1ab41f256cbadc51b0ee43ae86aa6907f183226b6741d546b47daf99eae533b8"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/IntervalPolicy.cs",
+        "sha256": "66290c35e7d36166990c9f982340381a2e0a1e56fdd35e2d145be8ee3a932ac2"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/LaborRules.cs",
+        "sha256": "d1f6443329de27bf1b34fb2625f7cddedd4f6f689b846540651dab4568b18e52"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/RestPolicy.cs",
+        "sha256": "1500884ed516bc311ca9bd852f577960e3437f60fe7be9ea07f621ef99d6d949"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/ScheduleCapacityPolicy.cs",
+        "sha256": "b7670d2136212bfc0e93f838f996671d698ee1b8c92e650e97196ee7d0f0c212"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/ScheduleCoverage.cs",
+        "sha256": "832fa1827d3edc5a192caab27c0e2488c1c6e779d1f5579a5bb913e9eb8b4faa"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/ScheduleEvaluator.cs",
+        "sha256": "73d09aba2e5fbdf3066e698753564786ca71b78bdc28136588c015f913a4f4a6"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/ScheduleExplanation.cs",
+        "sha256": "b4a60fdcbca1875e25c978233258a243d7421403afbe0354fb59802921c0ea61"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/ScheduleModels.cs",
+        "sha256": "1ebc5ff0cb47f8858075251b835d3940f171ae3a58dc123f0dbeda801944d313"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/ScheduleRules.cs",
+        "sha256": "949013e4e8e112880402a7976d7e234b8b9e2cf2783045a358343023ca8ef03a"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/ScheduleSuggestions.cs",
+        "sha256": "d5473961556f6615c513e51caaca0c14d0ac7b288ee63f67b59bd5c45a214cb4"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/ScheduleWindow.cs",
+        "sha256": "558de8922d7d6ad193835e1ead6acd314d0a690dbdebdc15aba3bfc0629f8e7a"
+      },
+      {
+        "file": "backend/EscalaLivre.Domain/Scheduling/ShiftEligibilityPolicy.cs",
+        "sha256": "3853d6d3e810b53b3e021c64b59d57273fed1535e1b2dcaa5515753fa3bdf321"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/EscalaLivre.Application.csproj",
+        "sha256": "6b00c7cebe12515bab78424ec9c949294fd371fa968e27682a8491d0bbeed839"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Contracts/ApiEnvelope.cs",
+        "sha256": "2fce7694593bc75ddc1a9474ac753ee4ac058328f9f594571a7798515a6c1e0f"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Contracts/DocumentValidationLimits.cs",
+        "sha256": "96ba1b92c43c3446d6a7b3c4e2c489685fcb1dbce635c35cee84e5a6bf7ad4d2"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Contracts/NativeDocumentLimits.cs",
+        "sha256": "fab02fe886476f505f9f6c6c41f390627b70d497ad8c5b73b1067546a7e31aff"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Contracts/ScheduleJson.cs",
+        "sha256": "9d35c2db81b728f4d9c712358a9ba615dc4aff1d77bcb51910ac24eec254c703"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Contracts/ScheduleRequests.cs",
+        "sha256": "48175224398bc1235c44b36113494fb5a0c089a119856c8419b34755f499cf5a"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Planning/PlanningDocumentMapping.cs",
+        "sha256": "37f80fc17dbac00c6c417cbda0a2e33e9e73e9f03c60f3b4d9610b7a9696c54b"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Planning/PlanningEditor.cs",
+        "sha256": "26b2fb2d52f56b773625e556da172e7a94b076009d54d12bb5fb321e2653f394"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Scheduling/AnalyzeSchedule.cs",
+        "sha256": "e0c0879b9c64a049260fa6a7f114484f408a45606c77109658845a4056854907"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Scheduling/GenerateSchedule.cs",
+        "sha256": "cdd0f6b8879a1f9273728203a1a850cdf31cbd4ca0d8e779a44ad5e220256f0d"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Scheduling/IScheduleAnalyzer.cs",
+        "sha256": "cc25c6fc2db7b1b878e1f3290591e6bda46aed749a736263a33d7ea47e2e1781"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Scheduling/IScheduleOptimizer.cs",
+        "sha256": "51911384679a0b3598678ce60a8e8afa7d32dd08834925a692fd9b89bbb0914a"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Scheduling/ScheduleAnalyzer.cs",
+        "sha256": "673ef17928168d8bb788708fcc6d69290a3e5e175c64d8100bf7b55216e3adde"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Scheduling/ScheduleResultAssembler.cs",
+        "sha256": "c1f3cd11b31998ffb0fb8af8aad54d61c45bdb59f2c7876ca6ae1e89b5831a69"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Scheduling/ValidateSchedule.cs",
+        "sha256": "17cddb14bbdcf0248c18419ed024c3c18a8a72db18d26e4237d2586654bd6cda"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Validation/DocumentSafety.cs",
+        "sha256": "ea84e0e975243b9871623418995773fbd715776a76d486a3f789bcf30e2fe15b"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Validation/ScheduleRequestValidator.cs",
+        "sha256": "40ee6ac4b029a9e0f5777d5786cf96a4f55b282206daeb6bd00a090766835c9d"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Contracts/Documents/ScheduleDocumentDtos.cs",
+        "sha256": "ed3fba6b7293fcd457beaf4698da01f42eb480013b56f367ac36fc7eb3358cdf"
+      },
+      {
+        "file": "backend/EscalaLivre.Application/Contracts/Documents/ScheduleDocumentMapper.cs",
+        "sha256": "aa09eeff5da6455def3bc42328ad71349b11a67e208bef8cdeb455ca1807aa71"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/EscalaLivre.Infrastructure.csproj",
+        "sha256": "c35306f3d7bbbcdb6a0d53b1c5c9b33ae4b017bbcbbe4df92c91bba7428ca8a3"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/ImportExport/NativeScheduleSerializer.cs",
+        "sha256": "9431762da28941b141e292b36845e576f439a57f8fb3c0bcaf63cd54cadf95cd"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/ImportExport/SchedulePdfExporter.cs",
+        "sha256": "c5fd62e1b8dec484e6b60995c0dd0446cbf64b093d3d8d2b47b848dde419a54f"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/Solver/CalendarDays.cs",
+        "sha256": "4b203bc0c6142ed80095dcb86a884b6f315ab5225a29aaade40ca335989205e8"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/Solver/OptimizationBudget.cs",
+        "sha256": "eebf33e9434311827aa88d625c9d6c1d076d102098a1452ada263d2fc3f97091"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/Solver/OrToolsExecution.cs",
+        "sha256": "21e6e72a4719ab88670444a6fe5fa3e2df074289b6fe20f2429381d7b0e8eb7c"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/Solver/OrToolsScheduleOptimizer.cs",
+        "sha256": "ea1c4e8316262c77d91b87f45a0a44127258354c8b8ed5e48890c83d39f6e27a"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/Solver/ScheduleCandidateGenerator.cs",
+        "sha256": "88ab8154560d3fb80dd563e223c376631df2bcedc38ab6e043db85aafa8d99cf"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/Solver/ScheduleComplexityException.cs",
+        "sha256": "b30a810c5b6e404a41ef5b226aaac799c8c2e8ee5d2853ba2ca657e1743cd8ae"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/Solver/ScheduleModelBuilder.cs",
+        "sha256": "7b2121306aac937846317f8d44b80de9bab3ac25c882ad3bf017265dbcfbee7a"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/Solver/ScheduleModelContext.cs",
+        "sha256": "9bf774f7c44e11c6acfcb866df2f5ecf3f975ff46898a69e8aceb96963a6a601"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/Solver/ScheduleModelInput.cs",
+        "sha256": "f18cf2279f357ff40b855e8a525dadb1216e01c9d52e36bb8e2ba6dd3394739c"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/Solver/ScheduleObjective.cs",
+        "sha256": "ea4019024f337896fe9d1ab612f79c386bb8e8977d646eda53c789f680fecfec"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/Solver/ScheduleResultReader.cs",
+        "sha256": "13d0deae1b82b15633e0d9602aa3abdc1c8f2e0a394bd9ff98ac864f08fcf36f"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/ImportExport/Fonts/NotoSans-Bold.ttf",
+        "sha256": "c976e4b1b99edc88775377fcc21692ca4bfa46b6d6ca6522bfda505b28ff9d6a"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/ImportExport/Fonts/NotoSans-Regular.ttf",
+        "sha256": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/ImportExport/Fonts/OFL.txt",
+        "sha256": "0dab92d0544f7b233403f14b84a663bdbfa746982eda629e7f4f9ffe1b036feb"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/Solver/Constraints/CoverageConstraints.cs",
+        "sha256": "dd6af7af2c4c38684e9f47bf952ea9455013c88434bc0d56a91e9bdb47fcdef7"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/Solver/Constraints/DailyExclusivityConstraints.cs",
+        "sha256": "dea457d09b3c88df0241755602615012fdad3c000544b064b88ea5f26fff6bdd"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/Solver/Constraints/DayCycleConstraints.cs",
+        "sha256": "640b7a7852d48cb2b1086ecfc26e21f3b63adca3b704e6a6574be3f33adc4b29"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/Solver/Constraints/FixedAssignmentConstraints.cs",
+        "sha256": "ccd73278fc24052e1fd54acf6be11a6f99a00c745f48b551f3a330a9b4959600"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/Solver/Constraints/RestConstraints.cs",
+        "sha256": "db0a17a557620231692c884cbc15bb9dda79f4c78659cc83f0687ce4dcff7329"
+      },
+      {
+        "file": "backend/EscalaLivre.Infrastructure/Solver/Constraints/WeeklyWorkConstraints.cs",
+        "sha256": "aeacce0114bf6cf263d810b8ead42351f3b8662c1060dc502566891077f0d5bd"
+      },
+      {
+        "file": "backend/EscalaLivre.Api/ApiFailure.cs",
+        "sha256": "ba6d884c90c1d723b5a90507c69805b27cc1efb5fae0d05d4a4decc97d20e21e"
+      },
+      {
+        "file": "backend/EscalaLivre.Api/appsettings.Development.json",
+        "sha256": "4660e090a376b47dea0ba5c6ff00d3eb4471ad5cd077976b4e460e46018d0525"
+      },
+      {
+        "file": "backend/EscalaLivre.Api/appsettings.json",
+        "sha256": "9cee4dfb751c2634a541a837dd1603a46272b0d8d108329798bd2ce55d152454"
+      },
+      {
+        "file": "backend/EscalaLivre.Api/CalculationWorker.cs",
+        "sha256": "c5cf0d45a4091f36adf88af8bcd5b131415e916ee095f6d9d214ba3777edf604"
+      },
+      {
+        "file": "backend/EscalaLivre.Api/EscalaLivre.Api.csproj",
+        "sha256": "dc841293e5fce7f8ca80ebb5cdbfed6e8ba6f519c1b7c4931de342865852ef0e"
+      },
+      {
+        "file": "backend/EscalaLivre.Api/EscalaLivre.Api.csproj.user",
+        "sha256": "a7aa504322d6c8938a15e2552de43f74af29633849b03c50a3135caccdf935d9"
+      },
+      {
+        "file": "backend/EscalaLivre.Api/EscalaLivre.Api.http",
+        "sha256": "4e153c58165cde965cdc96639fa37d6fdd4a39c61ba842e4d7073d7bfd6440b8"
+      },
+      {
+        "file": "backend/EscalaLivre.Api/ProcessMemorySample.cs",
+        "sha256": "abaad4b2a26779cba7a5bff3e7dbba0c44f900b52a56b0452cae3b1118a2b02f"
+      },
+      {
+        "file": "backend/EscalaLivre.Api/Program.cs",
+        "sha256": "d1f10630579a238d07cc3add7357cad4d48d988510936ea9d56aaad6eecc756e"
+      },
+      {
+        "file": "backend/EscalaLivre.Api/ProtectionOptions.cs",
+        "sha256": "630f57ca7e9fa42d6a75a3d1f809cea0f79a8a59bd47f992bc7f9afa8ec7fa30"
+      },
+      {
+        "file": "backend/EscalaLivre.Api/ScheduleJobQueue.cs",
+        "sha256": "a12a0d93b89ac8916446c5b939bdf0b0da4e5d36136e0e769262ff9761e26744"
+      },
+      {
+        "file": "backend/EscalaLivre.Api/ServiceCollectionExtensions.cs",
+        "sha256": "85660a6a00c39a5ae91ce158330cd2edaabf848dbb9752ce30f8bb9c63a47e06"
+      },
+      {
+        "file": "backend/EscalaLivre.Api/Properties/launchSettings.json",
+        "sha256": "8fe400d56a131915b3356670c2f988faca7802a953a6b064a0c8bab8a248dadf"
+      }
+    ],
+    "method": "Retrospective matched replay: five fresh processes per version/case/operation, one warm-up plus one measurement each, alternating order. Core calls only; no HTTP/queue startup. Symmetric model-count instrumentation in isolated source copies.",
+    "limitations": [
+      "Two small existing scenarios; not representative of maximum production load.",
+      "No historical controlled performance samples exist; this reconstructs the baseline revision today.",
+      "Peak working set is the process high-water mark including initialization/warm-up; managed allocation excludes native allocation.",
+      "Observed baseline maxima are review flags, not calibrated CI pass/fail thresholds.",
+      "D1 and generation admission intentionally changed between revisions; solver model growth is not a refactoring-only regression."
+    ]
+  },
+  "summary": [
+    {
+      "scenario": "baseline-eight-work-hours",
+      "operation": "analyze",
+      "metrics": {
+        "elapsedMs": {
+          "baseline": {
+            "min": 0.2582,
+            "median": 0.2704,
+            "max": 0.3531
+          },
+          "final": {
+            "min": 0.2943,
+            "median": 0.338,
+            "max": 0.4104
+          },
+          "exceedsObservedBaselineMaximum": false
+        },
+        "allocatedManagedBytes": {
+          "baseline": {
+            "min": 39968,
+            "median": 39968,
+            "max": 39968
+          },
+          "final": {
+            "min": 40808,
+            "median": 40808,
+            "max": 40808
+          },
+          "exceedsObservedBaselineMaximum": true
+        },
+        "peakWorkingSetBytes": {
+          "baseline": {
+            "min": 42012672,
+            "median": 42156032,
+            "max": 42225664
+          },
+          "final": {
+            "min": 43237376,
+            "median": 43356160,
+            "max": 43409408
+          },
+          "exceedsObservedBaselineMaximum": true
+        },
+        "privateBytes": {
+          "baseline": {
+            "min": 13828096,
+            "median": 13914112,
+            "max": 14004224
+          },
+          "final": {
+            "min": 13832192,
+            "median": 13918208,
+            "max": 14176256
+          },
+          "exceedsObservedBaselineMaximum": false
+        },
+        "modelVariables": {
+          "baseline": {
+            "min": 0,
+            "median": 0,
+            "max": 0
+          },
+          "final": {
+            "min": 0,
+            "median": 0,
+            "max": 0
+          },
+          "exceedsObservedBaselineMaximum": false
+        },
+        "modelConstraints": {
+          "baseline": {
+            "min": 0,
+            "median": 0,
+            "max": 0
+          },
+          "final": {
+            "min": 0,
+            "median": 0,
+            "max": 0
+          },
+          "exceedsObservedBaselineMaximum": false
+        },
+        "modelSerializedBytes": {
+          "baseline": {
+            "min": 0,
+            "median": 0,
+            "max": 0
+          },
+          "final": {
+            "min": 0,
+            "median": 0,
+            "max": 0
+          },
+          "exceedsObservedBaselineMaximum": false
+        }
+      }
+    },
+    {
+      "scenario": "baseline-eight-work-hours",
+      "operation": "solve",
+      "metrics": {
+        "elapsedMs": {
+          "baseline": {
+            "min": 13.9887,
+            "median": 14.0791,
+            "max": 14.7316
+          },
+          "final": {
+            "min": 6.7496,
+            "median": 7.0278,
+            "max": 7.5258
+          },
+          "exceedsObservedBaselineMaximum": false
+        },
+        "allocatedManagedBytes": {
+          "baseline": {
+            "min": 1137784,
+            "median": 1137784,
+            "max": 1137784
+          },
+          "final": {
+            "min": 832216,
+            "median": 832216,
+            "max": 832216
+          },
+          "exceedsObservedBaselineMaximum": false
+        },
+        "peakWorkingSetBytes": {
+          "baseline": {
+            "min": 63586304,
+            "median": 63660032,
+            "max": 64143360
+          },
+          "final": {
+            "min": 62095360,
+            "median": 62234624,
+            "max": 63606784
+          },
+          "exceedsObservedBaselineMaximum": false
+        },
+        "privateBytes": {
+          "baseline": {
+            "min": 22978560,
+            "median": 23027712,
+            "max": 23678976
+          },
+          "final": {
+            "min": 20312064,
+            "median": 20443136,
+            "max": 21409792
+          },
+          "exceedsObservedBaselineMaximum": false
+        },
+        "modelVariables": {
+          "baseline": {
+            "min": 396,
+            "median": 396,
+            "max": 396
+          },
+          "final": {
+            "min": 106,
+            "median": 106,
+            "max": 106
+          },
+          "exceedsObservedBaselineMaximum": false
+        },
+        "modelConstraints": {
+          "baseline": {
+            "min": 744,
+            "median": 744,
+            "max": 744
+          },
+          "final": {
+            "min": 476,
+            "median": 476,
+            "max": 476
+          },
+          "exceedsObservedBaselineMaximum": false
+        },
+        "modelSerializedBytes": {
+          "baseline": {
+            "min": 50758,
+            "median": 50758,
+            "max": 50758
+          },
+          "final": {
+            "min": 23989,
+            "median": 23989,
+            "max": 23989
+          },
+          "exceedsObservedBaselineMaximum": false
+        }
+      }
+    },
+    {
+      "scenario": "four-hours-no-legal-break",
+      "operation": "analyze",
+      "metrics": {
+        "elapsedMs": {
+          "baseline": {
+            "min": 0.3139,
+            "median": 0.3282,
+            "max": 0.3821
+          },
+          "final": {
+            "min": 0.3114,
+            "median": 0.319,
+            "max": 0.3295
+          },
+          "exceedsObservedBaselineMaximum": false
+        },
+        "allocatedManagedBytes": {
+          "baseline": {
+            "min": 37032,
+            "median": 37032,
+            "max": 37032
+          },
+          "final": {
+            "min": 38000,
+            "median": 38000,
+            "max": 38000
+          },
+          "exceedsObservedBaselineMaximum": true
+        },
+        "peakWorkingSetBytes": {
+          "baseline": {
+            "min": 42049536,
+            "median": 42078208,
+            "max": 42414080
+          },
+          "final": {
+            "min": 43319296,
+            "median": 43368448,
+            "max": 43405312
+          },
+          "exceedsObservedBaselineMaximum": true
+        },
+        "privateBytes": {
+          "baseline": {
+            "min": 13905920,
+            "median": 13938688,
+            "max": 14225408
+          },
+          "final": {
+            "min": 13815808,
+            "median": 13885440,
+            "max": 13950976
+          },
+          "exceedsObservedBaselineMaximum": false
+        },
+        "modelVariables": {
+          "baseline": {
+            "min": 0,
+            "median": 0,
+            "max": 0
+          },
+          "final": {
+            "min": 0,
+            "median": 0,
+            "max": 0
+          },
+          "exceedsObservedBaselineMaximum": false
+        },
+        "modelConstraints": {
+          "baseline": {
+            "min": 0,
+            "median": 0,
+            "max": 0
+          },
+          "final": {
+            "min": 0,
+            "median": 0,
+            "max": 0
+          },
+          "exceedsObservedBaselineMaximum": false
+        },
+        "modelSerializedBytes": {
+          "baseline": {
+            "min": 0,
+            "median": 0,
+            "max": 0
+          },
+          "final": {
+            "min": 0,
+            "median": 0,
+            "max": 0
+          },
+          "exceedsObservedBaselineMaximum": false
+        }
+      }
+    },
+    {
+      "scenario": "four-hours-no-legal-break",
+      "operation": "solve",
+      "metrics": {
+        "elapsedMs": {
+          "baseline": {
+            "min": 1.2239,
+            "median": 1.2556,
+            "max": 1.4287
+          },
+          "final": {
+            "min": 1.5187,
+            "median": 1.5384,
+            "max": 2.1514
+          },
+          "exceedsObservedBaselineMaximum": true
+        },
+        "allocatedManagedBytes": {
+          "baseline": {
+            "min": 179504,
+            "median": 179504,
+            "max": 179504
+          },
+          "final": {
+            "min": 219008,
+            "median": 219008,
+            "max": 219008
+          },
+          "exceedsObservedBaselineMaximum": true
+        },
+        "peakWorkingSetBytes": {
+          "baseline": {
+            "min": 60297216,
+            "median": 60485632,
+            "max": 60829696
+          },
+          "final": {
+            "min": 60317696,
+            "median": 60596224,
+            "max": 60891136
+          },
+          "exceedsObservedBaselineMaximum": false
+        },
+        "privateBytes": {
+          "baseline": {
+            "min": 20652032,
+            "median": 20840448,
+            "max": 21458944
+          },
+          "final": {
+            "min": 18644992,
+            "median": 19017728,
+            "max": 19398656
+          },
+          "exceedsObservedBaselineMaximum": false
+        },
+        "modelVariables": {
+          "baseline": {
+            "min": 19,
+            "median": 19,
+            "max": 19
+          },
+          "final": {
+            "min": 23,
+            "median": 23,
+            "max": 23
+          },
+          "exceedsObservedBaselineMaximum": true
+        },
+        "modelConstraints": {
+          "baseline": {
+            "min": 35,
+            "median": 35,
+            "max": 35
+          },
+          "final": {
+            "min": 43,
+            "median": 43,
+            "max": 43
+          },
+          "exceedsObservedBaselineMaximum": true
+        },
+        "modelSerializedBytes": {
+          "baseline": {
+            "min": 1630,
+            "median": 1630,
+            "max": 1630
+          },
+          "final": {
+            "min": 2082,
+            "median": 2082,
+            "max": 2082
+          },
+          "exceedsObservedBaselineMaximum": true
+        }
+      }
+    }
+  ],
+  "samples": [
+    {
+      "version": "baseline",
+      "pair": 0,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "analyze",
+      "coldMs": 93.87,
+      "elapsedMs": 0.3531,
+      "allocatedManagedBytes": 39968,
+      "peakWorkingSetBytes": 42131456,
+      "privateBytes": 13914112,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "DABAD5FEBFBE71CBD4DD23FCA6A8591EE41E79B56F5E0A456E4B8259D2D54FA3"
+    },
+    {
+      "version": "final",
+      "pair": 0,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "analyze",
+      "coldMs": 95.8659,
+      "elapsedMs": 0.3294,
+      "allocatedManagedBytes": 40808,
+      "peakWorkingSetBytes": 43237376,
+      "privateBytes": 13832192,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "DABAD5FEBFBE71CBD4DD23FCA6A8591EE41E79B56F5E0A456E4B8259D2D54FA3"
+    },
+    {
+      "version": "final",
+      "pair": 1,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "analyze",
+      "coldMs": 91.4915,
+      "elapsedMs": 0.4104,
+      "allocatedManagedBytes": 40808,
+      "peakWorkingSetBytes": 43380736,
+      "privateBytes": 14176256,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "DABAD5FEBFBE71CBD4DD23FCA6A8591EE41E79B56F5E0A456E4B8259D2D54FA3"
+    },
+    {
+      "version": "baseline",
+      "pair": 1,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "analyze",
+      "coldMs": 88.8294,
+      "elapsedMs": 0.2777,
+      "allocatedManagedBytes": 39968,
+      "peakWorkingSetBytes": 42164224,
+      "privateBytes": 13934592,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "DABAD5FEBFBE71CBD4DD23FCA6A8591EE41E79B56F5E0A456E4B8259D2D54FA3"
+    },
+    {
+      "version": "baseline",
+      "pair": 2,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "analyze",
+      "coldMs": 88.9872,
+      "elapsedMs": 0.2704,
+      "allocatedManagedBytes": 39968,
+      "peakWorkingSetBytes": 42012672,
+      "privateBytes": 13828096,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "DABAD5FEBFBE71CBD4DD23FCA6A8591EE41E79B56F5E0A456E4B8259D2D54FA3"
+    },
+    {
+      "version": "final",
+      "pair": 2,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "analyze",
+      "coldMs": 90.8168,
+      "elapsedMs": 0.338,
+      "allocatedManagedBytes": 40808,
+      "peakWorkingSetBytes": 43409408,
+      "privateBytes": 13991936,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "DABAD5FEBFBE71CBD4DD23FCA6A8591EE41E79B56F5E0A456E4B8259D2D54FA3"
+    },
+    {
+      "version": "final",
+      "pair": 3,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "analyze",
+      "coldMs": 92.3201,
+      "elapsedMs": 0.3763,
+      "allocatedManagedBytes": 40808,
+      "peakWorkingSetBytes": 43356160,
+      "privateBytes": 13918208,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "DABAD5FEBFBE71CBD4DD23FCA6A8591EE41E79B56F5E0A456E4B8259D2D54FA3"
+    },
+    {
+      "version": "baseline",
+      "pair": 3,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "analyze",
+      "coldMs": 86.5788,
+      "elapsedMs": 0.2638,
+      "allocatedManagedBytes": 39968,
+      "peakWorkingSetBytes": 42225664,
+      "privateBytes": 14004224,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "DABAD5FEBFBE71CBD4DD23FCA6A8591EE41E79B56F5E0A456E4B8259D2D54FA3"
+    },
+    {
+      "version": "baseline",
+      "pair": 4,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "analyze",
+      "coldMs": 88.2904,
+      "elapsedMs": 0.2582,
+      "allocatedManagedBytes": 39968,
+      "peakWorkingSetBytes": 42156032,
+      "privateBytes": 13873152,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "DABAD5FEBFBE71CBD4DD23FCA6A8591EE41E79B56F5E0A456E4B8259D2D54FA3"
+    },
+    {
+      "version": "final",
+      "pair": 4,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "analyze",
+      "coldMs": 89.0862,
+      "elapsedMs": 0.2943,
+      "allocatedManagedBytes": 40808,
+      "peakWorkingSetBytes": 43323392,
+      "privateBytes": 13856768,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "DABAD5FEBFBE71CBD4DD23FCA6A8591EE41E79B56F5E0A456E4B8259D2D54FA3"
+    },
+    {
+      "version": "baseline",
+      "pair": 0,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "solve",
+      "coldMs": 255.4966,
+      "elapsedMs": 13.9958,
+      "allocatedManagedBytes": 1137784,
+      "peakWorkingSetBytes": 64143360,
+      "privateBytes": 23678976,
+      "modelVariables": 396,
+      "modelConstraints": 744,
+      "modelSerializedBytes": 50758,
+      "status": "optimal",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "final",
+      "pair": 0,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "solve",
+      "coldMs": 692.1101,
+      "elapsedMs": 6.7496,
+      "allocatedManagedBytes": 832216,
+      "peakWorkingSetBytes": 62541824,
+      "privateBytes": 21409792,
+      "modelVariables": 106,
+      "modelConstraints": 476,
+      "modelSerializedBytes": 23989,
+      "status": "optimal",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "final",
+      "pair": 1,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "solve",
+      "coldMs": 309.7336,
+      "elapsedMs": 7.0569,
+      "allocatedManagedBytes": 832216,
+      "peakWorkingSetBytes": 62234624,
+      "privateBytes": 20443136,
+      "modelVariables": 106,
+      "modelConstraints": 476,
+      "modelSerializedBytes": 23989,
+      "status": "optimal",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "baseline",
+      "pair": 1,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "solve",
+      "coldMs": 248.4809,
+      "elapsedMs": 14.4608,
+      "allocatedManagedBytes": 1137784,
+      "peakWorkingSetBytes": 63586304,
+      "privateBytes": 23011328,
+      "modelVariables": 396,
+      "modelConstraints": 744,
+      "modelSerializedBytes": 50758,
+      "status": "optimal",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "baseline",
+      "pair": 2,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "solve",
+      "coldMs": 235.4292,
+      "elapsedMs": 13.9887,
+      "allocatedManagedBytes": 1137784,
+      "peakWorkingSetBytes": 63909888,
+      "privateBytes": 23515136,
+      "modelVariables": 396,
+      "modelConstraints": 744,
+      "modelSerializedBytes": 50758,
+      "status": "optimal",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "final",
+      "pair": 2,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "solve",
+      "coldMs": 298.4634,
+      "elapsedMs": 7.5258,
+      "allocatedManagedBytes": 832216,
+      "peakWorkingSetBytes": 62148608,
+      "privateBytes": 20406272,
+      "modelVariables": 106,
+      "modelConstraints": 476,
+      "modelSerializedBytes": 23989,
+      "status": "optimal",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "final",
+      "pair": 3,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "solve",
+      "coldMs": 304.3434,
+      "elapsedMs": 7.0278,
+      "allocatedManagedBytes": 832216,
+      "peakWorkingSetBytes": 62095360,
+      "privateBytes": 20312064,
+      "modelVariables": 106,
+      "modelConstraints": 476,
+      "modelSerializedBytes": 23989,
+      "status": "optimal",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "baseline",
+      "pair": 3,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "solve",
+      "coldMs": 242.6958,
+      "elapsedMs": 14.0791,
+      "allocatedManagedBytes": 1137784,
+      "peakWorkingSetBytes": 63647744,
+      "privateBytes": 23027712,
+      "modelVariables": 396,
+      "modelConstraints": 744,
+      "modelSerializedBytes": 50758,
+      "status": "optimal",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "baseline",
+      "pair": 4,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "solve",
+      "coldMs": 256.5187,
+      "elapsedMs": 14.7316,
+      "allocatedManagedBytes": 1137784,
+      "peakWorkingSetBytes": 63660032,
+      "privateBytes": 22978560,
+      "modelVariables": 396,
+      "modelConstraints": 744,
+      "modelSerializedBytes": 50758,
+      "status": "optimal",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "final",
+      "pair": 4,
+      "scenario": "baseline-eight-work-hours",
+      "operation": "solve",
+      "coldMs": 300.73,
+      "elapsedMs": 6.9005,
+      "allocatedManagedBytes": 832216,
+      "peakWorkingSetBytes": 63606784,
+      "privateBytes": 20496384,
+      "modelVariables": 106,
+      "modelConstraints": 476,
+      "modelSerializedBytes": 23989,
+      "status": "optimal",
+      "score": 0.8,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "baseline",
+      "pair": 0,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "analyze",
+      "coldMs": 91.5895,
+      "elapsedMs": 0.3282,
+      "allocatedManagedBytes": 37032,
+      "peakWorkingSetBytes": 42078208,
+      "privateBytes": 13938688,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "669951C3BE7CBB862D1C07D8475B4A71D533323D16E881CC6974FC573EB5D07A"
+    },
+    {
+      "version": "final",
+      "pair": 0,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "analyze",
+      "coldMs": 93.09,
+      "elapsedMs": 0.3295,
+      "allocatedManagedBytes": 38000,
+      "peakWorkingSetBytes": 43319296,
+      "privateBytes": 13897728,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "669951C3BE7CBB862D1C07D8475B4A71D533323D16E881CC6974FC573EB5D07A"
+    },
+    {
+      "version": "final",
+      "pair": 1,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "analyze",
+      "coldMs": 91.4369,
+      "elapsedMs": 0.319,
+      "allocatedManagedBytes": 38000,
+      "peakWorkingSetBytes": 43380736,
+      "privateBytes": 13885440,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "669951C3BE7CBB862D1C07D8475B4A71D533323D16E881CC6974FC573EB5D07A"
+    },
+    {
+      "version": "baseline",
+      "pair": 1,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "analyze",
+      "coldMs": 91.2277,
+      "elapsedMs": 0.3821,
+      "allocatedManagedBytes": 37032,
+      "peakWorkingSetBytes": 42414080,
+      "privateBytes": 14225408,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "669951C3BE7CBB862D1C07D8475B4A71D533323D16E881CC6974FC573EB5D07A"
+    },
+    {
+      "version": "baseline",
+      "pair": 2,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "analyze",
+      "coldMs": 90.3133,
+      "elapsedMs": 0.3323,
+      "allocatedManagedBytes": 37032,
+      "peakWorkingSetBytes": 42049536,
+      "privateBytes": 13905920,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "669951C3BE7CBB862D1C07D8475B4A71D533323D16E881CC6974FC573EB5D07A"
+    },
+    {
+      "version": "final",
+      "pair": 2,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "analyze",
+      "coldMs": 90.3751,
+      "elapsedMs": 0.3188,
+      "allocatedManagedBytes": 38000,
+      "peakWorkingSetBytes": 43319296,
+      "privateBytes": 13815808,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "669951C3BE7CBB862D1C07D8475B4A71D533323D16E881CC6974FC573EB5D07A"
+    },
+    {
+      "version": "final",
+      "pair": 3,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "analyze",
+      "coldMs": 91.7801,
+      "elapsedMs": 0.3114,
+      "allocatedManagedBytes": 38000,
+      "peakWorkingSetBytes": 43368448,
+      "privateBytes": 13869056,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "669951C3BE7CBB862D1C07D8475B4A71D533323D16E881CC6974FC573EB5D07A"
+    },
+    {
+      "version": "baseline",
+      "pair": 3,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "analyze",
+      "coldMs": 92.0286,
+      "elapsedMs": 0.3139,
+      "allocatedManagedBytes": 37032,
+      "peakWorkingSetBytes": 42078208,
+      "privateBytes": 13938688,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "669951C3BE7CBB862D1C07D8475B4A71D533323D16E881CC6974FC573EB5D07A"
+    },
+    {
+      "version": "baseline",
+      "pair": 4,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "analyze",
+      "coldMs": 90.1594,
+      "elapsedMs": 0.3179,
+      "allocatedManagedBytes": 37032,
+      "peakWorkingSetBytes": 42110976,
+      "privateBytes": 13926400,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "669951C3BE7CBB862D1C07D8475B4A71D533323D16E881CC6974FC573EB5D07A"
+    },
+    {
+      "version": "final",
+      "pair": 4,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "analyze",
+      "coldMs": 91.4673,
+      "elapsedMs": 0.3294,
+      "allocatedManagedBytes": 38000,
+      "peakWorkingSetBytes": 43405312,
+      "privateBytes": 13950976,
+      "modelVariables": 0,
+      "modelConstraints": 0,
+      "modelSerializedBytes": 0,
+      "status": "not-run",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": "669951C3BE7CBB862D1C07D8475B4A71D533323D16E881CC6974FC573EB5D07A"
+    },
+    {
+      "version": "baseline",
+      "pair": 0,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "solve",
+      "coldMs": 612.8563,
+      "elapsedMs": 1.2239,
+      "allocatedManagedBytes": 179504,
+      "peakWorkingSetBytes": 60485632,
+      "privateBytes": 20840448,
+      "modelVariables": 19,
+      "modelConstraints": 35,
+      "modelSerializedBytes": 1630,
+      "status": "optimal",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "final",
+      "pair": 0,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "solve",
+      "coldMs": 663.5317,
+      "elapsedMs": 1.5345,
+      "allocatedManagedBytes": 219008,
+      "peakWorkingSetBytes": 60317696,
+      "privateBytes": 18644992,
+      "modelVariables": 23,
+      "modelConstraints": 43,
+      "modelSerializedBytes": 2082,
+      "status": "optimal",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "final",
+      "pair": 1,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "solve",
+      "coldMs": 287.5208,
+      "elapsedMs": 2.1514,
+      "allocatedManagedBytes": 219008,
+      "peakWorkingSetBytes": 60596224,
+      "privateBytes": 19017728,
+      "modelVariables": 23,
+      "modelConstraints": 43,
+      "modelSerializedBytes": 2082,
+      "status": "optimal",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "baseline",
+      "pair": 1,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "solve",
+      "coldMs": 226.3106,
+      "elapsedMs": 1.3764,
+      "allocatedManagedBytes": 179504,
+      "peakWorkingSetBytes": 60829696,
+      "privateBytes": 21458944,
+      "modelVariables": 19,
+      "modelConstraints": 35,
+      "modelSerializedBytes": 1630,
+      "status": "optimal",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "baseline",
+      "pair": 2,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "solve",
+      "coldMs": 227.4471,
+      "elapsedMs": 1.2539,
+      "allocatedManagedBytes": 179504,
+      "peakWorkingSetBytes": 60297216,
+      "privateBytes": 20652032,
+      "modelVariables": 19,
+      "modelConstraints": 35,
+      "modelSerializedBytes": 1630,
+      "status": "optimal",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "final",
+      "pair": 2,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "solve",
+      "coldMs": 291.5914,
+      "elapsedMs": 1.5384,
+      "allocatedManagedBytes": 219008,
+      "peakWorkingSetBytes": 60416000,
+      "privateBytes": 18964480,
+      "modelVariables": 23,
+      "modelConstraints": 43,
+      "modelSerializedBytes": 2082,
+      "status": "optimal",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "final",
+      "pair": 3,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "solve",
+      "coldMs": 288.5994,
+      "elapsedMs": 1.5187,
+      "allocatedManagedBytes": 219008,
+      "peakWorkingSetBytes": 60715008,
+      "privateBytes": 19398656,
+      "modelVariables": 23,
+      "modelConstraints": 43,
+      "modelSerializedBytes": 2082,
+      "status": "optimal",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "baseline",
+      "pair": 3,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "solve",
+      "coldMs": 223.166,
+      "elapsedMs": 1.4287,
+      "allocatedManagedBytes": 179504,
+      "peakWorkingSetBytes": 60514304,
+      "privateBytes": 20885504,
+      "modelVariables": 19,
+      "modelConstraints": 35,
+      "modelSerializedBytes": 1630,
+      "status": "optimal",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "baseline",
+      "pair": 4,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "solve",
+      "coldMs": 230.7812,
+      "elapsedMs": 1.2556,
+      "allocatedManagedBytes": 179504,
+      "peakWorkingSetBytes": 60313600,
+      "privateBytes": 20701184,
+      "modelVariables": 19,
+      "modelConstraints": 35,
+      "modelSerializedBytes": 1630,
+      "status": "optimal",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    },
+    {
+      "version": "final",
+      "pair": 4,
+      "scenario": "four-hours-no-legal-break",
+      "operation": "solve",
+      "coldMs": 289.8163,
+      "elapsedMs": 1.6377,
+      "allocatedManagedBytes": 219008,
+      "peakWorkingSetBytes": 60891136,
+      "privateBytes": 19345408,
+      "modelVariables": 23,
+      "modelConstraints": 43,
+      "modelSerializedBytes": 2082,
+      "status": "optimal",
+      "score": 0.4,
+      "assignmentCount": 1,
+      "conflicts": [],
+      "analyzeSha256": null
+    }
+  ]
+}
