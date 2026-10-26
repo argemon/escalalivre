@@ -42,3 +42,7 @@ Os 20 contratos de [regimes](../../shared/regime-contract-scenarios.json) passam
 O [ADR 004](004-conflicting-documents-and-known-divergences.md) continua válido: contratos parciais são agora explícitos; D1 não foi corrigida. Nenhuma nova divergência de negócio foi comprovada. Evidências operacionais, ajuste separado do teste de deadline e pendências estão no [relatório](stage-4-domain-policies.md).
 
 Seguimento de consolidação: [ADR 008](008-final-boundaries-and-validation.md) e [revisão final](stage-6-final-review.md). Nomes/estados anteriores neste registro são históricos.
+
+## Seguimento — precondições verificadas
+
+No [ADR 009](009-validated-operational-boundaries.md), as estratégias embutidas mapeiam explicitamente WorkloadRule para DayCycleConfiguration/HourCycleConfiguration e rejeitam configurações do outro regime com ArgumentException, inclusive na estimativa. O contrato comum permanece aberto para estratégias registradas; o resolvedor não ganhou condicionais nem instanciações. Os consumidores operacionais de ciclo/capacidade agora exigem unidades tipadas. Sob entradas válidas, os 20 contratos compartilhados e a aritmética de estimativa (inclusive avanço mínimo legado em dias) permanecem iguais.

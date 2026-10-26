@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="86f66680-c9b6-4694-a177-d28a61978dd0" name="eargemon@ADM1225037 2026-10-26 14:08:46" runUser="ADMINISTRACAO\eargemon" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-26T14:08:46.7706459-04:00" queuing="2026-10-26T14:08:46.7706463-04:00" start="2026-10-26T14:08:45.8393324-04:00" finish="2026-10-26T14:08:46.7771030-04:00" />
+  <TestSettings name="default" id="15c9dd3a-bcb5-4708-b46b-34061405ba6f">
+    <Deployment runDeploymentRoot="eargemon_ADM1225037_2026-10-26_14_08_46" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="094cc4a1-ddaa-4efc-8d42-67171d244643" testId="47139da7-0fa5-750f-62b9-04fcba728ee9" testName="EscalaLivre.Adapter.Tests.OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(weeklyHours: NaN)" computerName="ADM1225037" duration="00:00:00.0001048" startTime="2026-10-26T14:08:46.6551146-04:00" endTime="2026-10-26T14:08:46.6551789-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="094cc4a1-ddaa-4efc-8d42-67171d244643">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Throws() Failure: No exception was thrown&#xD;
+Expected: typeof(System.ArgumentOutOfRangeException)</Message>
+          <StackTrace>   at EscalaLivre.Adapter.Tests.OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(Double weeklyHours) in C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Adapter.Tests\OperationalConfigurationTests.cs:line 21&#xD;
+   at InvokeStub_OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="fbff0710-1e5e-491d-9de8-b9e409eceeea" testId="fbd9105e-2a51-88d9-a50b-105417037793" testName="EscalaLivre.Adapter.Tests.OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(weeklyHours: ∞)" computerName="ADM1225037" duration="00:00:00.0424233" startTime="2026-10-26T14:08:46.5815258-04:00" endTime="2026-10-26T14:08:46.6394706-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fbff0710-1e5e-491d-9de8-b9e409eceeea">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Throws() Failure: No exception was thrown&#xD;
+Expected: typeof(System.ArgumentOutOfRangeException)</Message>
+          <StackTrace>   at EscalaLivre.Adapter.Tests.OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(Double weeklyHours) in C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Adapter.Tests\OperationalConfigurationTests.cs:line 21&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ca7c21d3-464c-4d78-a220-c443bddd4579" testId="5ee68dd8-4e09-0fd8-4088-05bea2cbd3cf" testName="EscalaLivre.Adapter.Tests.OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(weeklyHours: -1)" computerName="ADM1225037" duration="00:00:00.0004247" startTime="2026-10-26T14:08:46.6539110-04:00" endTime="2026-10-26T14:08:46.6539942-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ca7c21d3-464c-4d78-a220-c443bddd4579">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Throws() Failure: No exception was thrown&#xD;
+Expected: typeof(System.ArgumentOutOfRangeException)</Message>
+          <StackTrace>   at EscalaLivre.Adapter.Tests.OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(Double weeklyHours) in C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Adapter.Tests\OperationalConfigurationTests.cs:line 21&#xD;
+   at InvokeStub_OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="EscalaLivre.Adapter.Tests.OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(weeklyHours: -1)" storage="c:\users\eargemon\source\repos\escalalivre\backend\escalalivre.adapter.tests\bin\release\net10.0\escalalivre.adapter.tests.dll" id="5ee68dd8-4e09-0fd8-4088-05bea2cbd3cf">
+      <Execution id="ca7c21d3-464c-4d78-a220-c443bddd4579" />
+      <TestMethod codeBase="C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Adapter.Tests\bin\Release\net10.0\EscalaLivre.Adapter.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="EscalaLivre.Adapter.Tests.OperationalConfigurationTests" name="CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp" />
+    </UnitTest>
+    <UnitTest name="EscalaLivre.Adapter.Tests.OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(weeklyHours: NaN)" storage="c:\users\eargemon\source\repos\escalalivre\backend\escalalivre.adapter.tests\bin\release\net10.0\escalalivre.adapter.tests.dll" id="47139da7-0fa5-750f-62b9-04fcba728ee9">
+      <Execution id="094cc4a1-ddaa-4efc-8d42-67171d244643" />
+      <TestMethod codeBase="C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Adapter.Tests\bin\Release\net10.0\EscalaLivre.Adapter.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="EscalaLivre.Adapter.Tests.OperationalConfigurationTests" name="CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp" />
+    </UnitTest>
+    <UnitTest name="EscalaLivre.Adapter.Tests.OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(weeklyHours: ∞)" storage="c:\users\eargemon\source\repos\escalalivre\backend\escalalivre.adapter.tests\bin\release\net10.0\escalalivre.adapter.tests.dll" id="fbd9105e-2a51-88d9-a50b-105417037793">
+      <Execution id="fbff0710-1e5e-491d-9de8-b9e409eceeea" />
+      <TestMethod codeBase="C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Adapter.Tests\bin\Release\net10.0\EscalaLivre.Adapter.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="EscalaLivre.Adapter.Tests.OperationalConfigurationTests" name="CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="47139da7-0fa5-750f-62b9-04fcba728ee9" executionId="094cc4a1-ddaa-4efc-8d42-67171d244643" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fbd9105e-2a51-88d9-a50b-105417037793" executionId="fbff0710-1e5e-491d-9de8-b9e409eceeea" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5ee68dd8-4e09-0fd8-4088-05bea2cbd3cf" executionId="ca7c21d3-464c-4d78-a220-c443bddd4579" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Resultados que não estão em uma lista" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="Todos os resultados carregados" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="3" executed="3" passed="0" failed="3" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 10.0.13)&#xD;
+[xUnit.net 00:00:00.08]   Discovering: EscalaLivre.Adapter.Tests&#xD;
+[xUnit.net 00:00:00.18]   Discovered:  EscalaLivre.Adapter.Tests&#xD;
+[xUnit.net 00:00:00.22]   Starting:    EscalaLivre.Adapter.Tests&#xD;
+[xUnit.net 00:00:00.31]       Assert.Throws() Failure: No exception was thrown&#xD;
+[xUnit.net 00:00:00.31]       Expected: typeof(System.ArgumentOutOfRangeException)&#xD;
+[xUnit.net 00:00:00.31]       Stack Trace:&#xD;
+[xUnit.net 00:00:00.31]         C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Adapter.Tests\OperationalConfigurationTests.cs(21,0): at EscalaLivre.Adapter.Tests.OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(Double weeklyHours)&#xD;
+[xUnit.net 00:00:00.31]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+[xUnit.net 00:00:00.31]            at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:00.32]       Assert.Throws() Failure: No exception was thrown&#xD;
+[xUnit.net 00:00:00.32]       Expected: typeof(System.ArgumentOutOfRangeException)&#xD;
+[xUnit.net 00:00:00.32]       Stack Trace:&#xD;
+[xUnit.net 00:00:00.32]         C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Adapter.Tests\OperationalConfigurationTests.cs(21,0): at EscalaLivre.Adapter.Tests.OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(Double weeklyHours)&#xD;
+[xUnit.net 00:00:00.32]            at InvokeStub_OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(Object, Span`1)&#xD;
+[xUnit.net 00:00:00.32]            at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)&#xD;
+[xUnit.net 00:00:00.32]       Assert.Throws() Failure: No exception was thrown&#xD;
+[xUnit.net 00:00:00.32]       Expected: typeof(System.ArgumentOutOfRangeException)&#xD;
+[xUnit.net 00:00:00.32]       Stack Trace:&#xD;
+[xUnit.net 00:00:00.32]         C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Adapter.Tests\OperationalConfigurationTests.cs(21,0): at EscalaLivre.Adapter.Tests.OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(Double weeklyHours)&#xD;
+[xUnit.net 00:00:00.32]            at InvokeStub_OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(Object, Span`1)&#xD;
+[xUnit.net 00:00:00.32]            at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)&#xD;
+[xUnit.net 00:00:00.33]   Finished:    EscalaLivre.Adapter.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="ADM1225037" outcome="Error" timestamp="2026-10-26T14:08:46.6424150-04:00">
+        <Text>[xUnit.net 00:00:00.31]     EscalaLivre.Adapter.Tests.OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(weeklyHours: ∞) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ADM1225037" outcome="Error" timestamp="2026-10-26T14:08:46.6543988-04:00">
+        <Text>[xUnit.net 00:00:00.32]     EscalaLivre.Adapter.Tests.OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(weeklyHours: -1) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ADM1225037" outcome="Error" timestamp="2026-10-26T14:08:46.6556028-04:00">
+        <Text>[xUnit.net 00:00:00.32]     EscalaLivre.Adapter.Tests.OperationalConfigurationTests.CandidateGenerationRequiresAValidatedConfigurationEvenWithoutHttp(weeklyHours: NaN) [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

@@ -1,5 +1,6 @@
 using EscalaLivre.Application.Contracts;
 using EscalaLivre.Application.Scheduling;
+using EscalaLivre.Domain.Planning;
 using EscalaLivre.Domain.Scheduling;
 using Google.OrTools.Sat;
 
@@ -18,11 +19,11 @@ public sealed class WeeklyWorkConstraints : IScheduleConstraintTranslator
                      .GroupBy(x => new { x.Shift.EmployeeId, x.Week }))
         {
             Employee employee = request.Document.Employees.First(x => x.Id == employeeWeek.Key.EmployeeId);
-            WorkloadRule rule = EffectiveWorkPolicy.RuleFor(request.Document.Company, employee);
+            var regime = context.Input.Settings.RegimeFor(employee.Id);
             var week = employeeWeek.Key.Week;
             long fixedWork = history[employee.Id].Sum(a => EffectiveWorkPolicy.WorkTicksInWeek(a, week));
             var weightedWork = employeeWeek.Select(x => LinearExpr.Term(decisionVars[x.Shift.Id], EffectiveWorkPolicy.WorkTicksInWeek(x.Shift, week)));
-            model.Add(LinearExpr.Sum(weightedWork) <= ScheduleCapacityPolicy.RemainingWeeklyTicks(rule, fixedWork));
+            model.Add(LinearExpr.Sum(weightedWork) <= ScheduleCapacityPolicy.RemainingWeeklyTicks(regime.WeeklyLimit, new Duration(TimeSpan.FromTicks(fixedWork))));
         }
 
     }

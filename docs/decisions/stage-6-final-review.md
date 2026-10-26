@@ -1,6 +1,8 @@
 # Revisão final — EscalaLivre, etapa 6
 
-Data: 26/10/2026. **Implementação e validação local concluídas; aceite integral do plano ainda aberto para CI remota e calibração de desempenho representativo.** Não houve commit/push/integração ou publicação nesta sessão. Alterações anteriores foram preservadas.
+Data: 26/10/2026. **Implementação revalidada localmente e CI remota conferida para o código de d40f887; aceite integral ainda aberto para calibração de desempenho representativo.** A [revalidação do código atual](stage-6-current-validation.md) registra nova recompilação dos fontes, matriz completa, ambiente, classificação de falhas e CI. Nenhum commit, push, integração ou publicação foi realizado na revalidação. As seções de sequência e validação original abaixo permanecem históricas.
+
+Seguimento posterior: o [ADR 009](009-validated-operational-boundaries.md) registra a auditoria e os ajustes de tipos/unidades e mutabilidade da geração. Os resultados e a CI de d40f887 abaixo são o baseline histórico. O novo diff passou em 612 testes .NET, 373 frontend em cada fuso, lint/builds e 16 HTTP; CI desse diff ainda pendente antes de integrar.
 
 ## Mudanças e sequência verificada
 
@@ -19,13 +21,13 @@ A pendência temporal da fila foi tratada em ajuste de teste separado: a sonda d
 | 3 — Tipos/agregados | Construção e invariantes, operações atômicas/coleções protegidas, conflitos carregáveis, round-trip atual/legado/migração idempotente | Atendida localmente; projeções de leitura primitivas mantidas por finalidade |
 | 4 — Políticas/regimes | Seis políticas, registro de estratégias, desconhecidos/duplicados, contrato parcial/estimativa e 20 casos compartilhados | Atendida localmente |
 | 5 — Adaptador/admissão | Seis famílias de tradução, limites/pesos/status, modelos reais, guarda contra novas violações e D1 equipe/função com paridade | Atendida localmente |
-| 6 — Consolidação | Fachadas removidas, separação/arquitetura/validação local completas; comparação retrospectiva documentada | Implementada e validada localmente; CI e limites representativos em aberto |
+| 6 — Consolidação | Fachadas removidas, separação/arquitetura/validação local completas; comparação retrospectiva documentada | Revalidada localmente, CI conferida; limites representativos em aberto |
 
 ## Evidência nas seis dimensões
 
 | Dimensão | Evidência implementada e verificada | Limite da conclusão |
 | --- | --- | --- |
-| Camadas | Grafo de projetos/assemblies, imports internos e superfície exportada; CP-SAT/PDF internos; API compõe capacidades | CI Linux do checkout ainda não executada |
+| Camadas | Grafo de projetos/assemblies, imports internos e superfície exportada; CP-SAT/PDF internos; API compõe capacidades | CI Ubuntu conferida na revalidação; merge de teste com os mesmos arquivos de d40f887 |
 | DDD tático | PlanningSchedule/Settings e identidade/coleções protegidas; comandos/mudanças explícitas; conflitos de negócio continuam representáveis | Não se introduziram persistência, repositórios ou eventos sem necessidade |
 | Modelagem de domínio | Janelas/pausas/período/unidades/configurações validados, DTOs e mapeadores com round-trip atual/legado | Projeções de leitura conservam primitivos e não são o agregado protegido |
 | SOLID | Responsabilidades separadas; registros de regimes/famílias; contratos parciais e portas pequenas; consumidores sem fachada | Não é certificação binária nem prova de toda extensão futura |
@@ -55,10 +57,12 @@ Foi feita [comparação retrospectiva](stage-6-performance.md) com os mesmos cen
 - [x] Código, documentação atual, remoções e validação local executados; hashes/lockfile/global.json preservados.
 - [x] CI separada por fronteira e fuso alternativo configurados; nome do gate backend anterior preservado.
 - [x] Reprodução local de tempo, memória e tamanho de modelo registrada, com dados brutos/manifestos.
-- [ ] CI remota Ubuntu/Node 22 aprovada para estas alterações antes de integrar. O workflow editado não foi executado remotamente, e o checkout não foi publicado.
+- [x] CI remota Ubuntu/Node 22 conferida em 26/10/2026: Validate #20, todos os seis jobs verdes, associada a d40f887. Checkout remoto 0f32fa5 (merge de teste), com diferença de arquivos vazia para d40f887; detalhes e evidências na [revalidação do código atual](stage-6-current-validation.md). A afirmação anterior de CI não executada descrevia a sessão de implementação.
 - [ ] Carga representativa e calibração de gates de desempenho no ambiente alvo. Os dois casos pequenos não sustentam um orçamento de produção.
 
 Ambiente local: Windows, SDK selecionado 10.0.402/runtime 10.0.13, Node 24.17.0/npm 11.13.0. global.json pede 10.0.201 e permite latestFeature, portanto a seleção local cumpre a configuração; execução exata sem roll-forward não foi feita. Ubuntu/Node 22 não estavam disponíveis localmente; não se instalou WSL nem se publicou código para simular CI. Dependências existentes respeitam o lockfile; reinstalação limpa com npm ci será feita pelo workflow, não foi alegada nesta sessão.
+
+A matriz atual repetiu 594 testes .NET, 373 frontend em cada fuso e 16 HTTP, além de recompilação integral/lint/builds; todos passaram na primeira execução. Não houve falha de produto ou ambiente nas verificações, nem intermitência reproduzida. Nenhum código/teste/limite de produção precisou ser alterado. SDK exato 10.0.201 sem roll-forward e calibração representativa continuam sem evidência própria; a CI observada usou 10.0.403/Node 22.23.3.
 
 ## Falhas introduzidas, revisão e evidências históricas
 

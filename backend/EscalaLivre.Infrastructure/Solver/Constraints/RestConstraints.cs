@@ -1,5 +1,6 @@
 using EscalaLivre.Application.Contracts;
 using EscalaLivre.Application.Scheduling;
+using EscalaLivre.Domain.Planning;
 using EscalaLivre.Domain.Scheduling;
 using Google.OrTools.Sat;
 
@@ -17,8 +18,8 @@ public sealed class RestConstraints : IScheduleConstraintTranslator
         foreach (IGrouping<Guid, ShiftAssignment> group in candidates.GroupBy(x => x.EmployeeId))
         {
             Employee employee = request.Document.Employees.First(x => x.Id == group.Key);
-            WorkloadRule rule = EffectiveWorkPolicy.RuleFor(request.Document.Company, employee);
-            TimeSpan rest = RestPolicy.Required(request.Document.Company, rule);
+            var regime = context.Input.Settings.RegimeFor(employee.Id);
+            TimeSpan rest = RestPolicy.Required(new Duration(context.Input.Settings.Company.MinimumRest), regime).Value;
             var restHistory = history[employee.Id].Where(a => a.End + rest > request.Start.Date && a.Start < request.End.Date.AddDays(2) + rest).ToList();
             foreach (var candidate in group)
             {

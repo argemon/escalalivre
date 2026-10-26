@@ -183,7 +183,8 @@ public sealed class OptimizationComponentsTests
         var result = AdapterComposition.Generate().Execute(r);
         Assert.Contains(result.Optimization?.Status, new[] { "optimal", "feasible" });Assert.Empty(result.Gaps);Assert.Equal(1, result.CoverageScore);
         Assert.Contains(result.Conflicts, i => i.Code == "multipleShifts");
-        foreach (var a in r.Document.Assignments) Assert.Same(a, Assert.Single(result.Assignments, item => item.Id == a.Id));
+        foreach (var a in r.Document.Assignments) Assert.Equal(JsonSerializer.Serialize(a, ScheduleJson.CreateOptions()),
+            JsonSerializer.Serialize(Assert.Single(result.Assignments, item => item.Id == a.Id), ScheduleJson.CreateOptions()));
         Assert.Equal(before, JsonSerializer.Serialize(r, ScheduleJson.CreateOptions()));
     }
 }

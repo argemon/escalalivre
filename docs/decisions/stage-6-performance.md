@@ -1,6 +1,10 @@
 # Medição exploratória da etapa 6
 
+Atualização de validação em 26/10/2026: a [revalidação atual](stage-6-current-validation.md) recompilou e testou o código de d40f887 e conferiu a CI remota. Não foram repetidas medições de desempenho nesta rodada. Dados, manifesto e conclusões abaixo continuam sendo o experimento retrospectivo original; a aprovação funcional/CI não calibra os alertas em carga representativa. Essa pendência permanece aberta.
+
 Reprodução em 2026-10-26T15:18:56.329Z, no mesmo computador Windows/SDK 10.0.402. Baseline: commit 66659daa2bbfc2384605946ec5b553e0bcd51eed, cujo código de produção era o ponto de partida da etapa 1 (as alterações anteriores eram documentais). Snapshot final: manifesto SHA-256 no JSON. Ferramentas/lockfiles/fixtures iguais, compilação Release, sem builds/testes concorrentes durante as amostras.
+
+Seguimento do código: o [ADR 009](009-validated-operational-boundaries.md) acrescenta validação de configuração e snapshots de saída após este experimento. Não houve nova medição de desempenho nesta entrega; os números/manifesto abaixo não caracterizam o novo diff. Calibração representativa permanece pendente.
 
 ## Método e alcance
 

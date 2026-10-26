@@ -1,3 +1,5 @@
+using EscalaLivre.Domain.Planning;
+
 namespace EscalaLivre.Domain.Scheduling;
 
 public static class RestPolicy
@@ -13,6 +15,10 @@ public static class RestPolicy
 
     public static TimeSpan Required(CompanyRules company, WorkloadRule rule)
         => TimeSpan.FromTicks(Math.Max(company.MinimumRest.Ticks, RegimeMinimum(rule).Ticks));
+
+    public static Duration Required(Duration companyMinimum, RegimeConfiguration regime)
+        => new(TimeSpan.FromTicks(Math.Max(companyMinimum.Value.Ticks,
+            regime is HourCycleConfiguration hours ? TimeSpan.FromHours(hours.RestHours.Value).Ticks : 0)));
 
     // All supplied history must belong to the candidate's employee, on both sides of the period.
     public static bool CanFit(DateTime start, DateTime end, IEnumerable<ShiftAssignment> history, TimeSpan rest)

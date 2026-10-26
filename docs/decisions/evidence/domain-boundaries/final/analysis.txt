@@ -1,0 +1,12 @@
+{"started":"2026-10-26T18:18:33.505Z","cwd":"C:/Users/eargemon/source/repos/escalalivre","exe":"dotnet","args":["test","backend/EscalaLivre.Analysis.Tests/EscalaLivre.Analysis.Tests.csproj","-c","Release"],"TZ":null}
+  Determinando os projetos a serem restaurados...
+  Todos os projetos estão atualizados para restauração.
+  EscalaLivre.Domain -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Domain\bin\Release\net10.0\EscalaLivre.Domain.dll
+  EscalaLivre.Application -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Application\bin\Release\net10.0\EscalaLivre.Application.dll
+  EscalaLivre.Analysis.Tests -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\bin\Release\net10.0\EscalaLivre.Analysis.Tests.dll
+Execução de teste para C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\bin\Release\net10.0\EscalaLivre.Analysis.Tests.dll (.NETCoreApp,Version=v10.0)
+1 arquivos de teste no total corresponderam ao padrão especificado.
+
+Aprovado!  – Com falha:     0, Aprovado:   215, Ignorado:     0, Total:   215, Duração: 799 ms - EscalaLivre.Analysis.Tests.dll (net10.0)
+
+{"name":"analysis","started":"2026-10-26T18:18:33.505Z","ended":"2026-10-26T18:18:38.072Z","code":0,"exe":"dotnet","args":["test","backend/EscalaLivre.Analysis.Tests/EscalaLivre.Analysis.Tests.csproj","-c","Release"]}

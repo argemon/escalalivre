@@ -1,3 +1,4 @@
+using System.Text.Json;
 using EscalaLivre.Application.Contracts;
 using EscalaLivre.Application.Scheduling;
 using EscalaLivre.Domain.Scheduling;
@@ -56,8 +57,9 @@ public sealed class GenerationUseCaseTests
         var analyzer = new Analyzer();
         var result = new GenerateSchedule(optimizer, analyzer).Execute(request);
         Assert.Equal(1, analyzer.Calls);
-        Assert.Same(complete, analyzer.Received!.Document.Assignments);
-        Assert.Same(complete, result.Assignments);
+        Assert.Equal(JsonSerializer.Serialize(complete, ScheduleJson.CreateOptions()), JsonSerializer.Serialize(result.Assignments, ScheduleJson.CreateOptions()));
+        Assert.NotSame(complete, result.Assignments);
+        Assert.Same(result.Assignments, analyzer.Received!.Document.Assignments);
         Assert.Equal(selected.Id, Assert.Single(result.Decisions).AssignmentId);
         Assert.Equal("feasible", result.Optimization?.Status);
         Assert.Same(history, Assert.Single(request.Document.Assignments));

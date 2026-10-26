@@ -1,0 +1,23 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Action completed."
+    }
+  ],
+  "structuredContent": {
+    "workflow_runs": [
+      {
+        "id": 40355002311,
+        "name": "Validate",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 20,
+        "jobs_url": "https://api.github.com/repos/argemon/escalalivre/actions/runs/40355002311/jobs",
+        "logs_url": "https://api.github.com/repos/argemon/escalalivre/actions/runs/40355002311/logs",
+        "workflow_id": 384274013
+      }
+    ]
+  },
+  "isError": false
+}

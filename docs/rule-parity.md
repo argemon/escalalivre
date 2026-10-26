@@ -138,3 +138,9 @@ Traduções R08–R13: DailyExclusivityConstraints, RestConstraints, WeeklyWorkC
 ## Consolidação final — etapa 6
 
 As fachadas e delegações temporárias foram removidas após comprovar os mesmos 581 casos migrados. O diagnóstico usa as políticas diretamente; a construção de pausas TS usa limites canônicos. A matriz continua com 26 famílias e os 58 documentos/hashes, 20 contratos e dois casos D1 inalterados. Testes atuais: [guia](testing.md); limites, CI pendente e evidências: [revisão final](decisions/stage-6-final-review.md). Relatos de fachadas/D1 pendente em seções datadas anteriores são históricos.
+
+## Fronteiras operacionais tipadas — seguimento de 26/10/2026
+
+O [ADR 009](decisions/009-validated-operational-boundaries.md) não altera regra de jornada, descanso, ciclo ou cobertura. Configurações operacionais entram em PlanningSettings/RegimeConfiguration; tradutores distinguem dias, duração e horas semanais. A conversão de horas fracionárias para ticks mantém floor, mas falha explicitamente no overflow em vez de produzir um limite negativo. Estratégias C# embutidas rejeitam regra de outro regime antes de interpretar unidades. Essas entradas já eram estruturalmente rejeitadas pelo transporte; a proteção foi estendida a chamadas internas, sem ampliar/restringir o JSON aceito.
+
+A geração aceita é aplicada por ReplacePeriod e exportada em coleção/tags imutáveis; alterar buffers do adaptador não modifica o resultado validado. A preservação pública é por conteúdo integral, não por identidade de referências C#. Projeções/DTOs continuam com primitivos. Documentos com conflitos de negócio, incluindo pausas nas bordas, histórico sobreposto e excesso de jornada, continuam carregáveis e diagnosticáveis. Os 58 hashes de análise, 20 contratos de regime e dois cenários D1 existentes não foram alterados. TypeScript não precisou mudar: as regras válidas e o transporte mantêm a mesma semântica; a mutabilidade corrigida era interna à geração C#.

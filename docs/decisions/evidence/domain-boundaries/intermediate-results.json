@@ -1,0 +1,16 @@
+[
+  {
+    "name": "solution-build",
+    "started": "2026-10-26T18:17:39.498Z",
+    "ended": "2026-10-26T18:17:47.857Z",
+    "code": 1,
+    "exe": "dotnet",
+    "args": [
+      "build",
+      "EscalaLivre.slnx",
+      "-c",
+      "Release",
+      "-t:Rebuild"
+    ]
+  }
+]

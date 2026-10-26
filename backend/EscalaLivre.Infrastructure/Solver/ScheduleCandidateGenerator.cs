@@ -1,5 +1,6 @@
 using EscalaLivre.Application.Contracts;
 using EscalaLivre.Application.Scheduling;
+using EscalaLivre.Domain.Planning;
 using EscalaLivre.Domain.Scheduling;
 
 namespace EscalaLivre.Infrastructure.Solver;
@@ -10,24 +11,26 @@ public sealed class ScheduleCandidateGenerator
 
     public IEnumerable<ShiftAssignment> Generate(ScheduleRequest request)
     {
+        var settings = new PlanningSettings(request.Document.Company, request.Document.Employees);
+        var company = settings.Company;
         foreach (DateTime day in CalendarDays.Inclusive(request.Start, request.End))
         {
-            if (LaborRules.ClosedHoliday(request.Document.Company,day)) continue;
+            if (LaborRules.ClosedHoliday(company,day)) continue;
 
 
-            foreach (Employee employee in request.Document.Employees)
+            foreach (Employee employee in settings.Employees)
             {
                 if (!employee.InheritsCompanyDefaults && employee.WorkingDays is { } days && !days.Contains(day.DayOfWeek)) continue;
-                WorkloadRule rule = EffectiveWorkPolicy.RuleFor(request.Document.Company, employee);
+                var regime = settings.RegimeFor(employee.Id);
                 var windows = new List<(DateTime Start, DateTime End)>();
-                if (request.Document.Company.OperatingDays.Contains(day.DayOfWeek)) windows.Add((day.Add(request.Document.Company.OpensAt.ToTimeSpan()), ScheduleRules.EndOn(day, request.Document.Company.OpensAt, request.Document.Company.ClosesAt)));
-                windows.AddRange(request.Document.Company.Coverage.Where(c => c.AllowsOutsideHours && CanCover(employee,c) && c.Day == day.DayOfWeek).Select(c => (day.Add(c.Start.ToTimeSpan()), ScheduleRules.EndOn(day,c.Start,c.End))));
+                if (company.OperatingDays.Contains(day.DayOfWeek)) windows.Add((day.Add(company.OpensAt.ToTimeSpan()), ScheduleRules.EndOn(day, company.OpensAt, company.ClosesAt)));
+                windows.AddRange(company.Coverage.Where(c => c.AllowsOutsideHours && CanCover(employee,c) && c.Day == day.DayOfWeek).Select(c => (day.Add(c.Start.ToTimeSpan()), ScheduleRules.EndOn(day,c.Start,c.End))));
                 foreach ((DateTime Start, DateTime End) window in windows.Distinct()) {
                     DateTime opening = window.Start;
                     DateTime closing = window.End;
-                    TimeSpan desiredWork = rule.DefaultShiftDuration;
-                    BreakWindow? closedInterval = employee.WorksDuringLunchClosure ? null : IntervalPolicy.Closures(request.Document.Company,window.Start,window.End).FirstOrDefault();
-                foreach(TimeSpan pauseDuration in PauseDurations(desiredWork,request.Document.Company.Lunch,employee.FixedInterval,closedInterval)) {
+                    TimeSpan desiredWork = regime.DefaultShiftDuration.Value;
+                    BreakWindow? closedInterval = employee.WorksDuringLunchClosure ? null : IntervalPolicy.Closures(company,window.Start,window.End).FirstOrDefault();
+                foreach(TimeSpan pauseDuration in PauseDurations(desiredWork,company.Lunch,employee.FixedInterval,closedInterval)) {
                         TimeSpan desiredSpan = desiredWork+pauseDuration;
                         TimeSpan shiftDuration = desiredSpan < closing-opening ? desiredSpan : closing-opening;
                 if (shiftDuration <= TimeSpan.Zero) continue;
@@ -41,7 +44,7 @@ public sealed class ScheduleCandidateGenerator
                 foreach (DateTime start in starts)
                 {
                             DateTime end = start.Add(shiftDuration);
-                if (EffectiveWorkPolicy.ExceedsHourRegime(end - start - pauseDuration, rule)) continue;
+                if (EffectiveWorkPolicy.ExceedsHourRegime(end - start - pauseDuration, regime)) continue;
                 if (!employee.AllowsNightWork && IsNight(start, end)) continue;
 
                 // All outside shifts remain fixed. The model checks rest and workload at both edges.
@@ -50,13 +53,13 @@ public sealed class ScheduleCandidateGenerator
                     continue;
                 }
 
-                            BreakWindow? closure = IntervalPolicy.Closures(request.Document.Company,start,end).FirstOrDefault();
+                            BreakWindow? closure = IntervalPolicy.Closures(company,start,end).FirstOrDefault();
 
-                foreach (BreakWindow? breakWindow in BuildBreakWindows(start, end, request.Document.Company.Lunch, employee.WorksDuringLunchClosure ? null : closure, pauseDuration, employee.FixedInterval))
+                foreach (BreakWindow? breakWindow in BuildBreakWindows(start, end, company.Lunch, employee.WorksDuringLunchClosure ? null : closure, pauseDuration, employee.FixedInterval))
                 {
                     if (employee.WorksDuringLunchClosure && closure is not null && breakWindow is not null && breakWindow.Start < closure.End && breakWindow.End > closure.Start) continue;
                     var candidate = new ShiftAssignment(Guid.NewGuid(),employee.Id,employee.Role,start,end,breakWindow,"solver",[]);
-                    if(ScheduleRules.ShiftDiagnostics(request.Document.Company,employee,candidate).Any(c=>c.Severity=="error") || EffectiveWorkPolicy.Measure(candidate) > EffectiveWorkPolicy.DailyLimit(employee)) continue;
+                    if(ScheduleRules.ShiftDiagnostics(company,employee,candidate).Any(c=>c.Severity=="error") || EffectiveWorkPolicy.Measure(candidate) > EffectiveWorkPolicy.DailyLimit(employee)) continue;
                     var tags = new List<string> { "net-work-duration" };
                     if (start == opening) tags.Add("opening");
                     if (end == closing) tags.Add("closing");

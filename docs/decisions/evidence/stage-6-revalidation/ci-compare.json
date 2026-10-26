@@ -1,0 +1,30 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Action completed."
+    }
+  ],
+  "structuredContent": {
+    "repository_full_name": "argemon/escalalivre",
+    "base": "d40f8871238398bcab91bd081742986c244f4548",
+    "head": "0f32fa55706797101ae787d2d5a24f3cd961dccd",
+    "status": "ahead",
+    "ahead_by": 1,
+    "behind_by": 0,
+    "total_commits": 1,
+    "too_large": null,
+    "base_commit": {
+      "sha": "d40f8871238398bcab91bd081742986c244f4548",
+      "url": "https://api.github.com/repos/argemon/escalalivre/commits/d40f8871238398bcab91bd081742986c244f4548",
+      "html_url": "https://github.com/argemon/escalalivre/commit/d40f8871238398bcab91bd081742986c244f4548"
+    },
+    "merge_base_commit": {
+      "sha": "d40f8871238398bcab91bd081742986c244f4548",
+      "url": "https://api.github.com/repos/argemon/escalalivre/commits/d40f8871238398bcab91bd081742986c244f4548",
+      "html_url": "https://github.com/argemon/escalalivre/commit/d40f8871238398bcab91bd081742986c244f4548"
+    },
+    "files": []
+  },
+  "isError": false
+}

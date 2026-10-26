@@ -145,7 +145,9 @@ public sealed class PlanningMappingTests
         var history = selected with { Id = Guid.NewGuid(), Start = selected.Start.AddDays(-7), End = selected.End.AddDays(-7), Break = null };
         request = request with { Document = request.Document with { Assignments = [history] } };
         ShiftAssignment[] complete = [history, selected with { Tags = selected.Tags.ToArray() }];
-        Assert.Same(complete, PlanningDocumentMapping.ApplyGeneration(request, [selected], complete));
+        var applied = PlanningDocumentMapping.ApplyGeneration(request, [selected], complete);
+        Assert.Equal(JsonSerializer.Serialize(complete, Plain), JsonSerializer.Serialize(applied, Plain));
+        Assert.NotSame(complete, applied);
         Assert.Throws<InvalidOperationException>(() => PlanningDocumentMapping.ApplyGeneration(request, [selected], [selected]));
         Assert.Throws<InvalidOperationException>(() => PlanningDocumentMapping.ApplyGeneration(request, [selected], [history with { End = history.End.AddSeconds(1) }, selected]));
         Assert.Same(history, Assert.Single(request.Document.Assignments));

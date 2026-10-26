@@ -11,7 +11,6 @@ public sealed class PlanningDocumentMapping
 {
     private readonly EscalaLivreDocument template;
     private readonly CivilPlanningPeriod initialPeriod;
-    private readonly Dictionary<ScheduledAssignment, ShiftAssignment> originals = new();
     public PlanningSchedule Schedule { get; }
     public PlanningSettings Settings { get; private set; }
 
@@ -35,7 +34,6 @@ public sealed class PlanningDocumentMapping
         var pause = assignment.Break is null ? null : new ShiftPause(new(assignment.Break.Start, assignment.Break.End));
         var value = new ScheduledAssignment(assignment.Id, assignment.EmployeeId, assignment.Role,
             new(assignment.Start, assignment.End), pause, assignment.Source, assignment.Tags, assignment.RoleId);
-        originals[value] = assignment;
         return value;
     }
 
@@ -75,16 +73,14 @@ public sealed class PlanningDocumentMapping
     {
         var mapping = Open(request);
         mapping.Schedule.ReplacePeriod(selected.Select(mapping.ImportAssignment));
-        var applied = mapping.Schedule.Assignments.Select(mapping.ExportPreservingIdentity).ToArray();
+        var applied = mapping.Schedule.Assignments.Select(mapping.ExportAssignment).ToImmutableArray();
         // The optimizer must not add/remove/rewrite history outside the period.
         if (applied.Length != proposed.Count || !applied.Zip(proposed).All(pair => Same(pair.First, pair.Second)))
             throw new InvalidOperationException("Optimization result does not preserve the requested planning boundary.");
-        return proposed; // Preserve the existing response container when the protected operation agrees.
+        // Only the protected aggregate's export leaves this boundary. An adapter-owned collection or tags
+        // must not be able to change the accepted result after validation.
+        return applied;
     }
-
-    private ShiftAssignment ExportPreservingIdentity(ScheduledAssignment assignment)
-        => originals.TryGetValue(assignment, out var original) && original.Tags.SequenceEqual(assignment.Tags)
-            ? original : ExportAssignment(assignment);
 
     private static bool Same(ShiftAssignment a, ShiftAssignment b)
         => a.Id == b.Id && a.EmployeeId == b.EmployeeId && a.Role == b.Role && a.RoleId == b.RoleId

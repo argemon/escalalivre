@@ -45,3 +45,7 @@ Essa conferência não é a rejeição de novas violações obrigatórias previs
 Ver [relatório da etapa 3](stage-3-protected-planning.md). Testes exigem construção inválida, unidades, bordas temporais, atomicidade, identidade, cópias profundas, migração temporal idempotente e round-trip atual/legado; os hashes da etapa 2 e o arquivo de cenários compartilhados não foram alterados. Nenhuma migração ou versão de schema nova é necessária.
 
 Seguimento de consolidação: [ADR 008](008-final-boundaries-and-validation.md) e [revisão final](stage-6-final-review.md). Nomes/estados anteriores neste registro são históricos.
+
+## Seguimento — saída protegida da geração
+
+O [ADR 009](009-validated-operational-boundaries.md) substitui a decisão de conservar o contêiner/referências do otimizador em ApplyGeneration. A comparação de preservação permanece completa, mas a aplicação agora devolve a exportação imutável do agregado, incluindo tags. Manter referências mutáveis permitia alterar o resultado depois da admissão. JSON, ordem, IDs, tempos, pausas e metadados continuam iguais por valor; falhas preservam o documento original. PlanningSettings passou a fornecer a configuração efetiva tipada aos consumidores operacionais.

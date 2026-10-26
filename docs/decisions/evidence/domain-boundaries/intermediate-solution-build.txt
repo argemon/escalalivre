@@ -1,0 +1,23 @@
+{"started":"2026-10-26T18:17:39.498Z","cwd":"C:/Users/eargemon/source/repos/escalalivre","exe":"dotnet","args":["build","EscalaLivre.slnx","-c","Release","-t:Rebuild"],"TZ":null}
+  Determinando os projetos a serem restaurados...
+  Todos os projetos estão atualizados para restauração.
+  EscalaLivre.Domain -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Domain\bin\Release\net10.0\EscalaLivre.Domain.dll
+  EscalaLivre.Application -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Application\bin\Release\net10.0\EscalaLivre.Application.dll
+C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\OperationalBoundaryTests.cs(82,16): error CS0246: O nome do tipo ou do namespace "ScheduleResult" não pode ser encontrado (está faltando uma diretiva using ou uma referência de assembly?) [C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\EscalaLivre.Analysis.Tests.csproj]
+C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\OperationalBoundaryTests.cs(80,61): error CS0738: "OperationalBoundaryTests.Analyzer" não implementa membro de interface "IScheduleAnalyzer.Analyze(ScheduleRequest)". "OperationalBoundaryTests.Analyzer.Analyze(ScheduleRequest)" não pode implementar "IScheduleAnalyzer.Analyze(ScheduleRequest)" porqu não tem o tipo de retorno correspondente de "ScheduleResult". [C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\EscalaLivre.Analysis.Tests.csproj]
+  EscalaLivre.Infrastructure -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Infrastructure\bin\Release\net10.0\EscalaLivre.Infrastructure.dll
+  EscalaLivre.Adapter.Tests -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Adapter.Tests\bin\Release\net10.0\EscalaLivre.Adapter.Tests.dll
+  EscalaLivre.Api -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Api\bin\Release\net10.0\EscalaLivre.Api.dll
+  EscalaLivre.Api.Tests -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Api.Tests\bin\Release\net10.0\EscalaLivre.Api.Tests.dll
+  EscalaLivre.Architecture.Tests -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Architecture.Tests\bin\Release\net10.0\EscalaLivre.Architecture.Tests.dll
+
+FALHA da compilação.
+
+C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\OperationalBoundaryTests.cs(82,16): error CS0246: O nome do tipo ou do namespace "ScheduleResult" não pode ser encontrado (está faltando uma diretiva using ou uma referência de assembly?) [C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\EscalaLivre.Analysis.Tests.csproj]
+C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\OperationalBoundaryTests.cs(80,61): error CS0738: "OperationalBoundaryTests.Analyzer" não implementa membro de interface "IScheduleAnalyzer.Analyze(ScheduleRequest)". "OperationalBoundaryTests.Analyzer.Analyze(ScheduleRequest)" não pode implementar "IScheduleAnalyzer.Analyze(ScheduleRequest)" porqu não tem o tipo de retorno correspondente de "ScheduleResult". [C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\EscalaLivre.Analysis.Tests.csproj]
+    0 Aviso(s)
+    2 Erro(s)
+
+Tempo Decorrido 00:00:07.48
+
+{"name":"solution-build","started":"2026-10-26T18:17:39.498Z","ended":"2026-10-26T18:17:47.857Z","code":1,"exe":"dotnet","args":["build","EscalaLivre.slnx","-c","Release","-t:Rebuild"]}

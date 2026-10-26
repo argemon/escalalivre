@@ -1,6 +1,8 @@
 # Arquitetura atual
 
-Estado em 26/10/2026: implementação das seis etapas verificada localmente. Aceite integral do plano permanece aberto para CI remota e calibração de desempenho em carga representativa. O [relatório final](decisions/stage-6-final-review.md) distingue implementação, evidência e limitações; os relatórios anteriores são históricos.
+Estado em 26/10/2026: implementação das seis etapas verificada localmente. Revalidação dos fontes e CI remota para o código de d40f887 conferidas em 26/10/2026, conforme [evidências atuais](decisions/stage-6-current-validation.md). Aceite integral do plano permanece aberto para calibração de desempenho em carga representativa. O [relatório final](decisions/stage-6-final-review.md) distingue implementação, evidência e limitações; os relatórios anteriores são históricos.
+
+Seguimento em 26/10/2026: [fronteiras operacionais validadas](decisions/009-validated-operational-boundaries.md) reforça unidades/configuração na geração e a saída do agregado. Validação local atual: 612 testes .NET, 373 frontend em cada fuso e 16 HTTP. A CI verde de d40f887 é evidência do baseline; não cobre este diff local, cuja CI permanece pendente antes de integrar.
 
 ## Camadas e dependências
 
@@ -15,7 +17,7 @@ Os testes de arquitetura verificam referências de assembly/projeto, imports das
 
 ## Modelo e operações
 
-Domain.Planning contém CivilWindow, ShiftPause, CivilPlanningPeriod, Duration/DayCount/WholeHours/WeeklyHours e as variantes de RegimeConfiguration. Construção validada protege estrutura/segundos civis/unidades. ScheduledAssignment protege identidade; PlanningSchedule oferece atribuir, atualizar, remover, mover, mudar período e substituir um período de forma atômica. PlanningSettings mantém configuração em snapshot imutável separado. Não há banco de dados/repositório nem agregado gigante do arquivo inteiro.
+Domain.Planning contém CivilWindow, ShiftPause, CivilPlanningPeriod, Duration/DayCount/WholeHours/WeeklyHours e as variantes de RegimeConfiguration. Construção validada protege estrutura/segundos civis/unidades. ScheduledAssignment protege identidade; PlanningSchedule oferece atribuir, atualizar, remover, mover, mudar período e substituir um período de forma atômica. PlanningSettings mantém configuração em snapshot imutável separado e resolve a herança em RegimeFor. Gerador e tradutores de descanso/ciclo/semana consomem RegimeConfiguration/Duration/DayCount/WeeklyHours; o modelo conserva a projeção de configuração correspondente ao mesmo snapshot. Não há banco de dados/repositório nem agregado gigante do arquivo inteiro.
 
 ScheduleModels contém projeções de leitura para políticas/portas; elas não são o agregado protegido. A presença de primitivos e records nesses contratos de leitura não implica garantia de consistência por mutação direta. Application.Contracts.Documents contém DTOs do arquivo e mapeadores explícitos; PlanningDocumentMapping cruza a fronteira das operações protegidas. JSON camelCase, IDs/opcionais, versões, tempo civil e migrações idempotentes permanecem compatíveis.
 
@@ -35,7 +37,7 @@ OrToolsScheduleOptimizer coordena ScheduleCandidateGenerator, OptimizationBudget
 
 Preservados: grade de entradas/pausas, margens operacionais, 30.000 candidatos incluindo fixos, 300.000 passos instrumentados, 5s/um worker CP-SAT e prioridades/pesos. Cobertura é objetivo com déficit permitido; uma solução parcial pode ser viável/ótima. A correção separada D1 usa presença por pessoa, sem remover atribuições históricas sobrepostas.
 
-GenerateSchedule só admite optimal/feasible após conferir estrutura/fronteira de planejamento e analisar a proposta completa. GenerationConformance distingue atribuições idênticas retidas e participação nova em conflitos agregados; um código herdado não autoriza agravar semana/ciclo/descanso. Falha preserva documento, retorna invalid/solverInvalid e decisions vazio. Não se aplica parcialmente um lote rejeitado. A porta e as duas classes de fachada/composição legada foram removidas após equivalência de 581 casos.
+GenerateSchedule só admite optimal/feasible após conferir estrutura/fronteira de planejamento e analisar a proposta completa. GenerationConformance distingue atribuições idênticas retidas e participação nova em conflitos agregados; um código herdado não autoriza agravar semana/ciclo/descanso. Falha preserva documento, retorna invalid/solverInvalid e decisions vazio. Não se aplica parcialmente um lote rejeitado. Na geração aceita, a aplicação devolve o snapshot imutável exportado por PlanningSchedule, incluindo tags, e monta decisões a partir das seleções admitidas. Não devolve o contêiner mutável do otimizador; histórico/IDs/horários/metadados são preservados por valor. A porta e as duas classes de fachada/composição legada foram removidas após equivalência de 581 casos.
 
 ## Worker, frontend e arquivo local
 
@@ -47,4 +49,4 @@ No frontend, componentes apresentam, Zustand coordena estado/recuperação e lib
 
 Testes puros, adaptador, API, arquitetura e HTTP possuem execuções separadas, conforme [guia de validação](testing.md). CI tem jobs separados e mantém o gate backend para compatibilidade com o nome anterior. Não houve publicação/integração nesta sessão.
 
-Medição exploratória reproduz baseline/final isolados com ferramentas iguais e duas entradas antigas; resultados mistos, sem ganho global demonstrado. Metodologia/dados em [desempenho](decisions/stage-6-performance.md). Limites representativos de regressão e execução remota continuam pendentes; não são declarados aprovados por configuração de workflow.
+Medição exploratória reproduz baseline/final isolados com ferramentas iguais e duas entradas antigas; resultados mistos, sem ganho global demonstrado. Metodologia/dados em [desempenho](decisions/stage-6-performance.md). Limites representativos de regressão continuam pendentes. A execução remota Validate #20 foi conferida, com todos os jobs verdes e merge de teste sem diferença de arquivos para d40f887; configuração de workflow por si só não foi tratada como evidência.
