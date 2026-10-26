@@ -1,0 +1,107 @@
+  Determinando os projetos a serem restaurados...
+  Todos os projetos estão atualizados para restauração.
+  EscalaLivre.Domain -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Domain\bin\Release\net10.0\EscalaLivre.Domain.dll
+  EscalaLivre.Application -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Application\bin\Release\net10.0\EscalaLivre.Application.dll
+  EscalaLivre.Infrastructure -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Infrastructure\bin\Release\net10.0\EscalaLivre.Infrastructure.dll
+  EscalaLivre.Api -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Api\bin\Release\net10.0\EscalaLivre.Api.dll
+  EscalaLivre.Tests -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Tests\bin\Release\net10.0\EscalaLivre.Tests.dll
+Execução de teste para C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Tests\bin\Release\net10.0\EscalaLivre.Tests.dll (.NETCoreApp,Version=v10.0)
+1 arquivos de teste no total corresponderam ao padrão especificado.
+[xUnit.net 00:00:00.20] EscalaLivre.Tests: Skipping test case with duplicate ID '4e9b8c151237d48828348a4b1a64925b0646e583' ('EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "four-hours-plus-one-second-needs-break")' and 'EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "four-hours-plus-one-second-needs-break")')
+[xUnit.net 00:00:00.20] EscalaLivre.Tests: Skipping test case with duplicate ID '7203e4942ef578d93e11a122698374029a81f3c4' ('EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "six-hours-plus-one-second-needs-hour")' and 'EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "six-hours-plus-one-second-needs-hour")')
+[xUnit.net 00:00:00.20] EscalaLivre.Tests: Skipping test case with duplicate ID 'b810f69e0261639f2328c7cfb54391d4e600b16a' ('EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "adjacent-availability-is-not-unioned")' and 'EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "adjacent-availability-is-not-unioned")')
+[xUnit.net 00:00:00.20] EscalaLivre.Tests: Skipping test case with duplicate ID 'b977e862bcd67088eadb2a70ee8482ff008c1cb9' ('EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "rest-one-second-short-previous")' and 'EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "rest-one-second-short-previous")')
+[xUnit.net 00:00:00.20] EscalaLivre.Tests: Skipping test case with duplicate ID '761f0cded0ddc6f6ac4353471fcd7dbc5acc245c' ('EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "rest-one-second-short-future")' and 'EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "rest-one-second-short-future")')
+[xUnit.net 00:00:00.20] EscalaLivre.Tests: Skipping test case with duplicate ID 'eda0e1c918c6efa7636677fd4a74c40f5a4d24a0' ('EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "rest-uses-largest-end-not-latest-start")' and 'EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "rest-uses-largest-end-not-latest-start")')
+[xUnit.net 00:00:00.20] EscalaLivre.Tests: Skipping test case with duplicate ID 'b316ae3ef7c46b64fb6a4e6fd7b161d71a4cc10a' ('EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "weekly-limit-exact")' and 'EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "weekly-limit-exact")')
+[xUnit.net 00:00:00.20] EscalaLivre.Tests: Skipping test case with duplicate ID 'dd53a640ffae05be02ec677b3b0b11310f2b77d4' ('EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "weekly-limit-one-second-over")' and 'EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "weekly-limit-one-second-over")')
+[xUnit.net 00:00:01.63]     EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "four-hours-plus-one-second-needs-break") [FAIL]
+  Com falha EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "four-hours-plus-one-second-needs-break") [3 ms]
+  Mensagem de erro:
+   System.InvalidOperationException : Sequence contains more than one matching element
+  Rastreamento de pilha:
+     at System.Linq.ThrowHelper.ThrowMoreThanOneMatchException()
+   at System.Linq.Enumerable.TryGetSingle[TSource](IEnumerable`1 source, Func`2 predicate, Boolean& found)
+   at System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+   at EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(String id) in C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Tests\SharedRulesTests.cs:line 17
+   at InvokeStub_SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+[xUnit.net 00:00:01.71]     EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "six-hours-plus-one-second-needs-hour") [FAIL]
+  Com falha EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "six-hours-plus-one-second-needs-hour") [4 ms]
+  Mensagem de erro:
+   System.InvalidOperationException : Sequence contains more than one matching element
+  Rastreamento de pilha:
+     at System.Linq.ThrowHelper.ThrowMoreThanOneMatchException()
+   at System.Linq.Enumerable.TryGetSingle[TSource](IEnumerable`1 source, Func`2 predicate, Boolean& found)
+   at System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+   at EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(String id) in C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Tests\SharedRulesTests.cs:line 17
+   at InvokeStub_SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+[xUnit.net 00:00:01.71]     EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "rest-one-second-short-future") [FAIL]
+  Com falha EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "rest-one-second-short-future") [2 ms]
+  Mensagem de erro:
+   System.InvalidOperationException : Sequence contains more than one matching element
+  Rastreamento de pilha:
+     at System.Linq.ThrowHelper.ThrowMoreThanOneMatchException()
+   at System.Linq.Enumerable.TryGetSingle[TSource](IEnumerable`1 source, Func`2 predicate, Boolean& found)
+   at System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+   at EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(String id) in C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Tests\SharedRulesTests.cs:line 17
+   at InvokeStub_SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+[xUnit.net 00:00:01.84]     EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "weekly-limit-exact") [FAIL]
+[xUnit.net 00:00:01.85]     EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "adjacent-availability-is-not-unioned") [FAIL]
+  Com falha EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "weekly-limit-exact") [3 ms]
+  Mensagem de erro:
+   System.InvalidOperationException : Sequence contains more than one matching element
+  Rastreamento de pilha:
+     at System.Linq.ThrowHelper.ThrowMoreThanOneMatchException()
+   at System.Linq.Enumerable.TryGetSingle[TSource](IEnumerable`1 source, Func`2 predicate, Boolean& found)
+   at System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+   at EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(String id) in C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Tests\SharedRulesTests.cs:line 17
+   at InvokeStub_SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Com falha EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "adjacent-availability-is-not-unioned") [2 ms]
+  Mensagem de erro:
+   System.InvalidOperationException : Sequence contains more than one matching element
+  Rastreamento de pilha:
+     at System.Linq.ThrowHelper.ThrowMoreThanOneMatchException()
+   at System.Linq.Enumerable.TryGetSingle[TSource](IEnumerable`1 source, Func`2 predicate, Boolean& found)
+   at System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+   at EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(String id) in C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Tests\SharedRulesTests.cs:line 17
+   at InvokeStub_SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+[xUnit.net 00:00:01.86]     EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "rest-one-second-short-previous") [FAIL]
+  Com falha EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "rest-one-second-short-previous") [2 ms]
+  Mensagem de erro:
+   System.InvalidOperationException : Sequence contains more than one matching element
+  Rastreamento de pilha:
+     at System.Linq.ThrowHelper.ThrowMoreThanOneMatchException()
+   at System.Linq.Enumerable.TryGetSingle[TSource](IEnumerable`1 source, Func`2 predicate, Boolean& found)
+   at System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+   at EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(String id) in C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Tests\SharedRulesTests.cs:line 17
+   at InvokeStub_SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+[xUnit.net 00:00:02.08]     EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "weekly-limit-one-second-over") [FAIL]
+[xUnit.net 00:00:02.13]     EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "rest-uses-largest-end-not-latest-start") [FAIL]
+  Com falha EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "weekly-limit-one-second-over") [3 ms]
+  Mensagem de erro:
+   System.InvalidOperationException : Sequence contains more than one matching element
+  Rastreamento de pilha:
+     at System.Linq.ThrowHelper.ThrowMoreThanOneMatchException()
+   at System.Linq.Enumerable.TryGetSingle[TSource](IEnumerable`1 source, Func`2 predicate, Boolean& found)
+   at System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+   at EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(String id) in C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Tests\SharedRulesTests.cs:line 17
+   at InvokeStub_SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Com falha EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(id: "rest-uses-largest-end-not-latest-start") [2 ms]
+  Mensagem de erro:
+   System.InvalidOperationException : Sequence contains more than one matching element
+  Rastreamento de pilha:
+     at System.Linq.ThrowHelper.ThrowMoreThanOneMatchException()
+   at System.Linq.Enumerable.TryGetSingle[TSource](IEnumerable`1 source, Func`2 predicate, Boolean& found)
+   at System.Linq.Enumerable.Single[TSource](IEnumerable`1 source, Func`2 predicate)
+   at EscalaLivre.Tests.SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(String id) in C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Tests\SharedRulesTests.cs:line 17
+   at InvokeStub_SharedRulesTests.SharedDocumentsHaveExpectedDiagnosticsAndGenerationUsesTheValidator(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+
+Com falha! – Com falha:     8, Aprovado:   346, Ignorado:     0, Total:   354, Duração: 6 s - EscalaLivre.Tests.dll (net10.0)

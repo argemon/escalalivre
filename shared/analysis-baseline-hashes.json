@@ -1,0 +1,234 @@
+[
+  {
+    "id": "baseline-eight-work-hours",
+    "sha256": "DABAD5FEBFBE71CBD4DD23FCA6A8591EE41E79B56F5E0A456E4B8259D2D54FA3"
+  },
+  {
+    "id": "four-hours-no-legal-break",
+    "sha256": "669951C3BE7CBB862D1C07D8475B4A71D533323D16E881CC6974FC573EB5D07A"
+  },
+  {
+    "id": "over-four-hours-needs-fifteen-minutes",
+    "sha256": "D5A4368AC61219C9FD0E15940B0342BE696365522D2DA34DBDF93F490B29F977"
+  },
+  {
+    "id": "six-hours-and-fifteen-minute-break",
+    "sha256": "63239FD944F1D3CE467B9225A1405B9E495F7690C1F434E042C2695751773E3B"
+  },
+  {
+    "id": "over-six-hours-needs-one-hour",
+    "sha256": "E6304F4723CD3A8EF2035925F0817B13AC606C4E8BD278D46720129678DDC0BC"
+  },
+  {
+    "id": "company-minimum-break",
+    "sha256": "B7B164176831E064FE201018D047B9D83384C8A7CC9A9AE021603817EECD5903"
+  },
+  {
+    "id": "company-maximum-break",
+    "sha256": "C3960D5A05C24BED67DE1045AF13158CFE230B881F35576AF3A24E92CE1C95B5"
+  },
+  {
+    "id": "legal-minimum-overrides-smaller-company-maximum",
+    "sha256": "779B9005A2BA0F99C1E0DB1F38DF3F782E77A799BD79BE2555E84A60339E0E7B"
+  },
+  {
+    "id": "fixed-break-exact",
+    "sha256": "71BC6623035AFEB3AC35220F5654FB0652B19BD6892A0784A1A31219FACEC316"
+  },
+  {
+    "id": "fixed-break-wrong-clock",
+    "sha256": "A50A8564AF15CA65348A424F9BF06A8551004FF227F4FABEC7F6DE49B7635EDA"
+  },
+  {
+    "id": "fixed-break-missing",
+    "sha256": "42C44AC0B7C89640A1A42A544B5F99D4EC8A6231995C35A4CDB8DEE2A1F8C148"
+  },
+  {
+    "id": "fixed-break-overrides-company-range",
+    "sha256": "5235102E3F4B435B911733E282075CD4753F56792549D3CF79F0E826D9577555"
+  },
+  {
+    "id": "fixed-break-not-exempt-from-legal-minimum",
+    "sha256": "592A66B51BDD659388FDD943ED7A6932AEE9A7BC644192E370D061F34DF2A4F4"
+  },
+  {
+    "id": "fixed-break-overnight",
+    "sha256": "D50E0242B95EE019107D6731765280E67D110DF544C7FD31FA31BF54C19DA235"
+  },
+  {
+    "id": "break-at-shift-start",
+    "sha256": "B60DA35EAA08E5F207016E7F8E4BC94BC939FE4732B2CF63FE6AEC02FC9FB797"
+  },
+  {
+    "id": "break-at-shift-end",
+    "sha256": "310C34088FE4EC6399AE53B7FF5FED63A501D7A829CFF1DF8C814D9DB212F30C"
+  },
+  {
+    "id": "lunch-closure-covered",
+    "sha256": "0CA953DBD6ABD4B093AFCF8F9A3C935A0F09594FED1E205A30D85510E698C9E5"
+  },
+  {
+    "id": "lunch-closure-uncovered",
+    "sha256": "A5C505F5BBD107ADA00A7D5C99A2AB14AC45A5FEBB65DC2322A4D8897676415F"
+  },
+  {
+    "id": "closure-overrides-short-company-maximum",
+    "sha256": "6EFBB269277B55335F7C55B94B07DB71D5C6575FD22B89E21271599C8F543CD5"
+  },
+  {
+    "id": "works-through-closure-pause-elsewhere",
+    "sha256": "80FC37D009CCC670460DB938D1FEC5302277BFF1D01E36B461302E23EC5CB51B"
+  },
+  {
+    "id": "works-through-closure-cannot-pause-there",
+    "sha256": "D538737D21D1BBAA2D2607CC6CF0C98F18FED7425483C2B57C9200C21FC49682"
+  },
+  {
+    "id": "shift-touching-closure",
+    "sha256": "EBDFCE70C3DADE0BDB5D0F476F7015E7484C4A488032F656DC69F4167F3D679E"
+  },
+  {
+    "id": "overnight-closure-from-previous-operation",
+    "sha256": "98AC350E15AB507BDF271DD7B9990AFB69D581062F051B4746934407893B561B"
+  },
+  {
+    "id": "configured-workload-is-net-work",
+    "sha256": "68DFD6FA16EE76762EA8136070D7A5ACFBE88CF75301C8D07DCAF9CBCCC0C090"
+  },
+  {
+    "id": "hour-regime-excludes-break",
+    "sha256": "BD4834E688FB6130AC37FC72EE490BF475A34A0FB848B40B2A1F89754DB5A5CC"
+  },
+  {
+    "id": "hour-regime-net-limit",
+    "sha256": "041BD3E4E2EE6B7996E2F5D439CF39BC0012ACB55DD60CC1CBEDFD58A63F73E6"
+  },
+  {
+    "id": "daily-limit-without-overtime",
+    "sha256": "53049441E3E5D6B4EBDA0D25F1740E66D51B1DF29530C94411FDC542F3C11914"
+  },
+  {
+    "id": "daily-limit-with-overtime",
+    "sha256": "EF633C6F8E768A94DC17A23B3064B2793870E6977572E83E7B6BFA9596BA0B19"
+  },
+  {
+    "id": "availability-contains-entire-shift",
+    "sha256": "625905C551F32C844876D767A96F43F14F3D8CCA4CAA31B4B7DBF14945056916"
+  },
+  {
+    "id": "availability-does-not-cover-start",
+    "sha256": "6FC18A1F497F336ACAF77EE269C2507530E7DE8E868B684E1128EDF3DF81055E"
+  },
+  {
+    "id": "restriction-even-during-break",
+    "sha256": "78DD953FD77AFA28FFEC0EDCC17C01C44CBBCD47B2B19CBBBC13470505481016"
+  },
+  {
+    "id": "restrictions-touching-bounds-allowed",
+    "sha256": "A7D12559F80D5DFF5D4480C393D2875D290316828679755E2658E9D43BB9ADC9"
+  },
+  {
+    "id": "minimum-rest-previous-side",
+    "sha256": "631C54AB3B01E0FEE2B704AFCE2849C1857E75FA589E28EFB5568569B4C4C923"
+  },
+  {
+    "id": "minimum-rest-exact",
+    "sha256": "E5DB69B687B8EB8E277A31863AA7DA5B9477FA263310007C172E7B8E5813A765"
+  },
+  {
+    "id": "hour-rest-next-side",
+    "sha256": "4707D79381B5DA07AD6CECC05100DDDCEE4EB52074231CC95EE6A58CE8DB9322"
+  },
+  {
+    "id": "two-turns-same-start-day",
+    "sha256": "FD5C5A0B79F863F281E05986132173027A50CE6BA30DF8CDA6E0AE64FB50833B"
+  },
+  {
+    "id": "day-cycle-across-both-borders",
+    "sha256": "62FE7A600A99C3F41C6B702F07567EBECAF6CAF530A11BD20E51B68BEC0DB24A"
+  },
+  {
+    "id": "weekly-limit-across-borders",
+    "sha256": "E1854D6C1E734AAFDEDF491E12E8A5755BA36122A8A054E6EABDE9970E0B25B6"
+  },
+  {
+    "id": "weekly-split-at-sunday-midnight",
+    "sha256": "A3B4B1DF3EA69599B79DDBBD9FD4C7CD8181CB5B4DCB969013FA1F6C7BAE6742"
+  },
+  {
+    "id": "fixed-start-mismatch",
+    "sha256": "433D9B52520677E270E6FAB03FA1C583FC99065DD04AC4B29692471743561FC0"
+  },
+  {
+    "id": "closed-holiday-not-authorized",
+    "sha256": "D706F6D44924E7EE97CE7BE4F147F4BACD93571B4A5B24956B54ADB3A30CD0EB"
+  },
+  {
+    "id": "holiday-authorizes-only-operating-exception",
+    "sha256": "3A1B6AD12C0345638C62AFEA8027D9677408F96DCCBE81FDC301EC287B2538BE"
+  },
+  {
+    "id": "night-work-not-allowed",
+    "sha256": "D00D7059E5EA6F0B34A0D3165835CDD9C15C84ADB84C47D2EEEC48DD06B1BCE7"
+  },
+  {
+    "id": "outside-operating-hours",
+    "sha256": "3B33EBD6BA30561D2E98355AECA6077631CC00243A1D908BDCE9BF51CD09EF74"
+  },
+  {
+    "id": "exceptional-coverage-authorized",
+    "sha256": "81BB8C7B8E07E7F22A329911847435131267816B6A8FA4D0360F0F2BE492C7F7"
+  },
+  {
+    "id": "custom-working-days",
+    "sha256": "2C0631D61AB155F102E83DA8C3652A1D3BB1CB67B30B7F9EB87D16F87A452055"
+  },
+  {
+    "id": "inherited-working-days-ignore-personal-list",
+    "sha256": "9B4E63302C9C993560ED62611114BC6FBD5C68787B2B7958F046F05E7CC85FFC"
+  },
+  {
+    "id": "role-mismatch-is-not-normalized-away",
+    "sha256": "97EC5F0D0496419AD166250AB3D61508C9F86F421FA3ABA0AC6C69B989534762"
+  },
+  {
+    "id": "dst-device-must-not-change-effective-work",
+    "sha256": "2353ED5966FB1B871059F85064BE12291A108168AF0F307D2EE72E398391FD70"
+  },
+  {
+    "id": "four-hours-plus-one-second-needs-break",
+    "sha256": "C08D6338B0B7CB396557004F89D2BB38F85AD4D3DE3BF91EE9AC28681B1F65D9"
+  },
+  {
+    "id": "six-hours-plus-one-second-needs-hour",
+    "sha256": "668BE4B860CF4B84CD1CACB0C325A2505F7AE5ECE6CF7AF3DAA54B0815802489"
+  },
+  {
+    "id": "adjacent-availability-is-not-unioned",
+    "sha256": "3E5B34CF865929AA82D1A3BE8ABB2C917CD403C4560C0E78CDB7446C8192394F"
+  },
+  {
+    "id": "rest-one-second-short-previous",
+    "sha256": "8CDCBA85560D5A963D1E88DA3A4688E8962B913C7A6E2025C5AA5A499FC00EFF"
+  },
+  {
+    "id": "rest-one-second-short-future",
+    "sha256": "DB3D5C756CFBB4F16B8E1FE899E56E8F131DC3D508A4D61445D3830F066BE58C"
+  },
+  {
+    "id": "rest-uses-largest-end-not-latest-start",
+    "sha256": "82A8A081B92658BC9FFC0003B7446A4FF870EB75BB45A22B8C4C49B35D3F3D8B"
+  },
+  {
+    "id": "weekly-limit-exact",
+    "sha256": "40A137FE7A70EDE8A451E6FDC8E0D6CF67EF922A11D7C75244A6F266B8E7EB22"
+  },
+  {
+    "id": "weekly-limit-one-second-over",
+    "sha256": "C3AB4DF41989B6A83DB7D0179C0DD5D3D2CAB0C3D76664D21B74C7E0D0A35B54"
+  },
+  {
+    "id": "one-second-break-removes-coverage",
+    "sha256": "CBBDED53556AFC368FB83E5C52517B49F8D79292BF9E2A1838A1E30E85A04F3E"
+  }
+]

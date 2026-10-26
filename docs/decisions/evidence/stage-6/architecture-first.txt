@@ -1,0 +1,6 @@
+  Determinando os projetos a serem restaurados...
+  C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Architecture.Tests\EscalaLivre.Architecture.Tests.csproj restaurado (em 1,49 seg).
+  4 de 5 projetos estão atualizados para restauração.
+  EscalaLivre.Domain -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Domain\bin\Release\net10.0\EscalaLivre.Domain.dll
+  EscalaLivre.Application -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Application\bin\Release\net10.0\EscalaLivre.Application.dll
+C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Infrastructure\Solver\Constraints\RestConstraints.cs(28,37): error CS7036: Não há nenhum argumento fornecido que corresponda ao parâmetro necessário 'otherEnd' de 'RestPolicy.Conflicts(DateTime, DateTime, DateTime, DateTime, TimeSpan)' [C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Infrastructure\EscalaLivre.Infrastructure.csproj]

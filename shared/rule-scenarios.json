@@ -4817,6 +4817,839 @@
           ]
         }
       }
+    },
+    {
+      "id": "four-hours-plus-one-second-needs-break",
+      "expectedCodes": [
+        "interval"
+      ],
+      "generate": false,
+      "apiValid": true,
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": []
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Equipe",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": []
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Equipe",
+              "start": "2026-10-19T08:00:00",
+              "end": "2026-10-19T12:00:01",
+              "break": null,
+              "source": "manual",
+              "tags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "six-hours-plus-one-second-needs-hour",
+      "expectedCodes": [
+        "interval"
+      ],
+      "generate": false,
+      "apiValid": true,
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": []
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Equipe",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": []
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Equipe",
+              "start": "2026-10-19T08:00:00",
+              "end": "2026-10-19T14:15:01",
+              "break": {
+                "start": "2026-10-19T11:00:00",
+                "end": "2026-10-19T11:15:00"
+              },
+              "source": "manual",
+              "tags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "adjacent-availability-is-not-unioned",
+      "expectedCodes": [
+        "availability"
+      ],
+      "generate": false,
+      "apiValid": true,
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": []
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Equipe",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [
+                {
+                  "start": "2026-10-19T08:00:00",
+                  "end": "2026-10-19T12:00:00"
+                },
+                {
+                  "start": "2026-10-19T12:00:00",
+                  "end": "2026-10-19T17:00:00"
+                }
+              ],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": []
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Equipe",
+              "start": "2026-10-19T08:00:00",
+              "end": "2026-10-19T17:00:00",
+              "break": {
+                "start": "2026-10-19T12:00:00",
+                "end": "2026-10-19T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "rest-one-second-short-previous",
+      "expectedCodes": [
+        "minimumRest"
+      ],
+      "generate": false,
+      "apiValid": true,
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": []
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Equipe",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": []
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Equipe",
+              "start": "2026-10-19T09:00:00",
+              "end": "2026-10-19T13:00:00",
+              "break": null,
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "00000000-0000-4000-8000-000000000201",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Equipe",
+              "start": "2026-10-18T18:00:01",
+              "end": "2026-10-18T22:00:01",
+              "break": null,
+              "source": "manual",
+              "tags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "rest-one-second-short-future",
+      "expectedCodes": [
+        "minimumRest"
+      ],
+      "generate": false,
+      "apiValid": true,
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": []
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Equipe",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": []
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Equipe",
+              "start": "2026-10-19T09:00:01",
+              "end": "2026-10-19T13:00:01",
+              "break": null,
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "00000000-0000-4000-8000-000000000201",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Equipe",
+              "start": "2026-10-20T00:00:00",
+              "end": "2026-10-20T04:00:00",
+              "break": null,
+              "source": "manual",
+              "tags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "rest-uses-largest-end-not-latest-start",
+      "expectedCodes": [
+        "dailyLimit",
+        "interval",
+        "minimumRest",
+        "multipleShifts",
+        "workload"
+      ],
+      "generate": false,
+      "apiValid": true,
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": []
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Equipe",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": []
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Equipe",
+              "start": "2026-10-18T08:00:00",
+              "end": "2026-10-18T20:00:00",
+              "break": null,
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "00000000-0000-4000-8000-000000000202",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Equipe",
+              "start": "2026-10-18T09:00:00",
+              "end": "2026-10-18T10:00:00",
+              "break": null,
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "00000000-0000-4000-8000-000000000203",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Equipe",
+              "start": "2026-10-19T06:00:00",
+              "end": "2026-10-19T10:00:00",
+              "break": null,
+              "source": "manual",
+              "tags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "weekly-limit-exact",
+      "expectedCodes": [],
+      "generate": false,
+      "apiValid": true,
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 4,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": []
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Equipe",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": []
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Equipe",
+              "start": "2026-10-19T08:00:00",
+              "end": "2026-10-19T10:00:00",
+              "break": null,
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "00000000-0000-4000-8000-000000000204",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Equipe",
+              "start": "2026-10-20T08:00:00",
+              "end": "2026-10-20T10:00:00",
+              "break": null,
+              "source": "manual",
+              "tags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "weekly-limit-one-second-over",
+      "expectedCodes": [
+        "weeklyLimit"
+      ],
+      "generate": false,
+      "apiValid": true,
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 4,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": []
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Equipe",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": []
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Equipe",
+              "start": "2026-10-19T08:00:00",
+              "end": "2026-10-19T10:00:00",
+              "break": null,
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "00000000-0000-4000-8000-000000000204",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Equipe",
+              "start": "2026-10-20T08:00:00",
+              "end": "2026-10-20T10:00:01",
+              "break": null,
+              "source": "manual",
+              "tags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "one-second-break-removes-coverage",
+      "expectedCodes": [],
+      "generate": false,
+      "apiValid": true,
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Equipe",
+                "day": 1,
+                "start": "08:00:00",
+                "end": "10:00:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Equipe",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": []
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Equipe",
+              "start": "2026-10-19T08:00:00",
+              "end": "2026-10-19T10:00:00",
+              "break": {
+                "start": "2026-10-19T09:00:00",
+                "end": "2026-10-19T09:00:01"
+              },
+              "source": "manual",
+              "tags": []
+            }
+          ]
+        }
+      }
     }
   ]
 }

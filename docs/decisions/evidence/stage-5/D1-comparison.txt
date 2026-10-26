@@ -1,0 +1,4 @@
+D1-overlapping-preserved-team corrected=False score=0,5 assignments=2
+D1-overlapping-preserved-team corrected=True score=1 assignments=3
+D1-overlapping-preserved-role corrected=False score=0,5 assignments=2
+D1-overlapping-preserved-role corrected=True score=1 assignments=3

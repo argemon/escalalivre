@@ -1,7 +1,6 @@
 namespace EscalaLivre.Domain.Scheduling;
 public static class LaborRules
 {
- public static TimeSpan RequiredInterval(TimeSpan work) => work > TimeSpan.FromHours(6) ? TimeSpan.FromHours(1) : work > TimeSpan.FromHours(4) ? TimeSpan.FromMinutes(15) : TimeSpan.Zero;
  public static bool ClosedHoliday(CompanyRules company, DateTime date)
  {
         Holiday? custom =company.Holidays?.FirstOrDefault(h=>h.Date==DateOnly.FromDateTime(date));
@@ -12,10 +11,5 @@ public static class LaborRules
  {
   var date=DateOnly.FromDateTime(assignment.Start);
   return assignment.Source=="manual" && assignment.Tags.Contains("holiday:"+date.ToString("yyyy-MM-dd")) && (company.Holidays?.Any(h=>h.Date==date)==true || ClosedHoliday(company,assignment.Start));
- }
- public static bool ValidInterval(ShiftAssignment a)
- {
-        TimeSpan pause =a.Break is null ? TimeSpan.Zero : a.Break.End-a.Break.Start;
-  return (a.Break is null || (a.Break.Start>a.Start && a.Break.End<a.End && pause>TimeSpan.Zero)) && pause >= RequiredInterval(a.End-a.Start-pause) && pause<=TimeSpan.FromHours(2);
  }
 }

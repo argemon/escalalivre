@@ -16,8 +16,42 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run build
-      - run: node --test tests/*.test.cjs
-  backend:
+      - name: Frontend contracts, recovery and parity
+        run: node --test tests/*.test.cjs
+      - name: Frontend in another device time zone
+        run: node --test tests/*.test.cjs
+        env:
+          TZ: America/New_York
+  domain-analysis:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Pure domain and application, without native deployment
+        run: dotnet test backend/EscalaLivre.Analysis.Tests/EscalaLivre.Analysis.Tests.csproj --configuration Release
+  adapter:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Real OR-Tools and import/export adapters
+        run: dotnet test backend/EscalaLivre.Adapter.Tests/EscalaLivre.Adapter.Tests.csproj --configuration Release
+  architecture-api:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: API composition and queue mechanics
+        run: dotnet test backend/EscalaLivre.Api.Tests/EscalaLivre.Api.Tests.csproj --configuration Release
+      - name: Dependency direction and public surface
+        run: dotnet test backend/EscalaLivre.Architecture.Tests/EscalaLivre.Architecture.Tests.csproj --configuration Release
+  http-worker:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
@@ -30,7 +64,18 @@ jobs:
       # The HTTP parity test loads frontend TypeScript through source-loader.cjs.
       - run: npm ci --prefix frontend --include=dev
       - run: dotnet build backend/EscalaLivre.Api/EscalaLivre.Api.csproj --configuration Release
-      - run: dotnet test backend/EscalaLivre.Tests/EscalaLivre.Tests.csproj --configuration Release
-      - run: node backend/security.integration.cjs
+      - name: Real HTTP, child workers, limits, cancellation and cross-language parity
+        run: node backend/security.integration.cjs
         env:
           SECURITY_BUILD_CONFIGURATION: Release
+  backend:
+    if: ${{ always() }}
+    needs: [domain-analysis, adapter, architecture-api, http-worker]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Backend validation gate
+        run: |
+          test "${{ needs['domain-analysis'].result }}" = success
+          test "${{ needs['adapter'].result }}" = success
+          test "${{ needs['architecture-api'].result }}" = success
+          test "${{ needs['http-worker'].result }}" = success

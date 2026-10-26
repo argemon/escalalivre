@@ -3,5 +3,8 @@
   <Project Path="backend/EscalaLivre.Domain/EscalaLivre.Domain.csproj" />
   <Project Path="backend/EscalaLivre.Application/EscalaLivre.Application.csproj" />
   <Project Path="backend/EscalaLivre.Infrastructure/EscalaLivre.Infrastructure.csproj" />
-  <Project Path="backend/EscalaLivre.Tests/EscalaLivre.Tests.csproj" />
+  <Project Path="backend/EscalaLivre.Adapter.Tests/EscalaLivre.Adapter.Tests.csproj" />
+  <Project Path="backend/EscalaLivre.Api.Tests/EscalaLivre.Api.Tests.csproj" />
+  <Project Path="backend/EscalaLivre.Analysis.Tests/EscalaLivre.Analysis.Tests.csproj" />
+  <Project Path="backend/EscalaLivre.Architecture.Tests/EscalaLivre.Architecture.Tests.csproj" />
 </Solution>

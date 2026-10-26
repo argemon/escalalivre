@@ -119,6 +119,14 @@ test('API rejects abusive inputs and keeps normal scheduling and exports working
       assert.equal(invalid.status, 400);
       assert.equal((await invalid.json()).success, false);
     }
+    for (const owner of ['company', 'employee']) {
+      const unknown = request();
+      const rule = owner === 'company' ? unknown.document.company.defaultWorkload : unknown.document.employees[0].workload;
+      rule.regimeType = 'unregistered';
+      const response = await post('/analyze', unknown);
+      assert.equal(response.status, 400);
+      assert.equal((await response.json()).success, false);
+    }
     for (const contentBase64 of ['bad base64', 'e30=', 'bnVsbA=='])
       assert.equal((await post('/import', { fileName: 'x.escalalivre', format: 'native', contentBase64 })).status, 400);
     assert.equal((await post('/export', { document: null, format: 'native' })).status, 400);
@@ -167,17 +175,25 @@ test('bounded queue rejects excess jobs while the API remains responsive', async
     assert.ok(results.some(r => r.status === 503));
     assert.ok(results.every(r => [422, 503, 504].includes(r.status)), results.map(r => r.status).join(','));
     assert.equal((await fetch(url + '/health')).status, 200);
-    assert.equal((await post('/solve', request())).status, 200);
+    // Verify the released slot within the unchanged 1s budget, without requiring cold native startup under 1s.
+    // Generation recovery with the normal production budget is covered by the other worker tests.
+    const recovered = await post('/analyze', request());
+    assert.equal(recovered.status, 200);
+    assert.equal((await recovered.json()).success, true);
   });
 });
 
 test('wall-clock deadline includes result analysis and the API recovers', async () => {
-  await withServer({ WorkerTimeoutSeconds: 1 }, async ({ url, post }) => {
+  await withServer({ ConcurrentWorkers: 1, QueueLimit: 0, WorkerTimeoutSeconds: 1 }, async ({ url, post }) => {
     const response = await post('/analyze', expensiveAnalysis());
     assert.equal(response.status, 504);
     assert.equal((await response.json()).errors[0].code, 'calculationTimeout');
     assert.equal((await fetch(url + '/health')).status, 200);
-    assert.equal((await post('/solve', request())).status, 200);
+    // Probe the released analysis slot with the same operation and deadline.
+    // Cold native solver startup has its own integration tests and no subsecond contract.
+    const recovered = await post('/analyze', request());
+    assert.equal(recovered.status, 200);
+    assert.equal((await recovered.json()).success, true);
   });
 });
 
@@ -394,6 +410,29 @@ test('editing flow: long duration input, save, persisted reload and generation p
       await client.generate();
       assert.equal(client.payload.document.company.minimumRest,hours+':00:00');
       assert.equal(client.store.getState().document.company.minimumRest,hours+':00:00');
+    }
+  });
+});
+
+// D1 correction: fixed overlapping assignments retain diagnostics but cannot provide two people.
+test('overlapping preserved history counts people in team and directional role coverage', async () => {
+  const load=require('../frontend/tests/source-loader.cjs')();
+  const {analyzeDocument}=load('lib/analysis.ts');
+  await withServer({},async ({post})=>{
+    for(const s of require('../shared/solver-regression-scenarios.json').scenarios) {
+      const before=JSON.stringify(s.request);
+      const response=await post('/solve',s.request);assert.equal(response.status,200);
+      const envelope=await response.json();assert.equal(envelope.success,true);
+      const result=envelope.data;assert.ok(['optimal','feasible'].includes(result.optimization.status));
+      assert.equal(result.coverageScore,1);assert.equal(result.gaps.length,0);
+      for(const original of s.request.document.assignments)assert.deepEqual(result.assignments.find(a=>a.id===original.id),original);
+      const local=analyzeDocument({...s.request.document,assignments:result.assignments});
+      assert.equal(local.coverageScore,result.coverageScore);
+      assert.deepEqual(JSON.parse(JSON.stringify(local.coverage)),result.coverage);
+      const issueFields=issues=>issues.map(({code,severity,employeeId,start,end,role})=>({code,severity,employeeId,start,end,role}));
+      assert.deepEqual(JSON.parse(JSON.stringify(issueFields(local.conflicts))),issueFields(result.conflicts));
+      assert.deepEqual(JSON.parse(JSON.stringify(local.gaps)),result.gaps);
+      assert.equal(JSON.stringify(s.request),before);
     }
   });
 });

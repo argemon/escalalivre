@@ -1,0 +1,25 @@
+{
+  "baselineTestsPreserved": 581,
+  "totalDotNetTests": 594,
+  "pure": 207,
+  "adapter": 366,
+  "api": 8,
+  "architecture": 13,
+  "frontend": 373,
+  "http": 16,
+  "frozenFixturesContractsAndLockfile": "unchanged",
+  "performanceSamples": 40,
+  "performanceProductionManifest": "matches final production sources",
+  "localLinksChecked": 287,
+  "ciJobsValidated": [
+    "frontend",
+    "domain-analysis",
+    "adapter",
+    "architecture-api",
+    "http-worker",
+    "backend"
+  ],
+  "retiredFiles": 27,
+  "remoteCi": "not executed",
+  "representativePerformanceGates": "not calibrated"
+}

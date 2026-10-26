@@ -324,7 +324,7 @@ Sem demanda, o score é `1`; o backend arredonda o resultado a três casas decim
 
 As explicações são geradas por regras e modelos de texto do projeto. As sugestões de contratação agrupam lacunas por função, com estimativa limitada a 44 horas e até sete janelas no backend; são pistas para revisão, não um segundo solver de contratação nem uma prova da causa de cada decisão.
 
-**Onde ler o código:** [solver CP-SAT](backend/EscalaLivre.Infrastructure/Solver/OrToolsScheduleSolver.cs), [regras de intervalo e feriado](backend/EscalaLivre.Domain/Scheduling/LaborRules.cs), [alocação de cobertura no navegador](frontend/src/lib/coverageAllocation.ts) e [análise local](frontend/src/lib/analysis.ts).
+**Onde ler o código:** [solver CP-SAT](backend/EscalaLivre.Infrastructure/Solver/OrToolsScheduleOptimizer.cs), [política de intervalos](backend/EscalaLivre.Domain/Scheduling/IntervalPolicy.cs), [feriados](backend/EscalaLivre.Domain/Scheduling/LaborRules.cs), [alocação de cobertura no navegador](frontend/src/lib/coverageAllocation.ts) e [análise local](frontend/src/lib/analysis.ts).
 
 ## Experimente localmente
 
@@ -396,7 +396,10 @@ backend/
   EscalaLivre.Application/       Contratos e interfaces de serviços
   EscalaLivre.Infrastructure/    Solver e importação/exportação
   EscalaLivre.Api/               Endpoints HTTP
-  EscalaLivre.Tests/             Testes do backend
+  EscalaLivre.Analysis.Tests/    Testes puros de domínio e aplicação
+  EscalaLivre.Adapter.Tests/     Adaptadores e OR-Tools real
+  EscalaLivre.Api.Tests/         Composição e fila
+  EscalaLivre.Architecture.Tests/ Dependências e superfície pública
 docs/                           Documentação técnica
 ```
 
@@ -426,7 +429,10 @@ Na raiz do repositório:
 
 ```bash
 node --test frontend/tests/*.test.cjs
-dotnet test backend/EscalaLivre.Tests/EscalaLivre.Tests.csproj --configuration Release
+dotnet test backend/EscalaLivre.Analysis.Tests/EscalaLivre.Analysis.Tests.csproj -c Release
+dotnet test backend/EscalaLivre.Adapter.Tests/EscalaLivre.Adapter.Tests.csproj -c Release
+dotnet test backend/EscalaLivre.Api.Tests/EscalaLivre.Api.Tests.csproj -c Release
+dotnet test backend/EscalaLivre.Architecture.Tests/EscalaLivre.Architecture.Tests.csproj -c Release
 ```
 
 No diretório `frontend`:
@@ -471,6 +477,8 @@ A validação cobre regras implementadas, como descanso e limite semanal. Ela n�
 ## Documentação e contribuição
 
 - [Arquitetura](docs/architecture.md)
+- [Instruções de desenvolvimento: SOLID e DDD](AGENTS.md)
+- [Plano de evolução arquitetural](docs/architecture-improvement-plan.md)
 - [Motor de otimização](docs/solver.md)
 - [Regras de negócio](docs/business-rules.md)
 - [Regimes de jornada](docs/regimes.md)
@@ -489,3 +497,5 @@ Contribuições podem melhorar a interface, os testes, a documentação, os regi
 ## Licença
 
 Distribuído sob a [licença MIT](LICENSE).
+
+Validação por fronteira, integração HTTP e fuso alternativo: [guia de testes](docs/testing.md). Revisão das seis dimensões e limitações reais: [relatório final](docs/decisions/stage-6-final-review.md).

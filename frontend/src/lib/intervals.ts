@@ -1,18 +1,17 @@
 import { formatCivilDateTime } from "./dateTime";
 import { civilMillis, civilString } from "./civilTime";
-import { fixedBreak, closuresFor, intervalIssue, requiredBreakMinutes, shiftDiagnostics } from "./laborRules";
+import { fixedBreak, closuresFor, variableIntervalLimits } from "./policies/interval";
+import { shiftDiagnostics } from "./laborRules";
 import type { CompanyRules, Employee, ShiftAssignment } from "../types/schedule";
 
 export const minutesOf=(value:string)=>value.split(":").reduce((n,v,i)=>n+Number(v)*[60,1,1/60][i],0);
-export const requiredInterval=requiredBreakMinutes;
 export const fixedIntervalOn=(e:Employee,start:number)=>fixedBreak(e,formatCivilDateTime(new Date(start)));
-export const intervalProblem=intervalIssue;
 export function previewPause(company:CompanyRules,e:Employee,work:number,start:number,limit:number) {
   const fixed=fixedIntervalOn(e,start);
   if(fixed)return (civilMillis(fixed.end)-civilMillis(fixed.start))/60000;
   const closures=closuresFor(company,civilMillis(formatCivilDateTime(new Date(start))),civilMillis(formatCivilDateTime(new Date(limit))));
-  const minimum=Math.max(requiredInterval(work),minutesOf(company.lunch.minimum),...(!e.worksDuringLunchClosure?closures.map(c=>(c.end-c.start)/60000):[0]));
-  return Math.max(minimum,Math.min(120,Math.max(minimum,minutesOf(company.lunch.maximum)),(limit-start)/60000-work));
+  const limits=variableIntervalLimits(company,e,work*60000,closures);
+  return Math.max(limits.minimum/60000,Math.min(limits.maximum/60000,(limit-start)/60000-work));
 }
 // Explicit construction for a new/manual shift or a preview; never called as normalization.
 export function intervalFor(company:CompanyRules,e:Employee,startValue:number,endValue:number,durationMinutes?:number) {

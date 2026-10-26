@@ -1,5 +1,7 @@
 namespace EscalaLivre.Domain.Scheduling;
 
+// Compatibility read projections used by existing policies/adapters.
+// JSON DTOs are declared in Application; validated planning objects live in Domain.Planning.
 public sealed record EscalaLivreDocument(
     string SchemaVersion,
     Guid Id,

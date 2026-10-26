@@ -27,3 +27,15 @@ Falhas temporárias ao consultar o estado são repetidas com o mesmo token; nunc
 Para múltiplas instâncias, seria necessário armazenamento/fila compartilhados.
 
 Publicação: frontend e API precisam receber esta atualização juntos. Permita GET/POST/DELETE em `/solve/jobs` no proxy e use HTTPS.
+
+## Composição do cálculo (etapa 2)
+
+O processo filho continua recebendo solve/validate/analyze pelo mesmo protocolo JSON. Nele, AnalyzeSchedule e ValidateSchedule resolvem a mesma porta IScheduleAnalyzer; apenas solve registra IScheduleOptimizer e executa GenerateSchedule. O supervisor, a fila e seus prazos/cancelamento não mudaram. Veja [arquitetura](architecture.md) e [evidências da etapa 2](decisions/stage-2-analysis-extraction.md).
+
+## Verificação operacional na etapa 4
+
+O teste de deadline da análise mantém 1s e verifica recuperação pelo mesmo analyze simples com um único slot/fila zero. A exigência de solve frio em menos de 1s foi retirada desse teste após reproduzir intermitência também na composição anterior. Testes próprios continuam exercitando geração/cancelamento/fila com worker real. Não houve mudança em timeout, protocolo, supervisão ou isolamento de produção. Justificativa e resultados: [relatório da etapa 4](decisions/stage-4-domain-policies.md).
+
+## Consolidação da verificação — etapa 6
+
+A sonda de recuperação da fila também usa analyze simples com 1s/um slot/fila zero, após a admissão/rejeição de solves concorrentes reais. A execução solve com orçamento normal e seu cancelamento continuam verificados. Isso remove uma exigência incidental de startup nativo subsegundo; não amplia o timeout de produção. Testes/CI agora têm fronteiras separadas. [Evidências e limitações](decisions/stage-6-final-review.md).

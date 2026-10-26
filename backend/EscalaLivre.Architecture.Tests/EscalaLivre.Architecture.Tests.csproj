@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><IsPackable>false</IsPackable></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../EscalaLivre.Domain/EscalaLivre.Domain.csproj" />
+    <ProjectReference Include="../EscalaLivre.Application/EscalaLivre.Application.csproj" />
+    <ProjectReference Include="../EscalaLivre.Infrastructure/EscalaLivre.Infrastructure.csproj" />
+    <ProjectReference Include="../EscalaLivre.Api/EscalaLivre.Api.csproj" />
+
+
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+    <Using Include="Xunit" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../EscalaLivre.Domain/EscalaLivre.Domain.csproj" Link="ArchitectureInputs/Domain.csproj" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../EscalaLivre.Domain/**/*.cs" Exclude="../EscalaLivre.Domain/obj/**;../EscalaLivre.Domain/bin/**" Link="ArchitectureInputs/Domain/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../EscalaLivre.Application/EscalaLivre.Application.csproj" Link="ArchitectureInputs/Application.csproj" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../EscalaLivre.Application/**/*.cs" Exclude="../EscalaLivre.Application/obj/**;../EscalaLivre.Application/bin/**" Link="ArchitectureInputs/Application/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../EscalaLivre.Infrastructure/EscalaLivre.Infrastructure.csproj" Link="ArchitectureInputs/Infrastructure.csproj" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../EscalaLivre.Infrastructure/**/*.cs" Exclude="../EscalaLivre.Infrastructure/obj/**;../EscalaLivre.Infrastructure/bin/**" Link="ArchitectureInputs/Infrastructure/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../EscalaLivre.Api/EscalaLivre.Api.csproj" Link="ArchitectureInputs/Api.csproj" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../EscalaLivre.Api/**/*.cs" Exclude="../EscalaLivre.Api/obj/**;../EscalaLivre.Api/bin/**" Link="ArchitectureInputs/Api/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../EscalaLivre.Analysis.Tests/EscalaLivre.Analysis.Tests.csproj" Link="ArchitectureInputs/Tests/Analysis.csproj" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../EscalaLivre.Adapter.Tests/EscalaLivre.Adapter.Tests.csproj" Link="ArchitectureInputs/Tests/Adapter.csproj" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

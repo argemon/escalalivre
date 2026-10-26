@@ -1,0 +1,13 @@
+✔ replacement owns the entire overnight shift by its start date (1.6279ms)
+✔ store applies a full response without duplicates or normalizing preserved shifts again (10.6221ms)
+✔ failed or stale generation never replaces the current schedule (9.8402ms)
+✔ weekly hours split across Sunday midnight and discount each part of the break (0.3052ms)
+✔ local analysis sees the weekly limit and cycle on the later preserved shift (2.3766ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 569.5823

@@ -1,0 +1,24 @@
+✔ asynchronous generation returns a private ticket, survives polling and supports cancellation (1662.4619ms)
+✔ API rejects abusive inputs and keeps normal scheduling and exports working (3060.7071ms)
+✔ solve limit cannot be bypassed by forging a forwarded IP or changing path case (1136.363ms)
+✔ global per-IP rate limit includes invalid requests (968.8724ms)
+✔ bounded queue rejects excess jobs while the API remains responsive (1617.53ms)
+✔ wall-clock deadline includes result analysis and the API recovers (2314.3831ms)
+✔ queue wait has its own deadline and cancellation removes the active job (2586.4511ms)
+✔ disconnecting the caller stops its worker and releases capacity (1182.9335ms)
+✔ memory watchdog stops the child and releases its slot (1357.3001ms)
+✔ an unfinished request body cannot occupy an API slot indefinitely (8508.0328ms)
+✔ civil 09h and overnight dates survive the HTTP API, worker and native round trip (2664.658ms)
+✔ shared documents produce equivalent browser and HTTP diagnostics, coverage and gaps (56971.4094ms)
+✔ editing flow: authorize, save, generate, revoke, save, reload and generate with real solver (2356.5124ms)
+✔ editing flow: generate, change employee role, save, reload and regenerate consistently (2359.3692ms)
+✔ editing flow: long duration input, save, persisted reload and generation preserve all hour digits (2901.9262ms)
+✔ overlapping preserved history counts people in team and directional role coverage (2579.617ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 94235.9821

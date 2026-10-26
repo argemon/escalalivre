@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../TestSupport/PureComposition.cs" Link="Support/PureComposition.cs" />
+    <Using Include="EscalaLivre.TestSupport" />
+    <ProjectReference Include="../EscalaLivre.Application/EscalaLivre.Application.csproj" />
+    <None Include="../../shared/regime-contract-scenarios.json" Link="regime-contract-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../shared/rule-scenarios.json" Link="rule-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../shared/analysis-baseline-hashes.json" Link="analysis-baseline-hashes.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../shared/hiring-demand-scenarios.json" Link="hiring-demand-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+    <Using Include="Xunit" />
+  </ItemGroup>
+</Project>

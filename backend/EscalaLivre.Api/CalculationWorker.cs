@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Threading.RateLimiting;
 using EscalaLivre.Application.Contracts;
 using EscalaLivre.Application.Validation;
+using EscalaLivre.Application.Scheduling;
 using EscalaLivre.Infrastructure.Solver;
 
 namespace EscalaLivre.Api;
@@ -114,10 +115,14 @@ public sealed class CalculationWorker(ProtectionOptions options, ILogger<Calcula
         {
             var request = JsonSerializer.Deserialize<ScheduleRequest>((await Console.In.ReadLineAsync())!, JsonOptions);
             if (request is null || !(await new ScheduleRequestValidator().ValidateAsync(request)).IsValid) return 2;
-            var solver = new OrToolsScheduleSolver();
+            var services = new ServiceCollection().AddScheduleAnalysis();
+            if (operation == "solve") services.AddScheduleOptimization();
+            using var provider = services.BuildServiceProvider();
             var result = operation switch
             {
-                "solve" => solver.Solve(request), "validate" => solver.Validate(request), "analyze" => solver.Analyze(request),
+                "solve" => provider.GetRequiredService<GenerateSchedule>().Execute(request),
+                "validate" => provider.GetRequiredService<ValidateSchedule>().Execute(request),
+                "analyze" => provider.GetRequiredService<AnalyzeSchedule>().Execute(request),
                 _ => throw new InvalidOperationException()
             };
             await Console.Out.WriteAsync(JsonSerializer.Serialize(result, JsonOptions));

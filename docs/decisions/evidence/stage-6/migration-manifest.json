@@ -1,0 +1,117 @@
+[
+  {
+    "from": "backend/EscalaLivre.Tests/DateTimeContractTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/DateTimeContractTests.cs",
+    "sha256": "eaa16169832913e0fb0d0ffb926d77ee9b23f71c99eb04f0c982ca557d4145fb"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/DirectionalCoverageTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/DirectionalCoverageTests.cs",
+    "sha256": "ed9b3e09d6d3f816a7094669864d4bee145f47810a78662621b2821ba953179b"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/DocumentValidationContractTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/DocumentValidationContractTests.cs",
+    "sha256": "8eba39ca8c01e005e4308004e454e004183f8b5dc8b1cc5b0088b9f253439b9c"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/IntervalHolidayTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/IntervalHolidayTests.cs",
+    "sha256": "16b5c17ef9b1126f7a90960665c840acf067341757d7490d86a0e3700d21fa97"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/OptimizationComponentsTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/OptimizationComponentsTests.cs",
+    "sha256": "320c3bcad2e9f518ce12ed9eefc1ed46e55ecbec6e8ebec5bc302fa4c8780068"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/OutsideHoursTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/OutsideHoursTests.cs",
+    "sha256": "7931279f9b4de74e669153a50bcaa8f278035f814b6d2168039c69b761ac48f6"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/PdfExportTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/PdfExportTests.cs",
+    "sha256": "0af3953c582445e8fb190acb41bd888145bd7722e128d9f4b95ca1fedc36aff5"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/PlanningDocumentRoundTripTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/PlanningDocumentRoundTripTests.cs",
+    "sha256": "d189458134e7aa77b81f7cbc0ae5df3db162bc9cbdb90b2e04e2488ccbe4badc"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/PlanningInsightsTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/PlanningInsightsTests.cs",
+    "sha256": "f1aa4883a6ed2e07fc8152c0294e2d489bf8a7b6774f0612c63786d62519d904"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/PlanningPeriodTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/PlanningPeriodTests.cs",
+    "sha256": "04557a97d4c1f3a24f996bda7d03b7d68d6e730d2678183a3117ab3cf81d53c3"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/PreservedShiftsTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/PreservedShiftsTests.cs",
+    "sha256": "621f2d9ba37f81bc5e1ab3a3717b272e2f6199b013b78c616f93ce6a9861cd95"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/ProcessMemorySampleTests.cs",
+    "to": "backend/EscalaLivre.Api.Tests/ProcessMemorySampleTests.cs",
+    "sha256": "03b070b1f91ec69aacc292961b3629f179e131d8200b2e8c45c6cd4cc4329638"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/ProductionRegressionTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/ProductionRegressionTests.cs",
+    "sha256": "e1073651d7530cd2754c104725143aed2cadc2a3676fee04284ea06226c21c3e"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/RecoveryContractTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/RecoveryContractTests.cs",
+    "sha256": "01117a5e3b46c71cada502cc7b1c56eabc87783e23d5d8028d8c49dd99936d73"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/RegimeTests.cs",
+    "to": "backend/EscalaLivre.Analysis.Tests/RegimeTests.cs",
+    "sha256": "b7236977b2af4fe1f0a50f7f0fc1dec7ced28beef5157ac82b1071940bb1033d"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/ScheduleJobQueueTests.cs",
+    "to": "backend/EscalaLivre.Api.Tests/ScheduleJobQueueTests.cs",
+    "sha256": "fd2ee2dd45b6b749bfe005a89cea618745e636b46dd81b6b90133ff679987349"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/SchedulingCompositionTests.cs",
+    "to": "backend/EscalaLivre.Api.Tests/SchedulingCompositionTests.cs",
+    "sha256": "12b8f2cec2a6707502e2a099e12f3bcc5e55d013cabae3f9490b5f95f3dd027b"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/SecurityTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/SecurityTests.cs",
+    "sha256": "8ffd31878daefdd4aca6c27880f1bd2be0df77916652a2355fead74b48e3827b"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/SetupRegressionTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/SetupRegressionTests.cs",
+    "sha256": "341e0e19470d06ebc1cb59edc2089fdffea1adcc9f01574d300d9083e951a225"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/SharedRulesTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/SharedRulesTests.cs",
+    "sha256": "1553d0d89c44f36b3eced45e65f39ade53500ef60f30797fd9a1f934d0a6d159"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/SolverTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/SolverTests.cs",
+    "sha256": "eda28aa91a0c64f8cf03483e902ba5edfddd9c3e1298e9f5f49b102eb7e2f545"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/VariableIntervalTests.cs",
+    "to": "backend/EscalaLivre.Adapter.Tests/VariableIntervalTests.cs",
+    "sha256": "502a7107e85f1266f649652181d8092d3b171d3a4c5562663df243ed5b741515"
+  },
+  {
+    "from": "backend/EscalaLivre.Tests/ArchitectureCharacterizationTests.cs",
+    "to": "split: Analysis.Tests + Adapter.Tests",
+    "sha256": "1d616de5f3405b9bf680768259cf2ce5e049c67cbda228447bc98e83b22d4cd6"
+  }
+]

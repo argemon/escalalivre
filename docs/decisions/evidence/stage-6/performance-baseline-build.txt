@@ -1,0 +1,17 @@
+  Determinando os projetos a serem restaurados...
+  C:\Users\eargemon\Documents\escalalivre-stage6\performance-run\baseline\backend\EscalaLivre.Domain\EscalaLivre.Domain.csproj restaurado (em 86 ms).
+  C:\Users\eargemon\Documents\escalalivre-stage6\performance-run\baseline\backend\EscalaLivre.Application\EscalaLivre.Application.csproj restaurado (em 223 ms).
+  C:\Users\eargemon\Documents\escalalivre-stage6\performance-run\baseline\backend\EscalaLivre.Infrastructure\EscalaLivre.Infrastructure.csproj restaurado (em 302 ms).
+  C:\Users\eargemon\Documents\escalalivre-stage6\performance-run\baseline\backend\EscalaLivre.Api\EscalaLivre.Api.csproj restaurado (em 302 ms).
+  C:\Users\eargemon\Documents\escalalivre-stage6\performance-run\baseline\Bench\Bench.csproj restaurado (em 302 ms).
+  EscalaLivre.Domain -> C:\Users\eargemon\Documents\escalalivre-stage6\performance-run\baseline\backend\EscalaLivre.Domain\bin\Release\net10.0\EscalaLivre.Domain.dll
+  EscalaLivre.Application -> C:\Users\eargemon\Documents\escalalivre-stage6\performance-run\baseline\backend\EscalaLivre.Application\bin\Release\net10.0\EscalaLivre.Application.dll
+  EscalaLivre.Infrastructure -> C:\Users\eargemon\Documents\escalalivre-stage6\performance-run\baseline\backend\EscalaLivre.Infrastructure\bin\Release\net10.0\EscalaLivre.Infrastructure.dll
+  EscalaLivre.Api -> C:\Users\eargemon\Documents\escalalivre-stage6\performance-run\baseline\backend\EscalaLivre.Api\bin\Release\net10.0\EscalaLivre.Api.dll
+  Bench -> C:\Users\eargemon\Documents\escalalivre-stage6\performance-run\baseline\Bench\bin\Release\net10.0\Bench.dll
+
+Compilação com êxito.
+    0 Aviso(s)
+    0 Erro(s)
+
+Tempo Decorrido 00:00:06.45

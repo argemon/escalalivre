@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="EscalaLivre.Tests" />
+    <InternalsVisibleTo Include="EscalaLivre.Api.Tests" />
   </ItemGroup>
 
   <ItemGroup>

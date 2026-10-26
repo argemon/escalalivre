@@ -1,0 +1,15 @@
+  Determinando os projetos a serem restaurados...
+  C:\Users\eargemon\Documents\escalalivre-stage3\comparison\backend\EscalaLivre.Domain\EscalaLivre.Domain.csproj restaurado (em 85 ms).
+  C:\Users\eargemon\Documents\escalalivre-stage3\comparison\backend\EscalaLivre.Application\EscalaLivre.Application.csproj restaurado (em 971 ms).
+  C:\Users\eargemon\Documents\escalalivre-stage3\comparison\backend\EscalaLivre.Infrastructure\EscalaLivre.Infrastructure.csproj restaurado (em 1,02 seg).
+  C:\Users\eargemon\Documents\escalalivre-stage3\comparison\backend\EscalaLivre.Api\EscalaLivre.Api.csproj restaurado (em 1,02 seg).
+  EscalaLivre.Domain -> C:\Users\eargemon\Documents\escalalivre-stage3\comparison\backend\EscalaLivre.Domain\bin\Release\net10.0\EscalaLivre.Domain.dll
+  EscalaLivre.Application -> C:\Users\eargemon\Documents\escalalivre-stage3\comparison\backend\EscalaLivre.Application\bin\Release\net10.0\EscalaLivre.Application.dll
+  EscalaLivre.Infrastructure -> C:\Users\eargemon\Documents\escalalivre-stage3\comparison\backend\EscalaLivre.Infrastructure\bin\Release\net10.0\EscalaLivre.Infrastructure.dll
+  EscalaLivre.Api -> C:\Users\eargemon\Documents\escalalivre-stage3\comparison\backend\EscalaLivre.Api\bin\Release\net10.0\EscalaLivre.Api.dll
+
+Compilação com êxito.
+    0 Aviso(s)
+    0 Erro(s)
+
+Tempo Decorrido 00:00:09.38
