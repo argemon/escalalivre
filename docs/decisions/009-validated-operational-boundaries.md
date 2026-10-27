@@ -72,3 +72,7 @@ Total .NET: 612 (215 puros + 376 adaptador + 8 API + 13 arquitetura), com 18 nov
 A CI remota previamente conferida para d40f887 permanece evidência do baseline, não deste diff. Novas alterações são locais e precisam de CI completa antes de integrar; nenhum commit/push/publicação/integração ou rerun remoto foi realizado. Não se afirma ganho de desempenho: validação adicional e snapshots têm custos não medidos nesta entrega. O [experimento anterior](stage-6-performance.md) não caracteriza este snapshot; calibração em carga representativa permanece aberta.
 
 A entrega fecha os riscos comprovados acima, sem substituir todos os primitivos do sistema. Identidades/códigos e projeções de relatório não ganharam wrappers sem invariantes próprias. Futuras migrações devem partir de um risco/teste de operação concreto e preservar transporte, documentos conflitantes e políticas canônicas.
+
+## Seguimento — extensibilidade em 27/10/2026
+
+A CI [Validate #22](https://github.com/argemon/escalalivre/actions/runs/40377752675) foi conferida com sucesso para b8e88e3, que contém esta entrega. O [ADR 010](010-regime-extension-boundaries.md) evolui a seleção por variantes concretas para capacidades e extrai DayCycleLimit, mantendo a proteção de unidades descrita acima. Seus resultados locais e pendência de CI são próprios; os relatos anteriores de ausência de commit/push/CI descrevem a sessão original.

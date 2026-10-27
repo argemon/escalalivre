@@ -68,9 +68,35 @@ jobs:
         run: node backend/security.integration.cjs
         env:
           SECURITY_BUILD_CONFIGURATION: Release
+  parity-differential:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      matrix:
+        timezone: [UTC, America/New_York]
+    env:
+      TZ: ${{ matrix.timezone }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - run: npm ci --prefix frontend --include=dev
+      - name: Fresh pure C# versus TS, deterministic corpus and properties
+        run: node tools/parity-differential.cjs --output artifacts/parity
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: parity-failure-${{ strategy.job-index }}
+          path: artifacts/parity
+          if-no-files-found: ignore
   backend:
     if: ${{ always() }}
-    needs: [domain-analysis, adapter, architecture-api, http-worker]
+    needs: [domain-analysis, adapter, architecture-api, http-worker, parity-differential]
     runs-on: ubuntu-24.04
     steps:
       - name: Backend validation gate
@@ -79,3 +105,4 @@ jobs:
           test "${{ needs['adapter'].result }}" = success
           test "${{ needs['architecture-api'].result }}" = success
           test "${{ needs['http-worker'].result }}" = success
+          test "${{ needs['parity-differential'].result }}" = success

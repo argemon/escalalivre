@@ -1,7 +1,8 @@
 import { civilDay, civilMillis, civilString, civilWeek, clockMillis } from "./civilTime";
 import { authorizedHolidayShift, closedHoliday } from "./holidays";
 import type { CompanyRules, Employee, EscalaLivreDocument, ScheduleIssue, ShiftAssignment } from "../types/schedule";
-import { workMillis, workloadFor, dailyLimitMillis, exceedsHourRegime, workMillisInWeek } from "./policies/effectiveWork";
+import { workMillis, workloadFor, dailyLimitMillis, exceedsRegimeWork, workMillisInWeek } from "./policies/effectiveWork";
+import { regimeConstraints } from "./regimes";
 import { restMillis, violatesPreviousRest } from "./policies/rest";
 import { fixedBreak, closuresFor, intervalIssue, variableIntervalLimits, conflictsWithClosure } from "./policies/interval";
 import { outsideHours, hasOperatingException, isWorkingDay, isNight, matchesFixedStart } from "./policies/eligibility";
@@ -21,7 +22,7 @@ export function shiftDiagnostics(company:CompanyRules,e:Employee,a:ShiftAssignme
   if(!e.allowsNightWork&&isNight(start,end))issue("nightWork","Trabalho noturno não permitido.");
   if(!matchesFixedStart(e,start))issue("fixedStart","Entrada diferente do horário fixo configurado.");
   if(work>clockMillis(rule.defaultShiftDuration))issue("workload","Trabalho efetivo excede a jornada configurada.");
-  if(exceedsHourRegime(work,rule))issue("regime","Trabalho efetivo excede o regime em horas.");
+  if(exceedsRegimeWork(work,rule))issue("regime","Trabalho efetivo excede o regime em horas.");
   const pauseProblem=intervalIssue(a);if(pauseProblem)issue("interval",pauseProblem);
   const fixed=fixedBreak(e,a.start);
   if(fixed&&(!a.break||a.break.start!==fixed.start||a.break.end!==fixed.end))issue("fixedInterval","Intervalo diferente do horário fixo configurado.");
@@ -47,7 +48,7 @@ export function diagnoseSchedule(document:EscalaLivreDocument):ScheduleIssue[] {
       if(violatesPreviousRest(start,latestEnd,restMillis(document.company,e)))issue("minimumRest","Descanso mínimo entre turnos violado.",start,end);
       latestEnd=Math.max(latestEnd,end);
       days.set(day,[...(days.get(day)??[]),a]);
-      if(rule.regimeType==="dayBased") {
+      if(regimeConstraints(rule).rollingCycle) {
         if(exceedsCycleEndingOn(shifts,day,rule))issue("regime","Dias de trabalho excedem o ciclo configurado.",start,end);
       }
       for(let week=civilWeek(start);week<end;week+=7*86400000) {

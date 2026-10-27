@@ -1,4 +1,5 @@
 import { civilDateTime } from "./dateTime";
+import { regimeDefinition } from "./regimes";
 import { datePart, displayClock } from "./dateTime";
 import type { CoverageRequirement, Employee, EscalaLivreDocument, ShiftAssignment } from "../types/schedule";
 
@@ -36,7 +37,7 @@ export function durationPercent(start: number, end: number) {
 }
 
 export function regimeLabel(employee: Employee) {
-  const type = employee.workload.regimeType === "dayBased" ? "DAY_BASED" : "HOUR_BASED";
+  const type = regimeDefinition(employee.workload.regimeType).shortLabel;
   return `${type} ${employee.workload.workUnits}x${employee.workload.restUnits}`;
 }
 

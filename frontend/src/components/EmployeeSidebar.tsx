@@ -51,7 +51,7 @@ export function EmployeeSidebar() {
                   {hasGap && <AlertTriangle className="size-4 text-amber-500" />}
                 </div>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  <Badge>{employee.workload.regimeType === "dayBased" ? `${employee.workload.workUnits}x${employee.workload.restUnits}` : `${employee.workload.workUnits}x${employee.workload.restUnits}`}</Badge>
+                  <Badge>{employee.workload.workUnits}x{employee.workload.restUnits}</Badge>
                   <Badge>{employee.workload.weeklyLimitHours}h semana</Badge>
                   {employee.allowsNightWork && <Badge>noturno</Badge>}
                 </div>

@@ -5,6 +5,7 @@ import { migrateDocument } from "./documentLifecycle";
 import { validCivilDateTime, validTimeZone } from "./dateTime";
 import { z } from "zod";
 import type { EscalaLivreDocument } from "../types/schedule";
+import { regimeTypes } from "../types/schedule";
 import { migratePlanningPeriod, periodError } from "./planningPeriod";
 
 const text = z.string().max(limits.text).refine(v => v.trim().length > 0, "Texto obrigatório");
@@ -31,7 +32,7 @@ const days = z.array(z.number().int().min(0).max(6)).max(limits.days).refine(v =
 const civilTimestamp = (value:string) => validCivilDateTime(value) ? civilMillis(value) : NaN;
 const windowSchema = z.object({start:date,end:date}).refine(v => civilTimestamp(v.end)>civilTimestamp(v.start), "Fim deve ser posterior ao inicio");
 const workload = z.object({
-  regimeType:z.enum(["dayBased","hourBased"]),workUnits:z.number().int().min(1).max(limits.workUnits),
+  regimeType:z.enum(regimeTypes),workUnits:z.number().int().min(1).max(limits.workUnits),
   restUnits:z.number().int().min(0).max(limits.workUnits),weeklyLimitHours:z.number().positive().max(limits.weeklyHours),
   defaultShiftDuration:boundedDuration(1,limits.shiftDurationSeconds)
 });

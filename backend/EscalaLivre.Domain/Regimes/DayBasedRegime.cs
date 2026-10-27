@@ -5,13 +5,13 @@ namespace EscalaLivre.Domain.Regimes;
 
 public sealed class DayBasedRegime : IShiftRegime
 {
-    public string Type => "dayBased";
+    public string Type => DayCycleConfiguration.Type;
 
     public bool CanWork(DateTime candidateStart, DateTime candidateEnd, IReadOnlyList<ShiftAssignment> existingAssignments,
         WorkloadRule rule, BreakWindow? candidateBreak = null)
     {
         var configuration = Configuration(rule);
-        return candidateEnd > candidateStart && DayCyclePolicy.CanAdd(candidateStart, existingAssignments, configuration);
+        return RegimeEligibility.CanWork(configuration, candidateStart, candidateEnd, existingAssignments, candidateBreak);
     }
 
     public DateTime EstimateStartAfterRest(DateTime lastShiftEnd, WorkloadRule rule)

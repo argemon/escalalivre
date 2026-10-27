@@ -1,0 +1,30 @@
+{
+  "checks": [
+    "envelope incorporates all ten historical measurements",
+    "injected elapsed regression detected",
+    "uncalibrated CPU detected",
+    "alerts retain exit code zero"
+  ],
+  "exitCode": 0,
+  "detected": {
+    "mode": "alerts-only",
+    "environmentMatches": false,
+    "alerts": [
+      {
+        "code": "uncalibratedEnvironment"
+      },
+      {
+        "key": "small-fixed/analyze",
+        "metric": "elapsedMs",
+        "threshold": 0,
+        "measured": {
+          "n": 5,
+          "min": 0.4171,
+          "median": 0.5068,
+          "max": 1.1529,
+          "mad": 0.05900000000000005
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "mode": "alerts-only",
+  "environmentMatches": true,
+  "alerts": [
+    {
+      "key": "small-fixed/analyze",
+      "metric": "elapsedMs",
+      "threshold": 0.5011,
+      "measured": {
+        "n": 5,
+        "min": 0.4171,
+        "median": 0.5068,
+        "max": 1.1529,
+        "mad": 0.05900000000000005
+      }
+    },
+    {
+      "key": "candidate-limit/solve",
+      "metric": "elapsedMs",
+      "threshold": 65.1039,
+      "measured": {
+        "n": 5,
+        "min": 63.2551,
+        "median": 67.8465,
+        "max": 69.6615,
+        "mad": 1.3926999999999907
+      }
+    }
+  ]
+}

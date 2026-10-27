@@ -144,3 +144,54 @@ As fachadas e delegações temporárias foram removidas após comprovar os mesmo
 O [ADR 009](decisions/009-validated-operational-boundaries.md) não altera regra de jornada, descanso, ciclo ou cobertura. Configurações operacionais entram em PlanningSettings/RegimeConfiguration; tradutores distinguem dias, duração e horas semanais. A conversão de horas fracionárias para ticks mantém floor, mas falha explicitamente no overflow em vez de produzir um limite negativo. Estratégias C# embutidas rejeitam regra de outro regime antes de interpretar unidades. Essas entradas já eram estruturalmente rejeitadas pelo transporte; a proteção foi estendida a chamadas internas, sem ampliar/restringir o JSON aceito.
 
 A geração aceita é aplicada por ReplacePeriod e exportada em coleção/tags imutáveis; alterar buffers do adaptador não modifica o resultado validado. A preservação pública é por conteúdo integral, não por identidade de referências C#. Projeções/DTOs continuam com primitivos. Documentos com conflitos de negócio, incluindo pausas nas bordas, histórico sobreposto e excesso de jornada, continuam carregáveis e diagnosticáveis. Os 58 hashes de análise, 20 contratos de regime e dois cenários D1 existentes não foram alterados. TypeScript não precisou mudar: as regras válidas e o transporte mantêm a mesma semântica; a mutabilidade corrigida era interna à geração C#.
+
+## Extensibilidade por capacidades — 27/10/2026
+
+O [ADR 010](decisions/010-regime-extension-boundaries.md) organiza a mesma semântica por capacidades: limite de trabalho efetivo, descanso do regime e limite móvel de datas iniciais. DayCycleConfiguration fornece somente ciclo; HourCycleConfiguration fornece trabalho e descanso. Ausência de descanso do regime não equivale a descanso explicitamente zero: a capacidade parcial em dias continua sem verificar sobreposição, enquanto a de horas com zero ainda a rejeita. O diagnóstico global continua impondo descanso da empresa, exclusividade diária e demais políticas.
+
+C# e TS consomem essas definições sem comparar nomes de regimes em cada consumidor. Mantidos códigos, textos/ordem dos diagnósticos, estimativa legada, segundos, histórico bilateral e os 58 hashes/20 contratos/cenários D1. Não houve novo regime, campo JSON, migração, peso, prazo ou limite de produção. Novas famílias de regras exigirão decisão de paridade, diagnóstico, participação na admissão e tradução próprios; registro de IShiftRegime isolado não satisfaz esse contrato.
+
+## Decisão D2 — autoridade da autorização direcional (27/10/2026)
+
+Reprodução anterior à correção: uma pessoa Principal, um turno 08:00:00–08:00:01 e uma exigência Suporte no mesmo segundo, com coverageRoles=[Suporte] e coverageRoleIds=[]. C# contava uma pessoa/score 1; TS contava zero/score 0 e uma lacuna. Remover o turno ou a exigência elimina a divergência; remover a pessoa invalida a referência. A janela de um segundo é a menor precisão do contrato. O caso está em explicit-empty-ids-revoke-stale-names do [corpus diferencial](../shared/parity-corpus.cjs); a [evidência anterior](decisions/evidence/parity/before-fix-revocation.json) preserva entrada e saídas.
+
+Decisão registrada antes da alteração: a lista de IDs explícita, inclusive vazia, é autoritativa. Substituição exige o ID da função demandada nessa lista; nomes antigos não restauram autorização revogada. Quando a lista está ausente, nomes legados continuam aceitos. Função principal e escopo de equipe mantêm o contrato anterior. Não se exige regravar documentos nem alterar horários, JSON, pesos ou limites do gerador. A correção deve aplicar o mesmo predicado a diagnóstico/alocação e filtros/tradução C#, e ao TS; testes cobrem revogação, autorização somente por ID e legado sem IDs, antes e depois da migração.
+
+## Verificação diferencial determinística — 27/10/2026
+
+A revisão da matriz encontrou lacunas de combinação e de representação, sem substituir as evidências anteriores. Os 58 documentos e seus hashes, os 20 contratos dos regimes e os dois casos D1 continuam intactos. Acrescentados 12 [documentos de fronteira](../shared/parity-boundaries.json), executados em C#, TS e HTTP/worker, e 72 variações reproduzíveis (24 por semente). O comparador puro também executa os 58 originais: 142 entradas por fuso.
+
+| Famílias | Lacuna tratada | Evidência adicional |
+| --- | --- | --- |
+| R09/R12/R22 | Combinar histórico anterior/posterior com excesso semanal; pausa repartida na virada de domingo, igualdade e um segundo acima | bilateral-history-and-aggregate-week; sunday-split-pause-at-midnight; sunday-split-pause-one-second-over; variações de descanso 11h, 11h+1s, 12h e 24h |
+| R18 | Autorização por IDs sem nomes, legado sem IDs e revogação com nomes obsoletos | directional-forward/reverse; directional-ids-without-transport-names; directional-legacy-names-without-ids; explicit-empty-ids-revoke-stale-names (D2) |
+| R19/R20 | Disputa entre funções e turnos sobrepostos da mesma pessoa; pausa de um segundo dentro da demanda | directional-roles-compete-for-one-person; overlap-is-one-person; pause-one-second-and-touching-boundaries |
+| R21 | Arredondamento ponderado no meio de um milésimo, além de blocos e lacunas completos | weighted-score-half-thousandth: um segundo coberto por uma pessoa / 2000 segundos de pessoa exigidos = 0,0005, arredondado a 0,001 |
+| R02/R08/R09/R12/R13 | Conflitos individuais e agregados coexistindo, nos regimes em dias e horas | sementes fixas combinam sobreposição, jornadas, descanso, ciclo e limites semanais; códigos e janelas inteiros são comparados |
+| R22/R23 | Migração repetida e substituição não podem reescrever turnos nem histórico bilateral | round-trip C#, migração TS duas vezes sem migrações restantes, substituição pelo mesmo conjunto e por vazio; teste com instantes qualificados na volta do DST em Nova York |
+| R24/R25/R26 | Não converter preferência ou limite da busca em erro obrigatório | remover preferências preserva o diagnóstico/cobertura; o comparador não otimiza; admissão, orçamento, preservação na falha e worker continuam em suítes próprias |
+
+[tools/parity-differential.cjs](../tools/parity-differential.cjs) compila o probe Release do código atual com --no-incremental, falha se a compilação falhar e chama somente Application/Domain, sem HTTP, Infrastructure ou OR-Tools. AnalyzeSchedule e ValidateSchedule são comparados separadamente com analyzeDocument. O [digest comum](../shared/parity-contract.cjs), também usado por HTTP, compara multiconjuntos preservando duplicatas: código, gravidade, pessoa, início/fim e função dos diagnósticos; todos os campos de blocos/lacunas e score. Textos traduzidos e ordem de enumeração ficam fora do contrato; não se aplica tolerância numérica à pontuação. Um teste altera cada campo para verificar que o comparador detecta a mudança.
+
+Propriedades adicionais: ambas as entradas permanecem imutáveis; serialização/migração é idempotente; ID, pessoa, função, início, fim, pausa, source e tags são preservados no round-trip/substituição. Ausência e null de pausa têm o mesmo significado, conforme o serializador existente; nenhuma janela é reparada. Na migração de timestamps qualificados, a conversão para civil e truncamento para segundos são intencionais e têm expectativas explícitas. Os conflitos de negócio dos documentos continuam carregáveis.
+
+O [corpus](../shared/parity-corpus.cjs) usa xorshift32 com sementes 439041101, 1592594996 e 12648430, IDs/datas fixos e vocabulário finito de fronteiras; não usa relógio, crypto.randomUUID nem Math.random. Cada geração permite 1–32 entradas; o lote permite até 256, 8 milhões de caracteres e, por documento do probe, até 16 pessoas, 64 turnos e 32 exigências. Compilação tem prazo de 120s; execução C# 60s; buffers de saída 32MiB. São limites exclusivos do instrumento de teste. CI limita o job a oito minutos. Nenhum orçamento, grade ou limite do produto mudou. Esses cenários são amostragem direcionada, sem alegar prova exaustiva ou igualdade entre escalas ótimas alternativas.
+
+### Reproduzir e investigar
+
+Na raiz, com SDK .NET 10 e dependências do frontend instaladas pelo lockfile:
+
+~~~powershell
+node tools/parity-differential.cjs
+node tools/parity-differential.cjs --seed 439041101
+node tools/parity-differential.cjs --seed 439041101 --case seed-439041101-0
+node tools/parity-differential.cjs --case explicit-empty-ids-revoke-stale-names
+node tools/parity-differential.cjs --input artifacts/parity/failure.json
+$oldTz=$env:TZ
+try { $env:TZ='America/New_York'; node tools/parity-differential.cjs }
+finally { $env:TZ=$oldTz }
+~~~
+
+Uma falha de comparação grava artifacts/parity/failure.json (ou --output DIRETORIO) com a entrada completa, ID/semente no caso, saídas C#/TS, asserção e runtime/fuso. Reexecutar --input usa o documento gravado, mesmo se o gerador mudar. Falhas de build, transporte ou prazo do probe terminam com erro explícito e logs do processo; não são classificadas automaticamente como divergência de negócio e podem não gerar failure.json. O runner não reduz automaticamente: preserve a falha original, remova pessoas/turnos/demandas sem perder o mesmo desacordo nem a validade estrutural e reduza tempos até a precisão de um segundo. Registre a entrada mínima e a decisão nesta página antes de alterar produção. Acrescente a regressão com expectativa independente; não atualize os 58 hashes para acomodar uma divergência.
+
+A CI acrescenta parity-differential em UTC e America/New_York, dependência obrigatória do gate backend, com upload do documento de falha. O frontend continua executado nos dois fusos e HTTP compara os 12 novos documentos pelo worker real. A mesma configuração de CI ainda precisa executar no diff publicado; validação local Windows/Node 24 não substitui Ubuntu/Node 22. Resultados, comandos e pendências estão no [relatório desta entrega](decisions/011-deterministic-rule-parity.md).

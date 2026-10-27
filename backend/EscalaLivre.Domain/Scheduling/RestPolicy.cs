@@ -11,14 +11,14 @@ public static class RestPolicy
         => Conflicts(first.Start, first.End, second.Start, second.End, rest);
 
     public static TimeSpan RegimeMinimum(WorkloadRule rule)
-        => rule.RegimeType == "hourBased" ? TimeSpan.FromHours(rule.RestUnits) : TimeSpan.Zero;
+        => RegimeConfiguration.From(rule).RestBetweenShifts?.Value ?? TimeSpan.Zero;
 
     public static TimeSpan Required(CompanyRules company, WorkloadRule rule)
         => TimeSpan.FromTicks(Math.Max(company.MinimumRest.Ticks, RegimeMinimum(rule).Ticks));
 
     public static Duration Required(Duration companyMinimum, RegimeConfiguration regime)
         => new(TimeSpan.FromTicks(Math.Max(companyMinimum.Value.Ticks,
-            regime is HourCycleConfiguration hours ? TimeSpan.FromHours(hours.RestHours.Value).Ticks : 0)));
+            regime.RestBetweenShifts?.Value.Ticks ?? 0)));
 
     // All supplied history must belong to the candidate's employee, on both sides of the period.
     public static bool CanFit(DateTime start, DateTime end, IEnumerable<ShiftAssignment> history, TimeSpan rest)

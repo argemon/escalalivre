@@ -4,11 +4,11 @@ Os projetos têm dependências e objetivos distintos; helpers de teste retornam 
 
 | Grupo | Projeto/comando | Fronteira verificada |
 | --- | --- | --- |
-| Puro | EscalaLivre.Analysis.Tests (215 casos) | Apenas Application/Domain: valores/agregados, políticas, regimes, hashes completos, comandos e admissão. Deployment sem Infrastructure/API/OR-Tools. |
+| Puro | EscalaLivre.Analysis.Tests (226 casos) | Apenas Application/Domain: valores/agregados, políticas, regimes, hashes completos, comandos e admissão. Deployment sem Infrastructure/API/OR-Tools. |
 | Adaptador | EscalaLivre.Adapter.Tests (376 casos) | Infrastructure/Application/Domain: OR-Tools real, limites/modelos, documentos atuais/legados, importação/exportação/PDF e recuperação. Sem referência ao projeto API. |
 | API | EscalaLivre.Api.Tests (8 casos) | Composição das capacidades/famílias, fila e amostragem de memória; sem servidor HTTP nesses testes unitários. |
 | Arquitetura | EscalaLivre.Architecture.Tests (13 casos) | Grafo de referências, imports e superfície pública; scanner verificado também com formas proibidas, sem executar solver. |
-| Frontend | frontend/tests/*.test.cjs (373 casos) | Paridade, contratos, recuperação, store, construção/edição, arquiteturas das políticas e independência do fuso. |
+| Frontend | frontend/tests/*.test.cjs (381 casos) | Paridade, contratos, recuperação, store, construção/edição, arquiteturas das políticas e independência do fuso. |
 | HTTP/worker | backend/security.integration.cjs (16 casos) | API e processos filhos reais, envelope/status, frontend/analyze/validate/solve, fila, cancelamento, tempo/memória e recuperação. |
 
 Na raiz, em Release:
@@ -47,3 +47,15 @@ Relatório de aceite/limitações: [revisão final](decisions/stage-6-final-revi
 ## Seguimento das fronteiras operacionais
 
 A entrega posterior acrescenta 8 casos puros e 10 de adaptador, totalizando 612 .NET. Reproduções anteriores à correção, validação incremental, comandos completos e logs estão no [ADR 009](decisions/009-validated-operational-boundaries.md). Compara-se o conteúdo completo dos turnos preservados, inclusive IDs, pausas, source e tags; a geração aceita não promete identidade das referências/contêineres fornecidos pelo adaptador. As novas regressões exigem isolamento contra mutação após o agregado. Falhas de geração continuam devolvendo as atribuições originais. A CI antiga de d40f887 não valida o diff desta entrega.
+
+## Extensibilidade dos regimes — 27/10/2026
+
+O [ADR 010](decisions/010-regime-extension-boundaries.md) acrescenta 11 casos puros e 8 frontend. Total atual: 623 .NET (226/376/8/13), 381 frontend em cada fuso e 16 HTTP. A estratégia adicional existe apenas em Analysis.Tests: comprova resolução e elegibilidade/capacidades genéricas, sem alegar extensão completa da cadeia do produto por registro. Os cenários compartilhados não foram alterados. HTTP rejeita tipos desconhecidos e a estratégia de teste nos três endpoints de cálculo, em empresa e pessoa. Logs/comandos e manifesto de fontes estão no ADR. CI #22 valida o baseline b8e88e3; este diff ainda exige CI própria.
+
+## Paridade diferencial — 27/10/2026
+
+Execute também node tools/parity-differential.cjs na raiz e com TZ=America/New_York. O comando recompila o probe puro atual; não aceite resultados de um DLL antigo como compilação validada. As sementes, campos comparados, limites, replay de failure.json e protocolo de redução/decisão estão em [rule-parity](rule-parity.md#verificação-diferencial-determinística--27102026). A CI tem um job obrigatório próprio nos fusos UTC/NY; as suítes frontend e HTTP consomem os mesmos novos documentos. Resultado e diferenças de ambiente: [relatório](decisions/011-deterministic-rule-parity.md).
+
+## Desempenho atual
+
+O [relatório de desempenho atual](decisions/012-current-performance.md) descreve entradas sintéticas, snapshots isolados, aquecimento, repetições, fases, memória, modelos, HTTP/fila/worker e alertas. Use tools/performance-benchmark.cjs, tools/performance-http.cjs e tools/performance-alerts.cjs conforme os comandos documentados. O workflow manual Performance evidence coleta dados sem impor os limites locais Windows à CI Ubuntu. Não execute builds/testes concorrentes às amostras. A instrumentação é copiada para diretórios isolados; os projetos de produção não recebem sondas de benchmark.

@@ -1,5 +1,6 @@
 using L = EscalaLivre.Application.Contracts.DocumentValidationLimits;
 using EscalaLivre.Domain.Scheduling;
+using EscalaLivre.Domain.Planning;
 
 namespace EscalaLivre.Application.Validation;
 
@@ -55,7 +56,7 @@ public static class DocumentSafety
     private static bool Days(IReadOnlyList<DayOfWeek>? days) => days is not null && days.Count <= L.Days && days.All(d => Enum.IsDefined(d)) && days.Distinct().Count() == days.Count;
     private static bool Window(DateTime start, DateTime end) => SafeDate(start) && SafeDate(end) && end > start;
     private static bool Windows(IReadOnlyList<AvailabilityWindow>? windows) => windows is not null && windows.Count <= L.Windows && windows.All(w => w is not null && Window(w.Start, w.End));
-    private static bool Workload(WorkloadRule? rule) => rule is not null && rule.RegimeType is "dayBased" or "hourBased"
+    private static bool Workload(WorkloadRule? rule) => rule is not null && RegimeConfiguration.IsSupported(rule.RegimeType)
         && rule.WorkUnits >= 1 && rule.WorkUnits <= L.WorkUnits && rule.RestUnits >= 0 && rule.RestUnits <= L.WorkUnits
         && double.IsFinite(rule.WeeklyLimitHours) && rule.WeeklyLimitHours > 0 && rule.WeeklyLimitHours <= L.WeeklyHours
         && rule.DefaultShiftDuration > TimeSpan.Zero && rule.DefaultShiftDuration <= TimeSpan.FromSeconds(L.ShiftDurationSeconds);

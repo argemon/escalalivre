@@ -1,0 +1,41 @@
+using System.Diagnostics;
+using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
+using EscalaLivre.Application.Contracts;
+using EscalaLivre.Application.Scheduling;
+using EscalaLivre.Api;
+using EscalaLivre.Domain.Scheduling;
+using EscalaLivre.Infrastructure.Solver;
+using Microsoft.Extensions.DependencyInjection;
+Console.InputEncoding=Encoding.UTF8;Console.OutputEncoding=new UTF8Encoding(false);CultureInfo.CurrentCulture=CultureInfo.InvariantCulture;
+if(args[0]=="--monitor") {
+    using var parent=Process.GetProcessById(int.Parse(args[1]));long working=0,privateBytes=0;int samples=0;
+    var stopped=Console.In.ReadLineAsync();
+    while(!stopped.IsCompleted){try{parent.Refresh();if(parent.HasExited)break;working=Math.Max(working,parent.WorkingSet64);privateBytes=Math.Max(privateBytes,parent.PrivateMemorySize64);samples++;}catch(InvalidOperationException){break;}await Task.Delay(50);}
+    Console.WriteLine(JsonSerializer.Serialize(new{sampledPeakWorkingSetBytes=working,sampledPeakPrivateBytes=privateBytes,samples,intervalMs=50}));return;
+}
+var options=ScheduleJson.CreateOptions();var request=JsonSerializer.Deserialize<ScheduleRequest>(File.ReadAllText(args[0]),options)!;
+var validation=await new EscalaLivre.Application.Validation.ScheduleRequestValidator().ValidateAsync(request);if(!validation.IsValid)throw new Exception(validation.ToString());
+var before=JsonSerializer.Serialize(request,options);
+using var provider=new ServiceCollection().AddScheduleAnalysis().AddScheduleOptimization().BuildServiceProvider();
+var analyze=provider.GetRequiredService<AnalyzeSchedule>();var generate=provider.GetRequiredService<GenerateSchedule>();
+ScheduleResult? Call()=>args[1]=="analyze"?analyze.Execute(request):generate.Execute(request);
+var cold=Stopwatch.StartNew();try{Call();}catch(ScheduleComplexityException){}cold.Stop();
+GC.Collect();GC.WaitForPendingFinalizers();GC.Collect();PerformancePhaseProbe.Reset();PerformanceModelProbe.Reset();
+using var process=Process.GetCurrentProcess();process.Refresh();var wsBefore=process.WorkingSet64;var privateBefore=process.PrivateMemorySize64;var cpu=process.TotalProcessorTime;
+long allocated=GC.GetTotalAllocatedBytes(true);ScheduleResult? result=null;string outcome="completed";
+var timer=Stopwatch.StartNew();try{result=Call();}catch(ScheduleComplexityException){outcome="complexityLimit";}timer.Stop();allocated=GC.GetTotalAllocatedBytes(true)-allocated;
+process.Refresh();var phases=PerformancePhaseProbe.Samples.ToArray();
+var memory=new{workingSetBefore=wsBefore,workingSetAfter=process.WorkingSet64,privateBytesBefore=privateBefore,privateBytesAfter=process.PrivateMemorySize64,peakWorkingSetBytes=process.PeakWorkingSet64,allocatedManagedBytes=allocated,cpuMs=(process.TotalProcessorTime-cpu).TotalMilliseconds};
+if(before!=JsonSerializer.Serialize(request,options))throw new Exception("Input mutated");
+var correct=true;string? analysisSha=null;
+if(result is not null){
+ var evaluated=analyze.Execute(request with {Document=request.Document with {Assignments=result.Assignments}});
+ if(args[1]=="analyze")analysisSha=Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(result,options))));
+ else if(result.Optimization?.Status is "optimal" or "feasible")correct=GenerationConformance.NewErrors(request.Document,result.Assignments,evaluated.Conflicts).Count==0&&result.CoverageScore==evaluated.CoverageScore;
+ else correct=JsonSerializer.Serialize(result.Assignments,options)==JsonSerializer.Serialize(request.Document.Assignments,options);
+}
+if(!correct)throw new Exception("Generated result violates conformance or preservation");
+Console.WriteLine(JsonSerializer.Serialize(new {elapsedMs=timer.Elapsed.TotalMilliseconds,coldMs=cold.Elapsed.TotalMilliseconds,memory,phases,outcome,correct,inputUnchanged=true,analysisSha256=analysisSha,status=result?.Optimization?.Status,score=result?.CoverageScore,assignmentCount=result?.Assignments.Count,model=new{candidates=PerformanceModelProbe.Candidates,variables=PerformanceModelProbe.Variables,constraints=PerformanceModelProbe.Constraints,serializedBytes=PerformanceModelProbe.SerializedBytes,steps=PerformanceModelProbe.Steps},solver=new{objective=PerformanceModelProbe.Objective,bestBound=PerformanceModelProbe.Bound,wallSeconds=PerformanceModelProbe.SolverWallSeconds,branches=PerformanceModelProbe.Branches,conflicts=PerformanceModelProbe.Conflicts}},new JsonSerializerOptions(JsonSerializerDefaults.Web)));

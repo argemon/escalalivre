@@ -1,3 +1,5 @@
+using EscalaLivre.Domain.Planning;
+
 namespace EscalaLivre.Domain.Scheduling;
 
 // Classifies canonical errors; does not invent a second evaluator or treat coverage gaps as invalidity.
@@ -36,11 +38,12 @@ public static class GenerationConformance
         var employee = document.Employees.FirstOrDefault(e => e.Id == added.EmployeeId);
         if (employee is null) return true;
         var rule = EffectiveWorkPolicy.RuleFor(document.Company, employee);
+        var cycle = RegimeConfiguration.From(rule).RollingCycle;
         return issue.Code switch
         {
             "weeklyLimit" => EffectiveWorkPolicy.WorkTicksInWeek(added, start) > 0,
             "dailyLimit" or "multipleShifts" => added.Start.Date == start.Date,
-            "regime" when rule.RegimeType == "dayBased" => added.Start.Date >= start.Date.AddDays(1 - DayCyclePolicy.Length(rule))
+            "regime" when cycle is not null => added.Start.Date >= start.Date.AddDays(1 - DayCyclePolicy.Length(cycle))
                 && added.Start.Date <= start.Date && !retained.Any(a => a.EmployeeId == added.EmployeeId && a.Start.Date == added.Start.Date),
             "minimumRest" => added.Start <= start && RestPolicy.Conflicts(added.Start, added.End, start, end, RestPolicy.Required(document.Company, rule)),
             "invalidShift" or "availability" or "workingDay" or "outsideHours" or "holiday" or "nightWork"

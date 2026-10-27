@@ -1,0 +1,1359 @@
+{
+  "version": 1,
+  "scenarios": [
+    {
+      "id": "directional-forward",
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Suporte",
+                "roleId": "10000000-0000-4000-8000-000000000011",
+                "scope": "role",
+                "day": 1,
+                "start": "08:00:00",
+                "end": "09:00:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Principal",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "10000000-0000-4000-8000-000000000010",
+              "coverageRoles": [
+                "Suporte"
+              ],
+              "coverageRoleIds": [
+                "10000000-0000-4000-8000-000000000011"
+              ]
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Principal",
+              "start": "2026-10-19T08:00:00",
+              "end": "2026-10-19T09:00:00",
+              "break": null,
+              "source": "manual",
+              "tags": [],
+              "roleId": "10000000-0000-4000-8000-000000000010"
+            }
+          ],
+          "roles": [
+            {
+              "id": "10000000-0000-4000-8000-000000000010",
+              "name": "Principal"
+            },
+            {
+              "id": "10000000-0000-4000-8000-000000000011",
+              "name": "Suporte"
+            }
+          ]
+        }
+      },
+      "apiValid": true,
+      "expectedScore": 1
+    },
+    {
+      "id": "directional-reverse",
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Principal",
+                "roleId": "10000000-0000-4000-8000-000000000010",
+                "scope": "role",
+                "day": 1,
+                "start": "08:00:00",
+                "end": "09:00:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Suporte",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "10000000-0000-4000-8000-000000000011",
+              "coverageRoles": [],
+              "coverageRoleIds": []
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Suporte",
+              "start": "2026-10-19T08:00:00",
+              "end": "2026-10-19T09:00:00",
+              "break": null,
+              "source": "manual",
+              "tags": [],
+              "roleId": "10000000-0000-4000-8000-000000000011"
+            }
+          ],
+          "roles": [
+            {
+              "id": "10000000-0000-4000-8000-000000000010",
+              "name": "Principal"
+            },
+            {
+              "id": "10000000-0000-4000-8000-000000000011",
+              "name": "Suporte"
+            }
+          ]
+        }
+      },
+      "apiValid": true,
+      "expectedScore": 0
+    },
+    {
+      "id": "overlap-is-one-person",
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Suporte",
+                "roleId": "10000000-0000-4000-8000-000000000011",
+                "scope": "team",
+                "day": 1,
+                "start": "08:00:00",
+                "end": "09:00:00",
+                "minimumEmployees": 2
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Principal",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "10000000-0000-4000-8000-000000000010",
+              "coverageRoles": [
+                "Suporte"
+              ],
+              "coverageRoleIds": [
+                "10000000-0000-4000-8000-000000000011"
+              ]
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Principal",
+              "start": "2026-10-19T08:00:00",
+              "end": "2026-10-19T09:00:00",
+              "break": null,
+              "source": "manual",
+              "tags": [],
+              "roleId": "10000000-0000-4000-8000-000000000010"
+            },
+            {
+              "id": "10000000-0000-4000-8000-000000000020",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Principal",
+              "start": "2026-10-19T08:00:00",
+              "end": "2026-10-19T09:00:00",
+              "break": null,
+              "source": "manual",
+              "tags": [],
+              "roleId": "10000000-0000-4000-8000-000000000010"
+            }
+          ],
+          "roles": [
+            {
+              "id": "10000000-0000-4000-8000-000000000010",
+              "name": "Principal"
+            },
+            {
+              "id": "10000000-0000-4000-8000-000000000011",
+              "name": "Suporte"
+            }
+          ]
+        }
+      },
+      "apiValid": true,
+      "expectedScore": 0.5,
+      "requiredCodes": [
+        "minimumRest",
+        "multipleShifts"
+      ]
+    },
+    {
+      "id": "pause-one-second-and-touching-boundaries",
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Suporte",
+                "roleId": "10000000-0000-4000-8000-000000000011",
+                "scope": "role",
+                "day": 1,
+                "start": "08:00:00",
+                "end": "09:00:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Principal",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "10000000-0000-4000-8000-000000000010",
+              "coverageRoles": [
+                "Suporte"
+              ],
+              "coverageRoleIds": [
+                "10000000-0000-4000-8000-000000000011"
+              ]
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Principal",
+              "start": "2026-10-19T08:00:00",
+              "end": "2026-10-19T09:00:00",
+              "break": {
+                "start": "2026-10-19T08:30:00",
+                "end": "2026-10-19T08:30:01"
+              },
+              "source": "manual",
+              "tags": [],
+              "roleId": "10000000-0000-4000-8000-000000000010"
+            }
+          ],
+          "roles": [
+            {
+              "id": "10000000-0000-4000-8000-000000000010",
+              "name": "Principal"
+            },
+            {
+              "id": "10000000-0000-4000-8000-000000000011",
+              "name": "Suporte"
+            }
+          ]
+        }
+      },
+      "apiValid": true,
+      "expectedGap": {
+        "start": "2026-10-19T08:30:00",
+        "end": "2026-10-19T08:30:01",
+        "role": "Suporte",
+        "missingEmployees": 1
+      }
+    },
+    {
+      "id": "bilateral-history-and-aggregate-week",
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 10,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Suporte",
+                "roleId": "10000000-0000-4000-8000-000000000011",
+                "scope": "role",
+                "day": 1,
+                "start": "08:00:00",
+                "end": "09:00:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Principal",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "10000000-0000-4000-8000-000000000010",
+              "coverageRoles": [
+                "Suporte"
+              ],
+              "coverageRoleIds": [
+                "10000000-0000-4000-8000-000000000011"
+              ]
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Principal",
+              "start": "2026-10-19T08:00:00",
+              "end": "2026-10-19T16:00:00",
+              "break": {
+                "start": "2026-10-19T12:00:00",
+                "end": "2026-10-19T13:00:00"
+              },
+              "source": "manual",
+              "tags": [],
+              "roleId": "10000000-0000-4000-8000-000000000010"
+            },
+            {
+              "id": "10000000-0000-4000-8000-000000000021",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Principal",
+              "start": "2026-10-18T20:00:00",
+              "end": "2026-10-18T23:00:00",
+              "break": null,
+              "source": "manual",
+              "tags": [],
+              "roleId": "10000000-0000-4000-8000-000000000010"
+            },
+            {
+              "id": "10000000-0000-4000-8000-000000000022",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Principal",
+              "start": "2026-10-20T00:00:00",
+              "end": "2026-10-20T04:00:00",
+              "break": null,
+              "source": "manual",
+              "tags": [],
+              "roleId": "10000000-0000-4000-8000-000000000010"
+            }
+          ],
+          "roles": [
+            {
+              "id": "10000000-0000-4000-8000-000000000010",
+              "name": "Principal"
+            },
+            {
+              "id": "10000000-0000-4000-8000-000000000011",
+              "name": "Suporte"
+            }
+          ]
+        }
+      },
+      "apiValid": true,
+      "requiredCodes": [
+        "minimumRest",
+        "weeklyLimit"
+      ]
+    },
+    {
+      "id": "directional-roles-compete-for-one-person",
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Suporte",
+                "roleId": "10000000-0000-4000-8000-000000000011",
+                "scope": "role",
+                "day": 1,
+                "start": "08:00:00",
+                "end": "09:00:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Principal",
+                "roleId": "10000000-0000-4000-8000-000000000010",
+                "scope": "role",
+                "day": 1,
+                "start": "08:00:00",
+                "end": "09:00:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Principal",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "10000000-0000-4000-8000-000000000010",
+              "coverageRoles": [
+                "Suporte"
+              ],
+              "coverageRoleIds": [
+                "10000000-0000-4000-8000-000000000011"
+              ]
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Principal",
+              "start": "2026-10-19T08:00:00",
+              "end": "2026-10-19T09:00:00",
+              "break": null,
+              "source": "manual",
+              "tags": [],
+              "roleId": "10000000-0000-4000-8000-000000000010"
+            }
+          ],
+          "roles": [
+            {
+              "id": "10000000-0000-4000-8000-000000000010",
+              "name": "Principal"
+            },
+            {
+              "id": "10000000-0000-4000-8000-000000000011",
+              "name": "Suporte"
+            }
+          ]
+        }
+      },
+      "apiValid": true,
+      "expectedScore": 0.5
+    },
+    {
+      "id": "explicit-empty-ids-revoke-stale-names",
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Suporte",
+                "roleId": "10000000-0000-4000-8000-000000000011",
+                "scope": "role",
+                "day": 1,
+                "start": "08:00:00",
+                "end": "08:00:01",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Principal",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "10000000-0000-4000-8000-000000000010",
+              "coverageRoles": [
+                "Suporte"
+              ],
+              "coverageRoleIds": []
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Principal",
+              "start": "2026-10-19T08:00:00",
+              "end": "2026-10-19T08:00:01",
+              "break": null,
+              "source": "manual",
+              "tags": [],
+              "roleId": "10000000-0000-4000-8000-000000000010"
+            }
+          ],
+          "roles": [
+            {
+              "id": "10000000-0000-4000-8000-000000000010",
+              "name": "Principal"
+            },
+            {
+              "id": "10000000-0000-4000-8000-000000000011",
+              "name": "Suporte"
+            }
+          ]
+        }
+      },
+      "apiValid": true,
+      "expectedScore": 0
+    },
+    {
+      "id": "directional-ids-without-transport-names",
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Suporte",
+                "roleId": "10000000-0000-4000-8000-000000000011",
+                "scope": "role",
+                "day": 1,
+                "start": "08:00:00",
+                "end": "09:00:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Principal",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "10000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [
+                "10000000-0000-4000-8000-000000000011"
+              ]
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Principal",
+              "start": "2026-10-19T08:00:00",
+              "end": "2026-10-19T09:00:00",
+              "break": null,
+              "source": "manual",
+              "tags": [],
+              "roleId": "10000000-0000-4000-8000-000000000010"
+            }
+          ],
+          "roles": [
+            {
+              "id": "10000000-0000-4000-8000-000000000010",
+              "name": "Principal"
+            },
+            {
+              "id": "10000000-0000-4000-8000-000000000011",
+              "name": "Suporte"
+            }
+          ]
+        }
+      },
+      "apiValid": true,
+      "expectedScore": 1
+    },
+    {
+      "id": "directional-legacy-names-without-ids",
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Suporte",
+                "roleId": "10000000-0000-4000-8000-000000000011",
+                "scope": "role",
+                "day": 1,
+                "start": "08:00:00",
+                "end": "09:00:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Principal",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "10000000-0000-4000-8000-000000000010",
+              "coverageRoles": [
+                "Suporte"
+              ]
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Principal",
+              "start": "2026-10-19T08:00:00",
+              "end": "2026-10-19T09:00:00",
+              "break": null,
+              "source": "manual",
+              "tags": [],
+              "roleId": "10000000-0000-4000-8000-000000000010"
+            }
+          ],
+          "roles": [
+            {
+              "id": "10000000-0000-4000-8000-000000000010",
+              "name": "Principal"
+            },
+            {
+              "id": "10000000-0000-4000-8000-000000000011",
+              "name": "Suporte"
+            }
+          ]
+        }
+      },
+      "apiValid": true,
+      "expectedScore": 1
+    },
+    {
+      "id": "sunday-split-pause-at-midnight",
+      "request": {
+        "start": "2026-10-25T00:00:00",
+        "end": "2026-10-25T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-25",
+            "end": "2026-10-25"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 2,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Suporte",
+                "roleId": "10000000-0000-4000-8000-000000000011",
+                "scope": "role",
+                "day": 0,
+                "start": "00:00:00",
+                "end": "03:00:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Principal",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "10000000-0000-4000-8000-000000000010",
+              "coverageRoles": [
+                "Suporte"
+              ],
+              "coverageRoleIds": [
+                "10000000-0000-4000-8000-000000000011"
+              ]
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Principal",
+              "start": "2026-10-24T23:00:00",
+              "end": "2026-10-25T02:00:01",
+              "break": {
+                "start": "2026-10-24T23:59:59",
+                "end": "2026-10-25T00:00:01"
+              },
+              "source": "manual",
+              "tags": [],
+              "roleId": "10000000-0000-4000-8000-000000000010"
+            }
+          ],
+          "roles": [
+            {
+              "id": "10000000-0000-4000-8000-000000000010",
+              "name": "Principal"
+            },
+            {
+              "id": "10000000-0000-4000-8000-000000000011",
+              "name": "Suporte"
+            }
+          ]
+        }
+      },
+      "apiValid": true,
+      "forbiddenCodes": [
+        "weeklyLimit"
+      ]
+    },
+    {
+      "id": "sunday-split-pause-one-second-over",
+      "request": {
+        "start": "2026-10-25T00:00:00",
+        "end": "2026-10-25T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-25",
+            "end": "2026-10-25"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 2,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Suporte",
+                "roleId": "10000000-0000-4000-8000-000000000011",
+                "scope": "role",
+                "day": 0,
+                "start": "00:00:00",
+                "end": "03:00:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Principal",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "10000000-0000-4000-8000-000000000010",
+              "coverageRoles": [
+                "Suporte"
+              ],
+              "coverageRoleIds": [
+                "10000000-0000-4000-8000-000000000011"
+              ]
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Principal",
+              "start": "2026-10-24T23:00:00",
+              "end": "2026-10-25T02:00:02",
+              "break": {
+                "start": "2026-10-24T23:59:59",
+                "end": "2026-10-25T00:00:01"
+              },
+              "source": "manual",
+              "tags": [],
+              "roleId": "10000000-0000-4000-8000-000000000010"
+            }
+          ],
+          "roles": [
+            {
+              "id": "10000000-0000-4000-8000-000000000010",
+              "name": "Principal"
+            },
+            {
+              "id": "10000000-0000-4000-8000-000000000011",
+              "name": "Suporte"
+            }
+          ]
+        }
+      },
+      "apiValid": true,
+      "requiredCodes": [
+        "weeklyLimit"
+      ]
+    },
+    {
+      "id": "weighted-score-half-thousandth",
+      "request": {
+        "start": "2026-10-19T00:00:00",
+        "end": "2026-10-19T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-10-19",
+            "end": "2026-10-19"
+          },
+          "company": {
+            "name": "Cenário compartilhado",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "00:00:00",
+            "closesAt": "00:00:00",
+            "operatingDays": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Suporte",
+                "roleId": "10000000-0000-4000-8000-000000000011",
+                "scope": "role",
+                "day": 1,
+                "start": "08:00:00",
+                "end": "08:16:40",
+                "minimumEmployees": 2
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "name": "Pessoa",
+              "role": "Principal",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 7,
+                "restUnits": 0,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "10000000-0000-4000-8000-000000000010",
+              "coverageRoles": [
+                "Suporte"
+              ],
+              "coverageRoleIds": [
+                "10000000-0000-4000-8000-000000000011"
+              ]
+            }
+          ],
+          "assignments": [
+            {
+              "id": "00000000-0000-4000-8000-000000000102",
+              "employeeId": "00000000-0000-4000-8000-000000000001",
+              "role": "Principal",
+              "start": "2026-10-19T08:00:00",
+              "end": "2026-10-19T08:00:01",
+              "break": null,
+              "source": "manual",
+              "tags": [],
+              "roleId": "10000000-0000-4000-8000-000000000010"
+            }
+          ],
+          "roles": [
+            {
+              "id": "10000000-0000-4000-8000-000000000010",
+              "name": "Principal"
+            },
+            {
+              "id": "10000000-0000-4000-8000-000000000011",
+              "name": "Suporte"
+            }
+          ]
+        }
+      },
+      "apiValid": true,
+      "expectedScore": 0.001
+    }
+  ]
+}

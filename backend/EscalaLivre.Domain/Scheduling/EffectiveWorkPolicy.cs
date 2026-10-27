@@ -13,11 +13,11 @@ public static class EffectiveWorkPolicy
 
     public static TimeSpan Measure(ShiftAssignment shift) => Measure(shift.Start, shift.End, shift.Break);
     public static TimeSpan DailyLimit(Employee employee) => TimeSpan.FromHours(employee.AllowsOvertime ? 10 : 8);
-    public static bool ExceedsHourRegime(TimeSpan work, WorkloadRule rule)
-        => rule.RegimeType == "hourBased" && work > TimeSpan.FromHours(rule.WorkUnits);
+    public static bool ExceedsRegimeWork(TimeSpan work, WorkloadRule rule)
+        => ExceedsRegimeWork(work, RegimeConfiguration.From(rule));
 
-    public static bool ExceedsHourRegime(TimeSpan work, RegimeConfiguration regime)
-        => regime is HourCycleConfiguration hours && work > TimeSpan.FromHours(hours.WorkHours.Value);
+    public static bool ExceedsRegimeWork(TimeSpan work, RegimeConfiguration regime)
+        => regime.MaximumShiftWork is { } limit && work > limit.Value;
 
     public static long WorkTicksInWeek(ShiftAssignment shift, DateTime week)
     {

@@ -8,7 +8,7 @@
 
 > **Matemática para organizar pessoas.** A geração de escalas usa algoritmos e otimização por restrições, sem IA generativa, modelos de linguagem ou serviços de IA.
 
-Use uma instância já disponibilizada pelo navegador, **sem cadastro nem instalação**. O planejamento fica no dispositivo e pode ser levado para outro computador em um arquivo `.escalalivre`. Para hospedar sua própria instância, veja [como executar localmente](#experimente-localmente) e as [proteções da API](docs/SECURITY.md).
+A interface funciona no navegador, **sem cadastro**. O planejamento fica no dispositivo e pode ser levado para outro computador em um arquivo `.escalalivre`. A hospedagem pública ainda não está definida; para experimentar, veja [como executar localmente](#experimente-localmente) e as [proteções da API](docs/SECURITY.md).
 
 Uma escala precisa responder a mais do que “quem trabalha hoje?”. É preciso saber se haverá pessoas suficientes na abertura, durante o almoço e no fechamento — sem ignorar disponibilidade, descanso e limites de jornada.
 
@@ -423,7 +423,9 @@ A interface usa a geração assíncrona: `POST /solve/jobs` recebe documento e p
 
 ## Qualidade e validação
 
-O projeto inclui testes de cobertura, intervalos, descanso, turnos noturnos, substituições autorizadas, feriados, impressão, período de planejamento, datas e horários, recuperação, preservação de turnos e segurança.
+O projeto inclui testes de cobertura, intervalos, descanso, turnos noturnos, substituições autorizadas, feriados, impressão, período de planejamento, datas e horários, recuperação, preservação de turnos e segurança. As suítes separam domínio/aplicação puros, adaptadores com OR-Tools real, API e arquitetura.
+
+A comparação diferencial entre C# e TypeScript usa cenários determinísticos para conferir diagnósticos, cobertura, lacunas e pontuação, além de propriedades de imutabilidade, migração e preservação de histórico. A autorização por IDs explícitos prevalece sobre nomes legados, inclusive quando uma autorização é revogada.
 
 Na raiz do repositório:
 
@@ -433,6 +435,8 @@ dotnet test backend/EscalaLivre.Analysis.Tests/EscalaLivre.Analysis.Tests.csproj
 dotnet test backend/EscalaLivre.Adapter.Tests/EscalaLivre.Adapter.Tests.csproj -c Release
 dotnet test backend/EscalaLivre.Api.Tests/EscalaLivre.Api.Tests.csproj -c Release
 dotnet test backend/EscalaLivre.Architecture.Tests/EscalaLivre.Architecture.Tests.csproj -c Release
+
+node tools/parity-differential.cjs
 ```
 
 No diretório `frontend`:
@@ -451,7 +455,9 @@ node backend/security.integration.cjs
 
 O script inicia sua própria API de teste e verifica as proteções HTTP. Para usar uma compilação em Release, defina `SECURITY_BUILD_CONFIGURATION=Release` no ambiente.
 
-O GitHub Actions executa lint, compilação e todos os testes do frontend, além de compilação da API, testes do backend e integração de segurança em Release.
+O GitHub Actions executa lint, compilação e testes do frontend, além de compilação da API, testes do backend, arquitetura e integração de segurança em Release. A comparação diferencial roda em UTC e America/New_York e participa da validação obrigatória do backend; o frontend também é testado em fuso alternativo.
+
+As ferramentas em `tools/performance-*.cjs` medem fases de análise/geração, memória, modelo e HTTP com fila/worker. O workflow manual **Performance evidence** coleta medições; os limites locais geram alertas e não são tratados como metas universais de produção. A leitura de cobertura indexa turnos por pessoa para evitar varreduras repetidas do histórico. Consulte a [metodologia e os resultados](docs/decisions/012-current-performance.md) antes de interpretar ganhos.
 
 ## Para onde o projeto pode crescer
 
@@ -470,7 +476,9 @@ As direções abaixo são possibilidades de evolução, ainda não recursos comp
 
 ## Estado atual
 
-O EscalaLivre está em desenvolvimento, com cadastro, análise local, geração de escalas e portabilidade já implementados. O motor trabalha com candidatos discretos de turnos e intervalos e com as regras atualmente modeladas; a extensão de regimes e a evolução das exportações são áreas abertas a contribuição.
+O EscalaLivre está em desenvolvimento, com cadastro, análise local, geração de escalas e portabilidade já implementados. O domínio contém tipos validados e operações protegidas de planejamento; análise e validação usam um avaliador comum, separado da otimização. Os regimes declaram capacidades de trabalho, descanso e ciclo, mantendo os tipos públicos `dayBased` e `hourBased`.
+
+O motor trabalha com candidatos discretos de turnos e intervalos e com as regras atualmente modeladas. A geração é reavaliada antes de aplicar o resultado, preservando os dados anteriores em falhas. A preparação para produção ainda exige validação da versão publicada na hospedagem escolhida, configuração de HTTPS/proxy/recursos e acompanhamento operacional. A fila atual pertence a uma única instância e perde pedidos/resultados ao reiniciar; os arquivos e as cópias locais continuam sob responsabilidade do dispositivo do usuário.
 
 A validação cobre regras implementadas, como descanso e limite semanal. Ela não representa uma certificação de conformidade com toda a legislação ou com convenções coletivas. As sugestões de contratação derivam das lacunas de cobertura e precisam ser avaliadas no contexto da empresa.
 
@@ -488,6 +496,10 @@ A validação cobre regras implementadas, como descanso e limite semanal. Ela n�
 - [Salvamento e recuperação](docs/recovery.md)
 - [Datas, horários e fuso da empresa](docs/date-time.md)
 - [Regras compartilhadas entre frontend e backend](docs/rule-parity.md)
+- [Guia de testes e validação](docs/testing.md)
+- [Extensibilidade dos regimes](docs/decisions/010-regime-extension-boundaries.md)
+- [Paridade diferencial e correção de autorização](docs/decisions/011-deterministic-rule-parity.md)
+- [Desempenho: metodologia, resultados e limites](docs/decisions/012-current-performance.md)
 - [Segurança e publicação da API](docs/SECURITY.md)
 - [Fila, estimativas e cancelamento de geração](docs/processing-queue.md)
 - [Identidade visual](docs/brand.md)

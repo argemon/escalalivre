@@ -18,6 +18,7 @@ function violations(source) {
 test('scheduling policies have no UI, state, HTTP or ambient browser dependency',()=>{
  assert.equal(files.length,6);
  for(const file of files)assert.deepEqual(violations(fs.readFileSync(path.join(directory,file),'utf8')),[],file);
+ assert.deepEqual(violations(fs.readFileSync(path.join(__dirname,'../src/lib/regimes.ts'),'utf8')),[],'regimes.ts');
 });
 test('architecture scanner rejects forbidden dependencies and device clock calls',()=>{
  const actual=violations('import {useState} from "react"; window.localStorage; new Date().getHours();');

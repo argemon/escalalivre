@@ -13,3 +13,5 @@ frontend/vite.config.d.ts
 *.escalalivre.local
 coverage/
 *.log
+
+artifacts/parity/

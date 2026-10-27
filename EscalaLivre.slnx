@@ -7,4 +7,5 @@
   <Project Path="backend/EscalaLivre.Api.Tests/EscalaLivre.Api.Tests.csproj" />
   <Project Path="backend/EscalaLivre.Analysis.Tests/EscalaLivre.Analysis.Tests.csproj" />
   <Project Path="backend/EscalaLivre.Architecture.Tests/EscalaLivre.Architecture.Tests.csproj" />
+  <Project Path="tools/EscalaLivre.ParityProbe/EscalaLivre.ParityProbe.csproj" />
 </Solution>

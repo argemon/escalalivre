@@ -44,7 +44,7 @@ public sealed class ScheduleCandidateGenerator
                 foreach (DateTime start in starts)
                 {
                             DateTime end = start.Add(shiftDuration);
-                if (EffectiveWorkPolicy.ExceedsHourRegime(end - start - pauseDuration, regime)) continue;
+                if (EffectiveWorkPolicy.ExceedsRegimeWork(end - start - pauseDuration, regime)) continue;
                 if (!employee.AllowsNightWork && IsNight(start, end)) continue;
 
                 // All outside shifts remain fixed. The model checks rest and workload at both edges.

@@ -12,6 +12,21 @@ public class DirectionalCoverageTests {
   var attendant=new Employee(Guid.NewGuid(),"Atendente","Atendente",true,work,[],[],[],false,false,[],ShiftStartsAt:new(7,30),FixedInterval:new(new(12,0),new(13,0)));
   return new(new("1.0.0",Guid.NewGuid(),company,[pharma,attendant],[],DateTimeOffset.UtcNow),new(2026,10,14),new(2026,10,14,23,59,59));
  }
+ [Theory]
+ [InlineData("legacy",true)]
+ [InlineData("ids",true)]
+ [InlineData("revoked",false)]
+ public void OptimizerUsesAuthoritativeDirectionalAuthorization(string mode,bool authorized) {
+  var roleId=Guid.Parse("10000000-0000-4000-8000-000000000011");
+  var r=Request(true);
+  r=r with {Document=r.Document with {
+   Company=r.Document.Company with {Coverage=r.Document.Company.Coverage.Select(c=>c with {RoleId=roleId}).ToArray()},
+   Employees=r.Document.Employees.Select((e,i)=>i!=0?e:e with {CoverageRoles=mode=="ids"?null:["Atendente"],CoverageRoleIds=mode=="legacy"?null:mode=="revoked"?[]:[roleId]}).ToArray()
+  }};
+  var result=AdapterComposition.Generate().Execute(r);
+  Assert.Equal(!authorized,result.Gaps.Any(g=>g.Role=="Atendente"&&g.Start.Hour==12));
+  Assert.DoesNotContain(result.Conflicts,c=>c.Severity=="error");
+ }
  [Fact] public void AuthorizedPharmacistCoversAttendantDuringStaggeredIntervals() {
         ScheduleResult result =AdapterComposition.Generate().Execute(Request(true));Assert.Empty(result.Gaps);Assert.Empty(result.Conflicts);Assert.Equal(2,result.Assignments.Count);
   Assert.All(result.Assignments,a=>Assert.Equal(TimeSpan.FromHours(1),a.Break!.End-a.Break.Start));

@@ -1,4 +1,6 @@
-export type RegimeType = "dayBased" | "hourBased";
+// Product contract: adding an internal test strategy does not expand this list.
+export const regimeTypes = ["dayBased", "hourBased"] as const;
+export type RegimeType = typeof regimeTypes[number];
 
 export type WorkloadRule = {
   regimeType: RegimeType;

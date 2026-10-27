@@ -47,3 +47,7 @@ O script só cria cópias/arquivos na pasta indicada, não apaga arquivos e não
 [Resultados completos, ambiente e manifesto](evidence/stage-6/performance-results.json), [saída da execução](evidence/stage-6/performance-run.txt), [build original](evidence/stage-6/performance-baseline-build.txt), [build final](evidence/stage-6/performance-final-build.txt).
 
 Não existem amostras históricas controladas de desempenho/CPU/memória em 23/10. O que foi medido é uma reprodução retrospectiva comparável hoje; cinco amostras por versão e caso pequeno não provam comportamento sob carga máxima, estabilidade estatística, latência HTTP ou capacidade em Linux. Essas limitações ficam em aberto em vez de afirmar ganhos.
+
+## Avaliação atual em carga sintética — 27/10/2026
+
+O [relatório atual](012-current-performance.md) acrescenta oito cargas, baseline dos fontes atuais, fases de análise/modelo/solver, memória, limites, HTTP com fila/worker e comparação antes/depois. A otimização medida limita-se à indexação de turnos por pessoa na leitura de cobertura. O experimento retrospectivo acima permanece histórico; não foi reescrito como se caracterizasse o código atual. A calibração é local e os limiares são alertas; aceite integral ainda depende do ambiente alvo e da CI do diff.

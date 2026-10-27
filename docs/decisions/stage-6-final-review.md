@@ -71,3 +71,7 @@ Houve falha intermediária CS7036 porque o script de consolidação não reconhe
 O baseline desta etapa não tinha falha. As intermitências de 1s e erros de preparação das etapas anteriores continuam em seus relatórios/logs. Não foram apagados para declarar sucesso. Os documentos/códigos de diagnóstico congelados não foram atualizados para ocultar mudança de regra. A correção D1 e a guarda de admissão já eram mudanças deliberadas da etapa 5, preservadas aqui.
 
 Relatórios antigos mantêm comandos/nomes históricos; links de fonte retirados foram redirecionados ou anotados. Raiz atual: [arquitetura](../architecture.md), [paridade](../rule-parity.md), [testes](../testing.md), [ADR 008](008-final-boundaries-and-validation.md). Staging/cópias retiradas e manifestos de migração ficam em Documents/escalalivre-stage6; fontes/rotinas reproduzíveis e logs relevantes foram preservados no repositório. Nenhuma migração de arquivo/dados foi necessária.
+
+## Seguimento do aceite em 27/10/2026
+
+A [avaliação atual](012-current-performance.md) atende a medição local em carga representativa sintética e demonstra uma otimização de cobertura com preservação funcional. Não encerra o aceite: a execução/calibração no ambiente alvo e a CI do diff atual permanecem pendentes. Os envelopes observados geram alertas; não são orçamentos universais nem SLO. As evidências históricas acima mantêm sua identidade de fonte/ambiente.

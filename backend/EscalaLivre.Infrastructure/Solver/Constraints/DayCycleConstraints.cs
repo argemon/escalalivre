@@ -18,7 +18,7 @@ public sealed class DayCycleConstraints : IScheduleConstraintTranslator
         foreach (IGrouping<Guid, ShiftAssignment> group in candidates.GroupBy(x => x.EmployeeId))
         {
             Employee employee = request.Document.Employees.First(x => x.Id == group.Key);
-            if (context.Input.Settings.RegimeFor(employee.Id) is not DayCycleConfiguration regime) continue;
+            if (context.Input.Settings.RegimeFor(employee.Id).RollingCycle is not { } regime) continue;
             int cycle = DayCyclePolicy.Length(regime);
             foreach (DateTime lastDay in CalendarDays.Inclusive(request.Start, request.End.AddDays(cycle - 1)))
             {

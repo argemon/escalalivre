@@ -91,9 +91,9 @@ public sealed class OperationalBoundaryTests
     public void TypedCapacityPreservesFractionalWeeklyHoursAndSecondsWithoutMixingDays()
     {
         var days = new DayCycleConfiguration(new(5), new(2), new(1.25), new(TimeSpan.FromHours(25)));
-        Assert.Equal(7, DayCyclePolicy.Length(days));
-        Assert.Equal(2, ScheduleCapacityPolicy.RemainingCycleDates(days, new(3)));
-        Assert.Equal(0, ScheduleCapacityPolicy.RemainingCycleDates(days, new(6)));
+        Assert.Equal(7, DayCyclePolicy.Length(days.RollingCycle));
+        Assert.Equal(2, ScheduleCapacityPolicy.RemainingCycleDates(days.RollingCycle, new(3)));
+        Assert.Equal(0, ScheduleCapacityPolicy.RemainingCycleDates(days.RollingCycle, new(6)));
         Assert.Equal(TimeSpan.TicksPerSecond, ScheduleCapacityPolicy.RemainingWeeklyTicks(days.WeeklyLimit, new(TimeSpan.FromSeconds(4499))));
         Assert.Equal(0, ScheduleCapacityPolicy.RemainingWeeklyTicks(days.WeeklyLimit, new(TimeSpan.FromHours(2))));
         Assert.Equal(TimeSpan.FromHours(25), days.DefaultShiftDuration.Value);

@@ -4,6 +4,8 @@ Data: 23/10/2026. Estado atualizado em 26/10/2026: etapas 1–5 validadas localm
 
 Seguimento em 26/10/2026: [fronteiras operacionais validadas](decisions/009-validated-operational-boundaries.md) reforça unidades/configuração na geração e a saída do agregado. Validação local atual: 612 testes .NET, 373 frontend em cada fuso e 16 HTTP. A CI verde de d40f887 é evidência do baseline; não cobre este diff local, cuja CI permanece pendente antes de integrar.
 
+Seguimento em 27/10/2026: [extensibilidade dos regimes](decisions/010-regime-extension-boundaries.md) centraliza capacidades e metadados dos regimes, mantendo o contrato público fechado em dayBased/hourBased. Validação local: 623 testes .NET, 381 frontend em cada fuso e 16 HTTP. A CI [Validate #22](https://github.com/argemon/escalalivre/actions/runs/40377752675) de b8e88e3 foi conferida com sucesso; ela é o baseline e não cobre o novo diff local. CI do novo diff continua necessária antes de integrar.
+
 ## Objetivo e ponto de partida
 
 Melhorar organização em camadas, DDD tático, modelagem de domínio, SOLID, consistência das regras e testabilidade, preservando comportamento público e documentos existentes. As notas da avaliação externa são sinais para investigação, não métricas reproduzidas nem defeitos comprovados.
@@ -207,3 +209,11 @@ Executar também os testes de regras em `America/New_York`, preservando/restaura
 O plano termina quando as seis dimensões têm as evidências acima, todos os contratos preservados passam e as fachadas temporárias foram removidas. Não há promessa de nova nota numérica: o resultado deve ser demonstrável pelo código e pelos testes.
 
 Os resultados e as pendências das etapas 1–6 estão registrados acima; as próximas seguem suas dependências e critérios de saída. Novos recursos, reescrita completa, banco de dados, CQRS/event sourcing e mudanças de regras não fazem parte deste plano.
+
+## Seguimento de desempenho — 27/10/2026
+
+- [x] Baseline atual em oito cargas sintéticas, com cinco processos aquecidos por caso/operação, tempo/alocação/memória/modelo, fases separadas e HTTP/fila/worker antes/depois. [Relatório e evidências](decisions/012-current-performance.md).
+- [x] Gargalo comprovado de cobertura/histórico otimizado por índice local, preservando respostas e modelos; controles alternados e validação funcional registrados no relatório.
+- [x] Envelopes locais de regressão derivados dos dados e MAD/faixas; workflow manual de coleta/alertas sem gate numérico portátil.
+- [ ] Repetir e calibrar no ambiente alvo/Linux com mais sessões independentes; cinco amostras locais não fixam p95/p99 ou SLO.
+- [ ] CI própria do diff de regimes/paridade/desempenho antes de integrar. O aceite integral da etapa 6/plano permanece aberto; a CI histórica do baseline não atende esse critério.

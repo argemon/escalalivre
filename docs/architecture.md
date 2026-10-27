@@ -4,6 +4,8 @@ Estado em 26/10/2026: implementação das seis etapas verificada localmente. Rev
 
 Seguimento em 26/10/2026: [fronteiras operacionais validadas](decisions/009-validated-operational-boundaries.md) reforça unidades/configuração na geração e a saída do agregado. Validação local atual: 612 testes .NET, 373 frontend em cada fuso e 16 HTTP. A CI verde de d40f887 é evidência do baseline; não cobre este diff local, cuja CI permanece pendente antes de integrar.
 
+Seguimento em 27/10/2026: [extensibilidade dos regimes](decisions/010-regime-extension-boundaries.md) centraliza capacidades e metadados dos regimes, mantendo o contrato público fechado em dayBased/hourBased. Validação local: 623 testes .NET, 381 frontend em cada fuso e 16 HTTP. A CI [Validate #22](https://github.com/argemon/escalalivre/actions/runs/40377752675) de b8e88e3 foi conferida com sucesso; ela é o baseline e não cobre o novo diff local. CI do novo diff continua necessária antes de integrar.
+
 ## Camadas e dependências
 
 | Projeto | Responsabilidade e dependências |
@@ -28,6 +30,8 @@ Conflito de negócio não é impossibilidade estrutural. Turnos com descanso, jo
 ScheduleRules monta os diagnósticos, mantendo ordem e redação; usa EffectiveWorkPolicy, RestPolicy, DayCyclePolicy, IntervalPolicy, AvailabilityPolicy e ShiftEligibilityPolicy. ScheduleCapacityPolicy fornece saldos para a tradução matemática. LaborRules concentra feriados/autorizações; ScheduleWindow concentra propriedade por data inicial, substituição e calendário semanal. Os helpers de delegação temporários foram removidos após migrar consumidores.
 
 ScheduleEvaluator compõe diagnóstico, ScheduleCoverage/CoverageDemand, HiringDemand e ScheduleSuggestions. ScheduleExplanation descreve seleções. AnalyzeSchedule e ValidateSchedule usam o mesmo IScheduleAnalyzer/ScheduleAnalyzer, sem Infrastructure/OR-Tools; a independência também é verificada no deployment do projeto de testes puro.
+
+RegimeConfiguration concentra o mapeamento dos tipos públicos e declara MaximumShiftWork, RestBetweenShifts e RollingCycle. DayCycleLimit contém somente as invariantes do ciclo, sem referência ao regime. Diagnóstico, geração, admissão e tradução selecionam famílias por essas capacidades; RegimeEligibility compõe as verificações parciais. IsSupported e From usam o mesmo mapa canônico. No cliente, types/schedule.regimeTypes define o contrato fechado e lib/regimes concentra restrições, nomes e rótulos.
 
 IShiftRegime é uma capacidade parcial: dias verifica ciclo de datas iniciais; horas verifica trabalho líquido e descanso do regime. Não substitui diagnóstico global. EstimateStartAfterRest é estimativa local sem garantia de elegibilidade com histórico. ShiftRegimeFactory recebe estratégias registradas na API e rejeita desconhecidos/duplicações conforme o [ADR 006](decisions/006-scheduling-policies-and-regime-contracts.md).
 

@@ -94,7 +94,7 @@ public sealed class PlanningValueTests
     public void NewValuesHaveNoPublicSettersOrInitEscapeHatches()
     {
         Type[] values = [typeof(CivilWindow), typeof(ShiftPause), typeof(CivilPlanningPeriod), typeof(Duration), typeof(DayCount),
-            typeof(WholeHours), typeof(WeeklyHours), typeof(DayCycleConfiguration), typeof(HourCycleConfiguration), typeof(ScheduledAssignment), typeof(PlanningSettings)];
+            typeof(WholeHours), typeof(WeeklyHours), typeof(DayCycleLimit), typeof(DayCycleConfiguration), typeof(HourCycleConfiguration), typeof(ScheduledAssignment), typeof(PlanningSettings)];
         foreach (var type in values)
             Assert.DoesNotContain(type.GetProperties(), p => p.SetMethod?.IsPublic == true);
         Assert.Null(typeof(PlanningSchedule).GetProperty(nameof(PlanningSchedule.Id))!.SetMethod);

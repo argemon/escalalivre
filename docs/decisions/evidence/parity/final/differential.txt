@@ -1,0 +1,15 @@
+{"started":"2026-10-27T13:12:37.745Z","cwd":"C:/Users/eargemon/source/repos/escalalivre","exe":"node","args":["tools/parity-differential.cjs","--output","C:/Users/eargemon/Documents/escalalivre-parity-results/final/failures-cuiaba"],"TZ":null}
+  Determinando os projetos a serem restaurados...
+  Todos os projetos estão atualizados para restauração.
+  EscalaLivre.Domain -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Domain\bin\Release\net10.0\EscalaLivre.Domain.dll
+  EscalaLivre.Application -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Application\bin\Release\net10.0\EscalaLivre.Application.dll
+  EscalaLivre.ParityProbe -> C:\Users\eargemon\source\repos\escalalivre\tools\EscalaLivre.ParityProbe\bin\Release\net10.0\EscalaLivre.ParityProbe.dll
+
+Compilação com êxito.
+    0 Aviso(s)
+    0 Erro(s)
+
+Tempo Decorrido 00:00:02.09
+{"status":"passed","cases":142,"seeds":[439041101,1592594996,12648430],"node":"v24.17.0","tz":"America/Cuiaba","properties":["input immutability","migration idempotence","whole-shift preservation","bilateral replacement"],"comparison":["diagnostic code/severity/person/period/role","coverage","gaps","score"]}
+
+{"name":"differential","started":"2026-10-27T13:12:37.745Z","ended":"2026-10-27T13:12:41.735Z","code":0,"exe":"node","args":["tools/parity-differential.cjs","--output","C:/Users/eargemon/Documents/escalalivre-parity-results/final/failures-cuiaba"]}

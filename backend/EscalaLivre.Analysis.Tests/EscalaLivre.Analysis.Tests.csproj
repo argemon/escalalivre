@@ -10,6 +10,7 @@
     <Using Include="EscalaLivre.TestSupport" />
     <ProjectReference Include="../EscalaLivre.Application/EscalaLivre.Application.csproj" />
     <None Include="../../shared/regime-contract-scenarios.json" Link="regime-contract-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../shared/parity-boundaries.json" Link="parity-boundaries.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../shared/rule-scenarios.json" Link="rule-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../shared/analysis-baseline-hashes.json" Link="analysis-baseline-hashes.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../shared/hiring-demand-scenarios.json" Link="hiring-demand-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
