@@ -1,6 +1,10 @@
 # Plano de evolução arquitetural
 
-Data: 23/10/2026. Estado atualizado em 26/10/2026: etapas 1–5 validadas localmente; etapa 6 implementada e validada localmente, com aceite integral pendente de CI remota e calibração de desempenho representativo. Pendência operacional da etapa 3 investigada e teste ajustado separadamente antes da extração da etapa 4. Etapa 3 introduz tipos, mapeadores e operações protegidas, preservando regras e formato. CI remota pendente antes da integração.
+Data: 23/10/2026. Estado atualizado em 26/10/2026: etapas 1–5 validadas localmente; etapa 6 implementada e revalidada localmente; CI remota conferida para o código de d40f887, com aceite integral pendente de calibração de desempenho representativo. Pendência operacional da etapa 3 investigada e teste ajustado separadamente antes da extração da etapa 4. Etapa 3 introduz tipos, mapeadores e operações protegidas, preservando regras e formato. CI da implementação conferida na [revalidação atual](decisions/stage-6-current-validation.md); referências a CI pendente nas seções históricas registram o estado de cada entrega. Nenhuma integração foi feita nesta revalidação.
+
+Seguimento em 26/10/2026: [fronteiras operacionais validadas](decisions/009-validated-operational-boundaries.md) reforça unidades/configuração na geração e a saída do agregado. Validação local atual: 612 testes .NET, 373 frontend em cada fuso e 16 HTTP. A CI verde de d40f887 é evidência do baseline; não cobre este diff local, cuja CI permanece pendente antes de integrar.
+
+Seguimento em 27/10/2026: [extensibilidade dos regimes](decisions/010-regime-extension-boundaries.md) centraliza capacidades e metadados dos regimes, mantendo o contrato público fechado em dayBased/hourBased. Validação local: 623 testes .NET, 381 frontend em cada fuso e 16 HTTP. A CI [Validate #22](https://github.com/argemon/escalalivre/actions/runs/40377752675) de b8e88e3 foi conferida com sucesso; ela é o baseline e não cobre o novo diff local. CI do novo diff continua necessária antes de integrar.
 
 ## Objetivo e ponto de partida
 
@@ -167,10 +171,10 @@ Decisão: [ADR 007](decisions/007-optimization-translators-and-admission.md). Lo
 - [x] Validação completa local: 207 puros, 366 adaptador, 8 API, 13 arquitetura, 373 frontend também em NY, lint/builds e 16 HTTP. Fila, worker, recuperação, contratos e formatos preservados.
 - [x] Comparação retrospectiva no mesmo ambiente e entradas, com tempo/alocação/pico/modelo, dados brutos e limites observados de alerta. Resultados mistos, sem ganho global afirmado.
 - [x] Documentação atual e matriz de evidências das seis dimensões revisadas; relatos/logs antigos preservados como históricos.
-- [ ] CI remota Ubuntu/Node 22 aprovada para este checkout antes da integração. Configuração de CI não substitui execução.
+- [x] CI remota Ubuntu/Node 22 conferida: Validate #20 associada ao commit d40f887, seis jobs verdes; merge de teste 0f32fa5 sem diferença de arquivos para o commit local. [Revalidação completa dos fontes e evidências](decisions/stage-6-current-validation.md).
 - [ ] Calibração de limites de regressão em carga representativa/ambiente alvo. As amostras pequenas fornecem alertas, não gates universais.
 
-Decisão: [ADR 008](decisions/008-final-boundaries-and-validation.md). Evidência por etapa/dimensão, falhas e limitações: [revisão final](decisions/stage-6-final-review.md). Medição: [desempenho](decisions/stage-6-performance.md). O plano não é marcado integralmente concluído enquanto os dois critérios acima estiverem abertos; nenhuma integração foi feita.
+Decisão: [ADR 008](decisions/008-final-boundaries-and-validation.md). Evidência por etapa/dimensão, falhas e limitações: [revisão final](decisions/stage-6-final-review.md). Medição: [desempenho](decisions/stage-6-performance.md). O plano não é marcado integralmente concluído enquanto a calibração representativa acima estiver aberta; nenhuma integração foi feita.
 
 ## Matriz de validação
 
@@ -205,3 +209,11 @@ Executar também os testes de regras em `America/New_York`, preservando/restaura
 O plano termina quando as seis dimensões têm as evidências acima, todos os contratos preservados passam e as fachadas temporárias foram removidas. Não há promessa de nova nota numérica: o resultado deve ser demonstrável pelo código e pelos testes.
 
 Os resultados e as pendências das etapas 1–6 estão registrados acima; as próximas seguem suas dependências e critérios de saída. Novos recursos, reescrita completa, banco de dados, CQRS/event sourcing e mudanças de regras não fazem parte deste plano.
+
+## Seguimento de desempenho — 27/10/2026
+
+- [x] Baseline atual em oito cargas sintéticas, com cinco processos aquecidos por caso/operação, tempo/alocação/memória/modelo, fases separadas e HTTP/fila/worker antes/depois. [Relatório e evidências](decisions/012-current-performance.md).
+- [x] Gargalo comprovado de cobertura/histórico otimizado por índice local, preservando respostas e modelos; controles alternados e validação funcional registrados no relatório.
+- [x] Envelopes locais de regressão derivados dos dados e MAD/faixas; workflow manual de coleta/alertas sem gate numérico portátil.
+- [ ] Repetir e calibrar no ambiente alvo/Linux com mais sessões independentes; cinco amostras locais não fixam p95/p99 ou SLO.
+- [ ] CI própria do diff de regimes/paridade/desempenho antes de integrar. O aceite integral da etapa 6/plano permanece aberto; a CI histórica do baseline não atende esse critério.

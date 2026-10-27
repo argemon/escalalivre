@@ -1,0 +1,9 @@
+2026-10-26T16:01:06.2935000Z Ubuntu
+2026-10-26T16:01:06.2935452Z 24.04.5
+2026-10-26T16:01:06.2937361Z Image: ubuntu-24.04
+2026-10-26T16:01:06.2938934Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-26T16:01:08.2271368Z HEAD is now at 0f32fa5 Merge d40f8871238398bcab91bd081742986c244f4548 into 66659daa2bbfc2384605946ec5b553e0bcd51eed
+2026-10-26T16:01:10.0280362Z dotnet-install: Installed version is 10.0.14
+2026-10-26T16:01:18.2792253Z dotnet-install: Installed version is 10.0.403
+2026-10-26T16:01:36.6047729Z Passed!  - Failed:     0, Passed:     8, Skipped:     0, Total:     8, Duration: 62 ms - EscalaLivre.Api.Tests.dll (net10.0)
+2026-10-26T16:01:42.9601391Z Passed!  - Failed:     0, Passed:    13, Skipped:     0, Total:    13, Duration: 125 ms - EscalaLivre.Architecture.Tests.dll (net10.0)

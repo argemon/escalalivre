@@ -60,7 +60,7 @@ public sealed class GenerationConformanceTests
         var result = Generate(r, [Shift(r, Monday.AddHours(8))]);
         Assert.Equal("feasible", result.Optimization?.Status);
         Assert.Contains(result.Conflicts, i => i.Code == "workload");Assert.Single(result.Decisions);
-        Assert.Same(history, result.Assignments[0]);
+        Assert.Equal(JsonSerializer.Serialize(history, ScheduleJson.CreateOptions()), JsonSerializer.Serialize(result.Assignments[0], ScheduleJson.CreateOptions()));
     }
 
     [Fact]

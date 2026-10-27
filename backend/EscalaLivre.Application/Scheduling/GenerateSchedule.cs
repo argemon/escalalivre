@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using EscalaLivre.Application.Contracts;
 using EscalaLivre.Application.Planning;
 using EscalaLivre.Domain.Scheduling;
@@ -13,7 +14,13 @@ public sealed class GenerateSchedule(IScheduleOptimizer optimizer, IScheduleAnal
             return Failure(request, optimized.Status, optimized.Issues);
 
         IReadOnlyList<ShiftAssignment> assignments;
-        try { assignments = PlanningDocumentMapping.ApplyGeneration(request, optimized.SelectedAssignments, optimized.Assignments); }
+        IReadOnlyList<ShiftAssignment> selected;
+        try
+        {
+            var selectedIds = optimized.SelectedAssignments.Select(a => a.Id).ToImmutableHashSet();
+            assignments = PlanningDocumentMapping.ApplyGeneration(request, optimized.SelectedAssignments, optimized.Assignments);
+            selected = assignments.Where(a => selectedIds.Contains(a.Id)).ToImmutableArray();
+        }
         catch (Exception error) when (error is ArgumentException or InvalidOperationException or FormatException)
         {
             return Failure(request, "invalid", [Invalid(request, "O resultado da geração não preserva a estrutura e o histórico do planejamento.")]);
@@ -26,7 +33,7 @@ public sealed class GenerateSchedule(IScheduleOptimizer optimizer, IScheduleAnal
 
         return evaluated with
         {
-            Decisions = ScheduleExplanation.Describe(request.Document.Employees, optimized.SelectedAssignments).ToList(),
+            Decisions = ScheduleExplanation.Describe(request.Document.Employees, selected).ToList(),
             Conflicts = evaluated.Conflicts.Concat(optimized.Issues).ToList(),
             Optimization = new(optimized.Status)
         };

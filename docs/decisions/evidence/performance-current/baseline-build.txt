@@ -1,0 +1,13 @@
+  Determinando os projetos a serem restaurados...
+  Todos os projetos estão atualizados para restauração.
+  EscalaLivre.Domain -> C:\Users\eargemon\Documents\escalalivre-performance-data\baseline-current\backend\EscalaLivre.Domain\bin\Release\net10.0\EscalaLivre.Domain.dll
+  EscalaLivre.Application -> C:\Users\eargemon\Documents\escalalivre-performance-data\baseline-current\backend\EscalaLivre.Application\bin\Release\net10.0\EscalaLivre.Application.dll
+  EscalaLivre.Infrastructure -> C:\Users\eargemon\Documents\escalalivre-performance-data\baseline-current\backend\EscalaLivre.Infrastructure\bin\Release\net10.0\EscalaLivre.Infrastructure.dll
+  EscalaLivre.Api -> C:\Users\eargemon\Documents\escalalivre-performance-data\baseline-current\backend\EscalaLivre.Api\bin\Release\net10.0\EscalaLivre.Api.dll
+  Bench -> C:\Users\eargemon\Documents\escalalivre-performance-data\baseline-current\Bench\bin\Release\net10.0\Bench.dll
+
+Compilação com êxito.
+    0 Aviso(s)
+    0 Erro(s)
+
+Tempo Decorrido 00:00:05.60

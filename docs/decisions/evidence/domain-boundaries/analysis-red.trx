@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="0a3ad625-0a7f-49c6-a076-f9dae6c8cd45" name="eargemon@ADM1225037 2026-10-26 14:08:29" runUser="ADMINISTRACAO\eargemon" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-26T14:08:29.0482387-04:00" queuing="2026-10-26T14:08:29.0482390-04:00" start="2026-10-26T14:08:27.9676360-04:00" finish="2026-10-26T14:08:29.0619522-04:00" />
+  <TestSettings name="default" id="8978f68d-2d83-4fa5-8b58-ea01f6bc262a">
+    <Deployment runDeploymentRoot="eargemon_ADM1225037_2026-10-26_14_08_29" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="b2412ae9-e11d-4ce5-92fe-385039e22d18" testId="4ec01616-7abb-e20b-c6b3-73b488feebfa" testName="EscalaLivre.Analysis.Tests.OperationalBoundaryTests.WeeklyTranslationMustNotTurnAnUnrepresentableLimitIntoANegativeBudget" computerName="ADM1225037" duration="00:00:00.0003360" startTime="2026-10-26T14:08:28.9344748-04:00" endTime="2026-10-26T14:08:28.9345224-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b2412ae9-e11d-4ce5-92fe-385039e22d18">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Throws() Failure: No exception was thrown&#xD;
+Expected: typeof(System.OverflowException)</Message>
+          <StackTrace>   at EscalaLivre.Analysis.Tests.OperationalBoundaryTests.WeeklyTranslationMustNotTurnAnUnrepresentableLimitIntoANegativeBudget() in C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\OperationalBoundaryTests.cs:line 26&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="644e104d-b9dc-4f75-99c1-522d78089430" testId="800d9588-7338-51d7-96bf-2d201a795aed" testName="EscalaLivre.Analysis.Tests.OperationalBoundaryTests.GenerationMappingCannotReturnAnAliasThatBypassesTheProtectedReplacement" computerName="ADM1225037" duration="00:00:00.1303207" startTime="2026-10-26T14:08:28.7521837-04:00" endTime="2026-10-26T14:08:28.8675853-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="644e104d-b9dc-4f75-99c1-522d78089430">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ&#xD;
+Expected: 2&#xD;
+Actual:   0</Message>
+          <StackTrace>   at EscalaLivre.Analysis.Tests.OperationalBoundaryTests.GenerationMappingCannotReturnAnAliasThatBypassesTheProtectedReplacement() in C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\OperationalBoundaryTests.cs:line 41&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="db854956-d1b5-4c5d-b1f6-034b6627e928" testId="f3479e63-abd5-cacf-4d6a-ff23c3fcb2a0" testName="EscalaLivre.Analysis.Tests.OperationalBoundaryTests.BuiltInRegimesRejectRulesWhoseUnitsBelongToAnotherRegime(strategy: &quot;dayBased&quot;, configuration: &quot;hourBased&quot;)" computerName="ADM1225037" duration="00:00:00.0073776" startTime="2026-10-26T14:08:28.7150211-04:00" endTime="2026-10-26T14:08:28.7362091-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="db854956-d1b5-4c5d-b1f6-034b6627e928">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Throws() Failure: No exception was thrown&#xD;
+Expected: typeof(System.ArgumentException)</Message>
+          <StackTrace>   at EscalaLivre.Analysis.Tests.OperationalBoundaryTests.BuiltInRegimesRejectRulesWhoseUnitsBelongToAnotherRegime(String strategy, String configuration) in C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\OperationalBoundaryTests.cs:line 18&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="54b28987-549c-41dc-aec4-01f04a7dc594" testId="828beaf5-a5aa-5a89-319c-3dcbb9eab6a7" testName="EscalaLivre.Analysis.Tests.OperationalBoundaryTests.SuccessfulUseCaseKeepsAcceptedAssignmentsAndDecisionFactorsStableAfterAdapterMutation" computerName="ADM1225037" duration="00:00:00.0660696" startTime="2026-10-26T14:08:28.8682751-04:00" endTime="2026-10-26T14:08:28.9338849-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="54b28987-549c-41dc-aec4-01f04a7dc594">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Single() Failure: The collection was empty</Message>
+          <StackTrace>   at EscalaLivre.Analysis.Tests.OperationalBoundaryTests.SuccessfulUseCaseKeepsAcceptedAssignmentsAndDecisionFactorsStableAfterAdapterMutation() in C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\OperationalBoundaryTests.cs:line 64&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="bb446017-8884-4430-860d-512257007980" testId="546d43d0-2000-7eed-98e5-9e7d0479a770" testName="EscalaLivre.Analysis.Tests.OperationalBoundaryTests.BuiltInRegimesRejectRulesWhoseUnitsBelongToAnotherRegime(strategy: &quot;hourBased&quot;, configuration: &quot;dayBased&quot;)" computerName="ADM1225037" duration="00:00:00.0005962" startTime="2026-10-26T14:08:28.7502325-04:00" endTime="2026-10-26T14:08:28.7503117-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bb446017-8884-4430-860d-512257007980">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Throws() Failure: No exception was thrown&#xD;
+Expected: typeof(System.ArgumentException)</Message>
+          <StackTrace>   at EscalaLivre.Analysis.Tests.OperationalBoundaryTests.BuiltInRegimesRejectRulesWhoseUnitsBelongToAnotherRegime(String strategy, String configuration) in C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\OperationalBoundaryTests.cs:line 18&#xD;
+   at InvokeStub_OperationalBoundaryTests.BuiltInRegimesRejectRulesWhoseUnitsBelongToAnotherRegime(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="EscalaLivre.Analysis.Tests.OperationalBoundaryTests.SuccessfulUseCaseKeepsAcceptedAssignmentsAndDecisionFactorsStableAfterAdapterMutation" storage="c:\users\eargemon\source\repos\escalalivre\backend\escalalivre.analysis.tests\bin\release\net10.0\escalalivre.analysis.tests.dll" id="828beaf5-a5aa-5a89-319c-3dcbb9eab6a7">
+      <Execution id="54b28987-549c-41dc-aec4-01f04a7dc594" />
+      <TestMethod codeBase="C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\bin\Release\net10.0\EscalaLivre.Analysis.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="EscalaLivre.Analysis.Tests.OperationalBoundaryTests" name="SuccessfulUseCaseKeepsAcceptedAssignmentsAndDecisionFactorsStableAfterAdapterMutation" />
+    </UnitTest>
+    <UnitTest name="EscalaLivre.Analysis.Tests.OperationalBoundaryTests.BuiltInRegimesRejectRulesWhoseUnitsBelongToAnotherRegime(strategy: &quot;dayBased&quot;, configuration: &quot;hourBased&quot;)" storage="c:\users\eargemon\source\repos\escalalivre\backend\escalalivre.analysis.tests\bin\release\net10.0\escalalivre.analysis.tests.dll" id="f3479e63-abd5-cacf-4d6a-ff23c3fcb2a0">
+      <Execution id="db854956-d1b5-4c5d-b1f6-034b6627e928" />
+      <TestMethod codeBase="C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\bin\Release\net10.0\EscalaLivre.Analysis.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="EscalaLivre.Analysis.Tests.OperationalBoundaryTests" name="BuiltInRegimesRejectRulesWhoseUnitsBelongToAnotherRegime" />
+    </UnitTest>
+    <UnitTest name="EscalaLivre.Analysis.Tests.OperationalBoundaryTests.GenerationMappingCannotReturnAnAliasThatBypassesTheProtectedReplacement" storage="c:\users\eargemon\source\repos\escalalivre\backend\escalalivre.analysis.tests\bin\release\net10.0\escalalivre.analysis.tests.dll" id="800d9588-7338-51d7-96bf-2d201a795aed">
+      <Execution id="644e104d-b9dc-4f75-99c1-522d78089430" />
+      <TestMethod codeBase="C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\bin\Release\net10.0\EscalaLivre.Analysis.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="EscalaLivre.Analysis.Tests.OperationalBoundaryTests" name="GenerationMappingCannotReturnAnAliasThatBypassesTheProtectedReplacement" />
+    </UnitTest>
+    <UnitTest name="EscalaLivre.Analysis.Tests.OperationalBoundaryTests.WeeklyTranslationMustNotTurnAnUnrepresentableLimitIntoANegativeBudget" storage="c:\users\eargemon\source\repos\escalalivre\backend\escalalivre.analysis.tests\bin\release\net10.0\escalalivre.analysis.tests.dll" id="4ec01616-7abb-e20b-c6b3-73b488feebfa">
+      <Execution id="b2412ae9-e11d-4ce5-92fe-385039e22d18" />
+      <TestMethod codeBase="C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\bin\Release\net10.0\EscalaLivre.Analysis.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="EscalaLivre.Analysis.Tests.OperationalBoundaryTests" name="WeeklyTranslationMustNotTurnAnUnrepresentableLimitIntoANegativeBudget" />
+    </UnitTest>
+    <UnitTest name="EscalaLivre.Analysis.Tests.OperationalBoundaryTests.BuiltInRegimesRejectRulesWhoseUnitsBelongToAnotherRegime(strategy: &quot;hourBased&quot;, configuration: &quot;dayBased&quot;)" storage="c:\users\eargemon\source\repos\escalalivre\backend\escalalivre.analysis.tests\bin\release\net10.0\escalalivre.analysis.tests.dll" id="546d43d0-2000-7eed-98e5-9e7d0479a770">
+      <Execution id="bb446017-8884-4430-860d-512257007980" />
+      <TestMethod codeBase="C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\bin\Release\net10.0\EscalaLivre.Analysis.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="EscalaLivre.Analysis.Tests.OperationalBoundaryTests" name="BuiltInRegimesRejectRulesWhoseUnitsBelongToAnotherRegime" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="4ec01616-7abb-e20b-c6b3-73b488feebfa" executionId="b2412ae9-e11d-4ce5-92fe-385039e22d18" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="800d9588-7338-51d7-96bf-2d201a795aed" executionId="644e104d-b9dc-4f75-99c1-522d78089430" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f3479e63-abd5-cacf-4d6a-ff23c3fcb2a0" executionId="db854956-d1b5-4c5d-b1f6-034b6627e928" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="828beaf5-a5aa-5a89-319c-3dcbb9eab6a7" executionId="54b28987-549c-41dc-aec4-01f04a7dc594" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="546d43d0-2000-7eed-98e5-9e7d0479a770" executionId="bb446017-8884-4430-860d-512257007980" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Resultados que não estão em uma lista" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="Todos os resultados carregados" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="5" executed="5" passed="0" failed="5" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 10.0.13)&#xD;
+[xUnit.net 00:00:00.09]   Discovering: EscalaLivre.Analysis.Tests&#xD;
+[xUnit.net 00:00:00.20]   Discovered:  EscalaLivre.Analysis.Tests&#xD;
+[xUnit.net 00:00:00.23]   Starting:    EscalaLivre.Analysis.Tests&#xD;
+[xUnit.net 00:00:00.28]       Assert.Throws() Failure: No exception was thrown&#xD;
+[xUnit.net 00:00:00.28]       Expected: typeof(System.ArgumentException)&#xD;
+[xUnit.net 00:00:00.28]       Stack Trace:&#xD;
+[xUnit.net 00:00:00.28]         C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\OperationalBoundaryTests.cs(18,0): at EscalaLivre.Analysis.Tests.OperationalBoundaryTests.BuiltInRegimesRejectRulesWhoseUnitsBelongToAnotherRegime(String strategy, String configuration)&#xD;
+[xUnit.net 00:00:00.28]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+[xUnit.net 00:00:00.28]            at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:00.29]       Assert.Throws() Failure: No exception was thrown&#xD;
+[xUnit.net 00:00:00.29]       Expected: typeof(System.ArgumentException)&#xD;
+[xUnit.net 00:00:00.29]       Stack Trace:&#xD;
+[xUnit.net 00:00:00.29]         C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\OperationalBoundaryTests.cs(18,0): at EscalaLivre.Analysis.Tests.OperationalBoundaryTests.BuiltInRegimesRejectRulesWhoseUnitsBelongToAnotherRegime(String strategy, String configuration)&#xD;
+[xUnit.net 00:00:00.29]            at InvokeStub_OperationalBoundaryTests.BuiltInRegimesRejectRulesWhoseUnitsBelongToAnotherRegime(Object, Span`1)&#xD;
+[xUnit.net 00:00:00.29]            at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)&#xD;
+[xUnit.net 00:00:00.40]       Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:00:00.40]       Expected: 2&#xD;
+[xUnit.net 00:00:00.40]       Actual:   0&#xD;
+[xUnit.net 00:00:00.40]       Stack Trace:&#xD;
+[xUnit.net 00:00:00.40]         C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\OperationalBoundaryTests.cs(41,0): at EscalaLivre.Analysis.Tests.OperationalBoundaryTests.GenerationMappingCannotReturnAnAliasThatBypassesTheProtectedReplacement()&#xD;
+[xUnit.net 00:00:00.40]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+[xUnit.net 00:00:00.40]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:00.47]       Assert.Single() Failure: The collection was empty&#xD;
+[xUnit.net 00:00:00.47]       Stack Trace:&#xD;
+[xUnit.net 00:00:00.47]         C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\OperationalBoundaryTests.cs(64,0): at EscalaLivre.Analysis.Tests.OperationalBoundaryTests.SuccessfulUseCaseKeepsAcceptedAssignmentsAndDecisionFactorsStableAfterAdapterMutation()&#xD;
+[xUnit.net 00:00:00.47]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+[xUnit.net 00:00:00.47]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:00.47]       Assert.Throws() Failure: No exception was thrown&#xD;
+[xUnit.net 00:00:00.47]       Expected: typeof(System.OverflowException)&#xD;
+[xUnit.net 00:00:00.47]       Stack Trace:&#xD;
+[xUnit.net 00:00:00.47]         C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\OperationalBoundaryTests.cs(26,0): at EscalaLivre.Analysis.Tests.OperationalBoundaryTests.WeeklyTranslationMustNotTurnAnUnrepresentableLimitIntoANegativeBudget()&#xD;
+[xUnit.net 00:00:00.47]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+[xUnit.net 00:00:00.47]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:00.48]   Finished:    EscalaLivre.Analysis.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="ADM1225037" outcome="Error" timestamp="2026-10-26T14:08:28.7387978-04:00">
+        <Text>[xUnit.net 00:00:00.27]     EscalaLivre.Analysis.Tests.OperationalBoundaryTests.BuiltInRegimesRejectRulesWhoseUnitsBelongToAnotherRegime(strategy: "dayBased", configuration: "hourBased") [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ADM1225037" outcome="Error" timestamp="2026-10-26T14:08:28.7507094-04:00">
+        <Text>[xUnit.net 00:00:00.29]     EscalaLivre.Analysis.Tests.OperationalBoundaryTests.BuiltInRegimesRejectRulesWhoseUnitsBelongToAnotherRegime(strategy: "hourBased", configuration: "dayBased") [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ADM1225037" outcome="Error" timestamp="2026-10-26T14:08:28.8679370-04:00">
+        <Text>[xUnit.net 00:00:00.40]     EscalaLivre.Analysis.Tests.OperationalBoundaryTests.GenerationMappingCannotReturnAnAliasThatBypassesTheProtectedReplacement [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ADM1225037" outcome="Error" timestamp="2026-10-26T14:08:28.9342827-04:00">
+        <Text>[xUnit.net 00:00:00.47]     EscalaLivre.Analysis.Tests.OperationalBoundaryTests.SuccessfulUseCaseKeepsAcceptedAssignmentsAndDecisionFactorsStableAfterAdapterMutation [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="ADM1225037" outcome="Error" timestamp="2026-10-26T14:08:28.9347316-04:00">
+        <Text>[xUnit.net 00:00:00.47]     EscalaLivre.Analysis.Tests.OperationalBoundaryTests.WeeklyTranslationMustNotTurnAnUnrepresentableLimitIntoANegativeBudget [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

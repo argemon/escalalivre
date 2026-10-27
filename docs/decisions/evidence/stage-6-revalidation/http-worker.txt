@@ -1,0 +1,27 @@
+{"started":"2026-10-26T17:59:06.869Z","cwd":"C:/Users/eargemon/source/repos/escalalivre","exe":"node","args":["backend/security.integration.cjs"],"TZ":null}
+✔ asynchronous generation returns a private ticket, survives polling and supports cancellation (2567.878ms)
+✔ API rejects abusive inputs and keeps normal scheduling and exports working (2848.1645ms)
+✔ solve limit cannot be bypassed by forging a forwarded IP or changing path case (1126.9208ms)
+✔ global per-IP rate limit includes invalid requests (487.3088ms)
+✔ bounded queue rejects excess jobs while the API remains responsive (1529.36ms)
+✔ wall-clock deadline includes result analysis and the API recovers (2209.1573ms)
+✔ queue wait has its own deadline and cancellation removes the active job (2624.3868ms)
+✔ disconnecting the caller stops its worker and releases capacity (1172.5627ms)
+✔ memory watchdog stops the child and releases its slot (1327.437ms)
+✔ an unfinished request body cannot occupy an API slot indefinitely (8500.0876ms)
+✔ civil 09h and overnight dates survive the HTTP API, worker and native round trip (2262.7003ms)
+✔ shared documents produce equivalent browser and HTTP diagnostics, coverage and gaps (60107.5228ms)
+✔ editing flow: authorize, save, generate, revoke, save, reload and generate with real solver (2595.8529ms)
+✔ editing flow: generate, change employee role, save, reload and regenerate consistently (1774.5244ms)
+✔ editing flow: long duration input, save, persisted reload and generation preserve all hour digits (1932.0162ms)
+✔ overlapping preserved history counts people in team and directional role coverage (1775.1777ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 94848.2492
+
+{"name":"http-worker","started":"2026-10-26T17:59:06.869Z","ended":"2026-10-26T18:00:41.879Z","code":0,"exe":"node","args":["backend/security.integration.cjs"],"SECURITY_BUILD_CONFIGURATION":"Release"}

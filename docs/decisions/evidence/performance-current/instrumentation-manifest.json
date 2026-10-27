@@ -1,0 +1,34 @@
+[
+  {
+    "file": "tools/performance-benchmark.cjs",
+    "sha256": "565d39ffd576647d298e8cbc5d8055fb58cf8129480fb373988ab22acd6cf85d"
+  },
+  {
+    "file": "tools/performance-http.cjs",
+    "sha256": "44ce6acbc94159ef6373684bad63a9ccacc2aac9bb13071d43b41f348b6c86e4"
+  },
+  {
+    "file": "tools/performance-paired.cjs",
+    "sha256": "0fc40128b2ac7f8b065345228438879e34105f11be77e2eed3cb3517e34b31a3"
+  },
+  {
+    "file": "tools/performance-alerts.cjs",
+    "sha256": "009390f0e9826e054d10e58de83f721f2e090fbd07bb22d7fb07d09c167a202a"
+  },
+  {
+    "file": "tools/performance/PhaseProbe.cs",
+    "sha256": "4b6736b9f0ae178f42941bac841f4922989e17e431b85967581d73fdd2b05372"
+  },
+  {
+    "file": "tools/performance/ModelProbe.cs",
+    "sha256": "5cf58e0e6877056ac58dccb78ec5446a70ae64e3246532f1390acaa189973180"
+  },
+  {
+    "file": "tools/performance/Program.cs",
+    "sha256": "2c59e35b24d0a6db10a78f2347f8e3e664435d7b52dcb29097466544b0d24eed"
+  },
+  {
+    "file": "shared/performance-scenarios.cjs",
+    "sha256": "87ca67b592f2de1719250cfd6c2bf0fd494b320902e9503d0af328c0fc04f293"
+  }
+]

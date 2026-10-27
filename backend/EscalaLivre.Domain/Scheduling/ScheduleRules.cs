@@ -1,9 +1,15 @@
+using EscalaLivre.Domain.Planning;
+
 namespace EscalaLivre.Domain.Scheduling;
 
 public static class ScheduleRules
 {
     public static DateTime EndOn(DateTime day,TimeOnly start,TimeOnly end)=>day.Date+end.ToTimeSpan()+(end<=start?TimeSpan.FromDays(1):TimeSpan.Zero);
-    public static bool CanCover(Employee e,CoverageRequirement r)=>r.Scope=="team"||e.Role==r.Role||(e.CoverageRoles?.Contains(r.Role)??false);
+    // Explicit IDs, including an empty list, override stale legacy transport names.
+    public static bool CanCover(Employee e,CoverageRequirement r)
+        => r.Scope=="team" || e.Role==r.Role || (e.CoverageRoleIds is { } ids
+            ? r.RoleId is { } id && ids.Contains(id)
+            : e.CoverageRoles?.Contains(r.Role) ?? false);
     public static IEnumerable<ScheduleIssue> ShiftDiagnostics(CompanyRules company,Employee e,ShiftAssignment a)
     {
         ScheduleIssue Issue(string code,string message,string severity="error")=>new(severity,code,message,a.Start,a.End,a.Role,e.Id);
@@ -17,7 +23,7 @@ public static class ScheduleRules
         if(!e.AllowsNightWork&&ShiftEligibilityPolicy.IsNight(a.Start,a.End))yield return Issue("nightWork","Trabalho noturno não permitido.");
         if(!ShiftEligibilityPolicy.MatchesFixedStart(e,a.Start))yield return Issue("fixedStart","Entrada diferente do horário fixo configurado.");
         if(work>rule.DefaultShiftDuration)yield return Issue("workload","Trabalho efetivo excede a jornada configurada.");
-        if(EffectiveWorkPolicy.ExceedsHourRegime(work,rule))yield return Issue("regime","Trabalho efetivo excede o regime em horas.");
+        if(EffectiveWorkPolicy.ExceedsRegimeWork(work,rule))yield return Issue("regime","Trabalho efetivo excede o regime em horas.");
         bool invalidPause=!IntervalPolicy.Valid(a);
         if(invalidPause)yield return Issue("interval","Intervalo obrigatório ausente, insuficiente ou fora da jornada.");
         var fixedPause=IntervalPolicy.FixedBreak(e,a.Start);
@@ -45,15 +51,16 @@ public static class ScheduleRules
         foreach(var e in document.Employees)
         {
             var rule=EffectiveWorkPolicy.RuleFor(document.Company,e);var shifts=assignments.Where(a=>a.EmployeeId==e.Id).OrderBy(a=>a.Start).ThenBy(a=>a.Id.ToString()).ToList();
+            var cycle=RegimeConfiguration.From(rule).RollingCycle;
             ScheduleIssue Issue(string code,string message,DateTime start,DateTime end)=>new("error",code,message,start,end,e.Role,e.Id);
             var latestEnd=DateTime.MinValue;
             foreach(var a in shifts)
             {
                 if(RestPolicy.ViolatesPrevious(a.Start,latestEnd,RestPolicy.Required(document.Company,e)))yield return Issue("minimumRest","Descanso mínimo entre turnos violado.",a.Start,a.End);
                 if(a.End>latestEnd)latestEnd=a.End;
-                if(rule.RegimeType=="dayBased")
+                if(cycle is not null)
                 {
-                    if(DayCyclePolicy.ExceedsEndingOn(shifts,a.Start.Date,rule))
+                    if(DayCyclePolicy.ExceedsEndingOn(shifts,a.Start.Date,cycle))
                         yield return Issue("regime","Dias de trabalho excedem o ciclo configurado.",a.Start,a.End);
                 }
             }

@@ -36,7 +36,8 @@ public sealed class PreservedCoverageRegressionTests
         request = request with { Document = request.Document with { Employees = [employee, available], Assignments = original } };
         var generation = AdapterComposition.Generate();
         var result = generation.Execute(request);
-        Assert.All(original, shift => Assert.Same(shift, Assert.Single(result.Assignments, a => a.Id == shift.Id)));
+        Assert.All(original, shift => Assert.Equal(JsonSerializer.Serialize(shift, ScheduleJson.CreateOptions()),
+            JsonSerializer.Serialize(Assert.Single(result.Assignments, a => a.Id == shift.Id), ScheduleJson.CreateOptions())));
         Assert.Contains(result.Assignments, a => a.EmployeeId == available.Id);
         Assert.Contains(result.Conflicts, c => c.Code == "multipleShifts");
         Assert.Empty(result.Gaps);

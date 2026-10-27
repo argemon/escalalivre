@@ -1,0 +1,200 @@
+[
+  {
+    "scenario": "small-fixed",
+    "before": {
+      "status": [
+        "optimal"
+      ],
+      "score": [
+        0.9,
+        0.9
+      ],
+      "objectives": [
+        -719991600000
+      ],
+      "bestBounds": [
+        -719991600000
+      ]
+    },
+    "after": {
+      "status": [
+        "optimal"
+      ],
+      "score": [
+        0.9,
+        0.9
+      ],
+      "objectives": [
+        -719991600000
+      ],
+      "bestBounds": [
+        -719991600000
+      ]
+    }
+  },
+  {
+    "scenario": "fortnight-history",
+    "before": {
+      "status": [
+        "feasible"
+      ],
+      "score": [
+        0.817,
+        0.817
+      ],
+      "objectives": [
+        -8760034800003
+      ],
+      "bestBounds": [
+        -5159974799999
+      ]
+    },
+    "after": {
+      "status": [
+        "feasible"
+      ],
+      "score": [
+        0.817,
+        0.817
+      ],
+      "objectives": [
+        -8760034800003
+      ],
+      "bestBounds": [
+        -5159974799999
+      ]
+    }
+  },
+  {
+    "scenario": "variable-breaks",
+    "before": {
+      "status": [
+        "feasible"
+      ],
+      "score": [
+        0.933,
+        0.933
+      ],
+      "objectives": [
+        -239995999209
+      ],
+      "bestBounds": [
+        10000194
+      ]
+    },
+    "after": {
+      "status": [
+        "feasible"
+      ],
+      "score": [
+        0.933,
+        0.933
+      ],
+      "objectives": [
+        -239995999209
+      ],
+      "bestBounds": [
+        10000194
+      ]
+    }
+  },
+  {
+    "scenario": "max-people-period",
+    "before": {
+      "status": [
+        "optimal"
+      ],
+      "score": [
+        1,
+        1
+      ],
+      "objectives": [
+        -2830107100
+      ],
+      "bestBounds": [
+        -2830107100
+      ]
+    },
+    "after": {
+      "status": [
+        "optimal"
+      ],
+      "score": [
+        1,
+        1
+      ],
+      "objectives": [
+        -2830107100
+      ],
+      "bestBounds": [
+        -2830107100
+      ]
+    }
+  },
+  {
+    "scenario": "candidate-limit",
+    "before": {
+      "status": [
+        "complexityLimit"
+      ],
+      "score": [
+        null,
+        null
+      ],
+      "objectives": [
+        null
+      ],
+      "bestBounds": [
+        null
+      ]
+    },
+    "after": {
+      "status": [
+        "complexityLimit"
+      ],
+      "score": [
+        null,
+        null
+      ],
+      "objectives": [
+        null
+      ],
+      "bestBounds": [
+        null
+      ]
+    }
+  },
+  {
+    "scenario": "near-candidate-limit",
+    "before": {
+      "status": [
+        "complexityLimit"
+      ],
+      "score": [
+        null,
+        null
+      ],
+      "objectives": [
+        null
+      ],
+      "bestBounds": [
+        null
+      ]
+    },
+    "after": {
+      "status": [
+        "complexityLimit"
+      ],
+      "score": [
+        null,
+        null
+      ],
+      "objectives": [
+        null
+      ],
+      "bestBounds": [
+        null
+      ]
+    }
+  }
+]

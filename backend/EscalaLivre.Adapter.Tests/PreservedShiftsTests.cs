@@ -1,3 +1,4 @@
+using System.Text.Json;
 using EscalaLivre.Application.Contracts;
 using EscalaLivre.Domain.Scheduling;
 using EscalaLivre.Infrastructure.Solver;
@@ -34,8 +35,8 @@ public sealed class PreservedShiftsTests
         r=With(r,before,old,after);
         var generation = AdapterComposition.Generate();
         var result=generation.Execute(r);
-        Assert.Same(before,Assert.Single(result.Assignments,a=>a.Id==before.Id));
-        Assert.Same(after,Assert.Single(result.Assignments,a=>a.Id==after.Id));
+        Assert.Equal(JsonSerializer.Serialize(before, ScheduleJson.CreateOptions()), JsonSerializer.Serialize(Assert.Single(result.Assignments,a=>a.Id==before.Id), ScheduleJson.CreateOptions()));
+        Assert.Equal(JsonSerializer.Serialize(after, ScheduleJson.CreateOptions()), JsonSerializer.Serialize(Assert.Single(result.Assignments,a=>a.Id==after.Id), ScheduleJson.CreateOptions()));
         Assert.DoesNotContain(result.Assignments,a=>a.Id==old.Id);
         Assert.Single(Generated(r,result));
         Assert.Single(result.Decisions);
@@ -53,7 +54,8 @@ public sealed class PreservedShiftsTests
         var after=Shift(r,Monday.AddDays(1).AddHours(22));
         r=With(r,before,old,after);
         var result=AdapterComposition.Generate().Execute(r);
-        Assert.Contains(before,result.Assignments);Assert.Contains(after,result.Assignments);
+        Assert.Equal(JsonSerializer.Serialize(before, ScheduleJson.CreateOptions()), JsonSerializer.Serialize(Assert.Single(result.Assignments,a=>a.Id==before.Id), ScheduleJson.CreateOptions()));
+        Assert.Equal(JsonSerializer.Serialize(after, ScheduleJson.CreateOptions()), JsonSerializer.Serialize(Assert.Single(result.Assignments,a=>a.Id==after.Id), ScheduleJson.CreateOptions()));
         Assert.DoesNotContain(result.Assignments,a=>a.Id==old.Id);
         var generated=Assert.Single(Generated(r,result));
         Assert.Equal(Monday.AddDays(1).AddHours(2),generated.End);
@@ -70,7 +72,9 @@ public sealed class PreservedShiftsTests
         var fixedShift=Shift(r,future?Monday.AddDays(1):Monday.AddDays(-1).AddHours(18));
         r=With(r,fixedShift);
         var result=AdapterComposition.Generate().Execute(r);
-        Assert.Empty(Generated(r,result));Assert.Contains(fixedShift,result.Assignments);Assert.NotEmpty(result.Gaps);
+        Assert.Empty(Generated(r,result));
+        Assert.Equal(JsonSerializer.Serialize(fixedShift, ScheduleJson.CreateOptions()), JsonSerializer.Serialize(Assert.Single(result.Assignments,a=>a.Id==fixedShift.Id), ScheduleJson.CreateOptions()));
+        Assert.NotEmpty(result.Gaps);
     }
 
     [Theory]
@@ -171,7 +175,7 @@ public sealed class PreservedShiftsTests
         var r=Request(workload:new("dayBased",7,0,4,TimeSpan.FromHours(4)));
         r=With(r,Shift(r,Monday.AddDays(-1).AddHours(8)),Shift(r,Monday.AddDays(1).AddHours(8)));
         var result=AdapterComposition.Generate().Execute(r);
-        Assert.Equal(r.Document.Assignments,result.Assignments);
+        Assert.Equal(JsonSerializer.Serialize(r.Document.Assignments, ScheduleJson.CreateOptions()), JsonSerializer.Serialize(result.Assignments, ScheduleJson.CreateOptions()));
         Assert.Contains(result.Conflicts,c=>c.Code=="weeklyLimit");
         Assert.DoesNotContain(result.Conflicts,c=>c.Code=="solverInfeasible");
     }

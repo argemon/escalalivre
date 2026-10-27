@@ -1,0 +1,122 @@
+[
+  {
+    "id": "small-fixed",
+    "people": 4,
+    "days": 7,
+    "pause": "fixed",
+    "coverageRequirements": 7,
+    "historyPerPerson": 0,
+    "assignmentCount": 28,
+    "operations": [
+      "analyze",
+      "solve"
+    ],
+    "requestBytes": 13830,
+    "inputSha256": "203fd3c123c51d13482aae91ee86a40d7e13a413bf5a6bfb29897a063347c870"
+  },
+  {
+    "id": "fortnight-history",
+    "people": 12,
+    "days": 14,
+    "pause": "fixed",
+    "coverageRequirements": 21,
+    "historyPerPerson": 4,
+    "assignmentCount": 48,
+    "operations": [
+      "analyze",
+      "solve"
+    ],
+    "requestBytes": 27548,
+    "inputSha256": "2b6c21ee80255818f494b63d6efdc146ccfe502dbe006097216ac3882c2aefc1"
+  },
+  {
+    "id": "variable-breaks",
+    "people": 4,
+    "days": 3,
+    "pause": "variable",
+    "coverageRequirements": 21,
+    "historyPerPerson": 0,
+    "assignmentCount": 0,
+    "operations": [
+      "analyze",
+      "solve"
+    ],
+    "requestBytes": 6143,
+    "inputSha256": "4351d0a58d553e99874fe0b9392ece8e1648e88ca056e06cb71b82511f312b1c"
+  },
+  {
+    "id": "max-people-period",
+    "people": 200,
+    "days": 31,
+    "pause": "none",
+    "coverageRequirements": 7,
+    "historyPerPerson": 0,
+    "assignmentCount": 0,
+    "operations": [
+      "analyze",
+      "solve"
+    ],
+    "requestBytes": 114815,
+    "inputSha256": "f8368eeb3f6ad90db7d8eeff4a565f8074c842e0b66002c707f137374df41419"
+  },
+  {
+    "id": "candidate-limit",
+    "people": 200,
+    "days": 31,
+    "pause": "variable",
+    "coverageRequirements": 7,
+    "historyPerPerson": 0,
+    "assignmentCount": 0,
+    "operations": [
+      "analyze",
+      "solve"
+    ],
+    "expectedComplexity": true,
+    "requestBytes": 109415,
+    "inputSha256": "bc6c25868d59874311b1f0fba3410ce0fd2a0a835290b8a7f4d8cc161d853335"
+  },
+  {
+    "id": "near-candidate-limit",
+    "people": 80,
+    "days": 3,
+    "pause": "variable",
+    "coverageRequirements": 21,
+    "historyPerPerson": 0,
+    "assignmentCount": 0,
+    "operations": [
+      "analyze",
+      "solve"
+    ],
+    "expectedComplexity": true,
+    "requestBytes": 46954,
+    "inputSha256": "82ec6385e4c642e5b5cf75c9b9e690f7e134cb6ea782855ea846fc4c4edf58a6"
+  },
+  {
+    "id": "coverage-limit",
+    "people": 40,
+    "days": 31,
+    "pause": "fixed",
+    "coverageRequirements": 1000,
+    "historyPerPerson": 0,
+    "assignmentCount": 1240,
+    "operations": [
+      "analyze"
+    ],
+    "requestBytes": 591480,
+    "inputSha256": "d794beae62371793dd348596876b89bf0e30eebfdf8d403c3753922794b954b0"
+  },
+  {
+    "id": "history-limit",
+    "people": 200,
+    "days": 31,
+    "pause": "none",
+    "coverageRequirements": 7,
+    "historyPerPerson": 100,
+    "assignmentCount": 20000,
+    "operations": [
+      "analyze"
+    ],
+    "requestBytes": 5754814,
+    "inputSha256": "49cea208b10b9dc137a0e24a618705f3e58db0c77c611d1f41ed0ade25b79a8b"
+  }
+]

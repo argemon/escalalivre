@@ -1,0 +1,4757 @@
+[
+  {
+    "scenario": "small-fixed",
+    "operation": "analyze",
+    "repetition": 0,
+    "elapsedMs": 0.4858,
+    "coldMs": 106.6558,
+    "memory": {
+      "workingSetBefore": 46018560,
+      "workingSetAfter": 45871104,
+      "privateBytesBefore": 15003648,
+      "privateBytesAfter": 14761984,
+      "peakWorkingSetBytes": 46067712,
+      "allocatedManagedBytes": 282256,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1447,
+        "managedBytes": 65600
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.239,
+        "managedBytes": 196800
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "FD9181060C5A6081012BE5F60E7B0C61CDAB31D0E920F9347774AD4BC89ADAB8",
+    "status": "not-run",
+    "score": 0.9,
+    "assignmentCount": 28,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "small-fixed",
+    "operation": "analyze",
+    "repetition": 1,
+    "elapsedMs": 0.4572,
+    "coldMs": 107.1809,
+    "memory": {
+      "workingSetBefore": 46338048,
+      "workingSetAfter": 46190592,
+      "privateBytesBefore": 15450112,
+      "privateBytesAfter": 15212544,
+      "peakWorkingSetBytes": 46387200,
+      "allocatedManagedBytes": 282256,
+      "cpuMs": 15.625
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1296,
+        "managedBytes": 65600
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.2228,
+        "managedBytes": 196800
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "FD9181060C5A6081012BE5F60E7B0C61CDAB31D0E920F9347774AD4BC89ADAB8",
+    "status": "not-run",
+    "score": 0.9,
+    "assignmentCount": 28,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "small-fixed",
+    "operation": "analyze",
+    "repetition": 2,
+    "elapsedMs": 0.4447,
+    "coldMs": 95.1768,
+    "memory": {
+      "workingSetBefore": 46055424,
+      "workingSetAfter": 45912064,
+      "privateBytesBefore": 15843328,
+      "privateBytesAfter": 14790656,
+      "peakWorkingSetBytes": 46108672,
+      "allocatedManagedBytes": 282256,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1249,
+        "managedBytes": 65600
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.222,
+        "managedBytes": 196800
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "FD9181060C5A6081012BE5F60E7B0C61CDAB31D0E920F9347774AD4BC89ADAB8",
+    "status": "not-run",
+    "score": 0.9,
+    "assignmentCount": 28,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "small-fixed",
+    "operation": "analyze",
+    "repetition": 3,
+    "elapsedMs": 0.5011,
+    "coldMs": 101.2849,
+    "memory": {
+      "workingSetBefore": 46026752,
+      "workingSetAfter": 45879296,
+      "privateBytesBefore": 14995456,
+      "privateBytesAfter": 14757888,
+      "peakWorkingSetBytes": 46075904,
+      "allocatedManagedBytes": 282256,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1272,
+        "managedBytes": 65600
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.2676,
+        "managedBytes": 196800
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "FD9181060C5A6081012BE5F60E7B0C61CDAB31D0E920F9347774AD4BC89ADAB8",
+    "status": "not-run",
+    "score": 0.9,
+    "assignmentCount": 28,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "small-fixed",
+    "operation": "analyze",
+    "repetition": 4,
+    "elapsedMs": 0.4712,
+    "coldMs": 94.7323,
+    "memory": {
+      "workingSetBefore": 45993984,
+      "workingSetAfter": 45846528,
+      "privateBytesBefore": 15003648,
+      "privateBytesAfter": 14766080,
+      "peakWorkingSetBytes": 46043136,
+      "allocatedManagedBytes": 282256,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1421,
+        "managedBytes": 65600
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.2295,
+        "managedBytes": 196800
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "FD9181060C5A6081012BE5F60E7B0C61CDAB31D0E920F9347774AD4BC89ADAB8",
+    "status": "not-run",
+    "score": 0.9,
+    "assignmentCount": 28,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "small-fixed",
+    "operation": "solve",
+    "repetition": 0,
+    "elapsedMs": 21.2062,
+    "coldMs": 724.812,
+    "memory": {
+      "workingSetBefore": 64086016,
+      "workingSetAfter": 65560576,
+      "privateBytesBefore": 20639744,
+      "privateBytesAfter": 21274624,
+      "peakWorkingSetBytes": 65560576,
+      "allocatedManagedBytes": 1413312,
+      "cpuMs": 31.25
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 0.2402,
+        "managedBytes": 90200
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0048,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 0.0324,
+        "managedBytes": 16400
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.0159,
+        "managedBytes": 8200
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 0.0307,
+        "managedBytes": 16400
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 0.0488,
+        "managedBytes": 57400
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 0.6744,
+        "managedBytes": 799664
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 0.045,
+        "managedBytes": 32544
+      },
+      {
+        "phase": "model",
+        "milliseconds": 0.8658,
+        "managedBytes": 947008
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 0.1025,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 19.4044,
+        "managedBytes": 51968
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.0361,
+        "managedBytes": 0
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.0759,
+        "managedBytes": 57144
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.2341,
+        "managedBytes": 187832
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "optimal",
+    "score": 0.9,
+    "assignmentCount": 24,
+    "model": {
+      "candidates": 24,
+      "variables": 330,
+      "constraints": 636,
+      "serializedBytes": 35537,
+      "steps": 252
+    },
+    "solver": {
+      "objective": -719991600000,
+      "bestBound": -719991600000,
+      "wallSeconds": 0.018500000000000003,
+      "branches": 166,
+      "conflicts": 0
+    }
+  },
+  {
+    "scenario": "small-fixed",
+    "operation": "solve",
+    "repetition": 1,
+    "elapsedMs": 23.1415,
+    "coldMs": 298.8459,
+    "memory": {
+      "workingSetBefore": 64045056,
+      "workingSetAfter": 65433600,
+      "privateBytesBefore": 20475904,
+      "privateBytesAfter": 21032960,
+      "peakWorkingSetBytes": 65433600,
+      "allocatedManagedBytes": 1413312,
+      "cpuMs": 15.625
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 0.2486,
+        "managedBytes": 90200
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0077,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 0.0877,
+        "managedBytes": 16400
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.0239,
+        "managedBytes": 8200
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 0.0793,
+        "managedBytes": 16400
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 0.112,
+        "managedBytes": 57400
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 0.816,
+        "managedBytes": 799664
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 0.0541,
+        "managedBytes": 32544
+      },
+      {
+        "phase": "model",
+        "milliseconds": 1.1994,
+        "managedBytes": 947008
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 0.185,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 20.5849,
+        "managedBytes": 51968
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.0463,
+        "managedBytes": 0
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1181,
+        "managedBytes": 57144
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.397,
+        "managedBytes": 187832
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "optimal",
+    "score": 0.9,
+    "assignmentCount": 24,
+    "model": {
+      "candidates": 24,
+      "variables": 330,
+      "constraints": 636,
+      "serializedBytes": 35537,
+      "steps": 252
+    },
+    "solver": {
+      "objective": -719991600000,
+      "bestBound": -719991600000,
+      "wallSeconds": 0.0195316,
+      "branches": 166,
+      "conflicts": 0
+    }
+  },
+  {
+    "scenario": "small-fixed",
+    "operation": "solve",
+    "repetition": 2,
+    "elapsedMs": 21.9914,
+    "coldMs": 313.2126,
+    "memory": {
+      "workingSetBefore": 64049152,
+      "workingSetAfter": 65511424,
+      "privateBytesBefore": 20393984,
+      "privateBytesAfter": 21356544,
+      "peakWorkingSetBytes": 65511424,
+      "allocatedManagedBytes": 1524024,
+      "cpuMs": 31.25
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 0.2229,
+        "managedBytes": 188552
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0052,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 0.0356,
+        "managedBytes": 16400
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.0181,
+        "managedBytes": 8200
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 0.0341,
+        "managedBytes": 16400
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 0.0576,
+        "managedBytes": 69760
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 0.6485,
+        "managedBytes": 795504
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 0.0521,
+        "managedBytes": 40744
+      },
+      {
+        "phase": "model",
+        "milliseconds": 0.8637,
+        "managedBytes": 963408
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 0.1046,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 19.9708,
+        "managedBytes": 43768
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.0396,
+        "managedBytes": 0
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.0874,
+        "managedBytes": 57144
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.2401,
+        "managedBytes": 187832
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "optimal",
+    "score": 0.9,
+    "assignmentCount": 24,
+    "model": {
+      "candidates": 24,
+      "variables": 330,
+      "constraints": 636,
+      "serializedBytes": 35537,
+      "steps": 252
+    },
+    "solver": {
+      "objective": -719991600000,
+      "bestBound": -719991600000,
+      "wallSeconds": 0.0188098,
+      "branches": 166,
+      "conflicts": 0
+    }
+  },
+  {
+    "scenario": "small-fixed",
+    "operation": "solve",
+    "repetition": 3,
+    "elapsedMs": 21.1738,
+    "coldMs": 306.2924,
+    "memory": {
+      "workingSetBefore": 63926272,
+      "workingSetAfter": 65622016,
+      "privateBytesBefore": 20090880,
+      "privateBytesAfter": 21327872,
+      "peakWorkingSetBytes": 65622016,
+      "allocatedManagedBytes": 1524024,
+      "cpuMs": 31.25
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 0.2315,
+        "managedBytes": 188552
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0047,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 0.0375,
+        "managedBytes": 16400
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.0177,
+        "managedBytes": 8200
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 0.0356,
+        "managedBytes": 16400
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 0.059,
+        "managedBytes": 69760
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 0.6728,
+        "managedBytes": 795504
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 0.0546,
+        "managedBytes": 40744
+      },
+      {
+        "phase": "model",
+        "milliseconds": 0.8954,
+        "managedBytes": 963408
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 0.105,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 19.2053,
+        "managedBytes": 43768
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.0421,
+        "managedBytes": 0
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1242,
+        "managedBytes": 57144
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.2588,
+        "managedBytes": 187832
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "optimal",
+    "score": 0.9,
+    "assignmentCount": 24,
+    "model": {
+      "candidates": 24,
+      "variables": 330,
+      "constraints": 636,
+      "serializedBytes": 35537,
+      "steps": 252
+    },
+    "solver": {
+      "objective": -719991600000,
+      "bestBound": -719991600000,
+      "wallSeconds": 0.018274500000000003,
+      "branches": 166,
+      "conflicts": 0
+    }
+  },
+  {
+    "scenario": "small-fixed",
+    "operation": "solve",
+    "repetition": 4,
+    "elapsedMs": 22.393,
+    "coldMs": 312.8704,
+    "memory": {
+      "workingSetBefore": 64024576,
+      "workingSetAfter": 65560576,
+      "privateBytesBefore": 20275200,
+      "privateBytesAfter": 21155840,
+      "peakWorkingSetBytes": 65560576,
+      "allocatedManagedBytes": 1524024,
+      "cpuMs": 15.625
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 0.2289,
+        "managedBytes": 188552
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.005,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 0.0402,
+        "managedBytes": 16400
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.0182,
+        "managedBytes": 8200
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 0.0369,
+        "managedBytes": 16400
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 0.0599,
+        "managedBytes": 69760
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 0.6535,
+        "managedBytes": 795504
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 0.0555,
+        "managedBytes": 40744
+      },
+      {
+        "phase": "model",
+        "milliseconds": 0.8835,
+        "managedBytes": 963408
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 0.2041,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 20.173,
+        "managedBytes": 43768
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.0436,
+        "managedBytes": 0
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.0896,
+        "managedBytes": 57144
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.2358,
+        "managedBytes": 187832
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "optimal",
+    "score": 0.9,
+    "assignmentCount": 24,
+    "model": {
+      "candidates": 24,
+      "variables": 330,
+      "constraints": 636,
+      "serializedBytes": 35537,
+      "steps": 252
+    },
+    "solver": {
+      "objective": -719991600000,
+      "bestBound": -719991600000,
+      "wallSeconds": 0.018948200000000002,
+      "branches": 166,
+      "conflicts": 0
+    }
+  },
+  {
+    "scenario": "fortnight-history",
+    "operation": "analyze",
+    "repetition": 0,
+    "elapsedMs": 1.6414,
+    "coldMs": 93.6333,
+    "memory": {
+      "workingSetBefore": 47529984,
+      "workingSetAfter": 48078848,
+      "privateBytesBefore": 16650240,
+      "privateBytesAfter": 16703488,
+      "peakWorkingSetBytes": 48078848,
+      "allocatedManagedBytes": 991648,
+      "cpuMs": 15.625
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1683,
+        "managedBytes": 123000
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 1.3257,
+        "managedBytes": 824520
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "1BE9EBDA137C3A26B16B09420C5A903AF89F6ADCFC2CE1E2FC83FA406A7EED2C",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 48,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "fortnight-history",
+    "operation": "analyze",
+    "repetition": 1,
+    "elapsedMs": 1.4794,
+    "coldMs": 94.1751,
+    "memory": {
+      "workingSetBefore": 47722496,
+      "workingSetAfter": 48259072,
+      "privateBytesBefore": 16846848,
+      "privateBytesAfter": 16801792,
+      "peakWorkingSetBytes": 48259072,
+      "allocatedManagedBytes": 991648,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1664,
+        "managedBytes": 123000
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 1.2025,
+        "managedBytes": 824520
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "1BE9EBDA137C3A26B16B09420C5A903AF89F6ADCFC2CE1E2FC83FA406A7EED2C",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 48,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "fortnight-history",
+    "operation": "analyze",
+    "repetition": 2,
+    "elapsedMs": 1.5027,
+    "coldMs": 92.5488,
+    "memory": {
+      "workingSetBefore": 47398912,
+      "workingSetAfter": 47943680,
+      "privateBytesBefore": 16588800,
+      "privateBytesAfter": 16760832,
+      "peakWorkingSetBytes": 47943680,
+      "allocatedManagedBytes": 991648,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1664,
+        "managedBytes": 123000
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 1.2185,
+        "managedBytes": 824520
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "1BE9EBDA137C3A26B16B09420C5A903AF89F6ADCFC2CE1E2FC83FA406A7EED2C",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 48,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "fortnight-history",
+    "operation": "analyze",
+    "repetition": 3,
+    "elapsedMs": 1.5699,
+    "coldMs": 93.846,
+    "memory": {
+      "workingSetBefore": 47583232,
+      "workingSetAfter": 48128000,
+      "privateBytesBefore": 16699392,
+      "privateBytesAfter": 16748544,
+      "peakWorkingSetBytes": 48128000,
+      "allocatedManagedBytes": 991648,
+      "cpuMs": 15.625
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1664,
+        "managedBytes": 123000
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 1.2908,
+        "managedBytes": 824520
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "1BE9EBDA137C3A26B16B09420C5A903AF89F6ADCFC2CE1E2FC83FA406A7EED2C",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 48,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "fortnight-history",
+    "operation": "analyze",
+    "repetition": 4,
+    "elapsedMs": 1.4687,
+    "coldMs": 90.7667,
+    "memory": {
+      "workingSetBefore": 47362048,
+      "workingSetAfter": 47898624,
+      "privateBytesBefore": 16568320,
+      "privateBytesAfter": 16523264,
+      "peakWorkingSetBytes": 47898624,
+      "allocatedManagedBytes": 991648,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1662,
+        "managedBytes": 123000
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 1.1926,
+        "managedBytes": 824520
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "1BE9EBDA137C3A26B16B09420C5A903AF89F6ADCFC2CE1E2FC83FA406A7EED2C",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 48,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "fortnight-history",
+    "operation": "solve",
+    "repetition": 0,
+    "elapsedMs": 5029.374,
+    "coldMs": 5335.2089,
+    "memory": {
+      "workingSetBefore": 71598080,
+      "workingSetAfter": 77684736,
+      "privateBytesBefore": 26664960,
+      "privateBytesAfter": 33734656,
+      "peakWorkingSetBytes": 97427456,
+      "allocatedManagedBytes": 11376240,
+      "cpuMs": 4984.375
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 0.4691,
+        "managedBytes": 508400
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0099,
+        "managedBytes": 8200
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 0.0895,
+        "managedBytes": 131200
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.0318,
+        "managedBytes": 16400
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 0.0945,
+        "managedBytes": 114800
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 0.2515,
+        "managedBytes": 344400
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 11.0224,
+        "managedBytes": 7267568
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 0.1514,
+        "managedBytes": 201016
+      },
+      {
+        "phase": "model",
+        "milliseconds": 11.6926,
+        "managedBytes": 8140984
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 0.8527,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 5012.8984,
+        "managedBytes": 488016
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.0545,
+        "managedBytes": 8200
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.3324,
+        "managedBytes": 344400
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 2.506,
+        "managedBytes": 1439152
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "feasible",
+    "score": 0.817,
+    "assignmentCount": 153,
+    "model": {
+      "candidates": 168,
+      "variables": 3587,
+      "constraints": 6476,
+      "serializedBytes": 422370,
+      "steps": 2522
+    },
+    "solver": {
+      "objective": -8760034800003,
+      "bestBound": -5159974799999,
+      "wallSeconds": 5.0038087,
+      "branches": 82429,
+      "conflicts": 3391
+    }
+  },
+  {
+    "scenario": "fortnight-history",
+    "operation": "solve",
+    "repetition": 1,
+    "elapsedMs": 5028.8822,
+    "coldMs": 5697.6395,
+    "memory": {
+      "workingSetBefore": 71413760,
+      "workingSetAfter": 77651968,
+      "privateBytesBefore": 26464256,
+      "privateBytesAfter": 33542144,
+      "peakWorkingSetBytes": 97767424,
+      "allocatedManagedBytes": 11376240,
+      "cpuMs": 5031.25
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 0.4317,
+        "managedBytes": 508400
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0111,
+        "managedBytes": 8200
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 0.0839,
+        "managedBytes": 131200
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.0309,
+        "managedBytes": 16400
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 0.0901,
+        "managedBytes": 114800
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 0.2368,
+        "managedBytes": 344400
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 10.1758,
+        "managedBytes": 7267568
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 0.2297,
+        "managedBytes": 201016
+      },
+      {
+        "phase": "model",
+        "milliseconds": 10.8887,
+        "managedBytes": 8140984
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 1.3617,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 5011.9497,
+        "managedBytes": 488016
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.1016,
+        "managedBytes": 8200
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.5762,
+        "managedBytes": 344400
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 3.0022,
+        "managedBytes": 1439152
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "feasible",
+    "score": 0.817,
+    "assignmentCount": 153,
+    "model": {
+      "candidates": 168,
+      "variables": 3587,
+      "constraints": 6476,
+      "serializedBytes": 422370,
+      "steps": 2522
+    },
+    "solver": {
+      "objective": -8760034800003,
+      "bestBound": -5159974799999,
+      "wallSeconds": 5.003932000000001,
+      "branches": 82557,
+      "conflicts": 3491
+    }
+  },
+  {
+    "scenario": "fortnight-history",
+    "operation": "solve",
+    "repetition": 2,
+    "elapsedMs": 5028.9774,
+    "coldMs": 5695.6742,
+    "memory": {
+      "workingSetBefore": 71442432,
+      "workingSetAfter": 76701696,
+      "privateBytesBefore": 26632192,
+      "privateBytesAfter": 32178176,
+      "peakWorkingSetBytes": 96899072,
+      "allocatedManagedBytes": 11376240,
+      "cpuMs": 5000
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 0.4464,
+        "managedBytes": 508400
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0107,
+        "managedBytes": 8200
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 0.0956,
+        "managedBytes": 131200
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.0316,
+        "managedBytes": 16400
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 0.0914,
+        "managedBytes": 114800
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 0.2497,
+        "managedBytes": 344400
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 9.7773,
+        "managedBytes": 7267568
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 0.2537,
+        "managedBytes": 201016
+      },
+      {
+        "phase": "model",
+        "milliseconds": 10.5411,
+        "managedBytes": 8140984
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 1.2535,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 5012.8232,
+        "managedBytes": 488016
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.0544,
+        "managedBytes": 8200
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.3166,
+        "managedBytes": 344400
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 2.9115,
+        "managedBytes": 1439152
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "feasible",
+    "score": 0.817,
+    "assignmentCount": 153,
+    "model": {
+      "candidates": 168,
+      "variables": 3587,
+      "constraints": 6476,
+      "serializedBytes": 422370,
+      "steps": 2522
+    },
+    "solver": {
+      "objective": -8760034800003,
+      "bestBound": -5159974799999,
+      "wallSeconds": 5.003729300000001,
+      "branches": 81680,
+      "conflicts": 2802
+    }
+  },
+  {
+    "scenario": "fortnight-history",
+    "operation": "solve",
+    "repetition": 3,
+    "elapsedMs": 5030.2282,
+    "coldMs": 5722.9551,
+    "memory": {
+      "workingSetBefore": 71098368,
+      "workingSetAfter": 77484032,
+      "privateBytesBefore": 26148864,
+      "privateBytesAfter": 33542144,
+      "peakWorkingSetBytes": 97038336,
+      "allocatedManagedBytes": 11376240,
+      "cpuMs": 5000
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 0.4512,
+        "managedBytes": 508400
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0111,
+        "managedBytes": 8200
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 0.0854,
+        "managedBytes": 131200
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.0313,
+        "managedBytes": 16400
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 0.0947,
+        "managedBytes": 114800
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 0.2489,
+        "managedBytes": 344400
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 10.4283,
+        "managedBytes": 7267568
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 0.1511,
+        "managedBytes": 201016
+      },
+      {
+        "phase": "model",
+        "milliseconds": 11.0811,
+        "managedBytes": 8140984
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 0.9169,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 5013.8824,
+        "managedBytes": 488016
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.0602,
+        "managedBytes": 8200
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.3033,
+        "managedBytes": 344400
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 2.9609,
+        "managedBytes": 1439152
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "feasible",
+    "score": 0.817,
+    "assignmentCount": 153,
+    "model": {
+      "candidates": 168,
+      "variables": 3587,
+      "constraints": 6476,
+      "serializedBytes": 422370,
+      "steps": 2522
+    },
+    "solver": {
+      "objective": -8760034800003,
+      "bestBound": -5159974799999,
+      "wallSeconds": 5.004398800000001,
+      "branches": 82039,
+      "conflicts": 3063
+    }
+  },
+  {
+    "scenario": "fortnight-history",
+    "operation": "solve",
+    "repetition": 4,
+    "elapsedMs": 5026.6267,
+    "coldMs": 5750.2246,
+    "memory": {
+      "workingSetBefore": 71122944,
+      "workingSetAfter": 76791808,
+      "privateBytesBefore": 26177536,
+      "privateBytesAfter": 31793152,
+      "peakWorkingSetBytes": 97230848,
+      "allocatedManagedBytes": 11376240,
+      "cpuMs": 5000
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 0.426,
+        "managedBytes": 508400
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0107,
+        "managedBytes": 8200
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 0.0839,
+        "managedBytes": 131200
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.0304,
+        "managedBytes": 16400
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 0.0911,
+        "managedBytes": 114800
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 0.2909,
+        "managedBytes": 344400
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 8.8783,
+        "managedBytes": 7267568
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 0.1401,
+        "managedBytes": 201016
+      },
+      {
+        "phase": "model",
+        "milliseconds": 9.5544,
+        "managedBytes": 8140984
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 0.9801,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 5012.3144,
+        "managedBytes": 488016
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.0836,
+        "managedBytes": 8200
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.3085,
+        "managedBytes": 344400
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 2.4365,
+        "managedBytes": 1439152
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "feasible",
+    "score": 0.817,
+    "assignmentCount": 153,
+    "model": {
+      "candidates": 168,
+      "variables": 3587,
+      "constraints": 6476,
+      "serializedBytes": 422370,
+      "steps": 2522
+    },
+    "solver": {
+      "objective": -8760034800003,
+      "bestBound": -5159974799999,
+      "wallSeconds": 5.003758400000001,
+      "branches": 82454,
+      "conflicts": 3415
+    }
+  },
+  {
+    "scenario": "variable-breaks",
+    "operation": "analyze",
+    "repetition": 0,
+    "elapsedMs": 0.2287,
+    "coldMs": 64.3164,
+    "memory": {
+      "workingSetBefore": 45543424,
+      "workingSetAfter": 45195264,
+      "privateBytesBefore": 14671872,
+      "privateBytesAfter": 14430208,
+      "peakWorkingSetBytes": 45596672,
+      "allocatedManagedBytes": 96664,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.0261,
+        "managedBytes": 0
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.1374,
+        "managedBytes": 90200
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "6CCD4B5ABE0F5C1D6D33FD3E208586723DD746BADA6A5CC0BD363B361B61F71C",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "variable-breaks",
+    "operation": "analyze",
+    "repetition": 1,
+    "elapsedMs": 0.2239,
+    "coldMs": 63.4564,
+    "memory": {
+      "workingSetBefore": 45531136,
+      "workingSetAfter": 45182976,
+      "privateBytesBefore": 14663680,
+      "privateBytesAfter": 14426112,
+      "peakWorkingSetBytes": 45584384,
+      "allocatedManagedBytes": 96664,
+      "cpuMs": 15.625
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.0287,
+        "managedBytes": 0
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.1352,
+        "managedBytes": 90200
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "6CCD4B5ABE0F5C1D6D33FD3E208586723DD746BADA6A5CC0BD363B361B61F71C",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "variable-breaks",
+    "operation": "analyze",
+    "repetition": 2,
+    "elapsedMs": 0.2236,
+    "coldMs": 63.1688,
+    "memory": {
+      "workingSetBefore": 45682688,
+      "workingSetAfter": 45334528,
+      "privateBytesBefore": 14827520,
+      "privateBytesAfter": 14589952,
+      "peakWorkingSetBytes": 45735936,
+      "allocatedManagedBytes": 96664,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.0274,
+        "managedBytes": 0
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.1359,
+        "managedBytes": 90200
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "6CCD4B5ABE0F5C1D6D33FD3E208586723DD746BADA6A5CC0BD363B361B61F71C",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "variable-breaks",
+    "operation": "analyze",
+    "repetition": 3,
+    "elapsedMs": 0.2274,
+    "coldMs": 64.1519,
+    "memory": {
+      "workingSetBefore": 45502464,
+      "workingSetAfter": 45154304,
+      "privateBytesBefore": 14573568,
+      "privateBytesAfter": 14331904,
+      "peakWorkingSetBytes": 45555712,
+      "allocatedManagedBytes": 96664,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.0274,
+        "managedBytes": 0
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.1359,
+        "managedBytes": 90200
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "6CCD4B5ABE0F5C1D6D33FD3E208586723DD746BADA6A5CC0BD363B361B61F71C",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "variable-breaks",
+    "operation": "analyze",
+    "repetition": 4,
+    "elapsedMs": 0.2243,
+    "coldMs": 64.0767,
+    "memory": {
+      "workingSetBefore": 45576192,
+      "workingSetAfter": 45232128,
+      "privateBytesBefore": 14737408,
+      "privateBytesAfter": 14499840,
+      "peakWorkingSetBytes": 45633536,
+      "allocatedManagedBytes": 96664,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.0256,
+        "managedBytes": 0
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.1401,
+        "managedBytes": 90200
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "6CCD4B5ABE0F5C1D6D33FD3E208586723DD746BADA6A5CC0BD363B361B61F71C",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "variable-breaks",
+    "operation": "solve",
+    "repetition": 0,
+    "elapsedMs": 5229.4403,
+    "coldMs": 5920.8316,
+    "memory": {
+      "workingSetBefore": 67555328,
+      "workingSetAfter": 106807296,
+      "privateBytesBefore": 23814144,
+      "privateBytesAfter": 66240512,
+      "peakWorkingSetBytes": 225046528,
+      "allocatedManagedBytes": 100473000,
+      "cpuMs": 5218.75
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 2.9042,
+        "managedBytes": 3652816
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0069,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 0.2831,
+        "managedBytes": 204232
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.9509,
+        "managedBytes": 81744
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 0.5832,
+        "managedBytes": 710600
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 0.7795,
+        "managedBytes": 653456
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 140.0576,
+        "managedBytes": 89954936
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 3.3608,
+        "managedBytes": 844704
+      },
+      {
+        "phase": "model",
+        "milliseconds": 146.3508,
+        "managedBytes": 92999544
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 6.0208,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 5073.3695,
+        "managedBytes": 3614784
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.1199,
+        "managedBytes": 0
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.0401,
+        "managedBytes": 16400
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.149,
+        "managedBytes": 147600
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "feasible",
+    "score": 0.933,
+    "assignmentCount": 8,
+    "model": {
+      "candidates": 1496,
+      "variables": 3120,
+      "constraints": 70452,
+      "serializedBytes": 3540939,
+      "steps": 102648
+    },
+    "solver": {
+      "objective": -239995999209,
+      "bestBound": 10000194,
+      "wallSeconds": 5.003074300000001,
+      "branches": 341833,
+      "conflicts": 15668
+    }
+  },
+  {
+    "scenario": "variable-breaks",
+    "operation": "solve",
+    "repetition": 1,
+    "elapsedMs": 5243.1764,
+    "coldMs": 5866.6725,
+    "memory": {
+      "workingSetBefore": 67702784,
+      "workingSetAfter": 96223232,
+      "privateBytesBefore": 25378816,
+      "privateBytesAfter": 55054336,
+      "peakWorkingSetBytes": 225165312,
+      "allocatedManagedBytes": 100571760,
+      "cpuMs": 5234.375
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 2.6879,
+        "managedBytes": 3652816
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.006,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 0.2651,
+        "managedBytes": 204232
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.9389,
+        "managedBytes": 81744
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 0.5627,
+        "managedBytes": 710600
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 0.8456,
+        "managedBytes": 653456
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 150.8827,
+        "managedBytes": 89953952
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 4.1099,
+        "managedBytes": 853192
+      },
+      {
+        "phase": "model",
+        "milliseconds": 157.9589,
+        "managedBytes": 93007048
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 5.7752,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 5075.5189,
+        "managedBytes": 3606584
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.1174,
+        "managedBytes": 0
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.0405,
+        "managedBytes": 24600
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.1549,
+        "managedBytes": 139400
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "feasible",
+    "score": 0.933,
+    "assignmentCount": 8,
+    "model": {
+      "candidates": 1496,
+      "variables": 3120,
+      "constraints": 70452,
+      "serializedBytes": 3540939,
+      "steps": 102648
+    },
+    "solver": {
+      "objective": -239995999209,
+      "bestBound": 10000194,
+      "wallSeconds": 5.0031442,
+      "branches": 343114,
+      "conflicts": 16641
+    }
+  },
+  {
+    "scenario": "variable-breaks",
+    "operation": "solve",
+    "repetition": 2,
+    "elapsedMs": 5223.5329,
+    "coldMs": 5888.1438,
+    "memory": {
+      "workingSetBefore": 67665920,
+      "workingSetAfter": 106123264,
+      "privateBytesBefore": 25821184,
+      "privateBytesAfter": 62681088,
+      "peakWorkingSetBytes": 225464320,
+      "allocatedManagedBytes": 100473000,
+      "cpuMs": 5203.125
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 2.7217,
+        "managedBytes": 3652816
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0056,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 0.2662,
+        "managedBytes": 204232
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.9476,
+        "managedBytes": 81744
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 0.6599,
+        "managedBytes": 710600
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 0.7879,
+        "managedBytes": 653456
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 134.0412,
+        "managedBytes": 89954936
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 3.317,
+        "managedBytes": 844704
+      },
+      {
+        "phase": "model",
+        "milliseconds": 140.3462,
+        "managedBytes": 92999544
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 5.6355,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 5073.6374,
+        "managedBytes": 3614784
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.1237,
+        "managedBytes": 0
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.0398,
+        "managedBytes": 16400
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.1605,
+        "managedBytes": 147600
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "feasible",
+    "score": 0.933,
+    "assignmentCount": 8,
+    "model": {
+      "candidates": 1496,
+      "variables": 3120,
+      "constraints": 70452,
+      "serializedBytes": 3540939,
+      "steps": 102648
+    },
+    "solver": {
+      "objective": -239995999209,
+      "bestBound": 10000194,
+      "wallSeconds": 5.004653500000001,
+      "branches": 351183,
+      "conflicts": 17007
+    }
+  },
+  {
+    "scenario": "variable-breaks",
+    "operation": "solve",
+    "repetition": 3,
+    "elapsedMs": 5332.7128,
+    "coldMs": 5887.4552,
+    "memory": {
+      "workingSetBefore": 67887104,
+      "workingSetAfter": 106651648,
+      "privateBytesBefore": 25235456,
+      "privateBytesAfter": 63639552,
+      "peakWorkingSetBytes": 224759808,
+      "allocatedManagedBytes": 100473016,
+      "cpuMs": 5312.5
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 2.8057,
+        "managedBytes": 3652816
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0105,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 0.307,
+        "managedBytes": 204232
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.9814,
+        "managedBytes": 81744
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 0.6098,
+        "managedBytes": 710600
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 0.8171,
+        "managedBytes": 653456
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 204.7928,
+        "managedBytes": 89953952
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 6.5881,
+        "managedBytes": 853192
+      },
+      {
+        "phase": "model",
+        "milliseconds": 214.4455,
+        "managedBytes": 93007048
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 6.946,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 5108.0093,
+        "managedBytes": 3606584
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.1231,
+        "managedBytes": 0
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.0374,
+        "managedBytes": 24600
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.1443,
+        "managedBytes": 139400
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "feasible",
+    "score": 0.933,
+    "assignmentCount": 8,
+    "model": {
+      "candidates": 1496,
+      "variables": 3120,
+      "constraints": 70452,
+      "serializedBytes": 3540939,
+      "steps": 102648
+    },
+    "solver": {
+      "objective": -239995999209,
+      "bestBound": 10000194,
+      "wallSeconds": 5.0029561000000005,
+      "branches": 338638,
+      "conflicts": 13031
+    }
+  },
+  {
+    "scenario": "variable-breaks",
+    "operation": "solve",
+    "repetition": 4,
+    "elapsedMs": 5238.8852,
+    "coldMs": 5935.4644,
+    "memory": {
+      "workingSetBefore": 67694592,
+      "workingSetAfter": 106872832,
+      "privateBytesBefore": 25571328,
+      "privateBytesAfter": 64585728,
+      "peakWorkingSetBytes": 224624640,
+      "allocatedManagedBytes": 100485400,
+      "cpuMs": 5218.75
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 2.7855,
+        "managedBytes": 3652816
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0057,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 0.2693,
+        "managedBytes": 204232
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.9488,
+        "managedBytes": 81744
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 0.578,
+        "managedBytes": 710600
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 0.7848,
+        "managedBytes": 662840
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 140.5516,
+        "managedBytes": 89962640
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 3.7269,
+        "managedBytes": 844944
+      },
+      {
+        "phase": "model",
+        "milliseconds": 147.1868,
+        "managedBytes": 93016872
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 5.8775,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 5082.4968,
+        "managedBytes": 3606584
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.1189,
+        "managedBytes": 0
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.0507,
+        "managedBytes": 24600
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.1521,
+        "managedBytes": 139400
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "feasible",
+    "score": 0.933,
+    "assignmentCount": 8,
+    "model": {
+      "candidates": 1496,
+      "variables": 3120,
+      "constraints": 70452,
+      "serializedBytes": 3540939,
+      "steps": 102648
+    },
+    "solver": {
+      "objective": -239995999209,
+      "bestBound": 10000194,
+      "wallSeconds": 5.0031233,
+      "branches": 338181,
+      "conflicts": 12594
+    }
+  },
+  {
+    "scenario": "max-people-period",
+    "operation": "analyze",
+    "repetition": 0,
+    "elapsedMs": 1.7098,
+    "coldMs": 65.2484,
+    "memory": {
+      "workingSetBefore": 52912128,
+      "workingSetAfter": 53092352,
+      "privateBytesBefore": 21872640,
+      "privateBytesAfter": 22519808,
+      "peakWorkingSetBytes": 53092352,
+      "allocatedManagedBytes": 2707848,
+      "cpuMs": 15.625
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1292,
+        "managedBytes": 196800
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 1.4824,
+        "managedBytes": 2502736
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "A02F1CE7E7B7AEB6186982DCCA797AFE41FF7222B216670CCBA9E1BD9D264FF0",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "max-people-period",
+    "operation": "analyze",
+    "repetition": 1,
+    "elapsedMs": 1.7223,
+    "coldMs": 65.1998,
+    "memory": {
+      "workingSetBefore": 52977664,
+      "workingSetAfter": 53141504,
+      "privateBytesBefore": 22097920,
+      "privateBytesAfter": 22515712,
+      "peakWorkingSetBytes": 53141504,
+      "allocatedManagedBytes": 2707848,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.148,
+        "managedBytes": 196800
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 1.4208,
+        "managedBytes": 2502736
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "A02F1CE7E7B7AEB6186982DCCA797AFE41FF7222B216670CCBA9E1BD9D264FF0",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "max-people-period",
+    "operation": "analyze",
+    "repetition": 2,
+    "elapsedMs": 1.6384,
+    "coldMs": 64.0875,
+    "memory": {
+      "workingSetBefore": 52961280,
+      "workingSetAfter": 53133312,
+      "privateBytesBefore": 22093824,
+      "privateBytesAfter": 22507520,
+      "peakWorkingSetBytes": 53133312,
+      "allocatedManagedBytes": 2707848,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1358,
+        "managedBytes": 196800
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 1.4087,
+        "managedBytes": 2502736
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "A02F1CE7E7B7AEB6186982DCCA797AFE41FF7222B216670CCBA9E1BD9D264FF0",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "max-people-period",
+    "operation": "analyze",
+    "repetition": 3,
+    "elapsedMs": 1.8286,
+    "coldMs": 67.693,
+    "memory": {
+      "workingSetBefore": 52998144,
+      "workingSetAfter": 53174272,
+      "privateBytesBefore": 22192128,
+      "privateBytesAfter": 22609920,
+      "peakWorkingSetBytes": 53174272,
+      "allocatedManagedBytes": 2707848,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1389,
+        "managedBytes": 196800
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 1.57,
+        "managedBytes": 2502736
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "A02F1CE7E7B7AEB6186982DCCA797AFE41FF7222B216670CCBA9E1BD9D264FF0",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "max-people-period",
+    "operation": "analyze",
+    "repetition": 4,
+    "elapsedMs": 1.8847,
+    "coldMs": 64.2698,
+    "memory": {
+      "workingSetBefore": 53035008,
+      "workingSetAfter": 53207040,
+      "privateBytesBefore": 22208512,
+      "privateBytesAfter": 22626304,
+      "peakWorkingSetBytes": 53207040,
+      "allocatedManagedBytes": 2707848,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1273,
+        "managedBytes": 196800
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 1.6598,
+        "managedBytes": 2502736
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "A02F1CE7E7B7AEB6186982DCCA797AFE41FF7222B216670CCBA9E1BD9D264FF0",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "max-people-period",
+    "operation": "solve",
+    "repetition": 0,
+    "elapsedMs": 2626.3816,
+    "coldMs": 3108.6958,
+    "memory": {
+      "workingSetBefore": 68526080,
+      "workingSetAfter": 101675008,
+      "privateBytesBefore": 26288128,
+      "privateBytesAfter": 59211776,
+      "peakWorkingSetBytes": 212074496,
+      "allocatedManagedBytes": 496002056,
+      "cpuMs": 2609.375
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 290.2783,
+        "managedBytes": 390939944
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0235,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 8.1875,
+        "managedBytes": 4851112
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.7356,
+        "managedBytes": 442800
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 11.3947,
+        "managedBytes": 3599680
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 20.6197,
+        "managedBytes": 8519712
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 180.239,
+        "managedBytes": 62787648
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 6.6048,
+        "managedBytes": 3504560
+      },
+      {
+        "phase": "model",
+        "milliseconds": 229.1085,
+        "managedBytes": 85915904
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 11.6004,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 1740.6423,
+        "managedBytes": 4434944
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.6579,
+        "managedBytes": 88840
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 11.9031,
+        "managedBytes": 6203912
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 337.9316,
+        "managedBytes": 5096232
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "optimal",
+    "score": 1,
+    "assignmentCount": 2900,
+    "model": {
+      "candidates": 5800,
+      "variables": 29232,
+      "constraints": 60948,
+      "serializedBytes": 3908752,
+      "steps": 23316
+    },
+    "solver": {
+      "objective": -2830107100,
+      "bestBound": -2830107100,
+      "wallSeconds": 1.6551148,
+      "branches": 0,
+      "conflicts": 0
+    }
+  },
+  {
+    "scenario": "max-people-period",
+    "operation": "solve",
+    "repetition": 1,
+    "elapsedMs": 2329.7601,
+    "coldMs": 2647.2136,
+    "memory": {
+      "workingSetBefore": 68366336,
+      "workingSetAfter": 101212160,
+      "privateBytesBefore": 26099712,
+      "privateBytesAfter": 59920384,
+      "peakWorkingSetBytes": 211697664,
+      "allocatedManagedBytes": 496002184,
+      "cpuMs": 2312.5
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 249.2672,
+        "managedBytes": 390939944
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0145,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 6.7769,
+        "managedBytes": 4851112
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.6669,
+        "managedBytes": 442800
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 5.8806,
+        "managedBytes": 3599680
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 15.4615,
+        "managedBytes": 8519752
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 135.6921,
+        "managedBytes": 62787608
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 6.0123,
+        "managedBytes": 3504560
+      },
+      {
+        "phase": "model",
+        "milliseconds": 171.4493,
+        "managedBytes": 85915904
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 8.1035,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 1554.341,
+        "managedBytes": 4434944
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.5698,
+        "managedBytes": 88840
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 11.8872,
+        "managedBytes": 6203912
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 330.1346,
+        "managedBytes": 5096120
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "optimal",
+    "score": 1,
+    "assignmentCount": 2900,
+    "model": {
+      "candidates": 5800,
+      "variables": 29232,
+      "constraints": 60948,
+      "serializedBytes": 3908752,
+      "steps": 23316
+    },
+    "solver": {
+      "objective": -2830107100,
+      "bestBound": -2830107100,
+      "wallSeconds": 1.473265,
+      "branches": 0,
+      "conflicts": 0
+    }
+  },
+  {
+    "scenario": "max-people-period",
+    "operation": "solve",
+    "repetition": 2,
+    "elapsedMs": 2243.0906,
+    "coldMs": 2940.1499,
+    "memory": {
+      "workingSetBefore": 68640768,
+      "workingSetAfter": 101171200,
+      "privateBytesBefore": 26521600,
+      "privateBytesAfter": 58880000,
+      "peakWorkingSetBytes": 209432576,
+      "allocatedManagedBytes": 495996008,
+      "cpuMs": 2234.375
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 251.4787,
+        "managedBytes": 390940016
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0122,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 5.7054,
+        "managedBytes": 4858288
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.7695,
+        "managedBytes": 444232
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 11.7797,
+        "managedBytes": 3606808
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 10.9838,
+        "managedBytes": 8519816
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 118.0622,
+        "managedBytes": 62780952
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 5.9954,
+        "managedBytes": 3504560
+      },
+      {
+        "phase": "model",
+        "milliseconds": 154.1928,
+        "managedBytes": 85908648
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 7.8835,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 1470.3578,
+        "managedBytes": 4440160
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.4888,
+        "managedBytes": 88840
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 34.2468,
+        "managedBytes": 6212320
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 320.8221,
+        "managedBytes": 5077400
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "optimal",
+    "score": 1,
+    "assignmentCount": 2900,
+    "model": {
+      "candidates": 5800,
+      "variables": 29232,
+      "constraints": 60948,
+      "serializedBytes": 3908752,
+      "steps": 23316
+    },
+    "solver": {
+      "objective": -2830107100,
+      "bestBound": -2830107100,
+      "wallSeconds": 1.3917239000000001,
+      "branches": 0,
+      "conflicts": 0
+    }
+  },
+  {
+    "scenario": "max-people-period",
+    "operation": "solve",
+    "repetition": 3,
+    "elapsedMs": 2249.6227,
+    "coldMs": 2582.7225,
+    "memory": {
+      "workingSetBefore": 68227072,
+      "workingSetAfter": 101019648,
+      "privateBytesBefore": 27512832,
+      "privateBytesAfter": 59039744,
+      "peakWorkingSetBytes": 211496960,
+      "allocatedManagedBytes": 496002184,
+      "cpuMs": 2265.625
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 248.3943,
+        "managedBytes": 390939944
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0141,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 6.2246,
+        "managedBytes": 4851112
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.643,
+        "managedBytes": 442800
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 5.8142,
+        "managedBytes": 3599680
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 16.4902,
+        "managedBytes": 8519752
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 119.0933,
+        "managedBytes": 62787608
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 6.1211,
+        "managedBytes": 3504560
+      },
+      {
+        "phase": "model",
+        "milliseconds": 155.2516,
+        "managedBytes": 85915904
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 8.2759,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 1501.6955,
+        "managedBytes": 4434944
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.486,
+        "managedBytes": 88840
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 12.8517,
+        "managedBytes": 6203912
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 319.0581,
+        "managedBytes": 5096120
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "optimal",
+    "score": 1,
+    "assignmentCount": 2900,
+    "model": {
+      "candidates": 5800,
+      "variables": 29232,
+      "constraints": 60948,
+      "serializedBytes": 3908752,
+      "steps": 23316
+    },
+    "solver": {
+      "objective": -2830107100,
+      "bestBound": -2830107100,
+      "wallSeconds": 1.4225363000000002,
+      "branches": 0,
+      "conflicts": 0
+    }
+  },
+  {
+    "scenario": "max-people-period",
+    "operation": "solve",
+    "repetition": 4,
+    "elapsedMs": 2247.1154,
+    "coldMs": 2955.0116,
+    "memory": {
+      "workingSetBefore": 68431872,
+      "workingSetAfter": 101208064,
+      "privateBytesBefore": 25862144,
+      "privateBytesAfter": 58499072,
+      "peakWorkingSetBytes": 211849216,
+      "allocatedManagedBytes": 496002184,
+      "cpuMs": 2203.125
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 251.0682,
+        "managedBytes": 390939944
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0148,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 6.2041,
+        "managedBytes": 4851112
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 0.6373,
+        "managedBytes": 442800
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 5.7035,
+        "managedBytes": 3599680
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 15.2325,
+        "managedBytes": 8519752
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 136.5133,
+        "managedBytes": 62787608
+      },
+      {
+        "phase": "objective",
+        "milliseconds": 6.7101,
+        "managedBytes": 3504560
+      },
+      {
+        "phase": "model",
+        "milliseconds": 172.3691,
+        "managedBytes": 85915904
+      },
+      {
+        "phase": "modelMetrics",
+        "milliseconds": 8.0598,
+        "managedBytes": 0
+      },
+      {
+        "phase": "solver",
+        "milliseconds": 1480.9329,
+        "managedBytes": 4434944
+      },
+      {
+        "phase": "read",
+        "milliseconds": 0.4898,
+        "managedBytes": 88840
+      },
+      {
+        "phase": "diagnostics",
+        "milliseconds": 11.8178,
+        "managedBytes": 6203912
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 318.8011,
+        "managedBytes": 5096120
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": "optimal",
+    "score": 1,
+    "assignmentCount": 2900,
+    "model": {
+      "candidates": 5800,
+      "variables": 29232,
+      "constraints": 60948,
+      "serializedBytes": 3908752,
+      "steps": 23316
+    },
+    "solver": {
+      "objective": -2830107100,
+      "bestBound": -2830107100,
+      "wallSeconds": 1.4027141,
+      "branches": 0,
+      "conflicts": 0
+    }
+  },
+  {
+    "scenario": "candidate-limit",
+    "operation": "analyze",
+    "repetition": 0,
+    "elapsedMs": 4.7364,
+    "coldMs": 67.1795,
+    "memory": {
+      "workingSetBefore": 52998144,
+      "workingSetAfter": 56741888,
+      "privateBytesBefore": 22151168,
+      "privateBytesAfter": 26112000,
+      "peakWorkingSetBytes": 56741888,
+      "allocatedManagedBytes": 6416776,
+      "cpuMs": 15.625
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.13,
+        "managedBytes": 196800
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 4.5057,
+        "managedBytes": 6200576
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "2181BF0C2D3301604844360D1FD99A464A73A2383162AA00080FDD86F09C8351",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "candidate-limit",
+    "operation": "analyze",
+    "repetition": 1,
+    "elapsedMs": 4.6126,
+    "coldMs": 66.2788,
+    "memory": {
+      "workingSetBefore": 52867072,
+      "workingSetAfter": 56610816,
+      "privateBytesBefore": 21864448,
+      "privateBytesAfter": 25825280,
+      "peakWorkingSetBytes": 56610816,
+      "allocatedManagedBytes": 6416776,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1244,
+        "managedBytes": 196800
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 4.3839,
+        "managedBytes": 6200576
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "2181BF0C2D3301604844360D1FD99A464A73A2383162AA00080FDD86F09C8351",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "candidate-limit",
+    "operation": "analyze",
+    "repetition": 2,
+    "elapsedMs": 4.437,
+    "coldMs": 64.0628,
+    "memory": {
+      "workingSetBefore": 52998144,
+      "workingSetAfter": 56741888,
+      "privateBytesBefore": 22032384,
+      "privateBytesAfter": 25993216,
+      "peakWorkingSetBytes": 56741888,
+      "allocatedManagedBytes": 6416776,
+      "cpuMs": 15.625
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1211,
+        "managedBytes": 196800
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 4.2187,
+        "managedBytes": 6200576
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "2181BF0C2D3301604844360D1FD99A464A73A2383162AA00080FDD86F09C8351",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "candidate-limit",
+    "operation": "analyze",
+    "repetition": 3,
+    "elapsedMs": 4.5177,
+    "coldMs": 64.7945,
+    "memory": {
+      "workingSetBefore": 53051392,
+      "workingSetAfter": 56795136,
+      "privateBytesBefore": 22069248,
+      "privateBytesAfter": 26034176,
+      "peakWorkingSetBytes": 56795136,
+      "allocatedManagedBytes": 6416776,
+      "cpuMs": 15.625
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1275,
+        "managedBytes": 196800
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 4.29,
+        "managedBytes": 6200576
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "2181BF0C2D3301604844360D1FD99A464A73A2383162AA00080FDD86F09C8351",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "candidate-limit",
+    "operation": "analyze",
+    "repetition": 4,
+    "elapsedMs": 4.5615,
+    "coldMs": 66.3748,
+    "memory": {
+      "workingSetBefore": 53002240,
+      "workingSetAfter": 56750080,
+      "privateBytesBefore": 22179840,
+      "privateBytesAfter": 26144768,
+      "peakWorkingSetBytes": 56750080,
+      "allocatedManagedBytes": 6416776,
+      "cpuMs": 15.625
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1414,
+        "managedBytes": 196800
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 4.3175,
+        "managedBytes": 6200576
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "2181BF0C2D3301604844360D1FD99A464A73A2383162AA00080FDD86F09C8351",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "candidate-limit",
+    "operation": "solve",
+    "repetition": 0,
+    "elapsedMs": 61.1271,
+    "coldMs": 131.8565,
+    "memory": {
+      "workingSetBefore": 57401344,
+      "workingSetAfter": 61378560,
+      "privateBytesBefore": 25575424,
+      "privateBytesAfter": 29777920,
+      "peakWorkingSetBytes": 61452288,
+      "allocatedManagedBytes": 73161200,
+      "cpuMs": 62.5
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 61.1149,
+        "managedBytes": 73155664
+      }
+    ],
+    "outcome": "complexityLimit",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": null,
+    "score": null,
+    "assignmentCount": null,
+    "model": {
+      "candidates": 30001,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "candidate-limit",
+    "operation": "solve",
+    "repetition": 1,
+    "elapsedMs": 62.4407,
+    "coldMs": 135.2851,
+    "memory": {
+      "workingSetBefore": 57282560,
+      "workingSetAfter": 61263872,
+      "privateBytesBefore": 25452544,
+      "privateBytesAfter": 29655040,
+      "peakWorkingSetBytes": 61333504,
+      "allocatedManagedBytes": 73161200,
+      "cpuMs": 62.5
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 62.4301,
+        "managedBytes": 73155664
+      }
+    ],
+    "outcome": "complexityLimit",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": null,
+    "score": null,
+    "assignmentCount": null,
+    "model": {
+      "candidates": 30001,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "candidate-limit",
+    "operation": "solve",
+    "repetition": 2,
+    "elapsedMs": 60.6007,
+    "coldMs": 136.2932,
+    "memory": {
+      "workingSetBefore": 57405440,
+      "workingSetAfter": 61386752,
+      "privateBytesBefore": 25677824,
+      "privateBytesAfter": 29880320,
+      "peakWorkingSetBytes": 61460480,
+      "allocatedManagedBytes": 73161200,
+      "cpuMs": 62.5
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 60.5885,
+        "managedBytes": 73155664
+      }
+    ],
+    "outcome": "complexityLimit",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": null,
+    "score": null,
+    "assignmentCount": null,
+    "model": {
+      "candidates": 30001,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "candidate-limit",
+    "operation": "solve",
+    "repetition": 3,
+    "elapsedMs": 60.1803,
+    "coldMs": 131.971,
+    "memory": {
+      "workingSetBefore": 57233408,
+      "workingSetAfter": 61214720,
+      "privateBytesBefore": 25391104,
+      "privateBytesAfter": 29749248,
+      "peakWorkingSetBytes": 61296640,
+      "allocatedManagedBytes": 73161200,
+      "cpuMs": 78.125
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 60.1692,
+        "managedBytes": 73155664
+      }
+    ],
+    "outcome": "complexityLimit",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": null,
+    "score": null,
+    "assignmentCount": null,
+    "model": {
+      "candidates": 30001,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "candidate-limit",
+    "operation": "solve",
+    "repetition": 4,
+    "elapsedMs": 65.1039,
+    "coldMs": 141.2971,
+    "memory": {
+      "workingSetBefore": 57339904,
+      "workingSetAfter": 61321216,
+      "privateBytesBefore": 25481216,
+      "privateBytesAfter": 29859840,
+      "peakWorkingSetBytes": 61399040,
+      "allocatedManagedBytes": 73161200,
+      "cpuMs": 62.5
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 65.0916,
+        "managedBytes": 73155664
+      }
+    ],
+    "outcome": "complexityLimit",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": null,
+    "score": null,
+    "assignmentCount": null,
+    "model": {
+      "candidates": 30001,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "near-candidate-limit",
+    "operation": "analyze",
+    "repetition": 0,
+    "elapsedMs": 0.4922,
+    "coldMs": 71.4145,
+    "memory": {
+      "workingSetBefore": 47837184,
+      "workingSetAfter": 47955968,
+      "privateBytesBefore": 17207296,
+      "privateBytesAfter": 17121280,
+      "peakWorkingSetBytes": 47955968,
+      "allocatedManagedBytes": 508664,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.1363,
+        "managedBytes": 82000
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.2862,
+        "managedBytes": 418200
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "07A6E34D101A271477797B60EA68F82CD1FAF3211AEA72BD0D7933476CEF2E3D",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "near-candidate-limit",
+    "operation": "analyze",
+    "repetition": 1,
+    "elapsedMs": 0.4451,
+    "coldMs": 69.1984,
+    "memory": {
+      "workingSetBefore": 48050176,
+      "workingSetAfter": 48156672,
+      "privateBytesBefore": 17526784,
+      "privateBytesAfter": 17285120,
+      "peakWorkingSetBytes": 48156672,
+      "allocatedManagedBytes": 508664,
+      "cpuMs": 15.625
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.0959,
+        "managedBytes": 82000
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.2794,
+        "managedBytes": 418200
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "07A6E34D101A271477797B60EA68F82CD1FAF3211AEA72BD0D7933476CEF2E3D",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "near-candidate-limit",
+    "operation": "analyze",
+    "repetition": 2,
+    "elapsedMs": 0.4383,
+    "coldMs": 64.4185,
+    "memory": {
+      "workingSetBefore": 47902720,
+      "workingSetAfter": 48013312,
+      "privateBytesBefore": 17358848,
+      "privateBytesAfter": 17117184,
+      "peakWorkingSetBytes": 48013312,
+      "allocatedManagedBytes": 508664,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.0922,
+        "managedBytes": 82000
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.2789,
+        "managedBytes": 418200
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "07A6E34D101A271477797B60EA68F82CD1FAF3211AEA72BD0D7933476CEF2E3D",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "near-candidate-limit",
+    "operation": "analyze",
+    "repetition": 3,
+    "elapsedMs": 0.441,
+    "coldMs": 65.9081,
+    "memory": {
+      "workingSetBefore": 48017408,
+      "workingSetAfter": 48123904,
+      "privateBytesBefore": 17436672,
+      "privateBytesAfter": 17195008,
+      "peakWorkingSetBytes": 48123904,
+      "allocatedManagedBytes": 508664,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.0957,
+        "managedBytes": 82000
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.2794,
+        "managedBytes": 418200
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "07A6E34D101A271477797B60EA68F82CD1FAF3211AEA72BD0D7933476CEF2E3D",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "near-candidate-limit",
+    "operation": "analyze",
+    "repetition": 4,
+    "elapsedMs": 0.4348,
+    "coldMs": 66.2958,
+    "memory": {
+      "workingSetBefore": 47931392,
+      "workingSetAfter": 48046080,
+      "privateBytesBefore": 17317888,
+      "privateBytesAfter": 17252352,
+      "peakWorkingSetBytes": 48046080,
+      "allocatedManagedBytes": 508664,
+      "cpuMs": 0
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 0.0928,
+        "managedBytes": 82000
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 0.2771,
+        "managedBytes": 418200
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "07A6E34D101A271477797B60EA68F82CD1FAF3211AEA72BD0D7933476CEF2E3D",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 0,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "near-candidate-limit",
+    "operation": "solve",
+    "repetition": 0,
+    "elapsedMs": 1009.3875,
+    "coldMs": 1163.8844,
+    "memory": {
+      "workingSetBefore": 154103808,
+      "workingSetAfter": 167759872,
+      "privateBytesBefore": 122007552,
+      "privateBytesAfter": 135806976,
+      "peakWorkingSetBytes": 170123264,
+      "allocatedManagedBytes": 407968232,
+      "cpuMs": 1015.625
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 66.6912,
+        "managedBytes": 72828192
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0181,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 7.9806,
+        "managedBytes": 3698288
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 18.5915,
+        "managedBytes": 1574400
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 27.6248,
+        "managedBytes": 13717912
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 19.278,
+        "managedBytes": 13074200
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 859.1803,
+        "managedBytes": 292363688
+      },
+      {
+        "phase": "model",
+        "milliseconds": 942.6761,
+        "managedBytes": 335135256
+      }
+    ],
+    "outcome": "complexityLimit",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": null,
+    "score": null,
+    "assignmentCount": null,
+    "model": {
+      "candidates": 29920,
+      "variables": 33712,
+      "constraints": 233411,
+      "serializedBytes": 14051632,
+      "steps": 300001
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "near-candidate-limit",
+    "operation": "solve",
+    "repetition": 1,
+    "elapsedMs": 971.4796,
+    "coldMs": 1133.8587,
+    "memory": {
+      "workingSetBefore": 154165248,
+      "workingSetAfter": 168005632,
+      "privateBytesBefore": 122077184,
+      "privateBytesAfter": 136003584,
+      "peakWorkingSetBytes": 170184704,
+      "allocatedManagedBytes": 407966488,
+      "cpuMs": 906.25
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 68.811,
+        "managedBytes": 72828192
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0208,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 6.8459,
+        "managedBytes": 3698288
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 19.0684,
+        "managedBytes": 1574400
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 35.1381,
+        "managedBytes": 13717808
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 18.1645,
+        "managedBytes": 13072544
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 812.7596,
+        "managedBytes": 292365464
+      },
+      {
+        "phase": "model",
+        "milliseconds": 902.656,
+        "managedBytes": 335135272
+      }
+    ],
+    "outcome": "complexityLimit",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": null,
+    "score": null,
+    "assignmentCount": null,
+    "model": {
+      "candidates": 29920,
+      "variables": 33712,
+      "constraints": 233411,
+      "serializedBytes": 14051632,
+      "steps": 300001
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "near-candidate-limit",
+    "operation": "solve",
+    "repetition": 2,
+    "elapsedMs": 957.2659,
+    "coldMs": 1125.0744,
+    "memory": {
+      "workingSetBefore": 133029888,
+      "workingSetAfter": 167976960,
+      "privateBytesBefore": 100937728,
+      "privateBytesAfter": 136044544,
+      "peakWorkingSetBytes": 170188800,
+      "allocatedManagedBytes": 407968248,
+      "cpuMs": 968.75
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 64.891,
+        "managedBytes": 72828192
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0214,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 8.9937,
+        "managedBytes": 3698288
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 18.9787,
+        "managedBytes": 1574400
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 24.2777,
+        "managedBytes": 13717912
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 16.7241,
+        "managedBytes": 13074200
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 812.9531,
+        "managedBytes": 292365464
+      },
+      {
+        "phase": "model",
+        "milliseconds": 892.3553,
+        "managedBytes": 335137032
+      }
+    ],
+    "outcome": "complexityLimit",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": null,
+    "score": null,
+    "assignmentCount": null,
+    "model": {
+      "candidates": 29920,
+      "variables": 33712,
+      "constraints": 233411,
+      "serializedBytes": 14051632,
+      "steps": 300001
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "near-candidate-limit",
+    "operation": "solve",
+    "repetition": 3,
+    "elapsedMs": 962.5522,
+    "coldMs": 1133.339,
+    "memory": {
+      "workingSetBefore": 154279936,
+      "workingSetAfter": 168243200,
+      "privateBytesBefore": 122195968,
+      "privateBytesAfter": 136253440,
+      "peakWorkingSetBytes": 170303488,
+      "allocatedManagedBytes": 407968216,
+      "cpuMs": 953.125
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 68.4411,
+        "managedBytes": 72828192
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0203,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 6.8696,
+        "managedBytes": 3698288
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 18.6173,
+        "managedBytes": 1574400
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 33.6446,
+        "managedBytes": 13717912
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 18.2048,
+        "managedBytes": 13074200
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 805.5185,
+        "managedBytes": 292359680
+      },
+      {
+        "phase": "model",
+        "milliseconds": 894.0923,
+        "managedBytes": 335131248
+      }
+    ],
+    "outcome": "complexityLimit",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": null,
+    "score": null,
+    "assignmentCount": null,
+    "model": {
+      "candidates": 29920,
+      "variables": 33712,
+      "constraints": 233411,
+      "serializedBytes": 14051632,
+      "steps": 300001
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "near-candidate-limit",
+    "operation": "solve",
+    "repetition": 4,
+    "elapsedMs": 963.6661,
+    "coldMs": 1107.4701,
+    "memory": {
+      "workingSetBefore": 132923392,
+      "workingSetAfter": 167915520,
+      "privateBytesBefore": 100757504,
+      "privateBytesAfter": 135929856,
+      "peakWorkingSetBytes": 170086400,
+      "allocatedManagedBytes": 407968248,
+      "cpuMs": 953.125
+    },
+    "phases": [
+      {
+        "phase": "candidates",
+        "milliseconds": 66.1822,
+        "managedBytes": 72828192
+      },
+      {
+        "phase": "FixedAssignmentConstraints",
+        "milliseconds": 0.0211,
+        "managedBytes": 0
+      },
+      {
+        "phase": "DailyExclusivityConstraints",
+        "milliseconds": 9.1056,
+        "managedBytes": 3698288
+      },
+      {
+        "phase": "RestConstraints",
+        "milliseconds": 18.4271,
+        "managedBytes": 1574400
+      },
+      {
+        "phase": "WeeklyWorkConstraints",
+        "milliseconds": 24.5478,
+        "managedBytes": 13717912
+      },
+      {
+        "phase": "DayCycleConstraints",
+        "milliseconds": 18.4159,
+        "managedBytes": 13074200
+      },
+      {
+        "phase": "CoverageConstraints",
+        "milliseconds": 816.7435,
+        "managedBytes": 292365464
+      },
+      {
+        "phase": "model",
+        "milliseconds": 897.4638,
+        "managedBytes": 335137032
+      }
+    ],
+    "outcome": "complexityLimit",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": null,
+    "status": null,
+    "score": null,
+    "assignmentCount": null,
+    "model": {
+      "candidates": 29920,
+      "variables": 33712,
+      "constraints": 233411,
+      "serializedBytes": 14051632,
+      "steps": 300001
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "coverage-limit",
+    "operation": "analyze",
+    "repetition": 0,
+    "elapsedMs": 109.8388,
+    "coldMs": 196.131,
+    "memory": {
+      "workingSetBefore": 64180224,
+      "workingSetAfter": 67932160,
+      "privateBytesBefore": 34832384,
+      "privateBytesAfter": 38518784,
+      "peakWorkingSetBytes": 67932160,
+      "allocatedManagedBytes": 25544008,
+      "cpuMs": 109.375
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 10.687,
+        "managedBytes": 2822024
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 98.0006,
+        "managedBytes": 22018448
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "2AA8A3F975A366CB8A08C60FC520DD8D7BBE38B4394DDA74D5E78B2A437EBA1E",
+    "status": "not-run",
+    "score": 0.9,
+    "assignmentCount": 1240,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "coverage-limit",
+    "operation": "analyze",
+    "repetition": 1,
+    "elapsedMs": 107.9045,
+    "coldMs": 200.4093,
+    "memory": {
+      "workingSetBefore": 64327680,
+      "workingSetAfter": 68079616,
+      "privateBytesBefore": 35131392,
+      "privateBytesAfter": 38817792,
+      "peakWorkingSetBytes": 68079616,
+      "allocatedManagedBytes": 25544008,
+      "cpuMs": 125
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 11.7282,
+        "managedBytes": 2822024
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 95.0417,
+        "managedBytes": 22018448
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "2AA8A3F975A366CB8A08C60FC520DD8D7BBE38B4394DDA74D5E78B2A437EBA1E",
+    "status": "not-run",
+    "score": 0.9,
+    "assignmentCount": 1240,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "coverage-limit",
+    "operation": "analyze",
+    "repetition": 2,
+    "elapsedMs": 106.6038,
+    "coldMs": 197.5831,
+    "memory": {
+      "workingSetBefore": 64086016,
+      "workingSetAfter": 67837952,
+      "privateBytesBefore": 34811904,
+      "privateBytesAfter": 38498304,
+      "peakWorkingSetBytes": 67837952,
+      "allocatedManagedBytes": 25544008,
+      "cpuMs": 109.375
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 10.541,
+        "managedBytes": 2822024
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 94.9246,
+        "managedBytes": 22018448
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "2AA8A3F975A366CB8A08C60FC520DD8D7BBE38B4394DDA74D5E78B2A437EBA1E",
+    "status": "not-run",
+    "score": 0.9,
+    "assignmentCount": 1240,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "coverage-limit",
+    "operation": "analyze",
+    "repetition": 3,
+    "elapsedMs": 106.1705,
+    "coldMs": 197.78,
+    "memory": {
+      "workingSetBefore": 64217088,
+      "workingSetAfter": 67969024,
+      "privateBytesBefore": 35098624,
+      "privateBytesAfter": 38785024,
+      "peakWorkingSetBytes": 67969024,
+      "allocatedManagedBytes": 25544008,
+      "cpuMs": 109.375
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 10.7827,
+        "managedBytes": 2822024
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 94.134,
+        "managedBytes": 22018448
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "2AA8A3F975A366CB8A08C60FC520DD8D7BBE38B4394DDA74D5E78B2A437EBA1E",
+    "status": "not-run",
+    "score": 0.9,
+    "assignmentCount": 1240,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "coverage-limit",
+    "operation": "analyze",
+    "repetition": 4,
+    "elapsedMs": 105.5165,
+    "coldMs": 196.739,
+    "memory": {
+      "workingSetBefore": 64323584,
+      "workingSetAfter": 68075520,
+      "privateBytesBefore": 35160064,
+      "privateBytesAfter": 38846464,
+      "peakWorkingSetBytes": 68075520,
+      "allocatedManagedBytes": 25544008,
+      "cpuMs": 109.375
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 10.5751,
+        "managedBytes": 2822024
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 93.8292,
+        "managedBytes": 22018448
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "2AA8A3F975A366CB8A08C60FC520DD8D7BBE38B4394DDA74D5E78B2A437EBA1E",
+    "status": "not-run",
+    "score": 0.9,
+    "assignmentCount": 1240,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "history-limit",
+    "operation": "analyze",
+    "repetition": 0,
+    "elapsedMs": 3088.036,
+    "coldMs": 3362.778,
+    "memory": {
+      "workingSetBefore": 145969152,
+      "workingSetAfter": 145436672,
+      "privateBytesBefore": 152338432,
+      "privateBytesAfter": 151289856,
+      "peakWorkingSetBytes": 186552320,
+      "allocatedManagedBytes": 47875720,
+      "cpuMs": 3078.125
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 83.0674,
+        "managedBytes": 43921032
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 3002.6135,
+        "managedBytes": 3370200
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "0616064E72CD8160C430315E699E315E14B7D2434B3133EEF1387FABF3262618",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 20000,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "history-limit",
+    "operation": "analyze",
+    "repetition": 1,
+    "elapsedMs": 3072.4264,
+    "coldMs": 3241.8646,
+    "memory": {
+      "workingSetBefore": 144941056,
+      "workingSetAfter": 144412672,
+      "privateBytesBefore": 150810624,
+      "privateBytesAfter": 149757952,
+      "peakWorkingSetBytes": 186576896,
+      "allocatedManagedBytes": 47875720,
+      "cpuMs": 3078.125
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 82.6085,
+        "managedBytes": 43921032
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 2987.5104,
+        "managedBytes": 3370200
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "0616064E72CD8160C430315E699E315E14B7D2434B3133EEF1387FABF3262618",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 20000,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "history-limit",
+    "operation": "analyze",
+    "repetition": 2,
+    "elapsedMs": 3189.0516,
+    "coldMs": 3226.1041,
+    "memory": {
+      "workingSetBefore": 148647936,
+      "workingSetAfter": 148111360,
+      "privateBytesBefore": 155074560,
+      "privateBytesAfter": 154025984,
+      "peakWorkingSetBytes": 188825600,
+      "allocatedManagedBytes": 47875720,
+      "cpuMs": 3187.5
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 87.0332,
+        "managedBytes": 43921032
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 3099.4507,
+        "managedBytes": 3370200
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "0616064E72CD8160C430315E699E315E14B7D2434B3133EEF1387FABF3262618",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 20000,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "history-limit",
+    "operation": "analyze",
+    "repetition": 3,
+    "elapsedMs": 3123.7345,
+    "coldMs": 3292.6791,
+    "memory": {
+      "workingSetBefore": 144842752,
+      "workingSetAfter": 144388096,
+      "privateBytesBefore": 150392832,
+      "privateBytesAfter": 149876736,
+      "peakWorkingSetBytes": 186478592,
+      "allocatedManagedBytes": 47875720,
+      "cpuMs": 3109.375
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 84.8459,
+        "managedBytes": 43921032
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 3036.3879,
+        "managedBytes": 3370200
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "0616064E72CD8160C430315E699E315E14B7D2434B3133EEF1387FABF3262618",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 20000,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  },
+  {
+    "scenario": "history-limit",
+    "operation": "analyze",
+    "repetition": 4,
+    "elapsedMs": 4002.8272,
+    "coldMs": 3329.5124,
+    "memory": {
+      "workingSetBefore": 148877312,
+      "workingSetAfter": 148418560,
+      "privateBytesBefore": 154460160,
+      "privateBytesAfter": 153939968,
+      "peakWorkingSetBytes": 186314752,
+      "allocatedManagedBytes": 47875720,
+      "cpuMs": 4000
+    },
+    "phases": [
+      {
+        "phase": "diagnostics",
+        "milliseconds": 92.8327,
+        "managedBytes": 43921032
+      },
+      {
+        "phase": "coverage",
+        "milliseconds": 3907.5912,
+        "managedBytes": 3370200
+      }
+    ],
+    "outcome": "completed",
+    "correct": true,
+    "inputUnchanged": true,
+    "analysisSha256": "0616064E72CD8160C430315E699E315E14B7D2434B3133EEF1387FABF3262618",
+    "status": "not-run",
+    "score": 0,
+    "assignmentCount": 20000,
+    "model": {
+      "candidates": 0,
+      "variables": 0,
+      "constraints": 0,
+      "serializedBytes": 0,
+      "steps": 0
+    },
+    "solver": {
+      "objective": null,
+      "bestBound": null,
+      "wallSeconds": null,
+      "branches": null,
+      "conflicts": null
+    }
+  }
+]

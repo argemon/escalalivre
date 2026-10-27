@@ -1,0 +1,23 @@
+2026-10-26T16:01:07.3211919Z Ubuntu
+2026-10-26T16:01:07.3212495Z 24.04.5
+2026-10-26T16:01:07.3214798Z Image: ubuntu-24.04
+2026-10-26T16:01:07.3216678Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-26T16:01:07.3218250Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-26T16:01:08.9456082Z HEAD is now at 0f32fa5 Merge d40f8871238398bcab91bd081742986c244f4548 into 66659daa2bbfc2384605946ec5b553e0bcd51eed
+2026-10-26T16:01:09.6079582Z node: v22.23.3
+2026-10-26T16:01:09.6080398Z npm: 10.9.9
+2026-10-26T16:01:42.3377759Z # Subtest: civil schema comparisons and native import are device-zone independent: America/New_York
+2026-10-26T16:01:42.3379003Z ok 187 - civil schema comparisons and native import are device-zone independent: America/New_York
+2026-10-26T16:01:43.2869459Z # tests 373
+2026-10-26T16:01:43.2870195Z # pass 373
+2026-10-26T16:01:43.2870423Z # fail 0
+2026-10-26T16:01:43.2870661Z # cancelled 0
+2026-10-26T16:01:43.2871188Z # skipped 0
+2026-10-26T16:01:43.3045705Z   TZ: America/New_York
+2026-10-26T16:01:57.0327475Z # Subtest: civil schema comparisons and native import are device-zone independent: America/New_York
+2026-10-26T16:01:57.0328703Z ok 187 - civil schema comparisons and native import are device-zone independent: America/New_York
+2026-10-26T16:01:58.1778683Z # tests 373
+2026-10-26T16:01:58.1779062Z # pass 373
+2026-10-26T16:01:58.1779256Z # fail 0
+2026-10-26T16:01:58.1779449Z # cancelled 0
+2026-10-26T16:01:58.1779953Z # skipped 0

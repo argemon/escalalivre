@@ -6,6 +6,7 @@ namespace EscalaLivre.Domain.Planning;
 // Configuration is a separate immutable snapshot, not a member of the assignment aggregate.
 public sealed class PlanningSettings
 {
+    private readonly IReadOnlyDictionary<Guid, RegimeConfiguration> effectiveRegimes;
     public CompanyRules Company { get; }
     public IReadOnlyList<Employee> Employees { get; }
     public RegimeConfiguration DefaultRegime { get; }
@@ -38,9 +39,17 @@ public sealed class PlanningSettings
             throw new ArgumentException("Employee identities and names must be valid and unique.");
         Employees = people.ToImmutableArray();
         EmployeeRegimes = people.ToImmutableDictionary(e => e.Id, e => RegimeConfiguration.From(e.Workload));
+        effectiveRegimes = people.ToImmutableDictionary(e => e.Id, e => e.InheritsCompanyDefaults ? DefaultRegime : EmployeeRegimes[e.Id]);
     }
 
     public PlanningSettings WithCompany(CompanyRules company) => new(company, Employees);
+
+    // Resolve inheritance once at the validated configuration boundary, never by interpreting generic units.
+    public RegimeConfiguration RegimeFor(Guid employeeId)
+    {
+        return effectiveRegimes.TryGetValue(employeeId, out var regime) ? regime
+            : throw new ArgumentException("Employee does not exist.", nameof(employeeId));
+    }
 
     public PlanningSettings WithEmployee(Guid id, Employee employee)
     {

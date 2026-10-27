@@ -1,0 +1,7 @@
+{"started":"2026-10-26T17:58:50.731Z","cwd":"C:/Users/eargemon/source/repos/escalalivre","exe":"cmd.exe","args":["/d","/c","npm --prefix frontend run lint"],"TZ":null}
+
+> escalalivre-frontend@0.1.0 lint
+> eslint .
+
+
+{"name":"lint","started":"2026-10-26T17:58:50.731Z","ended":"2026-10-26T17:58:54.387Z","code":0,"exe":"cmd.exe","args":["/d","/c","npm --prefix frontend run lint"]}

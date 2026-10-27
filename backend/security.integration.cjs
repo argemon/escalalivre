@@ -119,13 +119,15 @@ test('API rejects abusive inputs and keeps normal scheduling and exports working
       assert.equal(invalid.status, 400);
       assert.equal((await invalid.json()).success, false);
     }
-    for (const owner of ['company', 'employee']) {
+    for (const owner of ['company', 'employee']) for (const type of ['unregistered', 'testCombined', 'DAYBASED', 'dayBased ']) {
       const unknown = request();
       const rule = owner === 'company' ? unknown.document.company.defaultWorkload : unknown.document.employees[0].workload;
-      rule.regimeType = 'unregistered';
-      const response = await post('/analyze', unknown);
-      assert.equal(response.status, 400);
-      assert.equal((await response.json()).success, false);
+      rule.regimeType = type;
+      for (const route of ['/analyze', '/validate', '/solve']) {
+        const response = await post(route, unknown);
+        assert.equal(response.status, 400, owner + '/' + type + '/' + route);
+        assert.equal((await response.json()).success, false);
+      }
     }
     for (const contentBase64 of ['bad base64', 'e30=', 'bnVsbA=='])
       assert.equal((await post('/import', { fileName: 'x.escalalivre', format: 'native', contentBase64 })).status, 400);
@@ -286,13 +288,8 @@ test('civil 09h and overnight dates survive the HTTP API, worker and native roun
 test('shared documents produce equivalent browser and HTTP diagnostics, coverage and gaps', async () => {
   const load=require('../frontend/tests/source-loader.cjs')();
   const {analyzeDocument}=load('lib/analysis.ts');
-  const scenarios=require('../shared/rule-scenarios.json').scenarios;
-  const ordered=rows=>Array.from(rows,row=>JSON.stringify(row)).sort();
-  const digest=result=>({
-    conflicts:ordered(result.conflicts.map(c=>({code:c.code,severity:c.severity,start:c.start??null,end:c.end??null,role:c.role??null,employeeId:c.employeeId??null}))),
-    coverage:ordered(result.coverage.map(c=>({start:c.start,end:c.end,role:c.role,required:c.required,assigned:c.assigned,state:c.state}))),
-    gaps:ordered(result.gaps.map(g=>({start:g.start,end:g.end,role:g.role,missingEmployees:g.missingEmployees}))),score:result.coverageScore
-  });
+  const scenarios=[...require('../shared/rule-scenarios.json').scenarios,...require('../shared/parity-boundaries.json').scenarios];
+  const {digest}=require('../shared/parity-contract.cjs');
   await withServer({},async({post})=>{
     for(const scenario of scenarios.filter(s=>s.apiValid)) {
       const local=digest(analyzeDocument(scenario.request.document));

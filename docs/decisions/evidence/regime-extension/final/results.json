@@ -1,0 +1,139 @@
+[
+  {
+    "name": "solution-build",
+    "started": "2026-10-27T12:50:34.162Z",
+    "ended": "2026-10-27T12:50:40.050Z",
+    "code": 0,
+    "exe": "dotnet",
+    "args": [
+      "build",
+      "EscalaLivre.slnx",
+      "-c",
+      "Release",
+      "-t:Rebuild"
+    ]
+  },
+  {
+    "name": "analysis",
+    "started": "2026-10-27T12:50:40.051Z",
+    "ended": "2026-10-27T12:50:44.922Z",
+    "code": 0,
+    "exe": "dotnet",
+    "args": [
+      "test",
+      "backend/EscalaLivre.Analysis.Tests/EscalaLivre.Analysis.Tests.csproj",
+      "-c",
+      "Release"
+    ]
+  },
+  {
+    "name": "adapter",
+    "started": "2026-10-27T12:50:44.923Z",
+    "ended": "2026-10-27T12:50:54.889Z",
+    "code": 0,
+    "exe": "dotnet",
+    "args": [
+      "test",
+      "backend/EscalaLivre.Adapter.Tests/EscalaLivre.Adapter.Tests.csproj",
+      "-c",
+      "Release"
+    ]
+  },
+  {
+    "name": "api",
+    "started": "2026-10-27T12:50:54.890Z",
+    "ended": "2026-10-27T12:51:00.142Z",
+    "code": 0,
+    "exe": "dotnet",
+    "args": [
+      "test",
+      "backend/EscalaLivre.Api.Tests/EscalaLivre.Api.Tests.csproj",
+      "-c",
+      "Release"
+    ]
+  },
+  {
+    "name": "architecture",
+    "started": "2026-10-27T12:51:00.143Z",
+    "ended": "2026-10-27T12:51:04.940Z",
+    "code": 0,
+    "exe": "dotnet",
+    "args": [
+      "test",
+      "backend/EscalaLivre.Architecture.Tests/EscalaLivre.Architecture.Tests.csproj",
+      "-c",
+      "Release"
+    ]
+  },
+  {
+    "name": "frontend",
+    "started": "2026-10-27T12:51:04.941Z",
+    "ended": "2026-10-27T12:51:12.389Z",
+    "code": 0,
+    "exe": "node",
+    "args": [
+      "--test",
+      "frontend/tests/*.test.cjs"
+    ]
+  },
+  {
+    "name": "frontend-new-york",
+    "started": "2026-10-27T12:51:12.390Z",
+    "ended": "2026-10-27T12:51:19.910Z",
+    "code": 0,
+    "exe": "node",
+    "args": [
+      "--test",
+      "frontend/tests/*.test.cjs"
+    ],
+    "TZ": "America/New_York"
+  },
+  {
+    "name": "lint",
+    "started": "2026-10-27T12:51:19.911Z",
+    "ended": "2026-10-27T12:51:22.193Z",
+    "code": 0,
+    "exe": "cmd.exe",
+    "args": [
+      "/d",
+      "/c",
+      "npm --prefix frontend run lint"
+    ]
+  },
+  {
+    "name": "frontend-build",
+    "started": "2026-10-27T12:51:22.194Z",
+    "ended": "2026-10-27T12:51:29.723Z",
+    "code": 0,
+    "exe": "cmd.exe",
+    "args": [
+      "/d",
+      "/c",
+      "npm --prefix frontend run build"
+    ]
+  },
+  {
+    "name": "api-build",
+    "started": "2026-10-27T12:51:29.724Z",
+    "ended": "2026-10-27T12:51:31.767Z",
+    "code": 0,
+    "exe": "dotnet",
+    "args": [
+      "build",
+      "backend/EscalaLivre.Api/EscalaLivre.Api.csproj",
+      "-c",
+      "Release"
+    ]
+  },
+  {
+    "name": "http-worker",
+    "started": "2026-10-27T12:51:31.768Z",
+    "ended": "2026-10-27T12:53:04.731Z",
+    "code": 0,
+    "exe": "node",
+    "args": [
+      "backend/security.integration.cjs"
+    ],
+    "SECURITY_BUILD_CONFIGURATION": "Release"
+  }
+]

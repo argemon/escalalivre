@@ -1,0 +1,270 @@
+{
+  "scenario": {
+    "id": "explicit-empty-ids-revoke-stale-names",
+    "request": {
+      "start": "2026-10-19T00:00:00",
+      "end": "2026-10-19T23:59:59",
+      "document": {
+        "schemaVersion": "1.0.0",
+        "id": "00000000-0000-4000-8000-000000000101",
+        "updatedAt": "2026-10-21T13:00:00.000Z",
+        "planningPeriod": {
+          "start": "2026-10-19",
+          "end": "2026-10-19"
+        },
+        "company": {
+          "name": "Cenário compartilhado",
+          "timeZone": "America/Cuiaba",
+          "opensAt": "00:00:00",
+          "closesAt": "00:00:00",
+          "operatingDays": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "defaultWorkload": {
+            "regimeType": "dayBased",
+            "workUnits": 7,
+            "restUnits": 0,
+            "weeklyLimitHours": 44,
+            "defaultShiftDuration": "08:00:00"
+          },
+          "lunch": {
+            "minimum": "00:00:00",
+            "maximum": "02:00:00",
+            "preferredAfter": "04:00:00"
+          },
+          "minimumRest": "11:00:00",
+          "coverage": [
+            {
+              "role": "Suporte",
+              "roleId": "10000000-0000-4000-8000-000000000011",
+              "scope": "role",
+              "day": 1,
+              "start": "08:00:00",
+              "end": "08:00:01",
+              "minimumEmployees": 1
+            }
+          ]
+        },
+        "employees": [
+          {
+            "id": "00000000-0000-4000-8000-000000000001",
+            "name": "Pessoa",
+            "role": "Principal",
+            "inheritsCompanyDefaults": true,
+            "workload": {
+              "regimeType": "dayBased",
+              "workUnits": 7,
+              "restUnits": 0,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "availability": [],
+            "restrictions": [],
+            "preferences": [],
+            "allowsOvertime": false,
+            "allowsNightWork": true,
+            "preferredDaysOff": [],
+            "roleId": "10000000-0000-4000-8000-000000000010",
+            "coverageRoles": [
+              "Suporte"
+            ],
+            "coverageRoleIds": []
+          }
+        ],
+        "assignments": [
+          {
+            "id": "00000000-0000-4000-8000-000000000102",
+            "employeeId": "00000000-0000-4000-8000-000000000001",
+            "role": "Principal",
+            "start": "2026-10-19T08:00:00",
+            "end": "2026-10-19T08:00:01",
+            "break": null,
+            "source": "manual",
+            "tags": [],
+            "roleId": "10000000-0000-4000-8000-000000000010"
+          }
+        ],
+        "roles": [
+          {
+            "id": "10000000-0000-4000-8000-000000000010",
+            "name": "Principal"
+          },
+          {
+            "id": "10000000-0000-4000-8000-000000000011",
+            "name": "Suporte"
+          }
+        ]
+      }
+    },
+    "apiValid": true,
+    "expectedScore": 0
+  },
+  "csharp": {
+    "analysis": {
+      "assignments": [
+        {
+          "id": "00000000-0000-4000-8000-000000000102",
+          "employeeId": "00000000-0000-4000-8000-000000000001",
+          "role": "Principal",
+          "start": "2026-10-19T08:00:00",
+          "end": "2026-10-19T08:00:01",
+          "source": "manual",
+          "tags": [],
+          "roleId": "10000000-0000-4000-8000-000000000010"
+        }
+      ],
+      "conflicts": [],
+      "coverage": [
+        {
+          "start": "2026-10-19T08:00:00",
+          "end": "2026-10-19T08:00:01",
+          "role": "Suporte",
+          "required": 1,
+          "assigned": 1,
+          "state": "healthy"
+        }
+      ],
+      "gaps": [],
+      "hiringSuggestions": [],
+      "optimizationSuggestions": [],
+      "decisions": [
+        {
+          "assignmentId": "00000000-0000-4000-8000-000000000102",
+          "employeeId": "00000000-0000-4000-8000-000000000001",
+          "reason": "Pessoa alocado para proteger a cobertura operacional de Principal.",
+          "factors": [
+            "cobertura minima de Principal requerida",
+            "respeita disponibilidade e restricoes individuais",
+            "mantem descanso minimo e limite semanal"
+          ]
+        }
+      ],
+      "coverageScore": 1,
+      "optimization": {
+        "status": "not-run"
+      }
+    },
+    "validation": {
+      "assignments": [
+        {
+          "id": "00000000-0000-4000-8000-000000000102",
+          "employeeId": "00000000-0000-4000-8000-000000000001",
+          "role": "Principal",
+          "start": "2026-10-19T08:00:00",
+          "end": "2026-10-19T08:00:01",
+          "source": "manual",
+          "tags": [],
+          "roleId": "10000000-0000-4000-8000-000000000010"
+        }
+      ],
+      "conflicts": [],
+      "coverage": [
+        {
+          "start": "2026-10-19T08:00:00",
+          "end": "2026-10-19T08:00:01",
+          "role": "Suporte",
+          "required": 1,
+          "assigned": 1,
+          "state": "healthy"
+        }
+      ],
+      "gaps": [],
+      "hiringSuggestions": [],
+      "optimizationSuggestions": [],
+      "decisions": [
+        {
+          "assignmentId": "00000000-0000-4000-8000-000000000102",
+          "employeeId": "00000000-0000-4000-8000-000000000001",
+          "reason": "Pessoa alocado para proteger a cobertura operacional de Principal.",
+          "factors": [
+            "cobertura minima de Principal requerida",
+            "respeita disponibilidade e restricoes individuais",
+            "mantem descanso minimo e limite semanal"
+          ]
+        }
+      ],
+      "coverageScore": 1,
+      "optimization": {
+        "status": "not-run"
+      }
+    },
+    "inputUnchanged": true,
+    "migrationIdempotent": true,
+    "roundTripPreserved": true,
+    "preserveReplacement": true
+  },
+  "typescript": {
+    "assignments": [
+      {
+        "id": "00000000-0000-4000-8000-000000000102",
+        "employeeId": "00000000-0000-4000-8000-000000000001",
+        "role": "Principal",
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T08:00:01",
+        "break": null,
+        "source": "manual",
+        "tags": [],
+        "roleId": "10000000-0000-4000-8000-000000000010"
+      }
+    ],
+    "coverage": [
+      {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T08:00:01",
+        "role": "Suporte",
+        "required": 1,
+        "assigned": 0,
+        "state": "uncovered"
+      }
+    ],
+    "gaps": [
+      {
+        "start": "2026-10-19T08:00:00",
+        "end": "2026-10-19T08:00:01",
+        "role": "Suporte",
+        "missingEmployees": 1
+      }
+    ],
+    "conflicts": [],
+    "decisions": [],
+    "hiringSuggestions": [
+      {
+        "role": "Suporte",
+        "totalHours": 0,
+        "weeklyHours": 0,
+        "referenceWeeklyHours": 44,
+        "minimumPeople": 1,
+        "peakMissingEmployees": 1,
+        "weeklyDemand": [
+          {
+            "weekStart": "2026-10-18",
+            "hours": 0
+          }
+        ],
+        "idealWindows": [
+          {
+            "start": "2026-10-19T08:00:00",
+            "end": "2026-10-19T08:00:01"
+          }
+        ],
+        "rationale": "Estimativa mínima por carga semanal e faltas simultâneas. Disponibilidade, descansos e distribuição dos horários podem exigir mais pessoas."
+      }
+    ],
+    "optimizationSuggestions": [],
+    "coverageScore": 0,
+    "optimization": {
+      "status": "not-run"
+    }
+  },
+  "error": "AssertionError [ERR_ASSERTION]: C#/TS analysis\n+ actual - expected\n\n  {\n    conflicts: [],\n    coverage: [\n+     '{\"start\":\"2026-10-19T08:00:00\",\"end\":\"2026-10-19T08:00:01\",\"role\":\"Suporte\",\"required\":1,\"assigned\":1,\"state\":\"healthy\"}'\n-     '{\"start\":\"2026-10-19T08:00:00\",\"end\":\"2026-10-19T08:00:01\",\"role\":\"Suporte\",\"required\":1,\"assigned\":0,\"state\":\"uncovered\"}'\n    ],\n+   gaps: [],\n+   score: 1\n-   gaps: [\n-     '{\"start\":\"2026-10-19T08:00:00\",\"end\":\"2026-10-19T08:00:01\",\"role\":\"Suporte\",\"missingEmployees\":1}'\n-   ],\n-   score: 0\n  }\n",
+  "runtime": {
+    "node": "v24.17.0",
+    "tz": "America/Cuiaba"
+  }
+}

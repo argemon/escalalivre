@@ -1,0 +1,20 @@
+{"started":"2026-10-27T13:51:34.012Z","cwd":"C:/Users/eargemon/source/repos/escalalivre","exe":"dotnet","args":["build","EscalaLivre.slnx","-c","Release","-t:Rebuild"],"TZ":null}
+  Determinando os projetos a serem restaurados...
+  Todos os projetos estão atualizados para restauração.
+  EscalaLivre.Domain -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Domain\bin\Release\net10.0\EscalaLivre.Domain.dll
+  EscalaLivre.Application -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Application\bin\Release\net10.0\EscalaLivre.Application.dll
+  EscalaLivre.Analysis.Tests -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Analysis.Tests\bin\Release\net10.0\EscalaLivre.Analysis.Tests.dll
+  EscalaLivre.ParityProbe -> C:\Users\eargemon\source\repos\escalalivre\tools\EscalaLivre.ParityProbe\bin\Release\net10.0\EscalaLivre.ParityProbe.dll
+  EscalaLivre.Infrastructure -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Infrastructure\bin\Release\net10.0\EscalaLivre.Infrastructure.dll
+  EscalaLivre.Api -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Api\bin\Release\net10.0\EscalaLivre.Api.dll
+  EscalaLivre.Adapter.Tests -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Adapter.Tests\bin\Release\net10.0\EscalaLivre.Adapter.Tests.dll
+  EscalaLivre.Api.Tests -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Api.Tests\bin\Release\net10.0\EscalaLivre.Api.Tests.dll
+  EscalaLivre.Architecture.Tests -> C:\Users\eargemon\source\repos\escalalivre\backend\EscalaLivre.Architecture.Tests\bin\Release\net10.0\EscalaLivre.Architecture.Tests.dll
+
+Compilação com êxito.
+    0 Aviso(s)
+    0 Erro(s)
+
+Tempo Decorrido 00:00:06.48
+
+{"name":"solution-build","started":"2026-10-27T13:51:34.012Z","ended":"2026-10-27T13:51:41.351Z","code":0,"exe":"dotnet","args":["build","EscalaLivre.slnx","-c","Release","-t:Rebuild"]}

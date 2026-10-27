@@ -1,5 +1,6 @@
 using EscalaLivre.Application.Contracts;
 using EscalaLivre.Application.Scheduling;
+using EscalaLivre.Domain.Planning;
 using EscalaLivre.Domain.Scheduling;
 using Google.OrTools.Sat;
 
@@ -17,14 +18,13 @@ public sealed class DayCycleConstraints : IScheduleConstraintTranslator
         foreach (IGrouping<Guid, ShiftAssignment> group in candidates.GroupBy(x => x.EmployeeId))
         {
             Employee employee = request.Document.Employees.First(x => x.Id == group.Key);
-            WorkloadRule rule = EffectiveWorkPolicy.RuleFor(request.Document.Company, employee);
-            if (rule.RegimeType != "dayBased") continue;
-            int cycle = DayCyclePolicy.Length(rule);
+            if (context.Input.Settings.RegimeFor(employee.Id).RollingCycle is not { } regime) continue;
+            int cycle = DayCyclePolicy.Length(regime);
             foreach (DateTime lastDay in CalendarDays.Inclusive(request.Start, request.End.AddDays(cycle - 1)))
             {
                 DateTime firstDay = lastDay.AddDays(1 - cycle);
                 int fixedDays = DayCyclePolicy.WorkedDates(history[employee.Id], firstDay, lastDay);
-                model.Add(LinearExpr.Sum(group.Where(a => a.Start.Date >= firstDay && a.Start.Date <= lastDay).Select(a => decisionVars[a.Id])) <= ScheduleCapacityPolicy.RemainingCycleDates(rule, fixedDays));
+                model.Add(LinearExpr.Sum(group.Where(a => a.Start.Date >= firstDay && a.Start.Date <= lastDay).Select(a => decisionVars[a.Id])) <= ScheduleCapacityPolicy.RemainingCycleDates(regime, new DayCount(fixedDays)));
             }
         }
 

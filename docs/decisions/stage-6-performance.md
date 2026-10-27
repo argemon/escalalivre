@@ -1,6 +1,10 @@
 # Medição exploratória da etapa 6
 
+Atualização de validação em 26/10/2026: a [revalidação atual](stage-6-current-validation.md) recompilou e testou o código de d40f887 e conferiu a CI remota. Não foram repetidas medições de desempenho nesta rodada. Dados, manifesto e conclusões abaixo continuam sendo o experimento retrospectivo original; a aprovação funcional/CI não calibra os alertas em carga representativa. Essa pendência permanece aberta.
+
 Reprodução em 2026-10-26T15:18:56.329Z, no mesmo computador Windows/SDK 10.0.402. Baseline: commit 66659daa2bbfc2384605946ec5b553e0bcd51eed, cujo código de produção era o ponto de partida da etapa 1 (as alterações anteriores eram documentais). Snapshot final: manifesto SHA-256 no JSON. Ferramentas/lockfiles/fixtures iguais, compilação Release, sem builds/testes concorrentes durante as amostras.
+
+Seguimento do código: o [ADR 009](009-validated-operational-boundaries.md) acrescenta validação de configuração e snapshots de saída após este experimento. Não houve nova medição de desempenho nesta entrega; os números/manifesto abaixo não caracterizam o novo diff. Calibração representativa permanece pendente.
 
 ## Método e alcance
 
@@ -43,3 +47,7 @@ O script só cria cópias/arquivos na pasta indicada, não apaga arquivos e não
 [Resultados completos, ambiente e manifesto](evidence/stage-6/performance-results.json), [saída da execução](evidence/stage-6/performance-run.txt), [build original](evidence/stage-6/performance-baseline-build.txt), [build final](evidence/stage-6/performance-final-build.txt).
 
 Não existem amostras históricas controladas de desempenho/CPU/memória em 23/10. O que foi medido é uma reprodução retrospectiva comparável hoje; cinco amostras por versão e caso pequeno não provam comportamento sob carga máxima, estabilidade estatística, latência HTTP ou capacidade em Linux. Essas limitações ficam em aberto em vez de afirmar ganhos.
+
+## Avaliação atual em carga sintética — 27/10/2026
+
+O [relatório atual](012-current-performance.md) acrescenta oito cargas, baseline dos fontes atuais, fases de análise/modelo/solver, memória, limites, HTTP com fila/worker e comparação antes/depois. A otimização medida limita-se à indexação de turnos por pessoa na leitura de cobertura. O experimento retrospectivo acima permanece histórico; não foi reescrito como se caracterizasse o código atual. A calibração é local e os limiares são alertas; aceite integral ainda depende do ambiente alvo e da CI do diff.

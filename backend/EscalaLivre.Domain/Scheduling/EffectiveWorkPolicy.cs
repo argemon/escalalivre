@@ -1,3 +1,5 @@
+using EscalaLivre.Domain.Planning;
+
 namespace EscalaLivre.Domain.Scheduling;
 
 // Measures civil work without repairing a saved break or rejecting business conflicts.
@@ -11,8 +13,11 @@ public static class EffectiveWorkPolicy
 
     public static TimeSpan Measure(ShiftAssignment shift) => Measure(shift.Start, shift.End, shift.Break);
     public static TimeSpan DailyLimit(Employee employee) => TimeSpan.FromHours(employee.AllowsOvertime ? 10 : 8);
-    public static bool ExceedsHourRegime(TimeSpan work, WorkloadRule rule)
-        => rule.RegimeType == "hourBased" && work > TimeSpan.FromHours(rule.WorkUnits);
+    public static bool ExceedsRegimeWork(TimeSpan work, WorkloadRule rule)
+        => ExceedsRegimeWork(work, RegimeConfiguration.From(rule));
+
+    public static bool ExceedsRegimeWork(TimeSpan work, RegimeConfiguration regime)
+        => regime.MaximumShiftWork is { } limit && work > limit.Value;
 
     public static long WorkTicksInWeek(ShiftAssignment shift, DateTime week)
     {

@@ -1,0 +1,386 @@
+[
+  {
+    "repetition": 0,
+    "startupMs": 772.1441000000001,
+    "rows": [
+      {
+        "route": "/analyze",
+        "elapsedMs": 577.6494000000002,
+        "status": "not-run",
+        "score": 0,
+        "assignmentCount": 48
+      },
+      {
+        "route": "/solve",
+        "elapsedMs": 5895.6888,
+        "status": "feasible",
+        "score": 0.817,
+        "assignmentCount": 153
+      },
+      {
+        "route": "/solve/jobs",
+        "burstSize": 3,
+        "totalDrainMs": 18289.7126,
+        "jobs": [
+          {
+            "admissionMs": 20.64230000000134,
+            "initialState": "queued",
+            "sawQueued": true,
+            "sawProcessing": true,
+            "elapsedMs": 18289.5921,
+            "status": "feasible",
+            "score": 0.817
+          },
+          {
+            "admissionMs": 20.491500000000087,
+            "initialState": "queued",
+            "sawQueued": true,
+            "sawProcessing": true,
+            "elapsedMs": 6364.7739,
+            "status": "feasible",
+            "score": 0.817
+          },
+          {
+            "admissionMs": 20.434900000000198,
+            "initialState": "queued",
+            "sawQueued": true,
+            "sawProcessing": true,
+            "elapsedMs": 12136.0979,
+            "status": "feasible",
+            "score": 0.817
+          }
+        ]
+      },
+      {
+        "route": "/analyze",
+        "scenario": "history-limit-body-rejected",
+        "httpStatus": 413,
+        "elapsedMs": 35.38810000000376
+      }
+    ],
+    "parentMemory": {
+      "sampledPeakWorkingSetBytes": 0,
+      "sampledPeakPrivateBytes": 0,
+      "samples": 0,
+      "intervalMs": 50
+    },
+    "workers": [
+      {
+        "operation": "analyze",
+        "elapsedMs": 1059.0939,
+        "sampledPeakWorkingSetBytes": 26853376
+      },
+      {
+        "operation": "solve",
+        "elapsedMs": 6234.4514,
+        "sampledPeakWorkingSetBytes": 93073408
+      },
+      {
+        "operation": "analyze",
+        "elapsedMs": 531.0048,
+        "sampledPeakWorkingSetBytes": 46866432
+      },
+      {
+        "operation": "solve",
+        "elapsedMs": 5767.9331,
+        "sampledPeakWorkingSetBytes": 92893184
+      },
+      {
+        "operation": "solve",
+        "elapsedMs": 6139.9347,
+        "sampledPeakWorkingSetBytes": 93421568
+      },
+      {
+        "operation": "solve",
+        "elapsedMs": 5771.6105,
+        "sampledPeakWorkingSetBytes": 92733440
+      },
+      {
+        "operation": "solve",
+        "elapsedMs": 6176.9576,
+        "sampledPeakWorkingSetBytes": 92766208
+      }
+    ],
+    "queue": [
+      {
+        "queueMs": 2.9686,
+        "processingMs": 6152.4814,
+        "state": "completed"
+      },
+      {
+        "queueMs": 6154.3746,
+        "processingMs": 5779.2124,
+        "state": "completed"
+      },
+      {
+        "queueMs": 11933.4177,
+        "processingMs": 6184.9078,
+        "state": "completed"
+      }
+    ],
+    "limits": {
+      "concurrentWorkers": 1,
+      "jobQueueLimit": 20,
+      "workerTimeoutSeconds": 12,
+      "workerMemoryMb": 512,
+      "solvesPerMinute": 6,
+      "requestBytes": 2097152
+    }
+  },
+  {
+    "repetition": 1,
+    "startupMs": 493.35369999999966,
+    "rows": [
+      {
+        "route": "/analyze",
+        "elapsedMs": 586.0718000000052,
+        "status": "not-run",
+        "score": 0,
+        "assignmentCount": 48
+      },
+      {
+        "route": "/solve",
+        "elapsedMs": 6793.448300000004,
+        "status": "feasible",
+        "score": 0.817,
+        "assignmentCount": 153
+      },
+      {
+        "route": "/solve/jobs",
+        "burstSize": 3,
+        "totalDrainMs": 18416.2345,
+        "jobs": [
+          {
+            "admissionMs": 18.63529999999446,
+            "initialState": "queued",
+            "sawQueued": true,
+            "sawProcessing": true,
+            "elapsedMs": 18416.20109999999,
+            "status": "feasible",
+            "score": 0.817
+          },
+          {
+            "admissionMs": 18.67609999999695,
+            "initialState": "queued",
+            "sawQueued": true,
+            "sawProcessing": true,
+            "elapsedMs": 5937.459900000002,
+            "status": "feasible",
+            "score": 0.817
+          },
+          {
+            "admissionMs": 18.280100000003586,
+            "initialState": "queued",
+            "sawQueued": true,
+            "sawProcessing": true,
+            "elapsedMs": 12565.438300000002,
+            "status": "feasible",
+            "score": 0.817
+          }
+        ]
+      },
+      {
+        "route": "/analyze",
+        "scenario": "history-limit-body-rejected",
+        "httpStatus": 413,
+        "elapsedMs": 33.35430000000633
+      }
+    ],
+    "parentMemory": {
+      "sampledPeakWorkingSetBytes": 0,
+      "sampledPeakPrivateBytes": 0,
+      "samples": 0,
+      "intervalMs": 50
+    },
+    "workers": [
+      {
+        "operation": "analyze",
+        "elapsedMs": 1471.933,
+        "sampledPeakWorkingSetBytes": 26836992
+      },
+      {
+        "operation": "solve",
+        "elapsedMs": 5791.5409,
+        "sampledPeakWorkingSetBytes": 92352512
+      },
+      {
+        "operation": "analyze",
+        "elapsedMs": 541.1343,
+        "sampledPeakWorkingSetBytes": 47001600
+      },
+      {
+        "operation": "solve",
+        "elapsedMs": 6666.9225,
+        "sampledPeakWorkingSetBytes": 93364224
+      },
+      {
+        "operation": "solve",
+        "elapsedMs": 5746.6633,
+        "sampledPeakWorkingSetBytes": 93057024
+      },
+      {
+        "operation": "solve",
+        "elapsedMs": 6654.6629,
+        "sampledPeakWorkingSetBytes": 92798976
+      },
+      {
+        "operation": "solve",
+        "elapsedMs": 5776.5303,
+        "sampledPeakWorkingSetBytes": 92409856
+      }
+    ],
+    "queue": [
+      {
+        "queueMs": 4.0359,
+        "processingMs": 5754.0056,
+        "state": "completed"
+      },
+      {
+        "queueMs": 5757.258,
+        "processingMs": 6663.1594,
+        "state": "completed"
+      },
+      {
+        "queueMs": 12420.2476,
+        "processingMs": 5787.012,
+        "state": "completed"
+      }
+    ],
+    "limits": {
+      "concurrentWorkers": 1,
+      "jobQueueLimit": 20,
+      "workerTimeoutSeconds": 12,
+      "workerMemoryMb": 512,
+      "solvesPerMinute": 6,
+      "requestBytes": 2097152
+    }
+  },
+  {
+    "repetition": 2,
+    "startupMs": 565.2150999999867,
+    "rows": [
+      {
+        "route": "/analyze",
+        "elapsedMs": 1093.6529999999912,
+        "status": "not-run",
+        "score": 0,
+        "assignmentCount": 48
+      },
+      {
+        "route": "/solve",
+        "elapsedMs": 5894.579200000007,
+        "status": "feasible",
+        "score": 0.817,
+        "assignmentCount": 153
+      },
+      {
+        "route": "/solve/jobs",
+        "burstSize": 3,
+        "totalDrainMs": 18986.064899999998,
+        "jobs": [
+          {
+            "admissionMs": 18.44000000000233,
+            "initialState": "queued",
+            "sawQueued": true,
+            "sawProcessing": true,
+            "elapsedMs": 12280.973499999993,
+            "status": "feasible",
+            "score": 0.817
+          },
+          {
+            "admissionMs": 18.383099999991828,
+            "initialState": "queued",
+            "sawQueued": true,
+            "sawProcessing": true,
+            "elapsedMs": 18985.661999999997,
+            "status": "feasible",
+            "score": 0.817
+          },
+          {
+            "admissionMs": 18.018600000010338,
+            "initialState": "queued",
+            "sawQueued": true,
+            "sawProcessing": true,
+            "elapsedMs": 6375.102400000003,
+            "status": "feasible",
+            "score": 0.817
+          }
+        ]
+      },
+      {
+        "route": "/analyze",
+        "scenario": "history-limit-body-rejected",
+        "httpStatus": 413,
+        "elapsedMs": 30.521099999998114
+      }
+    ],
+    "parentMemory": {
+      "sampledPeakWorkingSetBytes": 0,
+      "sampledPeakPrivateBytes": 0,
+      "samples": 0,
+      "intervalMs": 50
+    },
+    "workers": [
+      {
+        "operation": "analyze",
+        "elapsedMs": 541.019,
+        "sampledPeakWorkingSetBytes": 26693632
+      },
+      {
+        "operation": "solve",
+        "elapsedMs": 6210.0765,
+        "sampledPeakWorkingSetBytes": 92934144
+      },
+      {
+        "operation": "analyze",
+        "elapsedMs": 1046.3942,
+        "sampledPeakWorkingSetBytes": 46587904
+      },
+      {
+        "operation": "solve",
+        "elapsedMs": 5769.5971,
+        "sampledPeakWorkingSetBytes": 93376512
+      },
+      {
+        "operation": "solve",
+        "elapsedMs": 6130.5385,
+        "sampledPeakWorkingSetBytes": 92585984
+      },
+      {
+        "operation": "solve",
+        "elapsedMs": 5886.6753,
+        "sampledPeakWorkingSetBytes": 92676096
+      },
+      {
+        "operation": "solve",
+        "elapsedMs": 6691.3731,
+        "sampledPeakWorkingSetBytes": 92319744
+      }
+    ],
+    "queue": [
+      {
+        "queueMs": 2.612,
+        "processingMs": 6142.1406,
+        "state": "completed"
+      },
+      {
+        "queueMs": 6144.1181,
+        "processingMs": 5893.5135,
+        "state": "completed"
+      },
+      {
+        "queueMs": 12037.4414,
+        "processingMs": 6700.0638,
+        "state": "completed"
+      }
+    ],
+    "limits": {
+      "concurrentWorkers": 1,
+      "jobQueueLimit": 20,
+      "workerTimeoutSeconds": 12,
+      "workerMemoryMb": 512,
+      "solvesPerMinute": 6,
+      "requestBytes": 2097152
+    }
+  }
+]

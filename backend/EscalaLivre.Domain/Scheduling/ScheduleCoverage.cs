@@ -23,8 +23,11 @@ public static class ScheduleCoverage
 
     private static IEnumerable<CoverageBlock> BuildCoverage(EscalaLivreDocument document, DateTime start, DateTime end,IReadOnlyList<ShiftAssignment> assignments)
     {
+        // Retain the caller's employee order and every shift (including overlapping history).
+        // Index only ownership; eligibility and pause boundaries remain canonical per block.
+        var byEmployee = assignments.ToLookup(a => a.EmployeeId);
         foreach((DateTime Start, DateTime End, List<CoverageRequirement> Rules) block in CoverageDemand.Blocks(document.Company,start,end,assignments)) {
-            var people=document.Employees.Where(e=>assignments.Any(a=>a.EmployeeId==e.Id && CoverageDemand.Covers(a,block.Start,block.End))).ToList();
+            var people=document.Employees.Where(e=>byEmployee[e.Id].Any(a=>CoverageDemand.Covers(a,block.Start,block.End))).ToList();
             var slots=block.Rules.Where(r=>r.Scope!="team").SelectMany(r=>Enumerable.Repeat(r,r.MinimumEmployees)).ToList();
             var owners=new Dictionary<Guid,int>();
             bool Match(int slot,HashSet<Guid> visited) {

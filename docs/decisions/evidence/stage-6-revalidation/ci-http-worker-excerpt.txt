@@ -1,0 +1,18 @@
+2026-10-26T16:01:06.9115426Z Ubuntu
+2026-10-26T16:01:06.9116100Z 24.04.5
+2026-10-26T16:01:06.9118387Z Image: ubuntu-24.04
+2026-10-26T16:01:06.9120320Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-26T16:01:06.9121968Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-26T16:01:09.1943664Z HEAD is now at 0f32fa5 Merge d40f8871238398bcab91bd081742986c244f4548 into 66659daa2bbfc2384605946ec5b553e0bcd51eed
+2026-10-26T16:01:10.4420913Z dotnet-install: Installed version is 10.0.14
+2026-10-26T16:01:17.1311393Z dotnet-install: Installed version is 10.0.403
+2026-10-26T16:01:18.4024436Z node: v22.23.3
+2026-10-26T16:01:18.4025091Z npm: 10.9.9
+2026-10-26T16:01:37.7823863Z Build succeeded.
+2026-10-26T16:01:37.7829295Z     0 Warning(s)
+2026-10-26T16:01:37.7830171Z     0 Error(s)
+2026-10-26T16:03:00.5336731Z # tests 16
+2026-10-26T16:03:00.5337604Z # pass 16
+2026-10-26T16:03:00.5338036Z # fail 0
+2026-10-26T16:03:00.5338431Z # cancelled 0
+2026-10-26T16:03:00.5338853Z # skipped 0

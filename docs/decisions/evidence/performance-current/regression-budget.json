@@ -1,0 +1,1115 @@
+{
+  "mode": "alerts-only",
+  "reason": "Envelopes locais: 70 amostras principais + 15 controles depois, 3 servidores HTTP; insuficientes para gate portátil",
+  "http": {
+    "http./analyze.elapsedMs": {
+      "n": 3,
+      "min": 580.6180000000004,
+      "median": 582.9446000000025,
+      "max": 584.1554000000033,
+      "mad": 1.210800000000745,
+      "threshold": 584.1554000000033,
+      "policy": "alerts only; low sample count and startup/OS variability"
+    },
+    "http./solve.elapsedMs": {
+      "n": 3,
+      "min": 5860.3986,
+      "median": 5913.5497,
+      "max": 6308.743600000002,
+      "mad": 53.15109999999913,
+      "threshold": 6308.743600000002,
+      "policy": "alerts only; low sample count and startup/OS variability"
+    },
+    "http.queue.drainMs": {
+      "n": 3,
+      "min": 17811.27999999999,
+      "median": 18261.184999999998,
+      "max": 19265.6786,
+      "mad": 449.9050000000061,
+      "threshold": 19265.6786,
+      "policy": "alerts only; low sample count and startup/OS variability"
+    },
+    "http.queue.admissionMs": {
+      "n": 9,
+      "min": 18.539600000000064,
+      "median": 19.39940000000024,
+      "max": 20.87390000000596,
+      "mad": 0.5820999999978085,
+      "threshold": 20.87390000000596,
+      "policy": "alerts only; low sample count and startup/OS variability"
+    },
+    "http.queue.waitRank0": {
+      "n": 3,
+      "min": 2.5899,
+      "median": 2.7503,
+      "max": 3.0865,
+      "mad": 0.1604000000000001,
+      "threshold": 3.0865,
+      "policy": "alerts only; low sample count and startup/OS variability"
+    },
+    "http.queue.processingRank0": {
+      "n": 3,
+      "min": 5744.4075,
+      "median": 6119.6784,
+      "max": 6138.9755,
+      "mad": 19.297099999999773,
+      "threshold": 6138.9755,
+      "policy": "alerts only; low sample count and startup/OS variability"
+    },
+    "http.queue.waitRank1": {
+      "n": 3,
+      "min": 5746.3691,
+      "median": 6121.5062,
+      "max": 6140.9274,
+      "mad": 19.42119999999977,
+      "threshold": 6140.9274,
+      "policy": "alerts only; low sample count and startup/OS variability"
+    },
+    "http.queue.processingRank1": {
+      "n": 3,
+      "min": 5764.2267,
+      "median": 6165.8137,
+      "max": 6252.5481,
+      "mad": 86.73440000000028,
+      "threshold": 6252.5481,
+      "policy": "alerts only; low sample count and startup/OS variability"
+    },
+    "http.queue.waitRank2": {
+      "n": 3,
+      "min": 11904.9726,
+      "median": 11911.9977,
+      "max": 12373.8897,
+      "mad": 7.025100000000748,
+      "threshold": 12373.8897,
+      "policy": "alerts only; low sample count and startup/OS variability"
+    },
+    "http.queue.processingRank2": {
+      "n": 3,
+      "min": 5762.9951,
+      "median": 6164.3737,
+      "max": 6650.7835,
+      "mad": 401.3786,
+      "threshold": 6650.7835,
+      "policy": "alerts only; low sample count and startup/OS variability"
+    },
+    "http.parent.workingSetBytes": {
+      "n": 3,
+      "min": 75689984,
+      "median": 76050432,
+      "max": 76845056,
+      "mad": 360448,
+      "threshold": 76845056,
+      "policy": "alerts only; low sample count and startup/OS variability"
+    },
+    "http.parent.privateBytes": {
+      "n": 3,
+      "min": 29593600,
+      "median": 29614080,
+      "max": 29904896,
+      "mad": 20480,
+      "threshold": 29904896,
+      "policy": "alerts only; low sample count and startup/OS variability"
+    },
+    "http.worker.workingSetBytes": {
+      "n": 21,
+      "min": 26873856,
+      "median": 93089792,
+      "max": 94130176,
+      "mad": 319488,
+      "threshold": 94130176,
+      "policy": "alerts only; low sample count and startup/OS variability"
+    }
+  },
+  "environment": {
+    "node": "v24.17.0",
+    "platform": "win32",
+    "os": "10.0.26100",
+    "cpu": "Intel(R) Core(TM) i5-10505 CPU @ 3.20GHz",
+    "dotnet": ".NET SDK:\r\n Version:           10.0.402\r\n Commit:            a8dd0577c5\r\n Workload version:  10.0.400-manifests.378ba522\r\n MSBuild version:   18.9.15+a8dd0577c\r\n\r\nAmbiente de runtime:\r\n OS Name:     Windows\r\n OS Version:  10.0.26100\r\n OS Platform: Windows\r\n RID:         win-x64\r\n Base Path:   C:\\Program Files\\dotnet\\sdk\\10.0.402\\\r\n\r\nCargas de trabalho do .NET instaladas:\r\nNão há cargas de trabalho instaladas para exibir.\r\nConfigurado para usar workload sets ao instalar novos manifestos.\r\nNenhum conjunto de cargas de trabalho está instalado. Execute \"dotnet workload restore\" para instalar um conjunto de cargas de trabalho.\r\n\r\nHost:\r\n  Version:      10.0.13\r\n  Architecture: x64\r\n  Commit:       4099f83977\r\n\r\n.NET SDKs installed:\r\n  8.0.422 [C:\\Program Files\\dotnet\\sdk]\r\n  10.0.401 [C:\\Program Files\\dotnet\\sdk]\r\n  10.0.402 [C:\\Program Files\\dotnet\\sdk]\r\n\r\n.NET runtimes installed:\r\n  Microsoft.AspNetCore.App 8.0.28 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\n  Microsoft.AspNetCore.App 8.0.31 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\n  Microsoft.AspNetCore.App 10.0.12 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\n  Microsoft.AspNetCore.App 10.0.13 [C:\\Program Files\\dotnet\\shared\\Microsoft.AspNetCore.App]\r\n  Microsoft.NETCore.App 8.0.28 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\n  Microsoft.NETCore.App 8.0.31 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\n  Microsoft.NETCore.App 10.0.12 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\n  Microsoft.NETCore.App 10.0.13 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]\r\n  Microsoft.WindowsDesktop.App 8.0.28 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]\r\n  Microsoft.WindowsDesktop.App 8.0.31 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]\r\n  Microsoft.WindowsDesktop.App 10.0.12 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]\r\n  Microsoft.WindowsDesktop.App 10.0.13 [C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App]\r\n\r\nOther architectures found:\r\n  x86   [C:\\Program Files (x86)\\dotnet]\r\n    registered at [HKLM\\SOFTWARE\\dotnet\\Setup\\InstalledVersions\\x86\\InstallLocation]\r\n\r\nEnvironment variables:\r\n  Not set\r\n\r\nglobal.json file:\r\n  C:\\Users\\eargemon\\source\\repos\\escalalivre\\global.json\r\n\r\nLearn more:\r\n  https://aka.ms/dotnet/info\r\n\r\nDownload .NET:\r\n  https://aka.ms/dotnet/download\r\n",
+    "controls": {
+      "DOTNET_PROCESSOR_COUNT": "1",
+      "OMP_NUM_THREADS": "1",
+      "DOTNET_TieredCompilation": "0",
+      "TZ": "America/Cuiaba"
+    }
+  },
+  "inputs": [
+    {
+      "id": "small-fixed",
+      "sha256": "203fd3c123c51d13482aae91ee86a40d7e13a413bf5a6bfb29897a063347c870"
+    },
+    {
+      "id": "fortnight-history",
+      "sha256": "2b6c21ee80255818f494b63d6efdc146ccfe502dbe006097216ac3882c2aefc1"
+    },
+    {
+      "id": "variable-breaks",
+      "sha256": "4351d0a58d553e99874fe0b9392ece8e1648e88ca056e06cb71b82511f312b1c"
+    },
+    {
+      "id": "max-people-period",
+      "sha256": "f8368eeb3f6ad90db7d8eeff4a565f8074c842e0b66002c707f137374df41419"
+    },
+    {
+      "id": "candidate-limit",
+      "sha256": "bc6c25868d59874311b1f0fba3410ce0fd2a0a835290b8a7f4d8cc161d853335"
+    },
+    {
+      "id": "near-candidate-limit",
+      "sha256": "82ec6385e4c642e5b5cf75c9b9e690f7e134cb6ea782855ea846fc4c4edf58a6"
+    },
+    {
+      "id": "coverage-limit",
+      "sha256": "d794beae62371793dd348596876b89bf0e30eebfdf8d403c3753922794b954b0"
+    },
+    {
+      "id": "history-limit",
+      "sha256": "49cea208b10b9dc137a0e24a618705f3e58db0c77c611d1f41ed0ade25b79a8b"
+    }
+  ],
+  "groups": [
+    {
+      "key": "small-fixed/analyze",
+      "metrics": {
+        "elapsedMs": {
+          "n": 10,
+          "min": 0.4171,
+          "median": 0.4616,
+          "max": 1.1529,
+          "mad": 0.044499999999999984,
+          "threshold": 1.1529,
+          "policy": "median above observed maximum => investigate"
+        },
+        "allocatedManagedBytes": {
+          "n": 10,
+          "min": 264344,
+          "median": 264344,
+          "max": 264344,
+          "mad": 0,
+          "threshold": 264344,
+          "policy": "median above observed maximum => investigate"
+        },
+        "peakWorkingSetBytes": {
+          "n": 10,
+          "min": 46014464,
+          "median": 46161920,
+          "max": 46276608,
+          "mad": 94208,
+          "threshold": 46276608,
+          "policy": "median above observed maximum => investigate"
+        }
+      },
+      "model": {
+        "candidates": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "variables": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "constraints": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "serializedBytes": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "steps": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        }
+      },
+      "outcomes": [
+        "not-run"
+      ]
+    },
+    {
+      "key": "small-fixed/solve",
+      "metrics": {
+        "elapsedMs": {
+          "n": 5,
+          "min": 21.0022,
+          "median": 21.5083,
+          "max": 26.142,
+          "mad": 0.17270000000000252,
+          "threshold": 26.142,
+          "policy": "median above observed maximum => investigate"
+        },
+        "allocatedManagedBytes": {
+          "n": 5,
+          "min": 1395400,
+          "median": 1395400,
+          "max": 1407760,
+          "mad": 0,
+          "threshold": 1407760,
+          "policy": "median above observed maximum => investigate"
+        },
+        "peakWorkingSetBytes": {
+          "n": 5,
+          "min": 65376256,
+          "median": 65421312,
+          "max": 65556480,
+          "mad": 45056,
+          "threshold": 65556480,
+          "policy": "median above observed maximum => investigate"
+        }
+      },
+      "model": {
+        "candidates": {
+          "values": [
+            24
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "variables": {
+          "values": [
+            330
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "constraints": {
+          "values": [
+            636
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "serializedBytes": {
+          "values": [
+            35537
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "steps": {
+          "values": [
+            252
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        }
+      },
+      "outcomes": [
+        "optimal"
+      ]
+    },
+    {
+      "key": "fortnight-history/analyze",
+      "metrics": {
+        "elapsedMs": {
+          "n": 5,
+          "min": 0.9987,
+          "median": 1.0309,
+          "max": 1.0787,
+          "mad": 0.01639999999999997,
+          "threshold": 1.0787,
+          "policy": "median above observed maximum => investigate"
+        },
+        "allocatedManagedBytes": {
+          "n": 5,
+          "min": 852824,
+          "median": 852824,
+          "max": 852824,
+          "mad": 0,
+          "threshold": 852824,
+          "policy": "median above observed maximum => investigate"
+        },
+        "peakWorkingSetBytes": {
+          "n": 5,
+          "min": 47771648,
+          "median": 47861760,
+          "max": 47869952,
+          "mad": 8192,
+          "threshold": 47869952,
+          "policy": "median above observed maximum => investigate"
+        }
+      },
+      "model": {
+        "candidates": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "variables": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "constraints": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "serializedBytes": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "steps": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        }
+      },
+      "outcomes": [
+        "not-run"
+      ]
+    },
+    {
+      "key": "fortnight-history/solve",
+      "metrics": {
+        "elapsedMs": {
+          "n": 5,
+          "min": 5025.6415,
+          "median": 5026.4204,
+          "max": 5029.6245,
+          "mad": 0.7789000000002488,
+          "threshold": 5029.6245,
+          "policy": "median above observed maximum => investigate"
+        },
+        "allocatedManagedBytes": {
+          "n": 5,
+          "min": 11240296,
+          "median": 11240296,
+          "max": 11240296,
+          "mad": 0,
+          "threshold": 11240296,
+          "policy": "median above observed maximum => investigate"
+        },
+        "peakWorkingSetBytes": {
+          "n": 5,
+          "min": 97075200,
+          "median": 97681408,
+          "max": 98070528,
+          "mad": 188416,
+          "threshold": 98070528,
+          "policy": "median above observed maximum => investigate"
+        }
+      },
+      "model": {
+        "candidates": {
+          "values": [
+            168
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "variables": {
+          "values": [
+            3587
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "constraints": {
+          "values": [
+            6476
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "serializedBytes": {
+          "values": [
+            422370
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "steps": {
+          "values": [
+            2522
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        }
+      },
+      "outcomes": [
+        "feasible"
+      ]
+    },
+    {
+      "key": "variable-breaks/analyze",
+      "metrics": {
+        "elapsedMs": {
+          "n": 5,
+          "min": 0.2193,
+          "median": 0.2247,
+          "max": 0.2279,
+          "mad": 0.0031999999999999806,
+          "threshold": 0.2279,
+          "policy": "median above observed maximum => investigate"
+        },
+        "allocatedManagedBytes": {
+          "n": 5,
+          "min": 90400,
+          "median": 90400,
+          "max": 90400,
+          "mad": 0,
+          "threshold": 90400,
+          "policy": "median above observed maximum => investigate"
+        },
+        "peakWorkingSetBytes": {
+          "n": 5,
+          "min": 45522944,
+          "median": 45580288,
+          "max": 45735936,
+          "mad": 57344,
+          "threshold": 45735936,
+          "policy": "median above observed maximum => investigate"
+        }
+      },
+      "model": {
+        "candidates": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "variables": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "constraints": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "serializedBytes": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "steps": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        }
+      },
+      "outcomes": [
+        "not-run"
+      ]
+    },
+    {
+      "key": "variable-breaks/solve",
+      "metrics": {
+        "elapsedMs": {
+          "n": 5,
+          "min": 5230.8984,
+          "median": 5241.0406,
+          "max": 5253.5227,
+          "mad": 8.624700000000303,
+          "threshold": 5253.5227,
+          "policy": "median above observed maximum => investigate"
+        },
+        "allocatedManagedBytes": {
+          "n": 5,
+          "min": 100466032,
+          "median": 100466032,
+          "max": 100478432,
+          "mad": 0,
+          "threshold": 100478432,
+          "policy": "median above observed maximum => investigate"
+        },
+        "peakWorkingSetBytes": {
+          "n": 5,
+          "min": 224272384,
+          "median": 224763904,
+          "max": 225562624,
+          "mad": 229376,
+          "threshold": 225562624,
+          "policy": "median above observed maximum => investigate"
+        }
+      },
+      "model": {
+        "candidates": {
+          "values": [
+            1496
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "variables": {
+          "values": [
+            3120
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "constraints": {
+          "values": [
+            70452
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "serializedBytes": {
+          "values": [
+            3540939
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "steps": {
+          "values": [
+            102648
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        }
+      },
+      "outcomes": [
+        "feasible"
+      ]
+    },
+    {
+      "key": "max-people-period/analyze",
+      "metrics": {
+        "elapsedMs": {
+          "n": 5,
+          "min": 1.2212,
+          "median": 1.2845,
+          "max": 1.3258,
+          "mad": 0.0363,
+          "threshold": 1.3258,
+          "policy": "median above observed maximum => investigate"
+        },
+        "allocatedManagedBytes": {
+          "n": 5,
+          "min": 488208,
+          "median": 488208,
+          "max": 488208,
+          "mad": 0,
+          "threshold": 488208,
+          "policy": "median above observed maximum => investigate"
+        },
+        "peakWorkingSetBytes": {
+          "n": 5,
+          "min": 50704384,
+          "median": 50774016,
+          "max": 50839552,
+          "mad": 61440,
+          "threshold": 50839552,
+          "policy": "median above observed maximum => investigate"
+        }
+      },
+      "model": {
+        "candidates": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "variables": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "constraints": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "serializedBytes": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "steps": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        }
+      },
+      "outcomes": [
+        "not-run"
+      ]
+    },
+    {
+      "key": "max-people-period/solve",
+      "metrics": {
+        "elapsedMs": {
+          "n": 5,
+          "min": 1988.2047,
+          "median": 2007.7472,
+          "max": 2283.7738,
+          "mad": 19.542500000000018,
+          "threshold": 2283.7738,
+          "policy": "median above observed maximum => investigate"
+        },
+        "allocatedManagedBytes": {
+          "n": 5,
+          "min": 493478392,
+          "median": 493478440,
+          "max": 493481392,
+          "mad": 48,
+          "threshold": 493481392,
+          "policy": "median above observed maximum => investigate"
+        },
+        "peakWorkingSetBytes": {
+          "n": 5,
+          "min": 209268736,
+          "median": 209555456,
+          "max": 211550208,
+          "mad": 253952,
+          "threshold": 211550208,
+          "policy": "median above observed maximum => investigate"
+        }
+      },
+      "model": {
+        "candidates": {
+          "values": [
+            5800
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "variables": {
+          "values": [
+            29232
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "constraints": {
+          "values": [
+            60948
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "serializedBytes": {
+          "values": [
+            3908752
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "steps": {
+          "values": [
+            23316
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        }
+      },
+      "outcomes": [
+        "optimal"
+      ]
+    },
+    {
+      "key": "candidate-limit/analyze",
+      "metrics": {
+        "elapsedMs": {
+          "n": 5,
+          "min": 2.5212,
+          "median": 2.5872,
+          "max": 2.6552,
+          "mad": 0.05930000000000035,
+          "threshold": 2.6552,
+          "policy": "median above observed maximum => investigate"
+        },
+        "allocatedManagedBytes": {
+          "n": 5,
+          "min": 867472,
+          "median": 867472,
+          "max": 867472,
+          "mad": 0,
+          "threshold": 867472,
+          "policy": "median above observed maximum => investigate"
+        },
+        "peakWorkingSetBytes": {
+          "n": 5,
+          "min": 50933760,
+          "median": 50974720,
+          "max": 51257344,
+          "mad": 40960,
+          "threshold": 51257344,
+          "policy": "median above observed maximum => investigate"
+        }
+      },
+      "model": {
+        "candidates": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "variables": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "constraints": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "serializedBytes": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "steps": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        }
+      },
+      "outcomes": [
+        "not-run"
+      ]
+    },
+    {
+      "key": "candidate-limit/solve",
+      "metrics": {
+        "elapsedMs": {
+          "n": 10,
+          "min": 63.2551,
+          "median": 68.7976,
+          "max": 71.5815,
+          "mad": 0.9510999999999967,
+          "threshold": 71.5815,
+          "policy": "median above observed maximum => investigate"
+        },
+        "allocatedManagedBytes": {
+          "n": 10,
+          "min": 73161200,
+          "median": 73161200,
+          "max": 73161200,
+          "mad": 0,
+          "threshold": 73161200,
+          "policy": "median above observed maximum => investigate"
+        },
+        "peakWorkingSetBytes": {
+          "n": 10,
+          "min": 61272064,
+          "median": 61403136,
+          "max": 61620224,
+          "mad": 36864,
+          "threshold": 61620224,
+          "policy": "median above observed maximum => investigate"
+        }
+      },
+      "model": {
+        "candidates": {
+          "values": [
+            30001
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "variables": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "constraints": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "serializedBytes": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "steps": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        }
+      },
+      "outcomes": [
+        "complexityLimit"
+      ]
+    },
+    {
+      "key": "near-candidate-limit/analyze",
+      "metrics": {
+        "elapsedMs": {
+          "n": 5,
+          "min": 0.4091,
+          "median": 0.4117,
+          "max": 0.4564,
+          "mad": 0.002599999999999991,
+          "threshold": 0.4564,
+          "policy": "median above observed maximum => investigate"
+        },
+        "allocatedManagedBytes": {
+          "n": 5,
+          "min": 356480,
+          "median": 356480,
+          "max": 356480,
+          "mad": 0,
+          "threshold": 356480,
+          "policy": "median above observed maximum => investigate"
+        },
+        "peakWorkingSetBytes": {
+          "n": 5,
+          "min": 47910912,
+          "median": 47964160,
+          "max": 48005120,
+          "mad": 36864,
+          "threshold": 48005120,
+          "policy": "median above observed maximum => investigate"
+        }
+      },
+      "model": {
+        "candidates": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "variables": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "constraints": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "serializedBytes": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "steps": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        }
+      },
+      "outcomes": [
+        "not-run"
+      ]
+    },
+    {
+      "key": "near-candidate-limit/solve",
+      "metrics": {
+        "elapsedMs": {
+          "n": 5,
+          "min": 973.6407,
+          "median": 1002.682,
+          "max": 1041.8752,
+          "mad": 1.4759000000000242,
+          "threshold": 1041.8752,
+          "policy": "median above observed maximum => investigate"
+        },
+        "allocatedManagedBytes": {
+          "n": 5,
+          "min": 407968216,
+          "median": 407968224,
+          "max": 407968248,
+          "mad": 8,
+          "threshold": 407968248,
+          "policy": "median above observed maximum => investigate"
+        },
+        "peakWorkingSetBytes": {
+          "n": 5,
+          "min": 170094592,
+          "median": 170246144,
+          "max": 170356736,
+          "mad": 98304,
+          "threshold": 170356736,
+          "policy": "median above observed maximum => investigate"
+        }
+      },
+      "model": {
+        "candidates": {
+          "values": [
+            29920
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "variables": {
+          "values": [
+            33712
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "constraints": {
+          "values": [
+            233411
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "serializedBytes": {
+          "values": [
+            14051632
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "steps": {
+          "values": [
+            300001
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        }
+      },
+      "outcomes": [
+        "complexityLimit"
+      ]
+    },
+    {
+      "key": "coverage-limit/analyze",
+      "metrics": {
+        "elapsedMs": {
+          "n": 5,
+          "min": 54.9766,
+          "median": 55.5414,
+          "max": 56.3639,
+          "mad": 0.5648000000000053,
+          "threshold": 56.3639,
+          "policy": "median above observed maximum => investigate"
+        },
+        "allocatedManagedBytes": {
+          "n": 5,
+          "min": 24478560,
+          "median": 24478560,
+          "max": 24478560,
+          "mad": 0,
+          "threshold": 24478560,
+          "policy": "median above observed maximum => investigate"
+        },
+        "peakWorkingSetBytes": {
+          "n": 5,
+          "min": 67878912,
+          "median": 67989504,
+          "max": 68067328,
+          "mad": 61440,
+          "threshold": 68067328,
+          "policy": "median above observed maximum => investigate"
+        }
+      },
+      "model": {
+        "candidates": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "variables": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "constraints": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "serializedBytes": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "steps": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        }
+      },
+      "outcomes": [
+        "not-run"
+      ]
+    },
+    {
+      "key": "history-limit/analyze",
+      "metrics": {
+        "elapsedMs": {
+          "n": 10,
+          "min": 108.0777,
+          "median": 111.3014,
+          "max": 181.6907,
+          "mad": 3.223700000000008,
+          "threshold": 181.6907,
+          "policy": "median above observed maximum => investigate"
+        },
+        "allocatedManagedBytes": {
+          "n": 10,
+          "min": 46119360,
+          "median": 46119360,
+          "max": 46119360,
+          "mad": 0,
+          "threshold": 46119360,
+          "policy": "median above observed maximum => investigate"
+        },
+        "peakWorkingSetBytes": {
+          "n": 10,
+          "min": 186327040,
+          "median": 186593280,
+          "max": 188780544,
+          "mad": 266240,
+          "threshold": 188780544,
+          "policy": "median above observed maximum => investigate"
+        }
+      },
+      "model": {
+        "candidates": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "variables": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "constraints": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "serializedBytes": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        },
+        "steps": {
+          "values": [
+            0
+          ],
+          "policy": "exact shape invariant for this same input and translation"
+        }
+      },
+      "outcomes": [
+        "not-run"
+      ]
+    }
+  ],
+  "sampleProvenance": {
+    "primary": 70,
+    "pairedAfter": 15,
+    "httpServers": 3
+  }
+}

@@ -1,0 +1,4300 @@
+[
+  {
+    "scenario": "small-fixed",
+    "operation": "analyze",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "n": 5,
+          "min": 0.4447,
+          "median": 0.4712,
+          "max": 0.5011,
+          "mad": 0.014600000000000002
+        },
+        "final": {
+          "n": 5,
+          "min": 0.4171,
+          "median": 0.5068,
+          "max": 1.1529,
+          "mad": 0.05900000000000005
+        },
+        "deltaPercent": 7.5551782682512725,
+        "alertThreshold": 0.5011,
+        "exceedsBaselineEnvelope": true
+      },
+      "diagnostics": {
+        "baseline": {
+          "n": 5,
+          "min": 0.1249,
+          "median": 0.1296,
+          "max": 0.1447,
+          "mad": 0.004699999999999996
+        },
+        "final": {
+          "n": 5,
+          "min": 0.1248,
+          "median": 0.1535,
+          "max": 0.4196,
+          "mad": 0.028700000000000003
+        },
+        "deltaPercent": 18.441358024691358,
+        "alertThreshold": 0.1447,
+        "exceedsBaselineEnvelope": true
+      },
+      "coverage": {
+        "baseline": {
+          "n": 5,
+          "min": 0.222,
+          "median": 0.2295,
+          "max": 0.2676,
+          "mad": 0.007500000000000007
+        },
+        "final": {
+          "n": 5,
+          "min": 0.1934,
+          "median": 0.2342,
+          "max": 0.4703,
+          "mad": 0.027499999999999997
+        },
+        "deltaPercent": 2.047930283224386,
+        "alertThreshold": 0.2676,
+        "exceedsBaselineEnvelope": false
+      },
+      "candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "solver": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.allocatedManagedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 282256,
+          "median": 282256,
+          "max": 282256,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 264344,
+          "median": 264344,
+          "max": 264344,
+          "mad": 0
+        },
+        "deltaPercent": -6.346012130831591,
+        "alertThreshold": 282256,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.peakWorkingSetBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 46043136,
+          "median": 46075904,
+          "max": 46387200,
+          "mad": 32768
+        },
+        "final": {
+          "n": 5,
+          "min": 46014464,
+          "median": 46084096,
+          "max": 46161920,
+          "mad": 20480
+        },
+        "deltaPercent": 0.017779358165159742,
+        "alertThreshold": 46387200,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.variables": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.constraints": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.serializedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.steps": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      }
+    },
+    "baselineOutcomes": [
+      [
+        "completed",
+        "not-run",
+        0.9
+      ],
+      [
+        "completed",
+        "not-run",
+        0.9
+      ],
+      [
+        "completed",
+        "not-run",
+        0.9
+      ],
+      [
+        "completed",
+        "not-run",
+        0.9
+      ],
+      [
+        "completed",
+        "not-run",
+        0.9
+      ]
+    ],
+    "finalOutcomes": [
+      [
+        "completed",
+        "not-run",
+        0.9
+      ],
+      [
+        "completed",
+        "not-run",
+        0.9
+      ],
+      [
+        "completed",
+        "not-run",
+        0.9
+      ],
+      [
+        "completed",
+        "not-run",
+        0.9
+      ],
+      [
+        "completed",
+        "not-run",
+        0.9
+      ]
+    ]
+  },
+  {
+    "scenario": "small-fixed",
+    "operation": "solve",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "n": 5,
+          "min": 21.1738,
+          "median": 21.9914,
+          "max": 23.1415,
+          "mad": 0.7851999999999997
+        },
+        "final": {
+          "n": 5,
+          "min": 21.0022,
+          "median": 21.5083,
+          "max": 26.142,
+          "mad": 0.17270000000000252
+        },
+        "deltaPercent": -2.1967678274234514,
+        "alertThreshold": 23.1415,
+        "exceedsBaselineEnvelope": false
+      },
+      "diagnostics": {
+        "baseline": {
+          "n": 5,
+          "min": 0.0759,
+          "median": 0.0896,
+          "max": 0.1242,
+          "mad": 0.013700000000000004
+        },
+        "final": {
+          "n": 5,
+          "min": 0.0824,
+          "median": 0.0919,
+          "max": 0.1357,
+          "mad": 0.006699999999999998
+        },
+        "deltaPercent": 2.5669642857142794,
+        "alertThreshold": 0.1242,
+        "exceedsBaselineEnvelope": false
+      },
+      "coverage": {
+        "baseline": {
+          "n": 5,
+          "min": 0.2341,
+          "median": 0.2401,
+          "max": 0.397,
+          "mad": 0.006000000000000005
+        },
+        "final": {
+          "n": 5,
+          "min": 0.2059,
+          "median": 0.2108,
+          "max": 0.3957,
+          "mad": 0.004899999999999988
+        },
+        "deltaPercent": -12.203248646397347,
+        "alertThreshold": 0.397,
+        "exceedsBaselineEnvelope": false
+      },
+      "candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0.2229,
+          "median": 0.2315,
+          "max": 0.2486,
+          "mad": 0.008600000000000024
+        },
+        "final": {
+          "n": 5,
+          "min": 0.2045,
+          "median": 0.2272,
+          "max": 0.5069,
+          "mad": 0.022700000000000026
+        },
+        "deltaPercent": -1.8574514038876888,
+        "alertThreshold": 0.2486,
+        "exceedsBaselineEnvelope": false
+      },
+      "model": {
+        "baseline": {
+          "n": 5,
+          "min": 0.8637,
+          "median": 0.8835,
+          "max": 1.1994,
+          "mad": 0.017699999999999938
+        },
+        "final": {
+          "n": 5,
+          "min": 0.8253,
+          "median": 0.9088,
+          "max": 1.0749,
+          "mad": 0.044600000000000084
+        },
+        "deltaPercent": 2.863610639502001,
+        "alertThreshold": 1.1994,
+        "exceedsBaselineEnvelope": false
+      },
+      "solver": {
+        "baseline": {
+          "n": 5,
+          "min": 19.2053,
+          "median": 19.9708,
+          "max": 20.5849,
+          "mad": 0.5664000000000016
+        },
+        "final": {
+          "n": 5,
+          "min": 19.2098,
+          "median": 19.7265,
+          "max": 23.404,
+          "mad": 0.05010000000000048
+        },
+        "deltaPercent": -1.2232859975564225,
+        "alertThreshold": 20.5849,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.allocatedManagedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 1413312,
+          "median": 1524024,
+          "max": 1524024,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 1395400,
+          "median": 1395400,
+          "max": 1407760,
+          "mad": 0
+        },
+        "deltaPercent": -8.43976210348394,
+        "alertThreshold": 1524024,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.peakWorkingSetBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 65433600,
+          "median": 65560576,
+          "max": 65622016,
+          "mad": 49152
+        },
+        "final": {
+          "n": 5,
+          "min": 65376256,
+          "median": 65421312,
+          "max": 65556480,
+          "mad": 45056
+        },
+        "deltaPercent": -0.2124203423716109,
+        "alertThreshold": 65622016,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 24,
+          "median": 24,
+          "max": 24,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 24,
+          "median": 24,
+          "max": 24,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 24,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.variables": {
+        "baseline": {
+          "n": 5,
+          "min": 330,
+          "median": 330,
+          "max": 330,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 330,
+          "median": 330,
+          "max": 330,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 330,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.constraints": {
+        "baseline": {
+          "n": 5,
+          "min": 636,
+          "median": 636,
+          "max": 636,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 636,
+          "median": 636,
+          "max": 636,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 636,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.serializedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 35537,
+          "median": 35537,
+          "max": 35537,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 35537,
+          "median": 35537,
+          "max": 35537,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 35537,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.steps": {
+        "baseline": {
+          "n": 5,
+          "min": 252,
+          "median": 252,
+          "max": 252,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 252,
+          "median": 252,
+          "max": 252,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 252,
+        "exceedsBaselineEnvelope": false
+      }
+    },
+    "baselineOutcomes": [
+      [
+        "completed",
+        "optimal",
+        0.9
+      ],
+      [
+        "completed",
+        "optimal",
+        0.9
+      ],
+      [
+        "completed",
+        "optimal",
+        0.9
+      ],
+      [
+        "completed",
+        "optimal",
+        0.9
+      ],
+      [
+        "completed",
+        "optimal",
+        0.9
+      ]
+    ],
+    "finalOutcomes": [
+      [
+        "completed",
+        "optimal",
+        0.9
+      ],
+      [
+        "completed",
+        "optimal",
+        0.9
+      ],
+      [
+        "completed",
+        "optimal",
+        0.9
+      ],
+      [
+        "completed",
+        "optimal",
+        0.9
+      ],
+      [
+        "completed",
+        "optimal",
+        0.9
+      ]
+    ]
+  },
+  {
+    "scenario": "fortnight-history",
+    "operation": "analyze",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "n": 5,
+          "min": 1.4687,
+          "median": 1.5027,
+          "max": 1.6414,
+          "mad": 0.03400000000000003
+        },
+        "final": {
+          "n": 5,
+          "min": 0.9987,
+          "median": 1.0309,
+          "max": 1.0787,
+          "mad": 0.01639999999999997
+        },
+        "deltaPercent": -31.39681905902708,
+        "alertThreshold": 1.6414,
+        "exceedsBaselineEnvelope": false
+      },
+      "diagnostics": {
+        "baseline": {
+          "n": 5,
+          "min": 0.1662,
+          "median": 0.1664,
+          "max": 0.1683,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0.1652,
+          "median": 0.1709,
+          "max": 0.1978,
+          "mad": 0.005699999999999983
+        },
+        "deltaPercent": 2.7043269230769162,
+        "alertThreshold": 0.1683,
+        "exceedsBaselineEnvelope": true
+      },
+      "coverage": {
+        "baseline": {
+          "n": 5,
+          "min": 1.1926,
+          "median": 1.2185,
+          "max": 1.3257,
+          "mad": 0.025899999999999812
+        },
+        "final": {
+          "n": 5,
+          "min": 0.7246,
+          "median": 0.7355,
+          "max": 0.756,
+          "mad": 0.006199999999999983
+        },
+        "deltaPercent": -39.6389002872384,
+        "alertThreshold": 1.3257,
+        "exceedsBaselineEnvelope": false
+      },
+      "candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "solver": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.allocatedManagedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 991648,
+          "median": 991648,
+          "max": 991648,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 852824,
+          "median": 852824,
+          "max": 852824,
+          "mad": 0
+        },
+        "deltaPercent": -13.999322340185227,
+        "alertThreshold": 991648,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.peakWorkingSetBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 47898624,
+          "median": 48078848,
+          "max": 48259072,
+          "mad": 135168
+        },
+        "final": {
+          "n": 5,
+          "min": 47771648,
+          "median": 47861760,
+          "max": 47869952,
+          "mad": 8192
+        },
+        "deltaPercent": -0.4515249616629746,
+        "alertThreshold": 48259072,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.variables": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.constraints": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.serializedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.steps": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      }
+    },
+    "baselineOutcomes": [
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ]
+    ],
+    "finalOutcomes": [
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ]
+    ]
+  },
+  {
+    "scenario": "fortnight-history",
+    "operation": "solve",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "n": 5,
+          "min": 5026.6267,
+          "median": 5028.9774,
+          "max": 5030.2282,
+          "mad": 0.3966000000000349
+        },
+        "final": {
+          "n": 5,
+          "min": 5025.6415,
+          "median": 5026.4204,
+          "max": 5029.6245,
+          "mad": 0.7789000000002488
+        },
+        "deltaPercent": -0.05084532692470889,
+        "alertThreshold": 5030.2282,
+        "exceedsBaselineEnvelope": false
+      },
+      "diagnostics": {
+        "baseline": {
+          "n": 5,
+          "min": 0.3033,
+          "median": 0.3166,
+          "max": 0.5762,
+          "mad": 0.013299999999999979
+        },
+        "final": {
+          "n": 5,
+          "min": 0.292,
+          "median": 0.3009,
+          "max": 0.3187,
+          "mad": 0.006400000000000017
+        },
+        "deltaPercent": -4.958938723941875,
+        "alertThreshold": 0.5762,
+        "exceedsBaselineEnvelope": false
+      },
+      "coverage": {
+        "baseline": {
+          "n": 5,
+          "min": 2.4365,
+          "median": 2.9115,
+          "max": 3.0022,
+          "mad": 0.0907
+        },
+        "final": {
+          "n": 5,
+          "min": 1.2118,
+          "median": 1.2997,
+          "max": 1.3405,
+          "mad": 0.04079999999999995
+        },
+        "deltaPercent": -55.35978018203676,
+        "alertThreshold": 3.0022,
+        "exceedsBaselineEnvelope": false
+      },
+      "candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0.426,
+          "median": 0.4464,
+          "max": 0.4691,
+          "mad": 0.014700000000000046
+        },
+        "final": {
+          "n": 5,
+          "min": 0.4166,
+          "median": 0.4506,
+          "max": 0.4558,
+          "mad": 0.0020000000000000018
+        },
+        "deltaPercent": 0.9408602150537515,
+        "alertThreshold": 0.4691,
+        "exceedsBaselineEnvelope": false
+      },
+      "model": {
+        "baseline": {
+          "n": 5,
+          "min": 9.5544,
+          "median": 10.8887,
+          "max": 11.6926,
+          "mad": 0.3475999999999999
+        },
+        "final": {
+          "n": 5,
+          "min": 9.2653,
+          "median": 9.7834,
+          "max": 12.7392,
+          "mad": 0.5181000000000004
+        },
+        "deltaPercent": -10.150890372588094,
+        "alertThreshold": 11.6926,
+        "exceedsBaselineEnvelope": false
+      },
+      "solver": {
+        "baseline": {
+          "n": 5,
+          "min": 5011.9497,
+          "median": 5012.8232,
+          "max": 5013.8824,
+          "mad": 0.50879999999961
+        },
+        "final": {
+          "n": 5,
+          "min": 5012.3377,
+          "median": 5013.1399,
+          "max": 5013.972,
+          "mad": 0.5806999999995242
+        },
+        "deltaPercent": 0.006317797124788527,
+        "alertThreshold": 5013.8824,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.allocatedManagedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 11376240,
+          "median": 11376240,
+          "max": 11376240,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 11240296,
+          "median": 11240296,
+          "max": 11240296,
+          "mad": 0
+        },
+        "deltaPercent": -1.1949818217618424,
+        "alertThreshold": 11376240,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.peakWorkingSetBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 96899072,
+          "median": 97230848,
+          "max": 97767424,
+          "mad": 196608
+        },
+        "final": {
+          "n": 5,
+          "min": 97075200,
+          "median": 97681408,
+          "max": 98070528,
+          "mad": 188416
+        },
+        "deltaPercent": 0.4633920296570837,
+        "alertThreshold": 97767424,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 168,
+          "median": 168,
+          "max": 168,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 168,
+          "median": 168,
+          "max": 168,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 168,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.variables": {
+        "baseline": {
+          "n": 5,
+          "min": 3587,
+          "median": 3587,
+          "max": 3587,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 3587,
+          "median": 3587,
+          "max": 3587,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 3587,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.constraints": {
+        "baseline": {
+          "n": 5,
+          "min": 6476,
+          "median": 6476,
+          "max": 6476,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 6476,
+          "median": 6476,
+          "max": 6476,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 6476,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.serializedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 422370,
+          "median": 422370,
+          "max": 422370,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 422370,
+          "median": 422370,
+          "max": 422370,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 422370,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.steps": {
+        "baseline": {
+          "n": 5,
+          "min": 2522,
+          "median": 2522,
+          "max": 2522,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 2522,
+          "median": 2522,
+          "max": 2522,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 2522,
+        "exceedsBaselineEnvelope": false
+      }
+    },
+    "baselineOutcomes": [
+      [
+        "completed",
+        "feasible",
+        0.817
+      ],
+      [
+        "completed",
+        "feasible",
+        0.817
+      ],
+      [
+        "completed",
+        "feasible",
+        0.817
+      ],
+      [
+        "completed",
+        "feasible",
+        0.817
+      ],
+      [
+        "completed",
+        "feasible",
+        0.817
+      ]
+    ],
+    "finalOutcomes": [
+      [
+        "completed",
+        "feasible",
+        0.817
+      ],
+      [
+        "completed",
+        "feasible",
+        0.817
+      ],
+      [
+        "completed",
+        "feasible",
+        0.817
+      ],
+      [
+        "completed",
+        "feasible",
+        0.817
+      ],
+      [
+        "completed",
+        "feasible",
+        0.817
+      ]
+    ]
+  },
+  {
+    "scenario": "variable-breaks",
+    "operation": "analyze",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "n": 5,
+          "min": 0.2236,
+          "median": 0.2243,
+          "max": 0.2287,
+          "mad": 0.0007000000000000062
+        },
+        "final": {
+          "n": 5,
+          "min": 0.2193,
+          "median": 0.2247,
+          "max": 0.2279,
+          "mad": 0.0031999999999999806
+        },
+        "deltaPercent": 0.178332590280883,
+        "alertThreshold": 0.2287,
+        "exceedsBaselineEnvelope": false
+      },
+      "diagnostics": {
+        "baseline": {
+          "n": 5,
+          "min": 0.0256,
+          "median": 0.0274,
+          "max": 0.0287,
+          "mad": 0.001299999999999999
+        },
+        "final": {
+          "n": 5,
+          "min": 0.0341,
+          "median": 0.0345,
+          "max": 0.0397,
+          "mad": 0.0004000000000000045
+        },
+        "deltaPercent": 25.912408759124084,
+        "alertThreshold": 0.0287,
+        "exceedsBaselineEnvelope": true
+      },
+      "coverage": {
+        "baseline": {
+          "n": 5,
+          "min": 0.1352,
+          "median": 0.1359,
+          "max": 0.1401,
+          "mad": 0.0007000000000000062
+        },
+        "final": {
+          "n": 5,
+          "min": 0.1271,
+          "median": 0.1279,
+          "max": 0.1328,
+          "mad": 0.0008000000000000229
+        },
+        "deltaPercent": -5.886681383370107,
+        "alertThreshold": 0.1401,
+        "exceedsBaselineEnvelope": false
+      },
+      "candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "solver": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.allocatedManagedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 96664,
+          "median": 96664,
+          "max": 96664,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 90400,
+          "median": 90400,
+          "max": 90400,
+          "mad": 0
+        },
+        "deltaPercent": -6.480178763552102,
+        "alertThreshold": 96664,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.peakWorkingSetBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 45555712,
+          "median": 45596672,
+          "max": 45735936,
+          "mad": 36864
+        },
+        "final": {
+          "n": 5,
+          "min": 45522944,
+          "median": 45580288,
+          "max": 45735936,
+          "mad": 57344
+        },
+        "deltaPercent": -0.03593244699964249,
+        "alertThreshold": 45735936,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.variables": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.constraints": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.serializedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.steps": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      }
+    },
+    "baselineOutcomes": [
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ]
+    ],
+    "finalOutcomes": [
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ]
+    ]
+  },
+  {
+    "scenario": "variable-breaks",
+    "operation": "solve",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "n": 5,
+          "min": 5223.5329,
+          "median": 5238.8852,
+          "max": 5332.7128,
+          "mad": 9.444899999999507
+        },
+        "final": {
+          "n": 5,
+          "min": 5230.8984,
+          "median": 5241.0406,
+          "max": 5253.5227,
+          "mad": 8.624700000000303
+        },
+        "deltaPercent": 0.04114234074075185,
+        "alertThreshold": 5332.7128,
+        "exceedsBaselineEnvelope": false
+      },
+      "diagnostics": {
+        "baseline": {
+          "n": 5,
+          "min": 0.0374,
+          "median": 0.0401,
+          "max": 0.0507,
+          "mad": 0.0004000000000000045
+        },
+        "final": {
+          "n": 5,
+          "min": 0.0383,
+          "median": 0.0461,
+          "max": 0.058,
+          "mad": 0.007800000000000001
+        },
+        "deltaPercent": 14.962593516209498,
+        "alertThreshold": 0.0507,
+        "exceedsBaselineEnvelope": false
+      },
+      "coverage": {
+        "baseline": {
+          "n": 5,
+          "min": 0.1443,
+          "median": 0.1521,
+          "max": 0.1605,
+          "mad": 0.0031000000000000194
+        },
+        "final": {
+          "n": 5,
+          "min": 0.1433,
+          "median": 0.1688,
+          "max": 0.2147,
+          "mad": 0.02429999999999999
+        },
+        "deltaPercent": 10.97961867192636,
+        "alertThreshold": 0.1605,
+        "exceedsBaselineEnvelope": true
+      },
+      "candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 2.6879,
+          "median": 2.7855,
+          "max": 2.9042,
+          "mad": 0.06380000000000008
+        },
+        "final": {
+          "n": 5,
+          "min": 2.6707,
+          "median": 2.8188,
+          "max": 3.0544,
+          "mad": 0.08309999999999995
+        },
+        "deltaPercent": 1.1954765751211571,
+        "alertThreshold": 2.9042,
+        "exceedsBaselineEnvelope": false
+      },
+      "model": {
+        "baseline": {
+          "n": 5,
+          "min": 140.3462,
+          "median": 147.1868,
+          "max": 214.4455,
+          "mad": 6.840599999999995
+        },
+        "final": {
+          "n": 5,
+          "min": 146.5773,
+          "median": 155.1018,
+          "max": 158.4372,
+          "mad": 3.335399999999993
+        },
+        "deltaPercent": 5.377520266763036,
+        "alertThreshold": 214.4455,
+        "exceedsBaselineEnvelope": false
+      },
+      "solver": {
+        "baseline": {
+          "n": 5,
+          "min": 5073.3695,
+          "median": 5075.5189,
+          "max": 5108.0093,
+          "mad": 2.1494000000002416
+        },
+        "final": {
+          "n": 5,
+          "min": 5072.1346,
+          "median": 5076.2128,
+          "max": 5087.289,
+          "mad": 3.2721999999994296
+        },
+        "deltaPercent": 0.013671508542700828,
+        "alertThreshold": 5108.0093,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.allocatedManagedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 100473000,
+          "median": 100473016,
+          "max": 100571760,
+          "mad": 16
+        },
+        "final": {
+          "n": 5,
+          "min": 100466032,
+          "median": 100466032,
+          "max": 100478432,
+          "mad": 0
+        },
+        "deltaPercent": -0.00695112008979315,
+        "alertThreshold": 100571760,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.peakWorkingSetBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 224624640,
+          "median": 225046528,
+          "max": 225464320,
+          "mad": 286720
+        },
+        "final": {
+          "n": 5,
+          "min": 224272384,
+          "median": 224763904,
+          "max": 225562624,
+          "mad": 229376
+        },
+        "deltaPercent": -0.12558469686766438,
+        "alertThreshold": 225464320,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 1496,
+          "median": 1496,
+          "max": 1496,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 1496,
+          "median": 1496,
+          "max": 1496,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 1496,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.variables": {
+        "baseline": {
+          "n": 5,
+          "min": 3120,
+          "median": 3120,
+          "max": 3120,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 3120,
+          "median": 3120,
+          "max": 3120,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 3120,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.constraints": {
+        "baseline": {
+          "n": 5,
+          "min": 70452,
+          "median": 70452,
+          "max": 70452,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 70452,
+          "median": 70452,
+          "max": 70452,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 70452,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.serializedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 3540939,
+          "median": 3540939,
+          "max": 3540939,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 3540939,
+          "median": 3540939,
+          "max": 3540939,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 3540939,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.steps": {
+        "baseline": {
+          "n": 5,
+          "min": 102648,
+          "median": 102648,
+          "max": 102648,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 102648,
+          "median": 102648,
+          "max": 102648,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 102648,
+        "exceedsBaselineEnvelope": false
+      }
+    },
+    "baselineOutcomes": [
+      [
+        "completed",
+        "feasible",
+        0.933
+      ],
+      [
+        "completed",
+        "feasible",
+        0.933
+      ],
+      [
+        "completed",
+        "feasible",
+        0.933
+      ],
+      [
+        "completed",
+        "feasible",
+        0.933
+      ],
+      [
+        "completed",
+        "feasible",
+        0.933
+      ]
+    ],
+    "finalOutcomes": [
+      [
+        "completed",
+        "feasible",
+        0.933
+      ],
+      [
+        "completed",
+        "feasible",
+        0.933
+      ],
+      [
+        "completed",
+        "feasible",
+        0.933
+      ],
+      [
+        "completed",
+        "feasible",
+        0.933
+      ],
+      [
+        "completed",
+        "feasible",
+        0.933
+      ]
+    ]
+  },
+  {
+    "scenario": "max-people-period",
+    "operation": "analyze",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "n": 5,
+          "min": 1.6384,
+          "median": 1.7223,
+          "max": 1.8847,
+          "mad": 0.08389999999999986
+        },
+        "final": {
+          "n": 5,
+          "min": 1.2212,
+          "median": 1.2845,
+          "max": 1.3258,
+          "mad": 0.0363
+        },
+        "deltaPercent": -25.41949718399814,
+        "alertThreshold": 1.8847,
+        "exceedsBaselineEnvelope": false
+      },
+      "diagnostics": {
+        "baseline": {
+          "n": 5,
+          "min": 0.1273,
+          "median": 0.1358,
+          "max": 0.148,
+          "mad": 0.006599999999999995
+        },
+        "final": {
+          "n": 5,
+          "min": 0.1305,
+          "median": 0.1351,
+          "max": 0.1543,
+          "mad": 0.0040000000000000036
+        },
+        "deltaPercent": -0.5154639175257825,
+        "alertThreshold": 0.148,
+        "exceedsBaselineEnvelope": false
+      },
+      "coverage": {
+        "baseline": {
+          "n": 5,
+          "min": 1.4087,
+          "median": 1.4824,
+          "max": 1.6598,
+          "mad": 0.07369999999999988
+        },
+        "final": {
+          "n": 5,
+          "min": 0.9974,
+          "median": 1.0544,
+          "max": 1.0728,
+          "mad": 0.010399999999999965
+        },
+        "deltaPercent": -28.87209929843497,
+        "alertThreshold": 1.6598,
+        "exceedsBaselineEnvelope": false
+      },
+      "candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "solver": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.allocatedManagedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 2707848,
+          "median": 2707848,
+          "max": 2707848,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 488208,
+          "median": 488208,
+          "max": 488208,
+          "mad": 0
+        },
+        "deltaPercent": -81.97062759800401,
+        "alertThreshold": 2707848,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.peakWorkingSetBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 53092352,
+          "median": 53141504,
+          "max": 53207040,
+          "mad": 32768
+        },
+        "final": {
+          "n": 5,
+          "min": 50704384,
+          "median": 50774016,
+          "max": 50839552,
+          "mad": 61440
+        },
+        "deltaPercent": -4.455063974102047,
+        "alertThreshold": 53207040,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.variables": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.constraints": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.serializedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.steps": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      }
+    },
+    "baselineOutcomes": [
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ]
+    ],
+    "finalOutcomes": [
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ]
+    ]
+  },
+  {
+    "scenario": "max-people-period",
+    "operation": "solve",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "n": 5,
+          "min": 2243.0906,
+          "median": 2249.6227,
+          "max": 2626.3816,
+          "mad": 6.5320999999999
+        },
+        "final": {
+          "n": 5,
+          "min": 1988.2047,
+          "median": 2007.7472,
+          "max": 2283.7738,
+          "mad": 19.542500000000018
+        },
+        "deltaPercent": -10.751825183840824,
+        "alertThreshold": 2626.3816,
+        "exceedsBaselineEnvelope": false
+      },
+      "diagnostics": {
+        "baseline": {
+          "n": 5,
+          "min": 11.8178,
+          "median": 11.9031,
+          "max": 34.2468,
+          "mad": 0.08530000000000015
+        },
+        "final": {
+          "n": 5,
+          "min": 12.1072,
+          "median": 30.1102,
+          "max": 33.9755,
+          "mad": 3.2103
+        },
+        "deltaPercent": 152.96099335467227,
+        "alertThreshold": 34.2468,
+        "exceedsBaselineEnvelope": false
+      },
+      "coverage": {
+        "baseline": {
+          "n": 5,
+          "min": 318.8011,
+          "median": 320.8221,
+          "max": 337.9316,
+          "mad": 2.020999999999958
+        },
+        "final": {
+          "n": 5,
+          "min": 4.6048,
+          "median": 5.3796,
+          "max": 21.182,
+          "mad": 0.7519
+        },
+        "deltaPercent": -98.32318284806439,
+        "alertThreshold": 337.9316,
+        "exceedsBaselineEnvelope": false
+      },
+      "candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 248.3943,
+          "median": 251.0682,
+          "max": 290.2783,
+          "mad": 1.8009999999999877
+        },
+        "final": {
+          "n": 5,
+          "min": 255.5392,
+          "median": 261.9995,
+          "max": 316.3086,
+          "mad": 6.460300000000018
+        },
+        "deltaPercent": 4.353916585214712,
+        "alertThreshold": 290.2783,
+        "exceedsBaselineEnvelope": false
+      },
+      "model": {
+        "baseline": {
+          "n": 5,
+          "min": 154.1928,
+          "median": 171.4493,
+          "max": 229.1085,
+          "mad": 16.197699999999998
+        },
+        "final": {
+          "n": 5,
+          "min": 165.1515,
+          "median": 168.1868,
+          "max": 189.3683,
+          "mad": 3.0353000000000065
+        },
+        "deltaPercent": -1.9028949082906643,
+        "alertThreshold": 229.1085,
+        "exceedsBaselineEnvelope": false
+      },
+      "solver": {
+        "baseline": {
+          "n": 5,
+          "min": 1470.3578,
+          "median": 1501.6955,
+          "max": 1740.6423,
+          "mad": 31.33770000000004
+        },
+        "final": {
+          "n": 5,
+          "min": 1518.0988,
+          "median": 1536.0825,
+          "max": 1726.9112,
+          "mad": 15.783300000000054
+        },
+        "deltaPercent": 2.2898783408487278,
+        "alertThreshold": 1740.6423,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.allocatedManagedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 495996008,
+          "median": 496002184,
+          "max": 496002184,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 493478392,
+          "median": 493478440,
+          "max": 493481392,
+          "mad": 48
+        },
+        "deltaPercent": -0.5088171144020603,
+        "alertThreshold": 496002184,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.peakWorkingSetBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 209432576,
+          "median": 211697664,
+          "max": 212074496,
+          "mad": 200704
+        },
+        "final": {
+          "n": 5,
+          "min": 209268736,
+          "median": 209555456,
+          "max": 211550208,
+          "mad": 253952
+        },
+        "deltaPercent": -1.0119185821530818,
+        "alertThreshold": 212074496,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 5800,
+          "median": 5800,
+          "max": 5800,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 5800,
+          "median": 5800,
+          "max": 5800,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 5800,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.variables": {
+        "baseline": {
+          "n": 5,
+          "min": 29232,
+          "median": 29232,
+          "max": 29232,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 29232,
+          "median": 29232,
+          "max": 29232,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 29232,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.constraints": {
+        "baseline": {
+          "n": 5,
+          "min": 60948,
+          "median": 60948,
+          "max": 60948,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 60948,
+          "median": 60948,
+          "max": 60948,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 60948,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.serializedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 3908752,
+          "median": 3908752,
+          "max": 3908752,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 3908752,
+          "median": 3908752,
+          "max": 3908752,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 3908752,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.steps": {
+        "baseline": {
+          "n": 5,
+          "min": 23316,
+          "median": 23316,
+          "max": 23316,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 23316,
+          "median": 23316,
+          "max": 23316,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 23316,
+        "exceedsBaselineEnvelope": false
+      }
+    },
+    "baselineOutcomes": [
+      [
+        "completed",
+        "optimal",
+        1
+      ],
+      [
+        "completed",
+        "optimal",
+        1
+      ],
+      [
+        "completed",
+        "optimal",
+        1
+      ],
+      [
+        "completed",
+        "optimal",
+        1
+      ],
+      [
+        "completed",
+        "optimal",
+        1
+      ]
+    ],
+    "finalOutcomes": [
+      [
+        "completed",
+        "optimal",
+        1
+      ],
+      [
+        "completed",
+        "optimal",
+        1
+      ],
+      [
+        "completed",
+        "optimal",
+        1
+      ],
+      [
+        "completed",
+        "optimal",
+        1
+      ],
+      [
+        "completed",
+        "optimal",
+        1
+      ]
+    ]
+  },
+  {
+    "scenario": "candidate-limit",
+    "operation": "analyze",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "n": 5,
+          "min": 4.437,
+          "median": 4.5615,
+          "max": 4.7364,
+          "mad": 0.05109999999999992
+        },
+        "final": {
+          "n": 5,
+          "min": 2.5212,
+          "median": 2.5872,
+          "max": 2.6552,
+          "mad": 0.05930000000000035
+        },
+        "deltaPercent": -43.28181519237092,
+        "alertThreshold": 4.7364,
+        "exceedsBaselineEnvelope": false
+      },
+      "diagnostics": {
+        "baseline": {
+          "n": 5,
+          "min": 0.1211,
+          "median": 0.1275,
+          "max": 0.1414,
+          "mad": 0.0031000000000000055
+        },
+        "final": {
+          "n": 5,
+          "min": 0.1199,
+          "median": 0.1262,
+          "max": 0.1307,
+          "mad": 0.004399999999999987
+        },
+        "deltaPercent": -1.019607843137249,
+        "alertThreshold": 0.1414,
+        "exceedsBaselineEnvelope": false
+      },
+      "coverage": {
+        "baseline": {
+          "n": 5,
+          "min": 4.2187,
+          "median": 4.3175,
+          "max": 4.5057,
+          "mad": 0.06639999999999979
+        },
+        "final": {
+          "n": 5,
+          "min": 2.3046,
+          "median": 2.3654,
+          "max": 2.4353,
+          "mad": 0.052000000000000046
+        },
+        "deltaPercent": -45.21366531557614,
+        "alertThreshold": 4.5057,
+        "exceedsBaselineEnvelope": false
+      },
+      "candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "solver": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.allocatedManagedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 6416776,
+          "median": 6416776,
+          "max": 6416776,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 867472,
+          "median": 867472,
+          "max": 867472,
+          "mad": 0
+        },
+        "deltaPercent": -86.48118619069763,
+        "alertThreshold": 6416776,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.peakWorkingSetBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 56610816,
+          "median": 56741888,
+          "max": 56795136,
+          "mad": 8192
+        },
+        "final": {
+          "n": 5,
+          "min": 50933760,
+          "median": 50974720,
+          "max": 51257344,
+          "mad": 40960
+        },
+        "deltaPercent": -10.163863423085251,
+        "alertThreshold": 56795136,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.variables": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.constraints": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.serializedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.steps": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      }
+    },
+    "baselineOutcomes": [
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ]
+    ],
+    "finalOutcomes": [
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ]
+    ]
+  },
+  {
+    "scenario": "candidate-limit",
+    "operation": "solve",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "n": 5,
+          "min": 60.1803,
+          "median": 61.1271,
+          "max": 65.1039,
+          "mad": 0.9467999999999961
+        },
+        "final": {
+          "n": 5,
+          "min": 63.2551,
+          "median": 67.8465,
+          "max": 69.6615,
+          "mad": 1.3926999999999907
+        },
+        "deltaPercent": 10.992505778942574,
+        "alertThreshold": 65.1039,
+        "exceedsBaselineEnvelope": true
+      },
+      "diagnostics": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "coverage": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 60.1692,
+          "median": 61.1149,
+          "max": 65.0916,
+          "mad": 0.9457000000000022
+        },
+        "final": {
+          "n": 5,
+          "min": 63.2426,
+          "median": 67.8336,
+          "max": 69.6491,
+          "mad": 1.3933999999999997
+        },
+        "deltaPercent": 10.993554763241043,
+        "alertThreshold": 65.0916,
+        "exceedsBaselineEnvelope": true
+      },
+      "model": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "solver": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.allocatedManagedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 73161200,
+          "median": 73161200,
+          "max": 73161200,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 73161200,
+          "median": 73161200,
+          "max": 73161200,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 73161200,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.peakWorkingSetBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 61296640,
+          "median": 61399040,
+          "max": 61460480,
+          "mad": 61440
+        },
+        "final": {
+          "n": 5,
+          "min": 61292544,
+          "median": 61431808,
+          "max": 61620224,
+          "mad": 86016
+        },
+        "deltaPercent": 0.05336891260840915,
+        "alertThreshold": 61460480,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 30001,
+          "median": 30001,
+          "max": 30001,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 30001,
+          "median": 30001,
+          "max": 30001,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 30001,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.variables": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.constraints": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.serializedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.steps": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      }
+    },
+    "baselineOutcomes": [
+      [
+        "complexityLimit",
+        null,
+        null
+      ],
+      [
+        "complexityLimit",
+        null,
+        null
+      ],
+      [
+        "complexityLimit",
+        null,
+        null
+      ],
+      [
+        "complexityLimit",
+        null,
+        null
+      ],
+      [
+        "complexityLimit",
+        null,
+        null
+      ]
+    ],
+    "finalOutcomes": [
+      [
+        "complexityLimit",
+        null,
+        null
+      ],
+      [
+        "complexityLimit",
+        null,
+        null
+      ],
+      [
+        "complexityLimit",
+        null,
+        null
+      ],
+      [
+        "complexityLimit",
+        null,
+        null
+      ],
+      [
+        "complexityLimit",
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "scenario": "near-candidate-limit",
+    "operation": "analyze",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "n": 5,
+          "min": 0.4348,
+          "median": 0.441,
+          "max": 0.4922,
+          "mad": 0.0040999999999999925
+        },
+        "final": {
+          "n": 5,
+          "min": 0.4091,
+          "median": 0.4117,
+          "max": 0.4564,
+          "mad": 0.002599999999999991
+        },
+        "deltaPercent": -6.643990929705213,
+        "alertThreshold": 0.4922,
+        "exceedsBaselineEnvelope": false
+      },
+      "diagnostics": {
+        "baseline": {
+          "n": 5,
+          "min": 0.0922,
+          "median": 0.0957,
+          "max": 0.1363,
+          "mad": 0.0029
+        },
+        "final": {
+          "n": 5,
+          "min": 0.096,
+          "median": 0.0964,
+          "max": 0.1276,
+          "mad": 0.0003999999999999976
+        },
+        "deltaPercent": 0.7314524555903867,
+        "alertThreshold": 0.1363,
+        "exceedsBaselineEnvelope": false
+      },
+      "coverage": {
+        "baseline": {
+          "n": 5,
+          "min": 0.2771,
+          "median": 0.2794,
+          "max": 0.2862,
+          "mad": 0.0005000000000000004
+        },
+        "final": {
+          "n": 5,
+          "min": 0.2435,
+          "median": 0.2505,
+          "max": 0.2959,
+          "mad": 0.0030999999999999917
+        },
+        "deltaPercent": -10.343593414459551,
+        "alertThreshold": 0.2862,
+        "exceedsBaselineEnvelope": false
+      },
+      "candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "solver": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.allocatedManagedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 508664,
+          "median": 508664,
+          "max": 508664,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 356480,
+          "median": 356480,
+          "max": 356480,
+          "mad": 0
+        },
+        "deltaPercent": -29.91837440825378,
+        "alertThreshold": 508664,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.peakWorkingSetBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 47955968,
+          "median": 48046080,
+          "max": 48156672,
+          "mad": 77824
+        },
+        "final": {
+          "n": 5,
+          "min": 47910912,
+          "median": 47964160,
+          "max": 48005120,
+          "mad": 36864
+        },
+        "deltaPercent": -0.17050298380221207,
+        "alertThreshold": 48156672,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.variables": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.constraints": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.serializedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.steps": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      }
+    },
+    "baselineOutcomes": [
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ]
+    ],
+    "finalOutcomes": [
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ]
+    ]
+  },
+  {
+    "scenario": "near-candidate-limit",
+    "operation": "solve",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "n": 5,
+          "min": 957.2659,
+          "median": 963.6661,
+          "max": 1009.3875,
+          "mad": 6.400200000000041
+        },
+        "final": {
+          "n": 5,
+          "min": 973.6407,
+          "median": 1002.682,
+          "max": 1041.8752,
+          "mad": 1.4759000000000242
+        },
+        "deltaPercent": 4.048694874708159,
+        "alertThreshold": 1009.3875,
+        "exceedsBaselineEnvelope": false
+      },
+      "diagnostics": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "coverage": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 64.891,
+          "median": 66.6912,
+          "max": 68.811,
+          "mad": 1.749900000000011
+        },
+        "final": {
+          "n": 5,
+          "min": 67.8332,
+          "median": 69.3746,
+          "max": 71.7095,
+          "mad": 0.5101999999999975
+        },
+        "deltaPercent": 4.023619308094628,
+        "alertThreshold": 68.811,
+        "exceedsBaselineEnvelope": true
+      },
+      "model": {
+        "baseline": {
+          "n": 5,
+          "min": 892.3553,
+          "median": 897.4638,
+          "max": 942.6761,
+          "mad": 5.108499999999935
+        },
+        "final": {
+          "n": 5,
+          "min": 904.2437,
+          "median": 934.3633,
+          "max": 970.1425,
+          "mad": 1.6598999999999933
+        },
+        "deltaPercent": 4.111530738064317,
+        "alertThreshold": 942.6761,
+        "exceedsBaselineEnvelope": false
+      },
+      "solver": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.allocatedManagedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 407966488,
+          "median": 407968232,
+          "max": 407968248,
+          "mad": 16
+        },
+        "final": {
+          "n": 5,
+          "min": 407968216,
+          "median": 407968224,
+          "max": 407968248,
+          "mad": 8
+        },
+        "deltaPercent": -0.0000019609370016659966,
+        "alertThreshold": 407968248,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.peakWorkingSetBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 170086400,
+          "median": 170184704,
+          "max": 170303488,
+          "mad": 61440
+        },
+        "final": {
+          "n": 5,
+          "min": 170094592,
+          "median": 170246144,
+          "max": 170356736,
+          "mad": 98304
+        },
+        "deltaPercent": 0.03610195191219301,
+        "alertThreshold": 170303488,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 29920,
+          "median": 29920,
+          "max": 29920,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 29920,
+          "median": 29920,
+          "max": 29920,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 29920,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.variables": {
+        "baseline": {
+          "n": 5,
+          "min": 33712,
+          "median": 33712,
+          "max": 33712,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 33712,
+          "median": 33712,
+          "max": 33712,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 33712,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.constraints": {
+        "baseline": {
+          "n": 5,
+          "min": 233411,
+          "median": 233411,
+          "max": 233411,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 233411,
+          "median": 233411,
+          "max": 233411,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 233411,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.serializedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 14051632,
+          "median": 14051632,
+          "max": 14051632,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 14051632,
+          "median": 14051632,
+          "max": 14051632,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 14051632,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.steps": {
+        "baseline": {
+          "n": 5,
+          "min": 300001,
+          "median": 300001,
+          "max": 300001,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 300001,
+          "median": 300001,
+          "max": 300001,
+          "mad": 0
+        },
+        "deltaPercent": 0,
+        "alertThreshold": 300001,
+        "exceedsBaselineEnvelope": false
+      }
+    },
+    "baselineOutcomes": [
+      [
+        "complexityLimit",
+        null,
+        null
+      ],
+      [
+        "complexityLimit",
+        null,
+        null
+      ],
+      [
+        "complexityLimit",
+        null,
+        null
+      ],
+      [
+        "complexityLimit",
+        null,
+        null
+      ],
+      [
+        "complexityLimit",
+        null,
+        null
+      ]
+    ],
+    "finalOutcomes": [
+      [
+        "complexityLimit",
+        null,
+        null
+      ],
+      [
+        "complexityLimit",
+        null,
+        null
+      ],
+      [
+        "complexityLimit",
+        null,
+        null
+      ],
+      [
+        "complexityLimit",
+        null,
+        null
+      ],
+      [
+        "complexityLimit",
+        null,
+        null
+      ]
+    ]
+  },
+  {
+    "scenario": "coverage-limit",
+    "operation": "analyze",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "n": 5,
+          "min": 105.5165,
+          "median": 106.6038,
+          "max": 109.8388,
+          "mad": 1.0873000000000133
+        },
+        "final": {
+          "n": 5,
+          "min": 54.9766,
+          "median": 55.5414,
+          "max": 56.3639,
+          "mad": 0.5648000000000053
+        },
+        "deltaPercent": -47.8992306090402,
+        "alertThreshold": 109.8388,
+        "exceedsBaselineEnvelope": false
+      },
+      "diagnostics": {
+        "baseline": {
+          "n": 5,
+          "min": 10.541,
+          "median": 10.687,
+          "max": 11.7282,
+          "mad": 0.11189999999999856
+        },
+        "final": {
+          "n": 5,
+          "min": 10.8748,
+          "median": 11.0052,
+          "max": 11.2203,
+          "mad": 0.13039999999999985
+        },
+        "deltaPercent": 2.9774492373912276,
+        "alertThreshold": 11.7282,
+        "exceedsBaselineEnvelope": false
+      },
+      "coverage": {
+        "baseline": {
+          "n": 5,
+          "min": 93.8292,
+          "median": 94.9246,
+          "max": 98.0006,
+          "mad": 0.7905999999999977
+        },
+        "final": {
+          "n": 5,
+          "min": 43.4841,
+          "median": 43.6839,
+          "max": 44.7722,
+          "mad": 0.1998000000000033
+        },
+        "deltaPercent": -53.98042235627013,
+        "alertThreshold": 98.0006,
+        "exceedsBaselineEnvelope": false
+      },
+      "candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "solver": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.allocatedManagedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 25544008,
+          "median": 25544008,
+          "max": 25544008,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 24478560,
+          "median": 24478560,
+          "max": 24478560,
+          "mad": 0
+        },
+        "deltaPercent": -4.1710290726498345,
+        "alertThreshold": 25544008,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.peakWorkingSetBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 67837952,
+          "median": 67969024,
+          "max": 68079616,
+          "mad": 106496
+        },
+        "final": {
+          "n": 5,
+          "min": 67878912,
+          "median": 67989504,
+          "max": 68067328,
+          "mad": 61440
+        },
+        "deltaPercent": 0.03013137278533584,
+        "alertThreshold": 68079616,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.variables": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.constraints": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.serializedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.steps": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      }
+    },
+    "baselineOutcomes": [
+      [
+        "completed",
+        "not-run",
+        0.9
+      ],
+      [
+        "completed",
+        "not-run",
+        0.9
+      ],
+      [
+        "completed",
+        "not-run",
+        0.9
+      ],
+      [
+        "completed",
+        "not-run",
+        0.9
+      ],
+      [
+        "completed",
+        "not-run",
+        0.9
+      ]
+    ],
+    "finalOutcomes": [
+      [
+        "completed",
+        "not-run",
+        0.9
+      ],
+      [
+        "completed",
+        "not-run",
+        0.9
+      ],
+      [
+        "completed",
+        "not-run",
+        0.9
+      ],
+      [
+        "completed",
+        "not-run",
+        0.9
+      ],
+      [
+        "completed",
+        "not-run",
+        0.9
+      ]
+    ]
+  },
+  {
+    "scenario": "history-limit",
+    "operation": "analyze",
+    "metrics": {
+      "elapsedMs": {
+        "baseline": {
+          "n": 5,
+          "min": 3072.4264,
+          "median": 3123.7345,
+          "max": 4002.8272,
+          "mad": 51.308100000000195
+        },
+        "final": {
+          "n": 5,
+          "min": 108.0777,
+          "median": 109.617,
+          "max": 110.8678,
+          "mad": 0.5050999999999988
+        },
+        "deltaPercent": -96.49083492851264,
+        "alertThreshold": 4002.8272,
+        "exceedsBaselineEnvelope": false
+      },
+      "diagnostics": {
+        "baseline": {
+          "n": 5,
+          "min": 82.6085,
+          "median": 84.8459,
+          "max": 92.8327,
+          "mad": 2.1872999999999934
+        },
+        "final": {
+          "n": 5,
+          "min": 85.554,
+          "median": 86.3894,
+          "max": 87.7532,
+          "mad": 0.8353999999999928
+        },
+        "deltaPercent": 1.819180420032085,
+        "alertThreshold": 92.8327,
+        "exceedsBaselineEnvelope": false
+      },
+      "coverage": {
+        "baseline": {
+          "n": 5,
+          "min": 2987.5104,
+          "median": 3036.3879,
+          "max": 3907.5912,
+          "mad": 48.877500000000055
+        },
+        "final": {
+          "n": 5,
+          "min": 19.7935,
+          "median": 20.1542,
+          "max": 21.5288,
+          "mad": 0.3606999999999978
+        },
+        "deltaPercent": -99.33624422624,
+        "alertThreshold": 3907.5912,
+        "exceedsBaselineEnvelope": false
+      },
+      "candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "solver": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.allocatedManagedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 47875720,
+          "median": 47875720,
+          "max": 47875720,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 46119360,
+          "median": 46119360,
+          "max": 46119360,
+          "mad": 0
+        },
+        "deltaPercent": -3.6685819033113187,
+        "alertThreshold": 47875720,
+        "exceedsBaselineEnvelope": false
+      },
+      "memory.peakWorkingSetBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 186314752,
+          "median": 186552320,
+          "max": 188825600,
+          "mad": 73728
+        },
+        "final": {
+          "n": 5,
+          "min": 186327040,
+          "median": 186511360,
+          "max": 188780544,
+          "mad": 184320
+        },
+        "deltaPercent": -0.021956306949166837,
+        "alertThreshold": 188825600,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.candidates": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.variables": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.constraints": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.serializedBytes": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      },
+      "model.steps": {
+        "baseline": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "final": {
+          "n": 5,
+          "min": 0,
+          "median": 0,
+          "max": 0,
+          "mad": 0
+        },
+        "deltaPercent": null,
+        "alertThreshold": 0,
+        "exceedsBaselineEnvelope": false
+      }
+    },
+    "baselineOutcomes": [
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ]
+    ],
+    "finalOutcomes": [
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ],
+      [
+        "completed",
+        "not-run",
+        0
+      ]
+    ]
+  }
+]
