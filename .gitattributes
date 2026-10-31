@@ -1,0 +1,2 @@
+# Preserve captured test names containing intentionally invalid trailing spaces.
+docs/decisions/evidence/publication-review/frontend-*.txt whitespace=-blank-at-eol

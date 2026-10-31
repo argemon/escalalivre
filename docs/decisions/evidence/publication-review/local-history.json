@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "completedJobs": 40,
+  "resultsStillQueryable": 40,
+  "submissionConcurrency": 1,
+  "configuredWorkers": 1,
+  "payloadBudgetMiB": 128,
+  "retainedTicketLimit": 1024,
+  "elapsedSeconds": 30.692,
+  "scope": "Local API/real worker; not a capacity certification or hosted load test"
+}

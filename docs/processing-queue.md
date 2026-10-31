@@ -15,9 +15,60 @@ Configuração econômica padrão: `Protection:ConcurrentWorkers=1`, `Protection
 O cálculo continua limitado a 12 segundos e 512 MB pelo processo isolado já existente.
 A fila assíncrona não usa o limite de três segundos de espera das chamadas síncronas.
 A API mantém os endpoints síncronos por compatibilidade; eles compartilham os trabalhadores de cálculo.
-O serviço aceita no máximo 32 pedidos retidos, inclusive resultados, e resultados de até 4 MiB.
-Concluídos expiram após dois minutos. A limpeza ocorre periodicamente e na consulta/admissão.
-Fila cheia retorna 503; submissão continua limitada por IP. Consultas usam limite global separado de 1200/min para que a mesma rede possa acompanhar vários pedidos.
+Admissão, execução e retenção têm limites separados:
+
+| Recurso | Limite padrão |
+| --- | --- |
+| Pedidos aguardando | `Protection:JobQueueLimit=20` |
+| Pedidos em execução | `Protection:ConcurrentWorkers=1` |
+| Tickets em memória, ativos e finalizados | `Protection:JobRetentionLimit=1024` |
+| Payload serializado reservado/retido | `Protection:JobPayloadBudgetMb=128` MiB |
+| Reserva por pedido ativo / máximo por entrada ou resultado | 4 MiB |
+| Retenção de estado final e resultado | Dois minutos a partir da conclusão, falha ou cancelamento |
+
+A admissão reserva 4 MiB até o runner retornar, mesmo durante cancelamento de um
+processo em encerramento. Na conclusão, a reserva é substituída pelo tamanho real
+do resultado UTF-8. Falhas e cancelamentos liberam o payload, preservando somente
+o estado e uma mensagem de erro limitada a 512 caracteres. Cancelar um pedido
+aguardando libera sua reserva imediatamente. Cancelar novamente um estado final
+não reinicia o prazo de retenção nem remove um resultado concluído.
+
+Assim, mais de 32 conclusões pequenas podem coexistir sem bloquear novas gerações.
+Não há remoção antecipada de resultados para abrir vagas: durante os dois minutos
+eles continuam consultáveis. Quando o orçamento ou o limite de tickets impede
+nova reserva, a API retorna 503 `queueFull`, mesmo sem trabalho ativo. O limite de
+tickets também contém o crescimento dos metadados de resultados pequenos, falhas
+e cancelamentos, que consomem poucos ou nenhum byte de payload.
+
+Os 128 MiB preservam o teto anterior de payload de resultados (32 × 4 MiB), agora
+com reservas explícitas para ativos. No padrão, 21 ativos podem reservar 84 MiB;
+com oito workers e 20 aguardando, 28 ativos podem reservar 112 MiB. O orçamento
+restante é compartilhado com os resultados retidos. Ao usar um orçamento menor,
+a admissão pode fechar antes de atingir o limite de espera configurado.
+`JobPayloadBudgetMb` aceita 4–512; `JobRetentionLimit` aceita 32–10.000.
+
+A fila guarda snapshots UTF-8 da entrada/resultado, sem reter seus grafos de
+objetos. O teto de 4 MiB vale para a serialização interna normalizada; o corpo
+HTTP continua limitado separadamente a 2 MiB. **Payload serializado não é memória real do processo:** objetos usados
+no cálculo e na resposta HTTP, cópias/buffers temporários de serialização,
+metadados, runtime/GC e processos filhos ficam além desse orçamento. Uma consulta
+já iniciada pode manter seu snapshot até terminar mesmo após a expiração. O teto
+não substitui limites de memória do host/container e medição em carga real.
+
+Tickets finalizados expiram exatamente ao completar dois minutos. A limpeza usa
+`TimeProvider`, executa a cada 30 segundos e também em consulta, admissão e
+cancelamento. Assim, a recuperação física ociosa pode levar mais 30 segundos;
+chamadas após o prazo já removem o ticket e liberam a contabilização antes de
+prosseguir. A execução ativa nunca expira por esse mecanismo. Estado final,
+timestamp e liberação da reserva são publicados atomicamente. FIFO, paralelismo
+e o encerramento do processo filho antes de liberar sua vaga continuam preservados.
+Fila cheia retorna 503. POST `/solve` e POST `/solve/jobs` compartilham a cota de geração por IP, inclusive com caixa diferente e barra final.
+Consultas usam `Protection:JobPollsPerMinute` (1.200/min por IP); cancelamentos usam
+`Protection:JobCancellationsPerMinute` (60/min por IP), sem disputar cota com as consultas.
+Essas duas cotas também são independentes da cota geral, mas todas as operações
+continuam sujeitas à concorrência global. Tickets inexistentes consomem cota.
+O padrão de consultas acomoda nominalmente 60 usuários no mesmo NAT com polling
+a cada três segundos; veja configuração e limitações em [proteção HTTP](SECURITY.md).
 
 A fila fica em memória de **uma única instância**; reiniciar o servidor perde pedidos pendentes e resultados.
 Mantenha a página aberta. Alternar as abas internas mantém a geração e impede duplicatas.

@@ -1,13 +1,51 @@
 using EscalaLivre.Api;
 using EscalaLivre.Application.Contracts;
+using EscalaLivre.Domain.Scheduling;
 using Microsoft.Extensions.Logging.Abstractions;
 
 namespace EscalaLivre.Api.Tests;
 
 public sealed class ScheduleJobQueueTests
 {
-    // Queue mechanics do not inspect the document; HTTP validates it before admission.
-    private static ScheduleRequest Request() => new(null!, DateTime.Today, DateTime.Today.AddHours(1));
+    private sealed class SmallResultRunner : ICalculationRunner
+    {
+        public Task<ScheduleResult> RunAsync(string operation, ScheduleRequest request, CancellationToken cancellation) =>
+            Task.FromResult(new ScheduleResult([], [], [], [], [], [], [], 1, new("optimal")));
+    }
+
+    [Fact]
+    public async Task MoreThanThirtyTwoSmallCompletionsDoNotBlockAdmissionOrEvictResults()
+    {
+        using var queue = new ScheduleJobQueue(new SmallResultRunner(), new(), NullLogger<ScheduleJobQueue>.Instance);
+        await queue.StartAsync(default);
+        try
+        {
+            var ids = new List<string>();
+            for (int i = 0; i < 40; i++)
+            {
+                var job = queue.Enqueue(Request());
+                ids.Add(job.Id);
+                await Until(() => queue.Get(job.Id).State == "completed");
+            }
+            foreach (string id in ids)
+            {
+                var retained = queue.Get(id);
+                Assert.Equal("completed", retained.State);
+                Assert.Equal("optimal", retained.Result!.Optimization!.Status);
+            }
+        }
+        finally { await queue.StopAsync(default); }
+    }
+
+    // A structurally serializable request; HTTP owns business/input validation.
+    internal static ScheduleRequest Request()
+    {
+        var rule = new WorkloadRule("dayBased", 7, 0, 44, TimeSpan.FromHours(8));
+        var company = new CompanyRules("Loja", new(8, 0), new(18, 0), [DayOfWeek.Monday], rule,
+            new(TimeSpan.FromHours(1), TimeSpan.FromHours(1), TimeSpan.FromHours(4)), TimeSpan.FromHours(11), []);
+        var day = new DateTime(2026, 10, 19);
+        return new(new("1.0.0", Guid.NewGuid(), company, [], [], DateTimeOffset.UnixEpoch), day, day.AddHours(1));
+    }
     private sealed class BlockingRunner : ICalculationRunner
     {
         public int Active, Maximum;
@@ -47,6 +85,7 @@ public sealed class ScheduleJobQueueTests
         await queue.StopAsync(default);
         Assert.Equal(0, runner.Active);
         Assert.Equal(1, runner.Maximum);
+        Assert.Equal(0, queue.RetentionUsage.PayloadBytes);
     }
 
     [Fact]

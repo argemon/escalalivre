@@ -1,0 +1,100 @@
+[
+  {
+    "name": "npm-ci",
+    "command": "npm ci --prefix frontend --include=dev (wrapper used Node 24.14.1; all subsequent node checks explicitly used Node 22)",
+    "exitCode": 0,
+    "elapsedSeconds": 17.27,
+    "log": "npm-ci.txt"
+  },
+  {
+    "name": "lint",
+    "command": "node22 node_modules/eslint/bin/eslint.js .",
+    "exitCode": 0,
+    "elapsedSeconds": 18.8,
+    "log": "lint.txt"
+  },
+  {
+    "name": "typescript-build",
+    "command": "node22 node_modules/typescript/bin/tsc -b",
+    "exitCode": 0,
+    "elapsedSeconds": 6.27,
+    "log": "typescript-build.txt"
+  },
+  {
+    "name": "vite-build",
+    "command": "node22 node_modules/vite/bin/vite.js build",
+    "exitCode": 0,
+    "elapsedSeconds": 20.98,
+    "log": "vite-build.txt"
+  },
+  {
+    "name": "frontend-utc",
+    "command": "TZ=UTC node22 --test tests/*.test.cjs",
+    "exitCode": 0,
+    "elapsedSeconds": 14.14,
+    "log": "frontend-utc.txt"
+  },
+  {
+    "name": "frontend-new-york",
+    "command": "TZ=America/New_York node22 --test tests/*.test.cjs",
+    "exitCode": 0,
+    "elapsedSeconds": 12.33,
+    "log": "frontend-new-york.txt"
+  },
+  {
+    "name": "dotnet-analysis",
+    "command": "dotnet test backend/EscalaLivre.Analysis.Tests/EscalaLivre.Analysis.Tests.csproj -c Release",
+    "exitCode": 0,
+    "elapsedSeconds": 6.12,
+    "log": "dotnet-analysis.txt"
+  },
+  {
+    "name": "dotnet-adapter",
+    "command": "dotnet test backend/EscalaLivre.Adapter.Tests/EscalaLivre.Adapter.Tests.csproj -c Release",
+    "exitCode": 0,
+    "elapsedSeconds": 11.9,
+    "log": "dotnet-adapter.txt"
+  },
+  {
+    "name": "dotnet-api",
+    "command": "dotnet test backend/EscalaLivre.Api.Tests/EscalaLivre.Api.Tests.csproj -c Release",
+    "exitCode": 0,
+    "elapsedSeconds": 8.8,
+    "log": "dotnet-api.txt"
+  },
+  {
+    "name": "dotnet-architecture",
+    "command": "dotnet test backend/EscalaLivre.Architecture.Tests/EscalaLivre.Architecture.Tests.csproj -c Release",
+    "exitCode": 0,
+    "elapsedSeconds": 6.22,
+    "log": "dotnet-architecture.txt"
+  },
+  {
+    "name": "parity-utc",
+    "command": "TZ=UTC node22 tools/parity-differential.cjs",
+    "exitCode": 0,
+    "elapsedSeconds": 6.67,
+    "log": "parity-utc.txt"
+  },
+  {
+    "name": "parity-new-york",
+    "command": "TZ=America/New_York node22 tools/parity-differential.cjs",
+    "exitCode": 0,
+    "elapsedSeconds": 6.25,
+    "log": "parity-new-york.txt"
+  },
+  {
+    "name": "api-build",
+    "command": "dotnet build backend/EscalaLivre.Api/EscalaLivre.Api.csproj -c Release",
+    "exitCode": 0,
+    "elapsedSeconds": 7.32,
+    "log": "api-build.txt"
+  },
+  {
+    "name": "http-worker",
+    "command": "SECURITY_BUILD_CONFIGURATION=Release TZ=UTC node22 backend/security.integration.cjs",
+    "exitCode": 0,
+    "elapsedSeconds": 111.68,
+    "log": "http-worker.txt"
+  }
+]

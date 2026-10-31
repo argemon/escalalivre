@@ -1,0 +1,142 @@
+TAP version 13
+# Subtest: asynchronous generation returns a private ticket, survives polling and supports cancellation
+ok 1 - asynchronous generation returns a private ticket, survives polling and supports cancellation
+  ---
+  duration_ms: 1851.0636
+  type: 'test'
+  ...
+# Subtest: API rejects abusive inputs and keeps normal scheduling and exports working
+ok 2 - API rejects abusive inputs and keeps normal scheduling and exports working
+  ---
+  duration_ms: 3318.8187
+  type: 'test'
+  ...
+# Subtest: solve limit cannot be bypassed by forging a forwarded IP or changing path case
+ok 3 - solve limit cannot be bypassed by forging a forwarded IP or changing path case
+  ---
+  duration_ms: 1656.5874
+  type: 'test'
+  ...
+# Subtest: generation quota covers both resolved endpoints, case and trailing slashes
+ok 4 - generation quota covers both resolved endpoints, case and trailing slashes
+  ---
+  duration_ms: 4053.8974
+  type: 'test'
+  ...
+# Subtest: job quotas isolate IPs and charge nonexistent tickets across case and trailing slashes
+ok 5 - job quotas isolate IPs and charge nonexistent tickets across case and trailing slashes
+  ---
+  duration_ms: 521.8644
+  type: 'test'
+  ...
+# Subtest: exhausting polls cannot block another IP or cancellation on the same IP
+ok 6 - exhausting polls cannot block another IP or cancellation on the same IP
+  ---
+  duration_ms: 505.1542
+  type: 'test'
+  ...
+# Subtest: polling and cancellation have independent quotas and do not consume the general quota
+ok 7 - polling and cancellation have independent quotas and do not consume the general quota
+  ---
+  duration_ms: 1025.7487
+  type: 'test'
+  ...
+# Subtest: forged IP headers cannot rotate job quotas without a trusted immediate proxy
+ok 8 - forged IP headers cannot rotate job quotas without a trusted immediate proxy
+  ---
+  duration_ms: 1028.7646
+  type: 'test'
+  ...
+# Subtest: global per-IP rate limit includes invalid requests
+ok 9 - global per-IP rate limit includes invalid requests
+  ---
+  duration_ms: 505.5341
+  type: 'test'
+  ...
+# Subtest: global concurrency still protects generation, polling and cancellation across IPs
+ok 10 - global concurrency still protects generation, polling and cancellation across IPs
+  ---
+  duration_ms: 514.5279
+  type: 'test'
+  ...
+# Subtest: bounded queue rejects excess jobs while the API remains responsive
+ok 11 - bounded queue rejects excess jobs while the API remains responsive
+  ---
+  duration_ms: 1404.9286
+  type: 'test'
+  ...
+# Subtest: wall-clock deadline includes result analysis and the API recovers
+ok 12 - wall-clock deadline includes result analysis and the API recovers
+  ---
+  duration_ms: 2068.9034
+  type: 'test'
+  ...
+# Subtest: queue wait has its own deadline and cancellation removes the active job
+ok 13 - queue wait has its own deadline and cancellation removes the active job
+  ---
+  duration_ms: 2257.6594
+  type: 'test'
+  ...
+# Subtest: disconnecting the caller stops its worker and releases capacity
+ok 14 - disconnecting the caller stops its worker and releases capacity
+  ---
+  duration_ms: 1192.2776
+  type: 'test'
+  ...
+# Subtest: memory watchdog stops the child and releases its slot
+ok 15 - memory watchdog stops the child and releases its slot
+  ---
+  duration_ms: 1363.2711
+  type: 'test'
+  ...
+# Subtest: an unfinished request body cannot occupy an API slot indefinitely
+ok 16 - an unfinished request body cannot occupy an API slot indefinitely
+  ---
+  duration_ms: 8493.6194
+  type: 'test'
+  ...
+# Subtest: civil 09h and overnight dates survive the HTTP API, worker and native round trip
+ok 17 - civil 09h and overnight dates survive the HTTP API, worker and native round trip
+  ---
+  duration_ms: 2227.2684
+  type: 'test'
+  ...
+# Subtest: shared documents produce equivalent browser and HTTP diagnostics, coverage and gaps
+ok 18 - shared documents produce equivalent browser and HTTP diagnostics, coverage and gaps
+  ---
+  duration_ms: 67215.5616
+  type: 'test'
+  ...
+# Subtest: editing flow: authorize, save, generate, revoke, save, reload and generate with real solver
+ok 19 - editing flow: authorize, save, generate, revoke, save, reload and generate with real solver
+  ---
+  duration_ms: 3074.9158
+  type: 'test'
+  ...
+# Subtest: editing flow: generate, change employee role, save, reload and regenerate consistently
+ok 20 - editing flow: generate, change employee role, save, reload and regenerate consistently
+  ---
+  duration_ms: 2397.4309
+  type: 'test'
+  ...
+# Subtest: editing flow: long duration input, save, persisted reload and generation preserve all hour digits
+ok 21 - editing flow: long duration input, save, persisted reload and generation preserve all hour digits
+  ---
+  duration_ms: 3179.5346
+  type: 'test'
+  ...
+# Subtest: overlapping preserved history counts people in team and directional role coverage
+ok 22 - overlapping preserved history counts people in team and directional role coverage
+  ---
+  duration_ms: 2112.8045
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 111980.1181

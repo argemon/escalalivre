@@ -1,0 +1,13 @@
+{
+  "pages": 1,
+  "sizePoints": [
+    0.0,
+    0.0,
+    842.88,
+    595.91998
+  ],
+  "sha256": "b7532035fa4450ec52799a2a88b8c605bedd471b56b8ac1c2b14b975ae64e593",
+  "expectedPersonAndHoursPresent": true,
+  "renderedWith": "Poppler pdftoppm; PNG visually inspected",
+  "scope": "Browser print engine; no physical printer or OS dialog test"
+}

@@ -4,12 +4,21 @@ Os projetos têm dependências e objetivos distintos; helpers de teste retornam 
 
 | Grupo | Projeto/comando | Fronteira verificada |
 | --- | --- | --- |
-| Puro | EscalaLivre.Analysis.Tests (226 casos) | Apenas Application/Domain: valores/agregados, políticas, regimes, hashes completos, comandos e admissão. Deployment sem Infrastructure/API/OR-Tools. |
-| Adaptador | EscalaLivre.Adapter.Tests (376 casos) | Infrastructure/Application/Domain: OR-Tools real, limites/modelos, documentos atuais/legados, importação/exportação/PDF e recuperação. Sem referência ao projeto API. |
-| API | EscalaLivre.Api.Tests (8 casos) | Composição das capacidades/famílias, fila e amostragem de memória; sem servidor HTTP nesses testes unitários. |
+| Puro | EscalaLivre.Analysis.Tests (239 casos) | Apenas Application/Domain: valores/agregados, políticas, regimes, hashes completos, comandos e admissão. Deployment sem Infrastructure/API/OR-Tools. |
+| Adaptador | EscalaLivre.Adapter.Tests (379 casos) | Infrastructure/Application/Domain: OR-Tools real, limites/modelos, documentos atuais/legados, importação/exportação/PDF e recuperação. Sem referência ao projeto API. |
+| API | EscalaLivre.Api.Tests (33 casos) | Composição das capacidades/famílias, fila/retenção/orçamentos, amostragem de memória e opções de proteção; sem servidor HTTP nesses testes unitários. |
 | Arquitetura | EscalaLivre.Architecture.Tests (13 casos) | Grafo de referências, imports e superfície pública; scanner verificado também com formas proibidas, sem executar solver. |
-| Frontend | frontend/tests/*.test.cjs (381 casos) | Paridade, contratos, recuperação, store, construção/edição, arquiteturas das políticas e independência do fuso. |
-| HTTP/worker | backend/security.integration.cjs (16 casos) | API e processos filhos reais, envelope/status, frontend/analyze/validate/solve, fila, cancelamento, tempo/memória e recuperação. |
+| Frontend | frontend/tests/*.test.cjs (487 casos) | Paridade, contratos, recuperação, coleções inválidas/excessivas, store, construção/edição, arquiteturas das políticas e independência do fuso. |
+| HTTP/worker | backend/security.integration.cjs (22 casos) | API e processos filhos reais, envelope/status, frontend/analyze/validate/solve, fila, cancelamento, tempo/memória, recuperação e cotas por endpoint/IP/operação. |
+
+Os testes de retenção da fila usam `TimeProvider` controlável, inclusive para o
+timer de limpeza: não aguardam dois minutos reais. Verificam retenção, orçamento,
+metadados, FIFO/paralelismo e concorrência entre consulta e finalização/limpeza.
+
+A revisão de publicação inclui uma execução da matriz com Node 22 no Windows e
+fluxos reais no Edge headless, além das suítes acima. Comandos, evidências e
+limites de ambiente estão no [parecer final](../review/PARECER-PUBLICACAO.md).
+Linux/CI remota e futura hospedagem permanecem condições separadas de aprovação.
 
 Na raiz, em Release:
 

@@ -44,9 +44,8 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    private static bool IsJobPoll(HttpContext context) =>
-        (HttpMethods.IsGet(context.Request.Method) || HttpMethods.IsDelete(context.Request.Method))
-        && context.Request.Path.StartsWithSegments("/solve/jobs");
+    private static RequestQuotaKind QuotaFor(HttpContext context) =>
+        context.GetEndpoint()?.Metadata.GetMetadata<RequestQuota>()?.Kind ?? RequestQuotaKind.General;
 
     public static IServiceCollection AddEscalaLivre(this IServiceCollection services, ProtectionOptions protection)
     {
@@ -54,6 +53,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton(protection);
         services.AddSingleton<CalculationWorker>();
         services.AddSingleton<ICalculationRunner>(sp => sp.GetRequiredService<CalculationWorker>());
+        services.AddSingleton(TimeProvider.System);
         services.AddSingleton<ScheduleJobQueue>();
         services.AddHostedService(sp => sp.GetRequiredService<ScheduleJobQueue>());
         services.AddValidatorsFromAssemblyContaining<ScheduleRequestValidator>();
@@ -69,12 +69,24 @@ public static class ServiceCollectionExtensions
             options.GlobalLimiter = PartitionedRateLimiter.CreateChained(
                 PartitionedRateLimiter.Create<HttpContext, string>(_ => RateLimitPartition.GetConcurrencyLimiter("global", _ => new()
                 { PermitLimit = protection.ConcurrentRequests, QueueLimit = 0 })),
-                PartitionedRateLimiter.Create<HttpContext, string>(context => IsJobPoll(context)
-                    ? RateLimitPartition.GetFixedWindowLimiter("job-polls", _ => new()
-                    { PermitLimit = 1200, Window = TimeSpan.FromMinutes(1), QueueLimit = 0 })
-                    : RateLimitPartition.GetFixedWindowLimiter(context.Connection.RemoteIpAddress?.ToString() ?? "unknown", _ => new()
-                    { PermitLimit = protection.RequestsPerMinute, Window = TimeSpan.FromMinutes(1), QueueLimit = 0 })),
-                PartitionedRateLimiter.Create<HttpContext, string>(context => (context.Request.Path.Equals("/solve", StringComparison.OrdinalIgnoreCase) || (HttpMethods.IsPost(context.Request.Method) && context.Request.Path.Equals("/solve/jobs", StringComparison.OrdinalIgnoreCase)))
+                PartitionedRateLimiter.Create<HttpContext, (RequestQuotaKind, string)>(context =>
+                {
+                    var quota = QuotaFor(context);
+                    // Generation also consumes the general per-IP quota. Job operations
+                    // have independent budgets so polling cannot prevent cancellation.
+                    var category = quota is RequestQuotaKind.JobPoll or RequestQuotaKind.JobCancellation
+                        ? quota : RequestQuotaKind.General;
+                    int limit = category switch
+                    {
+                        RequestQuotaKind.JobPoll => protection.JobPollsPerMinute,
+                        RequestQuotaKind.JobCancellation => protection.JobCancellationsPerMinute,
+                        _ => protection.RequestsPerMinute
+                    };
+                    return RateLimitPartition.GetFixedWindowLimiter(
+                        (category, context.Connection.RemoteIpAddress?.ToString() ?? "unknown"), _ => new()
+                        { PermitLimit = limit, Window = TimeSpan.FromMinutes(1), QueueLimit = 0 });
+                }),
+                PartitionedRateLimiter.Create<HttpContext, string>(context => QuotaFor(context) == RequestQuotaKind.Generation
                     ? RateLimitPartition.GetFixedWindowLimiter(context.Connection.RemoteIpAddress?.ToString() ?? "unknown", _ => new()
                     { PermitLimit = protection.SolvesPerMinute, Window = TimeSpan.FromMinutes(1), QueueLimit = 0 })
                     : RateLimitPartition.GetNoLimiter("other")));

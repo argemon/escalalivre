@@ -7,11 +7,17 @@ infraestrutura, nem representam uma garantia de disponibilidade.
 
 | Controle | Padrão |
 | --- | --- |
-| Solicitações por IP | 60 por minuto |
-| Gerações por IP | 6 por minuto, compartilhadas entre as variações de maiúsculas da rota |
+| Solicitações gerais por IP | 60 por minuto; consultas e cancelamentos de tickets usam cotas próprias |
+| Gerações por IP | 6 por minuto, compartilhadas entre POST `/solve` e POST `/solve/jobs`, incluindo caixa e barra final |
+| Consultas de tickets por IP | 1.200 por minuto (`JobPollsPerMinute`) |
+| Cancelamentos de tickets por IP | 60 por minuto (`JobCancellationsPerMinute`), independentes das consultas |
 | Requisições em execução na API | 8, sem fila adicional |
 | Processos de cálculo simultâneos | 1 |
 | Pedidos aguardando cálculo | 2 |
+| Tickets de geração em memória, incluindo ativos e finalizados | 1.024 (`JobRetentionLimit`) |
+| Payload UTF-8 de entrada/resultado da fila | 4 MiB por pedido; reserva de 4 MiB enquanto ativo |
+| Orçamento de reservas ativas + payload de resultados retidos | 128 MiB (`JobPayloadBudgetMb`), não é limite de memória real do processo |
+| Retenção de resultado e estado final | Dois minutos desde a finalização, sem remoção antecipada por pressão de admissão |
 | Espera máxima na fila | 3 segundos |
 | Prazo por processo, incluindo preparação, cálculo e resultado | 12 segundos |
 | Memória residente por processo | encerramento ao detectar mais de 512 MB |
@@ -27,10 +33,39 @@ Os valores de tráfego, concorrência, espera e recursos estão em
 por variáveis como `Protection__SolvesPerMinute=6`. As opções são validadas ao
 iniciar. Aumente os limites somente após medir CPU, memória e latência sob carga.
 
+As cotas são selecionadas pelos metadados do endpoint resolvido, após o roteamento,
+sem comparar o texto do caminho. Gerações também consomem a cota geral; consultas
+GET e cancelamentos DELETE de `/solve/jobs/{id}` consomem somente sua respectiva
+cota por IP, além da proteção global de concorrência comum a todos os pedidos.
+Tickets inexistentes também consomem cota: trocar o ticket não reinicia o limite.
+Rotas não resolvidas usam a cota geral. Pedidos inválidos aos endpoints de geração
+consomem as cotas geral e de geração; isso não depende de iniciar o cálculo.
+
+Com polling a cada três segundos, cada usuário faz nominalmente 20 consultas por
+minuto. O padrão de 1.200 permite nominalmente 60 usuários no mesmo NAT, sem margem
+para consultas extras, reconexões ou rajadas. Cancelamentos têm orçamento separado
+de 60 por minuto por IP. Configure `Protection__JobPollsPerMinute` e
+`Protection__JobCancellationsPerMinute` conforme o uso; ambos aceitam 1–10.000.
+As janelas são fixas de um minuto, sem fila. Não há garantia de disponibilidade
+para cancelamento durante saturação da concorrência global. CORS e a exposição de
+`Retry-After` permanecem aplicados às respostas 429.
+
 Os limites de taxa, concorrência e fila são **por instância da API**. Com várias
 réplicas, configure também cotas globais no gateway ou armazenamento compartilhado.
 Limites por IP podem afetar empresas que compartilham uma conexão; ajuste-os com
 base no uso real. Não há identidade de usuário confiável no modo sem cadastro.
+
+Na fila assíncrona, capacidade de espera, execução e retenção são separadas.
+O orçamento padrão de 128 MiB usa reserva de 4 MiB por ativo, substituída pelos
+bytes reais do resultado ao concluir. Falhas/cancelamentos liberam o payload;
+metadados e resultados válidos continuam consultáveis por dois minutos.
+Uma nova reserva pode retornar 503 `queueFull` por orçamento ou metadados,
+mesmo sem atividade. Não se descartam resultados dentro do prazo para admitir
+novos pedidos. Os limites são configuráveis por `Protection__JobPayloadBudgetMb`
+(4–512) e `Protection__JobRetentionLimit` (32–10.000). Grafos deserializados,
+buffers transitórios, respostas HTTP em andamento e runtime ficam fora da conta
+de payload; o limite real do host deve abranger esses custos e os workers.
+Detalhes e justificativa em [fila de geração](processing-queue.md).
 
 ## Cálculos isolados
 
@@ -88,6 +123,14 @@ hospedagem. Health indica que a API responde, sem iniciar um cálculo.
 
 ## Validação
 
+A entrega 3 atualizou Zod para 4.6.7 e acrescentou verificação de coleções antes
+da migração, incluindo documentos do armazenamento local. Auditoria npm de
+produção em 31/10/2026 não apontou avisos; a cadeia de desenvolvimento ainda tem
+11 pacotes sinalizados como moderados por minimatch. NuGet não apontou pacotes
+vulneráveis, incluindo transitivos. Fontes, relatórios brutos, compatibilidade e
+riscos restantes estão em [Zod e validação segura](decisions/015-zod-validation-security.md).
+Auditorias devem ser repetidas: esse resultado não representa garantia permanente.
+
 ```sh
 dotnet build EscalaLivre.slnx
 dotnet test EscalaLivre.slnx --no-build
@@ -100,6 +143,9 @@ node --test tests/*.test.cjs
 Os testes HTTP iniciam instâncias locais em portas temporárias e verificam
 geração real, importação/exportação, entradas inválidas, corpo excessivo, CORS,
 limites de taxa, cabeçalhos de IP forjados, sobrecarga, prazo, memória e cancelamento.
+As regressões de cotas cobrem ambas as rotas de geração, caixa/barra final, cotas
+independentes por IP e operação, tickets inexistentes e IP encaminhado aceito
+somente de proxy explicitamente confiável.
 Para build Release, defina `SECURITY_BUILD_CONFIGURATION=Release` no teste HTTP.
 Teste a capacidade da hospedagem escolhida em ambiente separado antes de divulgar.
 

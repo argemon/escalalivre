@@ -113,13 +113,14 @@ app.MapGet("/", () => ApiEnvelope<object>.Ok(new { product = "EscalaLivre", mode
 app.MapGet("/health", () => Results.Ok(new { status = "healthy" }));
 foreach (string operation in new[] { "solve", "validate", "analyze" })
 {
-    app.MapPost("/" + operation, async (ScheduleRequest request, CalculationWorker worker, IValidator<ScheduleRequest> validator, CancellationToken cancellation) =>
+    var endpoint = app.MapPost("/" + operation, async (ScheduleRequest request, CalculationWorker worker, IValidator<ScheduleRequest> validator, CancellationToken cancellation) =>
     {
         var validation = await validator.ValidateAsync(request, cancellation);
         if (!validation.IsValid)
             return Results.BadRequest(ApiEnvelope<ScheduleResult>.Fail(validation.Errors.Select(e => new ApiMessage("invalidRequest", e.ErrorMessage, e.PropertyName)).ToList()));
         return Results.Ok(ApiEnvelope<ScheduleResult>.Ok(await worker.RunAsync(operation, request, cancellation)));
     });
+    if (operation == "solve") endpoint.WithMetadata(new RequestQuota(RequestQuotaKind.Generation));
 }
 app.MapPost("/import", (ImportRequest request, NativeScheduleSerializer serializer) => ApiEnvelope<object>.Ok(serializer.Import(request)));
 app.MapPost("/export", (ExportRequest request, NativeScheduleSerializer serializer) => ApiEnvelope<ExportResult>.Ok(serializer.Export(request)));
@@ -130,9 +131,9 @@ app.MapPost("/solve/jobs", async (ScheduleRequest request, ScheduleJobQueue jobs
         return Results.BadRequest(ApiEnvelope<JobProgress>.Fail(validation.Errors.Select(e => new ApiMessage("invalidRequest", e.ErrorMessage, e.PropertyName)).ToList()));
     var progress = jobs.Enqueue(request);
     return Results.Json(ApiEnvelope<JobProgress>.Ok(progress), statusCode: 202);
-});
+}).WithMetadata(new RequestQuota(RequestQuotaKind.Generation));
 app.MapGet("/solve/jobs/{id}", (string id, ScheduleJobQueue jobs) =>
-    ApiEnvelope<JobProgress>.Ok(jobs.Get(id)));
+    ApiEnvelope<JobProgress>.Ok(jobs.Get(id))).WithMetadata(new RequestQuota(RequestQuotaKind.JobPoll));
 app.MapDelete("/solve/jobs/{id}", (string id, ScheduleJobQueue jobs) =>
-    ApiEnvelope<JobProgress>.Ok(jobs.Cancel(id)));
+    ApiEnvelope<JobProgress>.Ok(jobs.Cancel(id))).WithMetadata(new RequestQuota(RequestQuotaKind.JobCancellation));
 app.Run();

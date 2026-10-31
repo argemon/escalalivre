@@ -47,6 +47,13 @@ GenerateSchedule só admite optimal/feasible após conferir estrutura/fronteira 
 
 CalculationWorker mantém cada cálculo em processo filho, com protocolo JSON stdin/stdout, supervisão, limites e cancelamento anteriores. Só solve registra a otimização; analyze/validate resolvem leitura. A fila/token privado, prazos e liberação de slots não foram substituídos por execução no processo HTTP.
 
+Seguimento de 31/10/2026: a fila distingue admissão, execução e retenção. O
+orçamento de payload UTF-8 reserva 4 MiB por ativo e contabiliza bytes reais dos
+resultados concluídos, com teto padrão de 128 MiB e 1.024 tickets. Retenção de dois
+minutos é preservada sem remoção antecipada; `TimeProvider` permite controlar
+expiração/limpeza nos testes. Esses limites não medem RSS/heap. Decisão e evidências:
+[orçamento de retenção](decisions/014-job-retention-budget.md).
+
 No frontend, componentes apresentam, Zustand coordena estado/recuperação e lib contém análise/construção local. As políticas em lib/policies não dependem de React/Zustand/HTTP/browser nem de chamadas de relógio local do dispositivo. São implementações distintas das políticas C#, verificadas por 58 documentos de paridade, 20 contratos de regime e dois casos de D1. A construção de pausa usa os mesmos limites variáveis da política; aliases temporários foram removidos. O arquivo .escalalivre continua fonte portátil local-first, sem cadastro/persistência de servidor.
 
 ## Validação e evolução
