@@ -18,7 +18,9 @@ metadados, FIFO/paralelismo e concorrência entre consulta e finalização/limpe
 A revisão de publicação inclui uma execução da matriz com Node 22 no Windows e
 fluxos reais no Edge headless, além das suítes acima. Comandos, evidências e
 limites de ambiente estão no [parecer final](../review/PARECER-PUBLICACAO.md).
-Linux/CI remota e futura hospedagem permanecem condições separadas de aprovação.
+A CI remota em Ubuntu/Node 22/.NET 10 foi posteriormente aprovada para o código
+das correções, conforme o parecer. A futura hospedagem permanece uma condição
+separada de aprovação operacional.
 
 Na raiz, em Release:
 

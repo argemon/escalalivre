@@ -5,7 +5,26 @@ Data: 31/10/2026. Repositório: argemon/escalalivre.
 **Parecer: aprovação condicionada.** As correções funcionais foram confirmadas
 no ambiente local e nenhum novo defeito bloqueador de código foi reproduzido na
 revisão. A aprovação operacional para publicação permanece pendente das condições
-abaixo. Não houve publicação, push/merge ou alteração de configuração de produção.
+abaixo. Não houve publicação, merge ou alteração de configuração de produção.
+O envio ao GitHub foi autorizado posteriormente e a CI remota foi conferida no
+seguimento registrado a seguir.
+
+## Seguimento após envio ao GitHub
+
+O commit `f0dbce7a1fdd49343266a5c54ad444ed3b5aa349`, na branch
+`codex/publication-hardening`, foi enviado com as três entregas, README e evidências.
+O [PR #7](https://github.com/argemon/escalalivre/pull/7) está aberto em rascunho.
+A execução [Validate #27](https://github.com/argemon/escalalivre/actions/runs/41253687438)
+terminou com sucesso nos oito jobs, incluindo frontend, quatro suítes .NET,
+HTTP/worker, paridade em ambos os fusos e gate backend.
+
+Os logs confirmam **Ubuntu 24.04.5, Node 22.23.4, SDK .NET 10.0.403 e runtime
+10.0.14**. A integração HTTP aprovou 22/22 casos. A
+[evidência remota](../docs/decisions/evidence/publication-review/github-ci.json)
+registra SHA, jobs, versões e trechos dos logs. A condição de CI Linux ficou
+cumprida para esse código; continuam pendentes a futura hospedagem/capacidade real
+e o tratamento dos avisos de desenvolvimento. O seguimento altera documentação
+e evidência, sem mudar os fontes do produto já validados.
 
 `review/PARECER-PUBLICACAO.md` e `review/PLANO-CORRECAO.md` não existiam no início
 da revisão. Este parecer foi criado para registrar o resultado; não foi inventado
@@ -35,7 +54,7 @@ código comprovados. Não foram encontrados novos achados P0 no escopo examinado
 | Prioridade | Achado/limite | Evidência e condição restante |
 | --- | --- | --- |
 | P1 operacional | Hospedagem e capacidade real ainda não validadas | O responsável confirmou que o projeto nunca foi publicado. Não há ambiente de homologação, URL, certificado ou infraestrutura para inspecionar. Antes da aprovação operacional, verificar TLS/HTTPS/HSTS, proxy/IP real, origens CORS, acesso à origem, criação/encerramento de filhos, orçamento global de CPU/RAM, reinício e carga em ambiente isolado. |
-| P2 | Linux/CI remota do diff não executada | WSL não está instalado e Docker não está disponível. A matriz passou em Windows/Node 22/.NET 10. É necessário executar o workflow completo em Ubuntu 24.04/Node 22/.NET 10 sobre os mesmos fontes antes da integração. Nenhuma CI antiga foi usada como prova deste diff. |
+| P2 resolvido | CI Linux do código das correções | WSL/Docker não estão disponíveis localmente, mas Validate #27 passou em Ubuntu 24.04.5/Node 22/.NET 10 sobre f0dbce7. A evidência é deste código, não de uma CI antiga. |
 | P2 | Avisos de dependências de desenvolvimento continuam abertos | A auditoria final aponta 11 pacotes moderados na cadeia de minimatch/ESLint/typescript-eslint. O caminho de produção foi mitigado por exclusão dessa cadeia: auditoria `--omit=dev` sem avisos e dependências classificadas como desenvolvimento no lockfile. Isso não corrige a ferramenta de desenvolvimento; atualizar/avaliar separadamente ou registrar aceite explícito do risco de CI/lint. Não tratar padrões/configurações de lint de origem não confiável como dados inofensivos. |
 | P2 operacional | Payload limitado não certifica RSS/heap ou capacidade da hospedagem | Reservas de 4 MiB, orçamento de 128 MiB e teto de 1.024 tickets são verificados. Objetos, buffers, respostas em andamento e filhos têm custos adicionais. Não foi medida carga representativa nem pico total de RAM no host final. Limites do host/container e dimensionamento continuam necessários. |
 | P3 | Dois avisos de anotação PURE do Zod durante o build | Rollup informa remoção de comentários que não consegue interpretar. Build e execução do bundle no navegador passaram. Não foi trocado o bundler nem silenciado o aviso. Acompanhar atualização compatível da ferramenta/biblioteca. |
@@ -89,9 +108,10 @@ outros pontos, importação/exportação, memória, timeout, cancelamento e pari
 
 Ambiente desta execução: Windows NT 10.0.26200, Node **22.23.4**, SDK .NET
 **10.0.401** com roll-forward permitido por global.json, runtime **10.0.12**.
-O host inicialmente tinha Node 24.14.1; a matriz final usou Node 22, conforme
-registrado pelos próprios comparadores de paridade. CI prevista: Ubuntu 24.04,
-Node 22 e .NET 10. Não foi executado Linux local nem workflow remoto.
+O host inicialmente tinha Node 24.14.1; a matriz local final usou Node 22, conforme
+registrado pelos próprios comparadores de paridade. Linux não foi executado
+localmente. O workflow remoto Ubuntu/Node 22/.NET 10 foi posteriormente verificado
+no seguimento acima; suas versões de SDK/runtime diferem das locais.
 
 O npm local é 11.11.0, instalado junto do Node 24. Seu wrapper PowerShell ignora
 o Node priorizado no PATH e usa o executável vizinho. Isso foi detectado na
@@ -174,8 +194,9 @@ um arquivo temporário; o PDF foi preservado como evidência após a inspeção.
 
 ## Condições para aprovação de publicação
 
-1. Executar a CI completa em Ubuntu/Node 22/.NET 10 sobre o mesmo conteúdo
-   revisado, sem usar um baseline anterior como evidência.
+1. **Cumprida para o código de f0dbce7:** CI completa em Ubuntu/Node 22/.NET 10,
+   com oito jobs aprovados. Alterações posteriores ainda devem passar pela CI
+   correspondente antes da integração.
 2. Preparar homologação isolada para conferir HTTPS/certificado/HSTS,
    proxy confiável/IP real, origens CORS/Retry-After e fechamento do acesso direto
    à origem quando aplicável. Não executar carga em usuários reais.

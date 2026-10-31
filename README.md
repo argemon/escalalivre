@@ -491,7 +491,8 @@ O frontend usa Zod 4.6.7 e verifica os limites das coleções antes de migrar os
 documentos, inclusive os recuperados do navegador. Documentos locais válidos
 maiores que o limite de 1 MiB dos arquivos nativos continuam recuperáveis. A
 revisão local passou com Node 22 e .NET 10, incluindo os fluxos no Edge e uma
-saída de impressão A4. O [parecer de publicação](review/PARECER-PUBLICACAO.md)
+saída de impressão A4. A [CI Ubuntu/Node 22/.NET 10 das correções](https://github.com/argemon/escalalivre/actions/runs/41253687438)
+também passou. O [parecer de publicação](review/PARECER-PUBLICACAO.md)
 registra as evidências, os avisos moderados ainda abertos nas ferramentas de
 desenvolvimento e as condições de CI/hospedagem para aprovação operacional.
 
