@@ -1,0 +1,45 @@
+{
+  "browser": "156.0.4314.50",
+  "playwright": "1.64.1",
+  "node": "v22.23.4",
+  "environment": "Windows; headless Edge; production frontend; local real API/worker",
+  "results": [
+    {
+      "name": "browser-generation",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Timed out waiting for local state\n    at until (D:\\Projetos\\escalalivre\\tools\\review-browser.cjs:26:34)\n    at async D:\\Projetos\\escalalivre\\tools\\review-browser.cjs:101:5\n    at async step (D:\\Projetos\\escalalivre\\tools\\review-browser.cjs:36:5)\n    at async main (D:\\Projetos\\escalalivre\\tools\\review-browser.cjs:96:3)",
+      "pageErrors": []
+    },
+    {
+      "name": "browser-cancellation",
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'processing'\n- 'cancelled'\n\n    at D:\\Projetos\\escalalivre\\tools\\review-browser.cjs:113:14\n    at async step (D:\\Projetos\\escalalivre\\tools\\review-browser.cjs:36:5)\n    at async main (D:\\Projetos\\escalalivre\\tools\\review-browser.cjs:105:3)",
+      "pageErrors": []
+    },
+    {
+      "name": "browser-edit-during-wait",
+      "status": "passed",
+      "pageErrors": []
+    },
+    {
+      "name": "browser-import-export",
+      "status": "passed",
+      "pageErrors": []
+    },
+    {
+      "name": "browser-recovery",
+      "status": "passed",
+      "pageErrors": []
+    },
+    {
+      "name": "browser-print",
+      "status": "passed",
+      "pageErrors": []
+    },
+    {
+      "name": "browser-large-local-document",
+      "status": "passed",
+      "pageErrors": []
+    }
+  ]
+}

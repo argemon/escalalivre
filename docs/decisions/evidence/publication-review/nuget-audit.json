@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "parameters": "--vulnerable --include-transitive",
+  "sources": [
+    "https://api.nuget.org/v3/index.json",
+    "C:/Program Files (x86)/Microsoft SDKs/NuGetPackages/"
+  ],
+  "projects": [
+    {
+      "path": "D:/Projetos/escalalivre/backend/EscalaLivre.Adapter.Tests/EscalaLivre.Adapter.Tests.csproj"
+    },
+    {
+      "path": "D:/Projetos/escalalivre/backend/EscalaLivre.Analysis.Tests/EscalaLivre.Analysis.Tests.csproj"
+    },
+    {
+      "path": "D:/Projetos/escalalivre/backend/EscalaLivre.Api.Tests/EscalaLivre.Api.Tests.csproj"
+    },
+    {
+      "path": "D:/Projetos/escalalivre/backend/EscalaLivre.Api/EscalaLivre.Api.csproj"
+    },
+    {
+      "path": "D:/Projetos/escalalivre/backend/EscalaLivre.Application/EscalaLivre.Application.csproj"
+    },
+    {
+      "path": "D:/Projetos/escalalivre/backend/EscalaLivre.Architecture.Tests/EscalaLivre.Architecture.Tests.csproj"
+    },
+    {
+      "path": "D:/Projetos/escalalivre/backend/EscalaLivre.Domain/EscalaLivre.Domain.csproj"
+    },
+    {
+      "path": "D:/Projetos/escalalivre/backend/EscalaLivre.Infrastructure/EscalaLivre.Infrastructure.csproj"
+    },
+    {
+      "path": "D:/Projetos/escalalivre/tools/EscalaLivre.ParityProbe/EscalaLivre.ParityProbe.csproj"
+    }
+  ]
+}

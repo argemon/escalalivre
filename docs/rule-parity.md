@@ -4,6 +4,33 @@ O diagnóstico local (`frontend/src/lib/laborRules.ts`) e o domínio C# (`backen
 
 ## Inventário e decisões
 
+Entrega 3 de proteção da validação (31/10/2026): Zod 3.25.76 substituído por
+4.6.7; o frontend verifica limites de coleções antes da migração e interrompe
+coleções na primeira falha detalhada. O conjunto de documentos aceitos mantém
+os limites existentes, GUIDs hexadecimais não vazios, textos UTF-16, opcionais/nulos,
+datas civis, durações e migrações. Quantidade/formato dos diagnósticos internos
+do Zod pode mudar; a apresentação continua usando o primeiro erro. Não há mudança
+de regra de escala C#, JSON público, limite de arquivo ou tamanho máximo do estado
+local válido. Cenários compartilhados anteriores mantidos; novas evidências no
+[relatório de validação segura](decisions/015-zod-validation-security.md).
+
+Entrega 2 de proteção da fila (31/10/2026): admissão passa a distinguir vagas
+ativas, metadados e payload serializado. Cada ativo reserva 4 MiB no orçamento
+padrão de 128 MiB; conclusões usam seu tamanho real, com retenção integral de dois
+minutos e até 1.024 tickets. Expiração, falha e cancelamento liberam recursos sem
+antecipar a liberação do worker. É uma correção operacional de R26, sem alterar
+regras de escala ou a implementação TypeScript. Decisão e evidências no
+[relatório da entrega](decisions/014-job-retention-budget.md).
+
+Entrega 1 de proteção HTTP (31/10/2026): a seleção das cotas passa a usar metadados
+do endpoint resolvido. POST `/solve` e POST `/solve/jobs` compartilham a cota de
+geração por IP também com barra final e caixa diferente; consultas e cancelamentos
+têm cotas configuráveis distintas por IP, incluindo tickets inexistentes. É uma
+correção de transporte, sem mudança nas regras de escala, contratos JSON ou
+implementações de negócio C#/TypeScript. Reprodução e validação estão no
+[relatório da entrega](decisions/013-http-rate-limits.md); configuração em
+[proteção da API](SECURITY.md).
+
 | Regra | Contrato adotado | Diagnóstico |
 | --- | --- | --- |
 | Identidade e função | Pessoa deve existir; função do turno deve ser a principal da pessoa. Normalizar não substitui a função do turno pela da pessoa. | `unknownEmployee`, `invalidShift` |

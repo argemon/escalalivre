@@ -480,6 +480,22 @@ O EscalaLivre está em desenvolvimento, com cadastro, análise local, geração 
 
 O motor trabalha com candidatos discretos de turnos e intervalos e com as regras atualmente modeladas. A geração é reavaliada antes de aplicar o resultado, preservando os dados anteriores em falhas. A preparação para produção ainda exige validação da versão publicada na hospedagem escolhida, configuração de HTTPS/proxy/recursos e acompanhamento operacional. A fila atual pertence a uma única instância e perde pedidos/resultados ao reiniciar; os arquivos e as cópias locais continuam sob responsabilidade do dispositivo do usuário.
 
+As proteções de publicação incluem cota de geração compartilhada entre `/solve`
+e `/solve/jobs`, selecionada pelo endpoint resolvido, e cotas independentes por IP
+para consultas e cancelamentos. A fila separa espera, execução e retenção: reserva
+até 4 MiB por pedido ativo dentro de um orçamento padrão de 128 MiB de payload,
+retém resultados por dois minutos e limita os tickets em memória a 1.024. Esse
+orçamento não representa o consumo total de RAM da API e dos processos filhos.
+
+O frontend usa Zod 4.6.7 e verifica os limites das coleções antes de migrar os
+documentos, inclusive os recuperados do navegador. Documentos locais válidos
+maiores que o limite de 1 MiB dos arquivos nativos continuam recuperáveis. A
+revisão local passou com Node 22 e .NET 10, incluindo os fluxos no Edge e uma
+saída de impressão A4. A [CI Ubuntu/Node 22/.NET 10 das correções](https://github.com/argemon/escalalivre/actions/runs/41253687438)
+também passou. O [parecer de publicação](review/PARECER-PUBLICACAO.md)
+registra as evidências, os avisos moderados ainda abertos nas ferramentas de
+desenvolvimento e as condições de CI/hospedagem para aprovação operacional.
+
 A validação cobre regras implementadas, como descanso e limite semanal. Ela não representa uma certificação de conformidade com toda a legislação ou com convenções coletivas. As sugestões de contratação derivam das lacunas de cobertura e precisam ser avaliadas no contexto da empresa.
 
 ## Documentação e contribuição
@@ -501,6 +517,10 @@ A validação cobre regras implementadas, como descanso e limite semanal. Ela n�
 - [Paridade diferencial e correção de autorização](docs/decisions/011-deterministic-rule-parity.md)
 - [Desempenho: metodologia, resultados e limites](docs/decisions/012-current-performance.md)
 - [Segurança e publicação da API](docs/SECURITY.md)
+- [Parecer final das correções de publicação](review/PARECER-PUBLICACAO.md)
+- [Cotas HTTP por endpoint e IP](docs/decisions/013-http-rate-limits.md)
+- [Orçamento e retenção da fila](docs/decisions/014-job-retention-budget.md)
+- [Zod, auditorias e validação segura de documentos](docs/decisions/015-zod-validation-security.md)
 - [Fila, estimativas e cancelamento de geração](docs/processing-queue.md)
 - [Identidade visual](docs/brand.md)
 

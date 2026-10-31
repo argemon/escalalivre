@@ -160,11 +160,117 @@ test('solve limit cannot be bypassed by forging a forwarded IP or changing path 
   });
 });
 
+test('generation quota covers both resolved endpoints, case and trailing slashes', async () => {
+  for (const first of ['/solve', '/solve/', '/SOLVE/', '/solve/jobs', '/solve/jobs/', '/SoLvE/JoBs/']) {
+    await withServer({ SolvesPerMinute: 1 }, async ({post}) => {
+      // Invalid bodies consume quota without starting a calculation.
+      assert.equal((await post(first, '{}')).status, 400, first);
+      for (const next of ['/solve', '/SOLVE/', '/solve/jobs', '/SOLVE/JOBS/']) {
+        const blocked = await post(next, '{}', {Origin:'https://allowed.example'});
+        assert.equal(blocked.status, 429, first + ' then ' + next);
+        assert.ok(Number(blocked.headers.get('retry-after')) > 0);
+        assert.equal(blocked.headers.get('access-control-allow-origin'), 'https://allowed.example');
+        assert.equal(blocked.headers.get('access-control-expose-headers'), 'Retry-After');
+        assert.equal((await blocked.json()).errors[0].code, 'rateLimited');
+      }
+    });
+  }
+});
+
+test('job quotas isolate IPs and charge nonexistent tickets across case and trailing slashes', async () => {
+  await withServer({ JobPollsPerMinute: 2, JobCancellationsPerMinute: 2, SolvesPerMinute:1, TrustedProxies__0: '127.0.0.1' }, async ({url, post}) => {
+    for (const method of ['GET', 'DELETE']) {
+      const call = (route, ip) => fetch(url + route, {method, headers:{'X-Forwarded-For':ip}});
+      assert.equal((await call('/solve/jobs/missing', '192.0.2.1')).status, 404);
+      assert.equal((await call('/SoLvE/JoBs/another/', '192.0.2.1')).status, 404);
+      const blocked = await call('/SOLVE/JOBS/third/', '192.0.2.1');
+      assert.equal(blocked.status, 429);
+      assert.ok(Number(blocked.headers.get('retry-after')) > 0);
+      assert.equal((await call('/solve/jobs/missing', '192.0.2.2')).status, 404);
+    }
+    assert.equal((await post('/solve/', '{}', {'X-Forwarded-For':'192.0.2.1'})).status, 400);
+    assert.equal((await post('/SOLVE/JOBS/', '{}', {'X-Forwarded-For':'192.0.2.1'})).status, 429);
+    assert.equal((await post('/solve/jobs/', '{}', {'X-Forwarded-For':'192.0.2.2'})).status, 400);
+  });
+});
+
+test('exhausting polls cannot block another IP or cancellation on the same IP', async () => {
+  await withServer({JobPollsPerMinute:2, TrustedProxies__0:'127.0.0.1'}, async ({url}) => {
+    const call = (ip, method = 'GET') => fetch(url + '/solve/jobs/missing', {method, headers:{'X-Forwarded-For':ip}});
+    let exhausted = false;
+    for (let i = 0; i <= 1200; i++) {
+      const response = await call('192.0.2.1');
+      if (response.status === 429) { exhausted = true; break; }
+      assert.equal(response.status, 404);
+    }
+    assert.ok(exhausted);
+    assert.deepEqual([
+      (await call('192.0.2.2')).status,
+      (await call('192.0.2.1', 'DELETE')).status
+    ], [404, 404]);
+  });
+});
+
+test('polling and cancellation have independent quotas and do not consume the general quota', async () => {
+  await withServer({ JobPollsPerMinute: 2, JobCancellationsPerMinute: 1, RequestsPerMinute: 2 }, async ({url, post}) => {
+    const route = url + '/solve/jobs/missing';
+    assert.equal((await fetch(route)).status, 404);
+    assert.equal((await fetch(route)).status, 404);
+    assert.equal((await fetch(route)).status, 429);
+    assert.equal((await fetch(route, {method:'DELETE'})).status, 404);
+    assert.equal((await fetch(route, {method:'DELETE'})).status, 429);
+    // Startup health consumed one general request; the job operations consumed none.
+    assert.equal((await post('/import', '{}')).status, 400);
+    assert.equal((await post('/import', '{}')).status, 429);
+  });
+  await withServer({ JobPollsPerMinute: 1, JobCancellationsPerMinute: 1 }, async ({url}) => {
+    const route = url + '/solve/jobs/missing';
+    assert.equal((await fetch(route, {method:'DELETE'})).status, 404);
+    assert.equal((await fetch(route, {method:'DELETE'})).status, 429);
+    assert.equal((await fetch(route)).status, 404);
+  });
+});
+
+test('forged IP headers cannot rotate job quotas without a trusted immediate proxy', async () => {
+  for (const options of [{}, {TrustedProxies__0:'127.0.0.2'}]) {
+    await withServer({...options, JobPollsPerMinute:1, JobCancellationsPerMinute:1, SolvesPerMinute:1}, async ({url, post}) => {
+      const headers = ip => ({'X-Forwarded-For':ip, 'X-Real-IP':ip, Forwarded:`for=${ip}`});
+      for (const method of ['GET', 'DELETE']) {
+        assert.equal((await fetch(url + '/solve/jobs/missing', {method, headers:headers('192.0.2.1')})).status, 404);
+        assert.equal((await fetch(url + '/SOLVE/JOBS/other/', {method, headers:headers('192.0.2.2')})).status, 429);
+      }
+      assert.equal((await post('/solve/jobs/', '{}', headers('192.0.2.1'))).status, 400);
+      assert.equal((await post('/SOLVE/', '{}', headers('192.0.2.2'))).status, 429);
+    });
+  }
+});
+
 test('global per-IP rate limit includes invalid requests', async () => {
   await withServer({ RequestsPerMinute: 3 }, async ({ post }) => {
     assert.equal((await post('/import', '{}')).status, 400);
     assert.equal((await post('/import', '{}')).status, 400);
     assert.equal((await post('/import', '{}')).status, 429);
+  });
+});
+
+test('global concurrency still protects generation, polling and cancellation across IPs', async () => {
+  await withServer({ConcurrentRequests:1, TrustedProxies__0:'127.0.0.1'}, async ({url, post}) => {
+    const target = new URL(url);
+    const socket = net.createConnection({host:target.hostname, port:Number(target.port)});
+    try {
+      await once(socket, 'connect');
+      // 100 Continue confirms that body binding has started after acquiring the limiter.
+      const continuing = once(socket, 'data', {signal:AbortSignal.timeout(5000)});
+      socket.write('POST /import HTTP/1.1\r\nHost: localhost\r\nContent-Type: application/json\r\nContent-Length: 100\r\nExpect: 100-continue\r\n\r\n');
+      assert.match((await continuing)[0].toString(), /100 Continue/);
+      for (const method of ['GET', 'DELETE']) {
+        const blocked = await fetch(url + '/solve/jobs/missing', {method, headers:{'X-Forwarded-For':'192.0.2.2', Origin:'https://allowed.example'}});
+        assert.equal(blocked.status, 429);
+        assert.ok(Number(blocked.headers.get('retry-after')) > 0);
+        assert.equal(blocked.headers.get('access-control-allow-origin'), 'https://allowed.example');
+      }
+      assert.equal((await post('/solve/jobs/', '{}', {'X-Forwarded-For':'192.0.2.3'})).status, 429);
+    } finally { socket.destroy(); }
   });
 });
 

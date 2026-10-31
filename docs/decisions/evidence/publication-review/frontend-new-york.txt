@@ -1,0 +1,2932 @@
+TAP version 13
+# Subtest: HTTP 429 explains the wait even with a non-JSON proxy response
+ok 1 - HTTP 429 explains the wait even with a non-JSON proxy response
+  ---
+  duration_ms: 225.995
+  type: 'test'
+  ...
+# Subtest: HTTP 503 explains the wait even with a non-JSON proxy response
+ok 2 - HTTP 503 explains the wait even with a non-JSON proxy response
+  ---
+  duration_ms: 25.9225
+  type: 'test'
+  ...
+# Subtest: timeout and oversized planning have actionable messages
+ok 3 - timeout and oversized planning have actionable messages
+  ---
+  duration_ms: 73.7511
+  type: 'test'
+  ...
+# Subtest: non-JSON server failures do not leak a parser error to the user
+ok 4 - non-JSON server failures do not leak a parser error to the user
+  ---
+  duration_ms: 96.111
+  type: 'test'
+  ...
+# Subtest: production uses the same origin by default and successful results still return
+ok 5 - production uses the same origin by default and successful results still return
+  ---
+  duration_ms: 49.3703
+  type: 'test'
+  ...
+# Subtest: UTF-8 request boundary is checked before fetch, including the complete JSON envelope
+ok 6 - UTF-8 request boundary is checked before fetch, including the complete JSON envelope
+  ---
+  duration_ms: 373.502
+  type: 'test'
+  ...
+# Subtest: connection errors below the request limit remain connection errors
+ok 7 - connection errors below the request limit remain connection errors
+  ---
+  duration_ms: 22.3604
+  type: 'test'
+  ...
+# Subtest: a one-second break removes coverage even when the rounded score is one
+ok 8 - a one-second break removes coverage even when the rounded score is one
+  ---
+  duration_ms: 65.6585
+  type: 'test'
+  ...
+# Subtest: scheduling policies have no UI, state, HTTP or ambient browser dependency
+ok 9 - scheduling policies have no UI, state, HTTP or ambient browser dependency
+  ---
+  duration_ms: 86.0641
+  type: 'test'
+  ...
+# Subtest: architecture scanner rejects forbidden dependencies and device clock calls
+ok 10 - architecture scanner rejects forbidden dependencies and device clock calls
+  ---
+  duration_ms: 0.8936
+  type: 'test'
+  ...
+# Subtest: unchecking and saving revokes coverage through normalization, allocation and native reload
+ok 11 - unchecking and saving revokes coverage through normalization, allocation and native reload
+  ---
+  duration_ms: 780.9279
+  type: 'test'
+  ...
+# Subtest: legacy names migrate to unique IDs once, including roles absent from the catalog
+ok 12 - legacy names migrate to unique IDs once, including roles absent from the catalog
+  ---
+  duration_ms: 42.4312
+  type: 'test'
+  ...
+# Subtest: explicit empty or unknown IDs never recover stale names during import or calculation
+ok 13 - explicit empty or unknown IDs never recover stale names during import or calculation
+  ---
+  duration_ms: 29.015
+  type: 'test'
+  ...
+# Subtest: role renames replace derived names and removing one authorization preserves the others
+ok 14 - role renames replace derived names and removing one authorization preserves the others
+  ---
+  duration_ms: 1.6039
+  type: 'test'
+  ...
+# Subtest: legacy UTC and offset timestamps convert in the company zone independently of the device zone
+ok 15 - legacy UTC and offset timestamps convert in the company zone independently of the device zone
+  ---
+  duration_ms: 6.7959
+  type: 'test'
+  ...
+# Subtest: 09h survives calendar movement, export, import and the API payload
+ok 16 - 09h survives calendar movement, export, import and the API payload
+  ---
+  duration_ms: 173.7872
+  type: 'test'
+  ...
+# Subtest: legacy UTC fields normalize before import, holidays, printing and period ownership
+ok 17 - legacy UTC fields normalize before import, holidays, printing and period ownership
+  ---
+  duration_ms: 49.8085
+  type: 'test'
+  ...
+# Subtest: overnight movement keeps pauses and year/day transitions through a second round trip
+ok 18 - overnight movement keeps pauses and year/day transitions through a second round trip
+  ---
+  duration_ms: 118.4161
+  type: 'test'
+  ...
+# Subtest: a version-1 browser document migrates UTC shifts once and persists version 2
+ok 19 - a version-1 browser document migrates UTC shifts once and persists version 2
+  ---
+  duration_ms: 82.6222
+  type: 'test'
+  ...
+# Subtest: older API responses normalize shift, pause and analysis times before entering state
+ok 20 - older API responses normalize shift, pause and analysis times before entering state
+  ---
+  duration_ms: 7.0721
+  type: 'test'
+  ...
+# Subtest: 24 hours display completely, can be edited and survive native round trip
+ok 21 - 24 hours display completely, can be edited and survive native round trip
+  ---
+  duration_ms: 116.5261
+  type: 'test'
+  ...
+# Subtest: 36 hours display completely, can be edited and survive native round trip
+ok 22 - 36 hours display completely, can be edited and survive native round trip
+  ---
+  duration_ms: 25.1821
+  type: 'test'
+  ...
+# Subtest: 100 hours display completely, can be edited and survive native round trip
+ok 23 - 100 hours display completely, can be edited and survive native round trip
+  ---
+  duration_ms: 62.7517
+  type: 'test'
+  ...
+# Subtest: 168 hours display completely, can be edited and survive native round trip
+ok 24 - 168 hours display completely, can be edited and survive native round trip
+  ---
+  duration_ms: 25.654
+  type: 'test'
+  ...
+# Subtest: duration entry supports typing, clearing, short hours and precise seconds without truncation
+ok 25 - duration entry supports typing, clearing, short hours and precise seconds without truncation
+  ---
+  duration_ms: 2.266
+  type: 'test'
+  ...
+# Subtest: durations validate minutes and seconds while clock fields retain the 24-hour boundary
+ok 26 - durations validate minutes and seconds while clock fields retain the 24-hour boundary
+  ---
+  duration_ms: 0.6481
+  type: 'test'
+  ...
+# Subtest: field-specific duration limits still apply after accepting long hours
+ok 27 - field-specific duration limits still apply after accepting long hours
+  ---
+  duration_ms: 17.0562
+  type: 'test'
+  ...
+# Subtest: changing employee role updates name and ID together on every registered shift
+ok 28 - changing employee role updates name and ID together on every registered shift
+  ---
+  duration_ms: 2244.9053
+  type: 'test'
+  ...
+# Subtest: editing an employee without changing role preserves shift contents
+ok 29 - editing an employee without changing role preserves shift contents
+  ---
+  duration_ms: 885.173
+  type: 'test'
+  ...
+# Subtest: a new role without an ID is resolved once and shared by the employee and shifts
+ok 30 - a new role without an ID is resolved once and shared by the employee and shifts
+  ---
+  duration_ms: 504.3573
+  type: 'test'
+  ...
+# Subtest: a shared active generation prevents duplicate submissions across remounted panels
+ok 31 - a shared active generation prevents duplicate submissions across remounted panels
+  ---
+  duration_ms: 262.4531
+  type: 'test'
+  ...
+# Subtest: edits made while waiting are never overwritten by an older result
+ok 32 - edits made while waiting are never overwritten by an older result
+  ---
+  duration_ms: 78.1925
+  type: 'test'
+  ...
+# Subtest: cancelled generation keeps existing shifts and resets the generation status
+ok 33 - cancelled generation keeps existing shifts and resets the generation status
+  ---
+  duration_ms: 26.118
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: directional-forward
+ok 34 - bounded parity properties: directional-forward
+  ---
+  duration_ms: 90.8101
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: directional-reverse
+ok 35 - bounded parity properties: directional-reverse
+  ---
+  duration_ms: 28.8274
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: overlap-is-one-person
+ok 36 - bounded parity properties: overlap-is-one-person
+  ---
+  duration_ms: 9.0781
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: pause-one-second-and-touching-boundaries
+ok 37 - bounded parity properties: pause-one-second-and-touching-boundaries
+  ---
+  duration_ms: 10.7688
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: bilateral-history-and-aggregate-week
+ok 38 - bounded parity properties: bilateral-history-and-aggregate-week
+  ---
+  duration_ms: 7.9998
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: directional-roles-compete-for-one-person
+ok 39 - bounded parity properties: directional-roles-compete-for-one-person
+  ---
+  duration_ms: 22.3708
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: explicit-empty-ids-revoke-stale-names
+ok 40 - bounded parity properties: explicit-empty-ids-revoke-stale-names
+  ---
+  duration_ms: 7.1109
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: directional-ids-without-transport-names
+ok 41 - bounded parity properties: directional-ids-without-transport-names
+  ---
+  duration_ms: 4.358
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: directional-legacy-names-without-ids
+ok 42 - bounded parity properties: directional-legacy-names-without-ids
+  ---
+  duration_ms: 11.2841
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: sunday-split-pause-at-midnight
+ok 43 - bounded parity properties: sunday-split-pause-at-midnight
+  ---
+  duration_ms: 10.9445
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: sunday-split-pause-one-second-over
+ok 44 - bounded parity properties: sunday-split-pause-one-second-over
+  ---
+  duration_ms: 20.5424
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: weighted-score-half-thousandth
+ok 45 - bounded parity properties: weighted-score-half-thousandth
+  ---
+  duration_ms: 5.0295
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-0
+ok 46 - bounded parity properties: seed-439041101-0
+  ---
+  duration_ms: 6.0808
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-1
+ok 47 - bounded parity properties: seed-439041101-1
+  ---
+  duration_ms: 9.778
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-2
+ok 48 - bounded parity properties: seed-439041101-2
+  ---
+  duration_ms: 34.749
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-3
+ok 49 - bounded parity properties: seed-439041101-3
+  ---
+  duration_ms: 11.9023
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-4
+ok 50 - bounded parity properties: seed-439041101-4
+  ---
+  duration_ms: 3.3695
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-5
+ok 51 - bounded parity properties: seed-439041101-5
+  ---
+  duration_ms: 12.1038
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-6
+ok 52 - bounded parity properties: seed-439041101-6
+  ---
+  duration_ms: 4.1911
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-7
+ok 53 - bounded parity properties: seed-439041101-7
+  ---
+  duration_ms: 4.5291
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-8
+ok 54 - bounded parity properties: seed-439041101-8
+  ---
+  duration_ms: 21.2781
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-9
+ok 55 - bounded parity properties: seed-439041101-9
+  ---
+  duration_ms: 18.3575
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-10
+ok 56 - bounded parity properties: seed-439041101-10
+  ---
+  duration_ms: 36.9705
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-11
+ok 57 - bounded parity properties: seed-439041101-11
+  ---
+  duration_ms: 12.6117
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-12
+ok 58 - bounded parity properties: seed-439041101-12
+  ---
+  duration_ms: 26.4443
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-13
+ok 59 - bounded parity properties: seed-439041101-13
+  ---
+  duration_ms: 4.5258
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-14
+ok 60 - bounded parity properties: seed-439041101-14
+  ---
+  duration_ms: 3.6044
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-15
+ok 61 - bounded parity properties: seed-439041101-15
+  ---
+  duration_ms: 3.6303
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-16
+ok 62 - bounded parity properties: seed-439041101-16
+  ---
+  duration_ms: 8.6926
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-17
+ok 63 - bounded parity properties: seed-439041101-17
+  ---
+  duration_ms: 4.1203
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-18
+ok 64 - bounded parity properties: seed-439041101-18
+  ---
+  duration_ms: 3.8434
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-19
+ok 65 - bounded parity properties: seed-439041101-19
+  ---
+  duration_ms: 4.8253
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-20
+ok 66 - bounded parity properties: seed-439041101-20
+  ---
+  duration_ms: 7.4571
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-21
+ok 67 - bounded parity properties: seed-439041101-21
+  ---
+  duration_ms: 6.4458
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-22
+ok 68 - bounded parity properties: seed-439041101-22
+  ---
+  duration_ms: 3.9542
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-439041101-23
+ok 69 - bounded parity properties: seed-439041101-23
+  ---
+  duration_ms: 4.736
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-0
+ok 70 - bounded parity properties: seed-1592594996-0
+  ---
+  duration_ms: 6.9582
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-1
+ok 71 - bounded parity properties: seed-1592594996-1
+  ---
+  duration_ms: 4.2165
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-2
+ok 72 - bounded parity properties: seed-1592594996-2
+  ---
+  duration_ms: 2.5999
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-3
+ok 73 - bounded parity properties: seed-1592594996-3
+  ---
+  duration_ms: 3.802
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-4
+ok 74 - bounded parity properties: seed-1592594996-4
+  ---
+  duration_ms: 4.4117
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-5
+ok 75 - bounded parity properties: seed-1592594996-5
+  ---
+  duration_ms: 6.385
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-6
+ok 76 - bounded parity properties: seed-1592594996-6
+  ---
+  duration_ms: 5.5862
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-7
+ok 77 - bounded parity properties: seed-1592594996-7
+  ---
+  duration_ms: 7.8107
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-8
+ok 78 - bounded parity properties: seed-1592594996-8
+  ---
+  duration_ms: 12.0241
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-9
+ok 79 - bounded parity properties: seed-1592594996-9
+  ---
+  duration_ms: 3.6066
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-10
+ok 80 - bounded parity properties: seed-1592594996-10
+  ---
+  duration_ms: 7.6189
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-11
+ok 81 - bounded parity properties: seed-1592594996-11
+  ---
+  duration_ms: 33.5434
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-12
+ok 82 - bounded parity properties: seed-1592594996-12
+  ---
+  duration_ms: 6.4226
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-13
+ok 83 - bounded parity properties: seed-1592594996-13
+  ---
+  duration_ms: 3.532
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-14
+ok 84 - bounded parity properties: seed-1592594996-14
+  ---
+  duration_ms: 3.3332
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-15
+ok 85 - bounded parity properties: seed-1592594996-15
+  ---
+  duration_ms: 3.7288
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-16
+ok 86 - bounded parity properties: seed-1592594996-16
+  ---
+  duration_ms: 3.1746
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-17
+ok 87 - bounded parity properties: seed-1592594996-17
+  ---
+  duration_ms: 7.356
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-18
+ok 88 - bounded parity properties: seed-1592594996-18
+  ---
+  duration_ms: 9.3582
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-19
+ok 89 - bounded parity properties: seed-1592594996-19
+  ---
+  duration_ms: 4.1354
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-20
+ok 90 - bounded parity properties: seed-1592594996-20
+  ---
+  duration_ms: 7.6901
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-21
+ok 91 - bounded parity properties: seed-1592594996-21
+  ---
+  duration_ms: 4.4984
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-22
+ok 92 - bounded parity properties: seed-1592594996-22
+  ---
+  duration_ms: 9.0884
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-1592594996-23
+ok 93 - bounded parity properties: seed-1592594996-23
+  ---
+  duration_ms: 4.9991
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-0
+ok 94 - bounded parity properties: seed-12648430-0
+  ---
+  duration_ms: 7.974
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-1
+ok 95 - bounded parity properties: seed-12648430-1
+  ---
+  duration_ms: 3.3312
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-2
+ok 96 - bounded parity properties: seed-12648430-2
+  ---
+  duration_ms: 3.4206
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-3
+ok 97 - bounded parity properties: seed-12648430-3
+  ---
+  duration_ms: 4.3721
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-4
+ok 98 - bounded parity properties: seed-12648430-4
+  ---
+  duration_ms: 4.9661
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-5
+ok 99 - bounded parity properties: seed-12648430-5
+  ---
+  duration_ms: 4.5635
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-6
+ok 100 - bounded parity properties: seed-12648430-6
+  ---
+  duration_ms: 5.115
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-7
+ok 101 - bounded parity properties: seed-12648430-7
+  ---
+  duration_ms: 2.905
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-8
+ok 102 - bounded parity properties: seed-12648430-8
+  ---
+  duration_ms: 5.7247
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-9
+ok 103 - bounded parity properties: seed-12648430-9
+  ---
+  duration_ms: 6.7614
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-10
+ok 104 - bounded parity properties: seed-12648430-10
+  ---
+  duration_ms: 2.9675
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-11
+ok 105 - bounded parity properties: seed-12648430-11
+  ---
+  duration_ms: 6.2384
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-12
+ok 106 - bounded parity properties: seed-12648430-12
+  ---
+  duration_ms: 4.5134
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-13
+ok 107 - bounded parity properties: seed-12648430-13
+  ---
+  duration_ms: 3.2169
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-14
+ok 108 - bounded parity properties: seed-12648430-14
+  ---
+  duration_ms: 4.187
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-15
+ok 109 - bounded parity properties: seed-12648430-15
+  ---
+  duration_ms: 5.1615
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-16
+ok 110 - bounded parity properties: seed-12648430-16
+  ---
+  duration_ms: 5.9465
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-17
+ok 111 - bounded parity properties: seed-12648430-17
+  ---
+  duration_ms: 4.9163
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-18
+ok 112 - bounded parity properties: seed-12648430-18
+  ---
+  duration_ms: 4.5816
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-19
+ok 113 - bounded parity properties: seed-12648430-19
+  ---
+  duration_ms: 5.2767
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-20
+ok 114 - bounded parity properties: seed-12648430-20
+  ---
+  duration_ms: 4.4393
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-21
+ok 115 - bounded parity properties: seed-12648430-21
+  ---
+  duration_ms: 4.523
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-22
+ok 116 - bounded parity properties: seed-12648430-22
+  ---
+  duration_ms: 2.5007
+  type: 'test'
+  ...
+# Subtest: bounded parity properties: seed-12648430-23
+ok 117 - bounded parity properties: seed-12648430-23
+  ---
+  duration_ms: 6.2355
+  type: 'test'
+  ...
+# Subtest: seed generation is reproducible and bounded
+ok 118 - seed generation is reproducible and bounded
+  ---
+  duration_ms: 175.5433
+  type: 'test'
+  ...
+# Subtest: parity digest detects every contracted field and diagnostic multiplicity
+ok 119 - parity digest detects every contracted field and diagnostic multiplicity
+  ---
+  duration_ms: 5.8716
+  type: 'test'
+  ...
+# Subtest: qualified timestamp migration is idempotent across device daylight saving and preserves seconds
+ok 120 - qualified timestamp migration is idempotent across device daylight saving and preserves seconds
+  ---
+  duration_ms: 5.0163
+  type: 'test'
+  ...
+# Subtest: synthetic performance corpus is reproducible and stays within structural dimensions
+ok 121 - synthetic performance corpus is reproducible and stays within structural dimensions
+  ---
+  duration_ms: 783.6929
+  type: 'test'
+  ...
+# Subtest: legacy import preserves the old window exactly once
+ok 122 - legacy import preserves the old window exactly once
+  ---
+  duration_ms: 105.8998
+  type: 'test'
+  ...
+# Subtest: legacy empty documents and new documents start today with seven days
+ok 123 - legacy empty documents and new documents start today with seven days
+  ---
+  duration_ms: 1.7898
+  type: 'test'
+  ...
+# Subtest: explicit period survives round trips and changes to the oldest shift
+ok 124 - explicit period survives round trips and changes to the oldest shift
+  ---
+  duration_ms: 21.6084
+  type: 'test'
+  ...
+# Subtest: empty schedules measure every selected day including the last
+ok 125 - empty schedules measure every selected day including the last
+  ---
+  duration_ms: 19.605
+  type: 'test'
+  ...
+# Subtest: period validation accepts one day and leap day and rejects invalid windows
+ok 126 - period validation accepts one day and leap day and rejects invalid windows
+  ---
+  duration_ms: 38.5035
+  type: 'test'
+  ...
+# Subtest: API generation sends the saved period rather than assignment dates
+ok 127 - API generation sends the saved period rather than assignment dates
+  ---
+  duration_ms: 199.1156
+  type: 'test'
+  ...
+# Subtest: browser restoration migrates once and period changes recalculate and persist
+ok 128 - browser restoration migrates once and period changes recalculate and persist
+  ---
+  duration_ms: 328.9535
+  type: 'test'
+  ...
+# Subtest: shared hiring demand: no-shortage
+ok 129 - shared hiring demand: no-shortage
+  ---
+  duration_ms: 3.3908
+  type: 'test'
+  ...
+# Subtest: shared hiring demand: short-partial-week-concurrency
+ok 130 - shared hiring demand: short-partial-week-concurrency
+  ---
+  duration_ms: 4.6641
+  type: 'test'
+  ...
+# Subtest: shared hiring demand: 31-days-uncapped
+ok 131 - shared hiring demand: 31-days-uncapped
+  ---
+  duration_ms: 2.8204
+  type: 'test'
+  ...
+# Subtest: shared hiring demand: two-weeks-do-not-double-headcount
+ok 132 - shared hiring demand: two-weeks-do-not-double-headcount
+  ---
+  duration_ms: 0.6025
+  type: 'test'
+  ...
+# Subtest: shared hiring demand: company-weekly-hours
+ok 133 - shared hiring demand: company-weekly-hours
+  ---
+  duration_ms: 0.8249
+  type: 'test'
+  ...
+# Subtest: shared hiring demand: overnight-splits-calendar-weeks
+ok 134 - shared hiring demand: overnight-splits-calendar-weeks
+  ---
+  duration_ms: 0.3749
+  type: 'test'
+  ...
+# Subtest: shared hiring demand: simultaneous-gaps-add
+ok 135 - shared hiring demand: simultaneous-gaps-add
+  ---
+  duration_ms: 0.2943
+  type: 'test'
+  ...
+# Subtest: shared hiring demand: adjacent-gaps-do-not-add-concurrency
+ok 136 - shared hiring demand: adjacent-gaps-do-not-add-concurrency
+  ---
+  duration_ms: 0.6442
+  type: 'test'
+  ...
+# Subtest: shared hiring demand: different-roles-stay-separate
+ok 137 - shared hiring demand: different-roles-stay-separate
+  ---
+  duration_ms: 0.8502
+  type: 'test'
+  ...
+# Subtest: local analysis calculates a full 31-day hiring demand without truncating to 44 hours
+ok 138 - local analysis calculates a full 31-day hiring demand without truncating to 44 hours
+  ---
+  duration_ms: 670.0723
+  type: 'test'
+  ...
+# Subtest: generation only claims an optimum when the response proves it: feasible
+ok 139 - generation only claims an optimum when the response proves it: feasible
+  ---
+  duration_ms: 1734.2668
+  type: 'test'
+  ...
+# Subtest: generation only claims an optimum when the response proves it: optimal
+ok 140 - generation only claims an optimum when the response proves it: optimal
+  ---
+  duration_ms: 691.168
+  type: 'test'
+  ...
+# Subtest: generation only claims an optimum when the response proves it: undefined
+ok 141 - generation only claims an optimum when the response proves it: undefined
+  ---
+  duration_ms: 662.0686
+  type: 'test'
+  ...
+# Subtest: unsuccessful optimizer metadata never replaces the document: timeout
+ok 142 - unsuccessful optimizer metadata never replaces the document: timeout
+  ---
+  duration_ms: 413.2439
+  type: 'test'
+  ...
+# Subtest: unsuccessful optimizer metadata never replaces the document: infeasible
+ok 143 - unsuccessful optimizer metadata never replaces the document: infeasible
+  ---
+  duration_ms: 337.2598
+  type: 'test'
+  ...
+# Subtest: unsuccessful optimizer metadata never replaces the document: invalid
+ok 144 - unsuccessful optimizer metadata never replaces the document: invalid
+  ---
+  duration_ms: 266.5711
+  type: 'test'
+  ...
+# Subtest: a stale optimal response cannot mark a changed planning as optimal
+ok 145 - a stale optimal response cannot mark a changed planning as optimal
+  ---
+  duration_ms: 308.9821
+  type: 'test'
+  ...
+# Subtest: detects lunch gaps before optimization
+ok 146 - detects lunch gaps before optimization
+  ---
+  duration_ms: 58.3387
+  type: 'test'
+  ...
+# Subtest: splits coverage at minute boundaries
+ok 147 - splits coverage at minute boundaries
+  ---
+  duration_ms: 3.6068
+  type: 'test'
+  ...
+# Subtest: covers overnight requirements and discounts cross-day lunch
+ok 148 - covers overnight requirements and discounts cross-day lunch
+  ---
+  duration_ms: 2.4364
+  type: 'test'
+  ...
+# Subtest: does not count overlapping shifts as two employees
+ok 149 - does not count overlapping shifts as two employees
+  ---
+  duration_ms: 15.7461
+  type: 'test'
+  ...
+# Subtest: recalculates after coverage rules change
+ok 150 - recalculates after coverage rules change
+  ---
+  duration_ms: 12.3143
+  type: 'test'
+  ...
+# Subtest: custom working days are enforced but inherited days follow company
+ok 151 - custom working days are enforced but inherited days follow company
+  ---
+  duration_ms: 6.4414
+  type: 'test'
+  ...
+# Subtest: replacement owns the entire overnight shift by its start date
+ok 152 - replacement owns the entire overnight shift by its start date
+  ---
+  duration_ms: 4.7617
+  type: 'test'
+  ...
+# Subtest: store applies a full response without duplicates or normalizing preserved shifts again
+ok 153 - store applies a full response without duplicates or normalizing preserved shifts again
+  ---
+  duration_ms: 48.1571
+  type: 'test'
+  ...
+# Subtest: failed or stale generation never replaces the current schedule
+ok 154 - failed or stale generation never replaces the current schedule
+  ---
+  duration_ms: 77.4604
+  type: 'test'
+  ...
+# Subtest: weekly hours split across Sunday midnight and discount each part of the break
+ok 155 - weekly hours split across Sunday midnight and discount each part of the break
+  ---
+  duration_ms: 0.6466
+  type: 'test'
+  ...
+# Subtest: local analysis sees the weekly limit and cycle on the later preserved shift
+ok 156 - local analysis sees the weekly limit and cycle on the later preserved shift
+  ---
+  duration_ms: 13.2605
+  type: 'test'
+  ...
+# Subtest: employee list sorts names alphabetically and groups only consecutive equal schedules
+ok 157 - employee list sorts names alphabetically and groups only consecutive equal schedules
+  ---
+  duration_ms: 28.1255
+  type: 'test'
+  ...
+# Subtest: employee list preserves overnight times and excludes other months
+ok 158 - employee list preserves overnight times and excludes other months
+  ---
+  duration_ms: 1.0806
+  type: 'test'
+  ...
+# Subtest: monthly sheet includes every day once, including leap February and six-row months
+ok 159 - monthly sheet includes every day once, including leap February and six-row months
+  ---
+  duration_ms: 2.049
+  type: 'test'
+  ...
+# Subtest: print period rejects invalid dates, reversed ranges and more than 366 days
+ok 160 - print period rejects invalid dates, reversed ranges and more than 366 days
+  ---
+  duration_ms: 3.5416
+  type: 'test'
+  ...
+# Subtest: print pages run Sunday through Saturday across years
+ok 161 - print pages run Sunday through Saturday across years
+  ---
+  duration_ms: 0.4921
+  type: 'test'
+  ...
+# Subtest: print uses saved shifts only, keeps overnight intervals and shows employees without shifts
+ok 162 - print uses saved shifts only, keeps overnight intervals and shows employees without shifts
+  ---
+  duration_ms: 0.8156
+  type: 'test'
+  ...
+# Subtest: print does not silently omit shifts referencing an employee no longer registered
+ok 163 - print does not silently omit shifts referencing an employee no longer registered
+  ---
+  duration_ms: 0.6274
+  type: 'test'
+  ...
+# Subtest: a Wednesday to Tuesday period spans two calendar weeks without leaking outside shifts
+ok 164 - a Wednesday to Tuesday period spans two calendar weeks without leaking outside shifts
+  ---
+  duration_ms: 0.8312
+  type: 'test'
+  ...
+# Subtest: accepted job is polled through queue and processing to the result
+ok 165 - accepted job is polled through queue and processing to the result
+  ---
+  duration_ms: 295.6552
+  type: 'test'
+  ...
+# Subtest: temporary polling disconnection preserves token and never resubmits
+ok 166 - temporary polling disconnection preserves token and never resubmits
+  ---
+  duration_ms: 29.5871
+  type: 'test'
+  ...
+# Subtest: queue full, expired job and calculation failures explain what happened
+ok 167 - queue full, expired job and calculation failures explain what happened
+  ---
+  duration_ms: 216.6507
+  type: 'test'
+  ...
+# Subtest: cancellation uses DELETE with the private token and request limits apply before submission
+ok 168 - cancellation uses DELETE with the private token and request limits apply before submission
+  ---
+  duration_ms: 70.1544
+  type: 'test'
+  ...
+# Subtest: native exports enforce their exact UTF-8 byte limit and every accepted export reimports
+ok 169 - native exports enforce their exact UTF-8 byte limit and every accepted export reimports
+  ---
+  duration_ms: 1345.5571
+  type: 'test'
+  ...
+# Subtest: an invalid browser document preserves the original bytes and loads a valid backup
+ok 170 - an invalid browser document preserves the original bytes and loads a valid backup
+  ---
+  duration_ms: 922.0618
+  type: 'test'
+  ...
+# Subtest: a readable but invalid graph never enters analysis or overrides store actions
+ok 171 - a readable but invalid graph never enters analysis or overrides store actions
+  ---
+  duration_ms: 442.0415
+  type: 'test'
+  ...
+# Subtest: getItem failure still allows exporting in-memory data and storage retry after access returns
+ok 172 - getItem failure still allows exporting in-memory data and storage retry after access returns
+  ---
+  duration_ms: 311.3561
+  type: 'test'
+  ...
+# Subtest: quota failures do not throw during editing or destroy the active document
+ok 173 - quota failures do not throw during editing or destroy the active document
+  ---
+  duration_ms: 322.4328
+  type: 'test'
+  ...
+# Subtest: import checkpoints survive a fresh session and can restore the exact former planning
+ok 174 - import checkpoints survive a fresh session and can restore the exact former planning
+  ---
+  duration_ms: 633.8178
+  type: 'test'
+  ...
+# Subtest: failed checkpoint blocks import until its recovery copy has been downloaded
+ok 175 - failed checkpoint blocks import until its recovery copy has been downloaded
+  ---
+  duration_ms: 229.1494
+  type: 'test'
+  ...
+# Subtest: a generation checkpoint precedes replacement, failures and stale results do not replace data
+ok 176 - a generation checkpoint precedes replacement, failures and stale results do not replace data
+  ---
+  duration_ms: 242.7322
+  type: 'test'
+  ...
+# Subtest: a failed backup-key read does not prevent valid primary recovery and future state versions stay protected
+ok 177 - a failed backup-key read does not prevent valid primary recovery and future state versions stay protected
+  ---
+  duration_ms: 378.7774
+  type: 'test'
+  ...
+# Subtest: a primary document discovered after denied reads is offered as a restorable copy before overwrite
+ok 178 - a primary document discovered after denied reads is offered as a restorable copy before overwrite
+  ---
+  duration_ms: 188.1229
+  type: 'test'
+  ...
+# Subtest: valid saved preferences are sanitized and cannot inject store actions
+ok 179 - valid saved preferences are sanitized and cannot inject store actions
+  ---
+  duration_ms: 187.8925
+  type: 'test'
+  ...
+# Subtest: import reads and checks the actual text bytes even when the file size is misleading
+ok 180 - import reads and checks the actual text bytes even when the file size is misleading
+  ---
+  duration_ms: 80.8095
+  type: 'test'
+  ...
+# Subtest: browser recovery and native import do not rewrite saved shift times, pauses or tags
+ok 181 - browser recovery and native import do not rewrite saved shift times, pauses or tags
+  ---
+  duration_ms: 212.2447
+  type: 'test'
+  ...
+# Subtest: the three latest checkpoints persist in order and the newest is selected after corruption
+ok 182 - the three latest checkpoints persist in order and the newest is selected after corruption
+  ---
+  duration_ms: 568.106
+  type: 'test'
+  ...
+# Subtest: exports reject invalid migration output rather than produce a file that fails reimport
+ok 183 - exports reject invalid migration output rather than produce a file that fails reimport
+  ---
+  duration_ms: 77.5174
+  type: 'test'
+  ...
+# Subtest: a checkpoint removed from browser storage is not trusted from a stale in-memory flag
+ok 184 - a checkpoint removed from browser storage is not trusted from a stale in-memory flag
+  ---
+  duration_ms: 96.476
+  type: 'test'
+  ...
+# Subtest: a saved browser document above 1 MiB reopens in a fresh session with preferences intact
+ok 185 - a saved browser document above 1 MiB reopens in a fresh session with preferences intact
+  ---
+  duration_ms: 1037.5345
+  type: 'test'
+  ...
+# Subtest: legacy oversized primary documents reopen without modifying the original bytes
+ok 186 - legacy oversized primary documents reopen without modifying the original bytes
+  ---
+  duration_ms: 207.3846
+  type: 'test'
+  ...
+# Subtest: oversized checkpoints support automatic recovery and manual restore across sessions
+ok 187 - oversized checkpoints support automatic recovery and manual restore across sessions
+  ---
+  duration_ms: 1720.4711
+  type: 'test'
+  ...
+# Subtest: invalid writes cannot replace a readable document or report saved
+ok 188 - invalid writes cannot replace a readable document or report saved
+  ---
+  duration_ms: 123.5676
+  type: 'test'
+  ...
+# Subtest: retry offers an oversized document rediscovered after a read failure before overwrite
+ok 189 - retry offers an oversized document rediscovered after a read failure before overwrite
+  ---
+  duration_ms: 635.3416
+  type: 'test'
+  ...
+# Subtest: invalid collections in files at the byte limit reject without changing the current planning
+ok 190 - invalid collections in files at the byte limit reject without changing the current planning
+  ---
+  duration_ms: 133.9515
+  type: 'test'
+  ...
+# Subtest: oversized invalid browser collections preserve saved bytes, live planning and recovery originals
+ok 191 - oversized invalid browser collections preserve saved bytes, live planning and recovery originals
+  ---
+  duration_ms: 300.8915
+  type: 'test'
+  ...
+# Subtest: Zod upgrade preserves Guid formats, optional/null fields and civil/duration migrations across native and browser recovery
+ok 192 - Zod upgrade preserves Guid formats, optional/null fields and civil/duration migrations across native and browser recovery
+  ---
+  duration_ms: 91.588
+  type: 'test'
+  ...
+# Subtest: shared regime contract: hour-empty-exact-work
+ok 193 - shared regime contract: hour-empty-exact-work
+  ---
+  duration_ms: 4.1412
+  type: 'test'
+  ...
+# Subtest: shared regime contract: hour-work-one-second-over
+ok 194 - shared regime contract: hour-work-one-second-over
+  ---
+  duration_ms: 0.4935
+  type: 'test'
+  ...
+# Subtest: shared regime contract: hour-pause-reduces-net-work
+ok 195 - shared regime contract: hour-pause-reduces-net-work
+  ---
+  duration_ms: 0.4435
+  type: 'test'
+  ...
+# Subtest: shared regime contract: hour-pause-one-second-short
+ok 196 - shared regime contract: hour-pause-one-second-short
+  ---
+  duration_ms: 0.2247
+  type: 'test'
+  ...
+# Subtest: shared regime contract: hour-previous-rest-equal
+ok 197 - shared regime contract: hour-previous-rest-equal
+  ---
+  duration_ms: 0.5841
+  type: 'test'
+  ...
+# Subtest: shared regime contract: hour-previous-rest-one-second-short
+ok 198 - shared regime contract: hour-previous-rest-one-second-short
+  ---
+  duration_ms: 0.4345
+  type: 'test'
+  ...
+# Subtest: shared regime contract: hour-future-rest-equal
+ok 199 - shared regime contract: hour-future-rest-equal
+  ---
+  duration_ms: 1.0413
+  type: 'test'
+  ...
+# Subtest: shared regime contract: hour-future-rest-one-second-short
+ok 200 - shared regime contract: hour-future-rest-one-second-short
+  ---
+  duration_ms: 0.5113
+  type: 'test'
+  ...
+# Subtest: shared regime contract: hour-overlap
+ok 201 - shared regime contract: hour-overlap
+  ---
+  duration_ms: 0.6196
+  type: 'test'
+  ...
+# Subtest: shared regime contract: hour-company-rest-not-in-this-capability
+ok 202 - shared regime contract: hour-company-rest-not-in-this-capability
+  ---
+  duration_ms: 1.8264
+  type: 'test'
+  ...
+# Subtest: shared regime contract: day-empty
+ok 203 - shared regime contract: day-empty
+  ---
+  duration_ms: 1.2163
+  type: 'test'
+  ...
+# Subtest: shared regime contract: day-previous-in-cycle
+ok 204 - shared regime contract: day-previous-in-cycle
+  ---
+  duration_ms: 0.8871
+  type: 'test'
+  ...
+# Subtest: shared regime contract: day-future-in-cycle
+ok 205 - shared regime contract: day-future-in-cycle
+  ---
+  duration_ms: 0.9048
+  type: 'test'
+  ...
+# Subtest: shared regime contract: day-outside-cycle-boundary
+ok 206 - shared regime contract: day-outside-cycle-boundary
+  ---
+  duration_ms: 0.5525
+  type: 'test'
+  ...
+# Subtest: shared regime contract: day-same-date-duplicates-do-not-consume-days
+ok 207 - shared regime contract: day-same-date-duplicates-do-not-consume-days
+  ---
+  duration_ms: 0.7137
+  type: 'test'
+  ...
+# Subtest: shared regime contract: day-duplicate-history-date
+ok 208 - shared regime contract: day-duplicate-history-date
+  ---
+  duration_ms: 0.8885
+  type: 'test'
+  ...
+# Subtest: shared regime contract: day-one-window-spans-both-sides
+ok 209 - shared regime contract: day-one-window-spans-both-sides
+  ---
+  duration_ms: 0.6655
+  type: 'test'
+  ...
+# Subtest: shared regime contract: day-overnight-uses-start-date
+ok 210 - shared regime contract: day-overnight-uses-start-date
+  ---
+  duration_ms: 0.2881
+  type: 'test'
+  ...
+# Subtest: shared regime contract: day-daily-hours-not-in-this-capability
+ok 211 - shared regime contract: day-daily-hours-not-in-this-capability
+  ---
+  duration_ms: 0.1822
+  type: 'test'
+  ...
+# Subtest: shared regime contract: day-zero-rest-estimate-still-advances
+ok 212 - shared regime contract: day-zero-rest-estimate-still-advances
+  ---
+  duration_ms: 0.1649
+  type: 'test'
+  ...
+# Subtest: product choices, schema and descriptors expose exactly the two existing regimes
+ok 213 - product choices, schema and descriptors expose exactly the two existing regimes
+  ---
+  duration_ms: 100.1996
+  type: 'test'
+  ...
+# Subtest: unknown regime stays outside product schema and descriptors: testCombined
+ok 214 - unknown regime stays outside product schema and descriptors: testCombined
+  ---
+  duration_ms: 20.8421
+  type: 'test'
+  ...
+# Subtest: unknown regime stays outside product schema and descriptors: unregistered
+ok 215 - unknown regime stays outside product schema and descriptors: unregistered
+  ---
+  duration_ms: 4.8587
+  type: 'test'
+  ...
+# Subtest: unknown regime stays outside product schema and descriptors: DAYBASED
+ok 216 - unknown regime stays outside product schema and descriptors: DAYBASED
+  ---
+  duration_ms: 4.5708
+  type: 'test'
+  ...
+# Subtest: unknown regime stays outside product schema and descriptors: dayBased 
+ok 217 - unknown regime stays outside product schema and descriptors: dayBased 
+  ---
+  duration_ms: 6.4662
+  type: 'test'
+  ...
+# Subtest: unknown regime stays outside product schema and descriptors: constructor
+ok 218 - unknown regime stays outside product schema and descriptors: constructor
+  ---
+  duration_ms: 7.4257
+  type: 'test'
+  ...
+# Subtest: unknown regime stays outside product schema and descriptors: __proto__
+ok 219 - unknown regime stays outside product schema and descriptors: __proto__
+  ---
+  duration_ms: 5.1845
+  type: 'test'
+  ...
+# Subtest: regime capabilities keep days distinct from work/rest hours including explicit zero
+ok 220 - regime capabilities keep days distinct from work/rest hours including explicit zero
+  ---
+  duration_ms: 1.2815
+  type: 'test'
+  ...
+# Subtest: legacy documents share role IDs and normalization is stable
+ok 221 - legacy documents share role IDs and normalization is stable
+  ---
+  duration_ms: 10.362
+  type: 'test'
+  ...
+# Subtest: renaming preserves links and updates coverage, employees and assignments
+ok 222 - renaming preserves links and updates coverage, employees and assignments
+  ---
+  duration_ms: 1.0683
+  type: 'test'
+  ...
+# Subtest: unused functions survive serialization and an empty setup has no functions
+ok 223 - unused functions survive serialization and an empty setup has no functions
+  ---
+  duration_ms: 1.0219
+  type: 'test'
+  ...
+# Subtest: shared rules: baseline-eight-work-hours
+ok 224 - shared rules: baseline-eight-work-hours
+  ---
+  duration_ms: 93.2328
+  type: 'test'
+  ...
+# Subtest: shared rules: four-hours-no-legal-break
+ok 225 - shared rules: four-hours-no-legal-break
+  ---
+  duration_ms: 6.6286
+  type: 'test'
+  ...
+# Subtest: shared rules: over-four-hours-needs-fifteen-minutes
+ok 226 - shared rules: over-four-hours-needs-fifteen-minutes
+  ---
+  duration_ms: 15.4176
+  type: 'test'
+  ...
+# Subtest: shared rules: six-hours-and-fifteen-minute-break
+ok 227 - shared rules: six-hours-and-fifteen-minute-break
+  ---
+  duration_ms: 4.1952
+  type: 'test'
+  ...
+# Subtest: shared rules: over-six-hours-needs-one-hour
+ok 228 - shared rules: over-six-hours-needs-one-hour
+  ---
+  duration_ms: 2.7121
+  type: 'test'
+  ...
+# Subtest: shared rules: company-minimum-break
+ok 229 - shared rules: company-minimum-break
+  ---
+  duration_ms: 2.0141
+  type: 'test'
+  ...
+# Subtest: shared rules: company-maximum-break
+ok 230 - shared rules: company-maximum-break
+  ---
+  duration_ms: 2.1122
+  type: 'test'
+  ...
+# Subtest: shared rules: legal-minimum-overrides-smaller-company-maximum
+ok 231 - shared rules: legal-minimum-overrides-smaller-company-maximum
+  ---
+  duration_ms: 12.4942
+  type: 'test'
+  ...
+# Subtest: shared rules: fixed-break-exact
+ok 232 - shared rules: fixed-break-exact
+  ---
+  duration_ms: 6.673
+  type: 'test'
+  ...
+# Subtest: shared rules: fixed-break-wrong-clock
+ok 233 - shared rules: fixed-break-wrong-clock
+  ---
+  duration_ms: 5.3201
+  type: 'test'
+  ...
+# Subtest: shared rules: fixed-break-missing
+ok 234 - shared rules: fixed-break-missing
+  ---
+  duration_ms: 2.3844
+  type: 'test'
+  ...
+# Subtest: shared rules: fixed-break-overrides-company-range
+ok 235 - shared rules: fixed-break-overrides-company-range
+  ---
+  duration_ms: 2.7961
+  type: 'test'
+  ...
+# Subtest: shared rules: fixed-break-not-exempt-from-legal-minimum
+ok 236 - shared rules: fixed-break-not-exempt-from-legal-minimum
+  ---
+  duration_ms: 4.6004
+  type: 'test'
+  ...
+# Subtest: shared rules: fixed-break-overnight
+ok 237 - shared rules: fixed-break-overnight
+  ---
+  duration_ms: 3.0741
+  type: 'test'
+  ...
+# Subtest: shared rules: break-at-shift-start
+ok 238 - shared rules: break-at-shift-start
+  ---
+  duration_ms: 2.5562
+  type: 'test'
+  ...
+# Subtest: shared rules: break-at-shift-end
+ok 239 - shared rules: break-at-shift-end
+  ---
+  duration_ms: 2.9868
+  type: 'test'
+  ...
+# Subtest: shared rules: lunch-closure-covered
+ok 240 - shared rules: lunch-closure-covered
+  ---
+  duration_ms: 2.1508
+  type: 'test'
+  ...
+# Subtest: shared rules: lunch-closure-uncovered
+ok 241 - shared rules: lunch-closure-uncovered
+  ---
+  duration_ms: 2.4751
+  type: 'test'
+  ...
+# Subtest: shared rules: closure-overrides-short-company-maximum
+ok 242 - shared rules: closure-overrides-short-company-maximum
+  ---
+  duration_ms: 5.3107
+  type: 'test'
+  ...
+# Subtest: shared rules: works-through-closure-pause-elsewhere
+ok 243 - shared rules: works-through-closure-pause-elsewhere
+  ---
+  duration_ms: 2.0174
+  type: 'test'
+  ...
+# Subtest: shared rules: works-through-closure-cannot-pause-there
+ok 244 - shared rules: works-through-closure-cannot-pause-there
+  ---
+  duration_ms: 2.7184
+  type: 'test'
+  ...
+# Subtest: shared rules: shift-touching-closure
+ok 245 - shared rules: shift-touching-closure
+  ---
+  duration_ms: 3.0435
+  type: 'test'
+  ...
+# Subtest: shared rules: overnight-closure-from-previous-operation
+ok 246 - shared rules: overnight-closure-from-previous-operation
+  ---
+  duration_ms: 5.9974
+  type: 'test'
+  ...
+# Subtest: shared rules: configured-workload-is-net-work
+ok 247 - shared rules: configured-workload-is-net-work
+  ---
+  duration_ms: 21.8335
+  type: 'test'
+  ...
+# Subtest: shared rules: hour-regime-excludes-break
+ok 248 - shared rules: hour-regime-excludes-break
+  ---
+  duration_ms: 2.3264
+  type: 'test'
+  ...
+# Subtest: shared rules: hour-regime-net-limit
+ok 249 - shared rules: hour-regime-net-limit
+  ---
+  duration_ms: 9.0982
+  type: 'test'
+  ...
+# Subtest: shared rules: daily-limit-without-overtime
+ok 250 - shared rules: daily-limit-without-overtime
+  ---
+  duration_ms: 1.9855
+  type: 'test'
+  ...
+# Subtest: shared rules: daily-limit-with-overtime
+ok 251 - shared rules: daily-limit-with-overtime
+  ---
+  duration_ms: 2.1821
+  type: 'test'
+  ...
+# Subtest: shared rules: availability-contains-entire-shift
+ok 252 - shared rules: availability-contains-entire-shift
+  ---
+  duration_ms: 1.7673
+  type: 'test'
+  ...
+# Subtest: shared rules: availability-does-not-cover-start
+ok 253 - shared rules: availability-does-not-cover-start
+  ---
+  duration_ms: 1.6486
+  type: 'test'
+  ...
+# Subtest: shared rules: restriction-even-during-break
+ok 254 - shared rules: restriction-even-during-break
+  ---
+  duration_ms: 1.8369
+  type: 'test'
+  ...
+# Subtest: shared rules: restrictions-touching-bounds-allowed
+ok 255 - shared rules: restrictions-touching-bounds-allowed
+  ---
+  duration_ms: 2.2009
+  type: 'test'
+  ...
+# Subtest: shared rules: minimum-rest-previous-side
+ok 256 - shared rules: minimum-rest-previous-side
+  ---
+  duration_ms: 2.5929
+  type: 'test'
+  ...
+# Subtest: shared rules: minimum-rest-exact
+ok 257 - shared rules: minimum-rest-exact
+  ---
+  duration_ms: 2.3557
+  type: 'test'
+  ...
+# Subtest: shared rules: hour-rest-next-side
+ok 258 - shared rules: hour-rest-next-side
+  ---
+  duration_ms: 4.7019
+  type: 'test'
+  ...
+# Subtest: shared rules: two-turns-same-start-day
+ok 259 - shared rules: two-turns-same-start-day
+  ---
+  duration_ms: 5.113
+  type: 'test'
+  ...
+# Subtest: shared rules: day-cycle-across-both-borders
+ok 260 - shared rules: day-cycle-across-both-borders
+  ---
+  duration_ms: 9.0174
+  type: 'test'
+  ...
+# Subtest: shared rules: weekly-limit-across-borders
+ok 261 - shared rules: weekly-limit-across-borders
+  ---
+  duration_ms: 20.6714
+  type: 'test'
+  ...
+# Subtest: shared rules: weekly-split-at-sunday-midnight
+ok 262 - shared rules: weekly-split-at-sunday-midnight
+  ---
+  duration_ms: 15.387
+  type: 'test'
+  ...
+# Subtest: shared rules: fixed-start-mismatch
+ok 263 - shared rules: fixed-start-mismatch
+  ---
+  duration_ms: 3.2678
+  type: 'test'
+  ...
+# Subtest: shared rules: closed-holiday-not-authorized
+ok 264 - shared rules: closed-holiday-not-authorized
+  ---
+  duration_ms: 2.1269
+  type: 'test'
+  ...
+# Subtest: shared rules: holiday-authorizes-only-operating-exception
+ok 265 - shared rules: holiday-authorizes-only-operating-exception
+  ---
+  duration_ms: 1.3939
+  type: 'test'
+  ...
+# Subtest: shared rules: night-work-not-allowed
+ok 266 - shared rules: night-work-not-allowed
+  ---
+  duration_ms: 1.9036
+  type: 'test'
+  ...
+# Subtest: shared rules: outside-operating-hours
+ok 267 - shared rules: outside-operating-hours
+  ---
+  duration_ms: 2.1385
+  type: 'test'
+  ...
+# Subtest: shared rules: exceptional-coverage-authorized
+ok 268 - shared rules: exceptional-coverage-authorized
+  ---
+  duration_ms: 1.9285
+  type: 'test'
+  ...
+# Subtest: shared rules: custom-working-days
+ok 269 - shared rules: custom-working-days
+  ---
+  duration_ms: 2.1888
+  type: 'test'
+  ...
+# Subtest: shared rules: inherited-working-days-ignore-personal-list
+ok 270 - shared rules: inherited-working-days-ignore-personal-list
+  ---
+  duration_ms: 2.0803
+  type: 'test'
+  ...
+# Subtest: shared rules: role-mismatch-is-not-normalized-away
+ok 271 - shared rules: role-mismatch-is-not-normalized-away
+  ---
+  duration_ms: 2.5491
+  type: 'test'
+  ...
+# Subtest: shared rules: dst-device-must-not-change-effective-work
+ok 272 - shared rules: dst-device-must-not-change-effective-work
+  ---
+  duration_ms: 1.7986
+  type: 'test'
+  ...
+# Subtest: shared rules: four-hours-plus-one-second-needs-break
+ok 273 - shared rules: four-hours-plus-one-second-needs-break
+  ---
+  duration_ms: 1.1824
+  type: 'test'
+  ...
+# Subtest: shared rules: six-hours-plus-one-second-needs-hour
+ok 274 - shared rules: six-hours-plus-one-second-needs-hour
+  ---
+  duration_ms: 1.523
+  type: 'test'
+  ...
+# Subtest: shared rules: adjacent-availability-is-not-unioned
+ok 275 - shared rules: adjacent-availability-is-not-unioned
+  ---
+  duration_ms: 1.0115
+  type: 'test'
+  ...
+# Subtest: shared rules: rest-one-second-short-previous
+ok 276 - shared rules: rest-one-second-short-previous
+  ---
+  duration_ms: 1.1057
+  type: 'test'
+  ...
+# Subtest: shared rules: rest-one-second-short-future
+ok 277 - shared rules: rest-one-second-short-future
+  ---
+  duration_ms: 1.5024
+  type: 'test'
+  ...
+# Subtest: shared rules: rest-uses-largest-end-not-latest-start
+ok 278 - shared rules: rest-uses-largest-end-not-latest-start
+  ---
+  duration_ms: 2.1444
+  type: 'test'
+  ...
+# Subtest: shared rules: weekly-limit-exact
+ok 279 - shared rules: weekly-limit-exact
+  ---
+  duration_ms: 1.4909
+  type: 'test'
+  ...
+# Subtest: shared rules: weekly-limit-one-second-over
+ok 280 - shared rules: weekly-limit-one-second-over
+  ---
+  duration_ms: 1.1804
+  type: 'test'
+  ...
+# Subtest: shared rules: one-second-break-removes-coverage
+ok 281 - shared rules: one-second-break-removes-coverage
+  ---
+  duration_ms: 1.4882
+  type: 'test'
+  ...
+# Subtest: normalization is idempotent and never repairs shift hours, break or role
+ok 282 - normalization is idempotent and never repairs shift hours, break or role
+  ---
+  duration_ms: 2.1612
+  type: 'test'
+  ...
+# Subtest: UTC conversion belongs to a named, idempotent migration
+ok 283 - UTC conversion belongs to a named, idempotent migration
+  ---
+  duration_ms: 4.6443
+  type: 'test'
+  ...
+# Subtest: ordinary store edits preserve unrelated assignments and never insert or move a pause
+ok 284 - ordinary store edits preserve unrelated assignments and never insert or move a pause
+  ---
+  duration_ms: 727.3886
+  type: 'test'
+  ...
+# Subtest: civil schema comparisons and native import are device-zone independent: America/Cuiaba
+ok 285 - civil schema comparisons and native import are device-zone independent: America/Cuiaba
+  ---
+  duration_ms: 2154.3636
+  type: 'test'
+  ...
+# Subtest: civil schema comparisons and native import are device-zone independent: America/New_York
+ok 286 - civil schema comparisons and native import are device-zone independent: America/New_York
+  ---
+  duration_ms: 1273.1631
+  type: 'test'
+  ...
+# Subtest: civil schema comparisons and native import are device-zone independent: UTC
+ok 287 - civil schema comparisons and native import are device-zone independent: UTC
+  ---
+  duration_ms: 844.0579
+  type: 'test'
+  ...
+# Subtest: rejects oversized collection before reading elements: employees
+ok 288 - rejects oversized collection before reading elements: employees
+  ---
+  duration_ms: 51.3282
+  type: 'test'
+  ...
+# Subtest: rejects oversized collection before reading elements: assignments
+ok 289 - rejects oversized collection before reading elements: assignments
+  ---
+  duration_ms: 3.254
+  type: 'test'
+  ...
+# Subtest: rejects oversized collection before reading elements: roles
+ok 290 - rejects oversized collection before reading elements: roles
+  ---
+  duration_ms: 0.7681
+  type: 'test'
+  ...
+# Subtest: rejects oversized collection before reading elements: coverage
+ok 291 - rejects oversized collection before reading elements: coverage
+  ---
+  duration_ms: 0.4487
+  type: 'test'
+  ...
+# Subtest: rejects oversized collection before reading elements: holidays
+ok 292 - rejects oversized collection before reading elements: holidays
+  ---
+  duration_ms: 2.048
+  type: 'test'
+  ...
+# Subtest: rejects oversized collection before reading elements: operatingDays
+ok 293 - rejects oversized collection before reading elements: operatingDays
+  ---
+  duration_ms: 0.506
+  type: 'test'
+  ...
+# Subtest: rejects oversized collection before reading elements: availability
+ok 294 - rejects oversized collection before reading elements: availability
+  ---
+  duration_ms: 0.592
+  type: 'test'
+  ...
+# Subtest: rejects oversized collection before reading elements: restrictions
+ok 295 - rejects oversized collection before reading elements: restrictions
+  ---
+  duration_ms: 0.3722
+  type: 'test'
+  ...
+# Subtest: rejects oversized collection before reading elements: preferences
+ok 296 - rejects oversized collection before reading elements: preferences
+  ---
+  duration_ms: 1.1471
+  type: 'test'
+  ...
+# Subtest: rejects oversized collection before reading elements: coverageRoles
+ok 297 - rejects oversized collection before reading elements: coverageRoles
+  ---
+  duration_ms: 0.9902
+  type: 'test'
+  ...
+# Subtest: rejects oversized collection before reading elements: coverageRoleIds
+ok 298 - rejects oversized collection before reading elements: coverageRoleIds
+  ---
+  duration_ms: 0.732
+  type: 'test'
+  ...
+# Subtest: rejects oversized collection before reading elements: preferredDaysOff
+ok 299 - rejects oversized collection before reading elements: preferredDaysOff
+  ---
+  duration_ms: 0.4243
+  type: 'test'
+  ...
+# Subtest: rejects oversized collection before reading elements: workingDays
+ok 300 - rejects oversized collection before reading elements: workingDays
+  ---
+  duration_ms: 0.2751
+  type: 'test'
+  ...
+# Subtest: rejects oversized collection before reading elements: tags
+ok 301 - rejects oversized collection before reading elements: tags
+  ---
+  duration_ms: 0.3431
+  type: 'test'
+  ...
+# Subtest: invalid elements in collections within their count limits produce bounded diagnostics
+ok 302 - invalid elements in collections within their count limits produce bounded diagnostics
+  ---
+  duration_ms: 110.002
+  type: 'test'
+  ...
+# Subtest: shift labels preserve 07:30 rather than rounding to 07h
+ok 303 - shift labels preserve 07:30 rather than rounding to 07h
+  ---
+  duration_ms: 2.3649
+  type: 'test'
+  ...
+# Subtest: lunch closure has no normal coverage demand
+ok 304 - lunch closure has no normal coverage demand
+  ---
+  duration_ms: 47.8225
+  type: 'test'
+  ...
+# Subtest: predicted weekly coverage excludes the lunch closure
+ok 305 - predicted weekly coverage excludes the lunch closure
+  ---
+  duration_ms: 7.5045
+  type: 'test'
+  ...
+# Subtest: CLT interval thresholds use worked hours
+ok 306 - CLT interval thresholds use worked hours
+  ---
+  duration_ms: 0.5819
+  type: 'test'
+  ...
+# Subtest: national and local holidays exclude previews unless open
+ok 307 - national and local holidays exclude previews unless open
+  ---
+  duration_ms: 2.7858
+  type: 'test'
+  ...
+# Subtest: every preview has a valid interval even without company closure
+ok 308 - every preview has a valid interval even without company closure
+  ---
+  duration_ms: 7.1483
+  type: 'test'
+  ...
+# Subtest: preview evaluates the maximum interval to cover the end of the day
+ok 309 - preview evaluates the maximum interval to cover the end of the day
+  ---
+  duration_ms: 3.0971
+  type: 'test'
+  ...
+# Subtest: directional substitution covers attendant but never replaces pharmacist in reverse
+ok 310 - directional substitution covers attendant but never replaces pharmacist in reverse
+  ---
+  duration_ms: 1.0183
+  type: 'test'
+  ...
+# Subtest: authorized holiday shift keeps company closed and preserves other safeguards
+ok 311 - authorized holiday shift keeps company closed and preserves other safeguards
+  ---
+  duration_ms: 8.987
+  type: 'test'
+  ...
+# Subtest: D1 person capacity: D1-overlapping-preserved-team
+ok 312 - D1 person capacity: D1-overlapping-preserved-team
+  ---
+  duration_ms: 62.0294
+  type: 'test'
+  ...
+# Subtest: D1 person capacity: D1-overlapping-preserved-role
+ok 313 - D1 person capacity: D1-overlapping-preserved-role
+  ---
+  duration_ms: 8.3562
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: baseline
+ok 314 - shared document acceptance: baseline
+  ---
+  duration_ms: 85.8326
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.name-text-limit
+ok 315 - shared document acceptance: company.name-text-limit
+  ---
+  duration_ms: 10.4628
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.name-text-over-limit
+ok 316 - shared document acceptance: company.name-text-over-limit
+  ---
+  duration_ms: 5.812
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.name-empty
+ok 317 - shared document acceptance: company.name-empty
+  ---
+  duration_ms: 6.2459
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.name-spaces
+ok 318 - shared document acceptance: company.name-spaces
+  ---
+  duration_ms: 8.0037
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.name-text-limit
+ok 319 - shared document acceptance: employees.0.name-text-limit
+  ---
+  duration_ms: 5.8328
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.name-text-over-limit
+ok 320 - shared document acceptance: employees.0.name-text-over-limit
+  ---
+  duration_ms: 7.4202
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.name-empty
+ok 321 - shared document acceptance: employees.0.name-empty
+  ---
+  duration_ms: 3.9355
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.name-spaces
+ok 322 - shared document acceptance: employees.0.name-spaces
+  ---
+  duration_ms: 5.7681
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.role-text-limit
+ok 323 - shared document acceptance: employees.0.role-text-limit
+  ---
+  duration_ms: 5.4487
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.role-text-over-limit
+ok 324 - shared document acceptance: employees.0.role-text-over-limit
+  ---
+  duration_ms: 5.2748
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.role-empty
+ok 325 - shared document acceptance: employees.0.role-empty
+  ---
+  duration_ms: 3.8547
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.role-spaces
+ok 326 - shared document acceptance: employees.0.role-spaces
+  ---
+  duration_ms: 5.5052
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.coverage.0.role-text-limit
+ok 327 - shared document acceptance: company.coverage.0.role-text-limit
+  ---
+  duration_ms: 4.9767
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.coverage.0.role-text-over-limit
+ok 328 - shared document acceptance: company.coverage.0.role-text-over-limit
+  ---
+  duration_ms: 3.5068
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.coverage.0.role-empty
+ok 329 - shared document acceptance: company.coverage.0.role-empty
+  ---
+  duration_ms: 3.3148
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.coverage.0.role-spaces
+ok 330 - shared document acceptance: company.coverage.0.role-spaces
+  ---
+  duration_ms: 2.8699
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: assignments.0.role-text-limit
+ok 331 - shared document acceptance: assignments.0.role-text-limit
+  ---
+  duration_ms: 7.7374
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: assignments.0.role-text-over-limit
+ok 332 - shared document acceptance: assignments.0.role-text-over-limit
+  ---
+  duration_ms: 2.8127
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: assignments.0.role-empty
+ok 333 - shared document acceptance: assignments.0.role-empty
+  ---
+  duration_ms: 2.8634
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: assignments.0.role-spaces
+ok 334 - shared document acceptance: assignments.0.role-spaces
+  ---
+  duration_ms: 3.292
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferences.0.code-text-limit
+ok 335 - shared document acceptance: employees.0.preferences.0.code-text-limit
+  ---
+  duration_ms: 3.6771
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferences.0.code-text-over-limit
+ok 336 - shared document acceptance: employees.0.preferences.0.code-text-over-limit
+  ---
+  duration_ms: 2.6031
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferences.0.code-empty
+ok 337 - shared document acceptance: employees.0.preferences.0.code-empty
+  ---
+  duration_ms: 2.3762
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferences.0.code-spaces
+ok 338 - shared document acceptance: employees.0.preferences.0.code-spaces
+  ---
+  duration_ms: 2.8874
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferences.0.description-text-limit
+ok 339 - shared document acceptance: employees.0.preferences.0.description-text-limit
+  ---
+  duration_ms: 3.6289
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferences.0.description-text-over-limit
+ok 340 - shared document acceptance: employees.0.preferences.0.description-text-over-limit
+  ---
+  duration_ms: 3.1036
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferences.0.description-empty
+ok 341 - shared document acceptance: employees.0.preferences.0.description-empty
+  ---
+  duration_ms: 3.3747
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferences.0.description-spaces
+ok 342 - shared document acceptance: employees.0.preferences.0.description-spaces
+  ---
+  duration_ms: 3.4618
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.holidays.0.name-text-limit
+ok 343 - shared document acceptance: company.holidays.0.name-text-limit
+  ---
+  duration_ms: 3.8895
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.holidays.0.name-text-over-limit
+ok 344 - shared document acceptance: company.holidays.0.name-text-over-limit
+  ---
+  duration_ms: 4.3392
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.holidays.0.name-empty
+ok 345 - shared document acceptance: company.holidays.0.name-empty
+  ---
+  duration_ms: 2.327
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.holidays.0.name-spaces
+ok 346 - shared document acceptance: company.holidays.0.name-spaces
+  ---
+  duration_ms: 2.1692
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: roles.0.name-text-limit
+ok 347 - shared document acceptance: roles.0.name-text-limit
+  ---
+  duration_ms: 3.6789
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: roles.0.name-text-over-limit
+ok 348 - shared document acceptance: roles.0.name-text-over-limit
+  ---
+  duration_ms: 3.8651
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: roles.0.name-empty
+ok 349 - shared document acceptance: roles.0.name-empty
+  ---
+  duration_ms: 4.5137
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: roles.0.name-spaces
+ok 350 - shared document acceptance: roles.0.name-spaces
+  ---
+  duration_ms: 3.1896
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.coverageRoles.0-text-limit
+ok 351 - shared document acceptance: employees.0.coverageRoles.0-text-limit
+  ---
+  duration_ms: 4.5668
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.coverageRoles.0-text-over-limit
+ok 352 - shared document acceptance: employees.0.coverageRoles.0-text-over-limit
+  ---
+  duration_ms: 3.5291
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.coverageRoles.0-empty
+ok 353 - shared document acceptance: employees.0.coverageRoles.0-empty
+  ---
+  duration_ms: 2.6681
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.coverageRoles.0-spaces
+ok 354 - shared document acceptance: employees.0.coverageRoles.0-spaces
+  ---
+  duration_ms: 2.8881
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: assignments.0.tags.0-text-limit
+ok 355 - shared document acceptance: assignments.0.tags.0-text-limit
+  ---
+  duration_ms: 3.6933
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: assignments.0.tags.0-text-over-limit
+ok 356 - shared document acceptance: assignments.0.tags.0-text-over-limit
+  ---
+  duration_ms: 2.661
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: assignments.0.tags.0-empty
+ok 357 - shared document acceptance: assignments.0.tags.0-empty
+  ---
+  duration_ms: 2.5498
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: assignments.0.tags.0-spaces
+ok 358 - shared document acceptance: assignments.0.tags.0-spaces
+  ---
+  duration_ms: 2.3527
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: unicode-limit
+ok 359 - shared document acceptance: unicode-limit
+  ---
+  duration_ms: 3.6004
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: unicode-over
+ok 360 - shared document acceptance: unicode-over
+  ---
+  duration_ms: 3.4419
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees-count-200
+ok 361 - shared document acceptance: employees-count-200
+  ---
+  duration_ms: 126.6902
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees-count-201
+ok 362 - shared document acceptance: employees-count-201
+  ---
+  duration_ms: 7.9148
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: assignments-count-20000
+ok 363 - shared document acceptance: assignments-count-20000
+  ---
+  duration_ms: 2364.9069
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: assignments-count-20001
+ok 364 - shared document acceptance: assignments-count-20001
+  ---
+  duration_ms: 187.1845
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: roles-count-1000
+ok 365 - shared document acceptance: roles-count-1000
+  ---
+  duration_ms: 20.3599
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: roles-count-1001
+ok 366 - shared document acceptance: roles-count-1001
+  ---
+  duration_ms: 7.2133
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.coverage-count-1000
+ok 367 - shared document acceptance: company.coverage-count-1000
+  ---
+  duration_ms: 47.3774
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.coverage-count-1001
+ok 368 - shared document acceptance: company.coverage-count-1001
+  ---
+  duration_ms: 6.7991
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.holidays-count-366
+ok 369 - shared document acceptance: company.holidays-count-366
+  ---
+  duration_ms: 13.2341
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.holidays-count-367
+ok 370 - shared document acceptance: company.holidays-count-367
+  ---
+  duration_ms: 2.3991
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.availability-count-366
+ok 371 - shared document acceptance: employees.0.availability-count-366
+  ---
+  duration_ms: 38.6097
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.availability-count-367
+ok 372 - shared document acceptance: employees.0.availability-count-367
+  ---
+  duration_ms: 2.4253
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.restrictions-count-366
+ok 373 - shared document acceptance: employees.0.restrictions-count-366
+  ---
+  duration_ms: 40.1699
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.restrictions-count-367
+ok 374 - shared document acceptance: employees.0.restrictions-count-367
+  ---
+  duration_ms: 1.3428
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferences-count-50
+ok 375 - shared document acceptance: employees.0.preferences-count-50
+  ---
+  duration_ms: 3.7227
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferences-count-51
+ok 376 - shared document acceptance: employees.0.preferences-count-51
+  ---
+  duration_ms: 0.7571
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.coverageRoles-count-50
+ok 377 - shared document acceptance: employees.0.coverageRoles-count-50
+  ---
+  duration_ms: 2.0808
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.coverageRoles-count-51
+ok 378 - shared document acceptance: employees.0.coverageRoles-count-51
+  ---
+  duration_ms: 0.4369
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.coverageRoleIds-count-50
+ok 379 - shared document acceptance: employees.0.coverageRoleIds-count-50
+  ---
+  duration_ms: 3.5267
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.coverageRoleIds-count-51
+ok 380 - shared document acceptance: employees.0.coverageRoleIds-count-51
+  ---
+  duration_ms: 0.687
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: assignments.0.tags-count-50
+ok 381 - shared document acceptance: assignments.0.tags-count-50
+  ---
+  duration_ms: 3.3479
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: assignments.0.tags-count-51
+ok 382 - shared document acceptance: assignments.0.tags-count-51
+  ---
+  duration_ms: 0.5925
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.operatingDays-seven
+ok 383 - shared document acceptance: company.operatingDays-seven
+  ---
+  duration_ms: 3.181
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.operatingDays-duplicates
+ok 384 - shared document acceptance: company.operatingDays-duplicates
+  ---
+  duration_ms: 2.5552
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.operatingDays-invalid-day
+ok 385 - shared document acceptance: company.operatingDays-invalid-day
+  ---
+  duration_ms: 3.5582
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.operatingDays-empty
+ok 386 - shared document acceptance: company.operatingDays-empty
+  ---
+  duration_ms: 3.6502
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferredDaysOff-seven
+ok 387 - shared document acceptance: employees.0.preferredDaysOff-seven
+  ---
+  duration_ms: 3.3369
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferredDaysOff-duplicates
+ok 388 - shared document acceptance: employees.0.preferredDaysOff-duplicates
+  ---
+  duration_ms: 2.4928
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferredDaysOff-invalid-day
+ok 389 - shared document acceptance: employees.0.preferredDaysOff-invalid-day
+  ---
+  duration_ms: 2.6065
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferredDaysOff-empty
+ok 390 - shared document acceptance: employees.0.preferredDaysOff-empty
+  ---
+  duration_ms: 4.958
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workingDays-seven
+ok 391 - shared document acceptance: employees.0.workingDays-seven
+  ---
+  duration_ms: 3.0258
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workingDays-duplicates
+ok 392 - shared document acceptance: employees.0.workingDays-duplicates
+  ---
+  duration_ms: 2.4219
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workingDays-invalid-day
+ok 393 - shared document acceptance: employees.0.workingDays-invalid-day
+  ---
+  duration_ms: 2.1062
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workingDays-empty
+ok 394 - shared document acceptance: employees.0.workingDays-empty
+  ---
+  duration_ms: 1.8542
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.workUnits-1
+ok 395 - shared document acceptance: company.defaultWorkload.workUnits-1
+  ---
+  duration_ms: 3.0711
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.workUnits-168
+ok 396 - shared document acceptance: company.defaultWorkload.workUnits-168
+  ---
+  duration_ms: 2.7351
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.workUnits-0
+ok 397 - shared document acceptance: company.defaultWorkload.workUnits-0
+  ---
+  duration_ms: 3.2535
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.workUnits-169
+ok 398 - shared document acceptance: company.defaultWorkload.workUnits-169
+  ---
+  duration_ms: 2.8262
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.workUnits-1.5
+ok 399 - shared document acceptance: company.defaultWorkload.workUnits-1.5
+  ---
+  duration_ms: 4.3423
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.restUnits-0
+ok 400 - shared document acceptance: company.defaultWorkload.restUnits-0
+  ---
+  duration_ms: 3.6705
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.restUnits-168
+ok 401 - shared document acceptance: company.defaultWorkload.restUnits-168
+  ---
+  duration_ms: 5.5049
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.restUnits--1
+ok 402 - shared document acceptance: company.defaultWorkload.restUnits--1
+  ---
+  duration_ms: 3.6686
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.restUnits-169
+ok 403 - shared document acceptance: company.defaultWorkload.restUnits-169
+  ---
+  duration_ms: 7.897
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.weeklyLimitHours-44
+ok 404 - shared document acceptance: company.defaultWorkload.weeklyLimitHours-44
+  ---
+  duration_ms: 4.9074
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.weeklyLimitHours-0
+ok 405 - shared document acceptance: company.defaultWorkload.weeklyLimitHours-0
+  ---
+  duration_ms: 9.3112
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.weeklyLimitHours-44.1
+ok 406 - shared document acceptance: company.defaultWorkload.weeklyLimitHours-44.1
+  ---
+  duration_ms: 3.2865
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.defaultShiftDuration-00:00:01
+ok 407 - shared document acceptance: company.defaultWorkload.defaultShiftDuration-00:00:01
+  ---
+  duration_ms: 3.6195
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.defaultShiftDuration-24:00:00
+ok 408 - shared document acceptance: company.defaultWorkload.defaultShiftDuration-24:00:00
+  ---
+  duration_ms: 2.9639
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.defaultShiftDuration-1.00:00:00
+ok 409 - shared document acceptance: company.defaultWorkload.defaultShiftDuration-1.00:00:00
+  ---
+  duration_ms: 2.9603
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.defaultShiftDuration-00:00:00
+ok 410 - shared document acceptance: company.defaultWorkload.defaultShiftDuration-00:00:00
+  ---
+  duration_ms: 2.204
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.defaultShiftDuration-24:00:01
+ok 411 - shared document acceptance: company.defaultWorkload.defaultShiftDuration-24:00:01
+  ---
+  duration_ms: 2.0502
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.defaultShiftDuration--01:00:00
+ok 412 - shared document acceptance: company.defaultWorkload.defaultShiftDuration--01:00:00
+  ---
+  duration_ms: 2.8164
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.defaultShiftDuration-08:60:00
+ok 413 - shared document acceptance: company.defaultWorkload.defaultShiftDuration-08:60:00
+  ---
+  duration_ms: 2.2481
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.regimeType-hourBased
+ok 414 - shared document acceptance: company.defaultWorkload.regimeType-hourBased
+  ---
+  duration_ms: 2.8519
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.defaultWorkload.regimeType-other
+ok 415 - shared document acceptance: company.defaultWorkload.regimeType-other
+  ---
+  duration_ms: 2.7635
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.workUnits-1
+ok 416 - shared document acceptance: employees.0.workload.workUnits-1
+  ---
+  duration_ms: 3.4836
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.workUnits-168
+ok 417 - shared document acceptance: employees.0.workload.workUnits-168
+  ---
+  duration_ms: 3.7093
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.workUnits-0
+ok 418 - shared document acceptance: employees.0.workload.workUnits-0
+  ---
+  duration_ms: 2.529
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.workUnits-169
+ok 419 - shared document acceptance: employees.0.workload.workUnits-169
+  ---
+  duration_ms: 2.6615
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.workUnits-1.5
+ok 420 - shared document acceptance: employees.0.workload.workUnits-1.5
+  ---
+  duration_ms: 3.3289
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.restUnits-0
+ok 421 - shared document acceptance: employees.0.workload.restUnits-0
+  ---
+  duration_ms: 3.322
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.restUnits-168
+ok 422 - shared document acceptance: employees.0.workload.restUnits-168
+  ---
+  duration_ms: 3.2812
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.restUnits--1
+ok 423 - shared document acceptance: employees.0.workload.restUnits--1
+  ---
+  duration_ms: 2.306
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.restUnits-169
+ok 424 - shared document acceptance: employees.0.workload.restUnits-169
+  ---
+  duration_ms: 1.7765
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.weeklyLimitHours-44
+ok 425 - shared document acceptance: employees.0.workload.weeklyLimitHours-44
+  ---
+  duration_ms: 5.2166
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.weeklyLimitHours-0
+ok 426 - shared document acceptance: employees.0.workload.weeklyLimitHours-0
+  ---
+  duration_ms: 2.0748
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.weeklyLimitHours-44.1
+ok 427 - shared document acceptance: employees.0.workload.weeklyLimitHours-44.1
+  ---
+  duration_ms: 2.8867
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.defaultShiftDuration-00:00:01
+ok 428 - shared document acceptance: employees.0.workload.defaultShiftDuration-00:00:01
+  ---
+  duration_ms: 3.4694
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.defaultShiftDuration-24:00:00
+ok 429 - shared document acceptance: employees.0.workload.defaultShiftDuration-24:00:00
+  ---
+  duration_ms: 5.0331
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.defaultShiftDuration-1.00:00:00
+ok 430 - shared document acceptance: employees.0.workload.defaultShiftDuration-1.00:00:00
+  ---
+  duration_ms: 3.6317
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.defaultShiftDuration-00:00:00
+ok 431 - shared document acceptance: employees.0.workload.defaultShiftDuration-00:00:00
+  ---
+  duration_ms: 2.4114
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.defaultShiftDuration-24:00:01
+ok 432 - shared document acceptance: employees.0.workload.defaultShiftDuration-24:00:01
+  ---
+  duration_ms: 2.282
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.defaultShiftDuration--01:00:00
+ok 433 - shared document acceptance: employees.0.workload.defaultShiftDuration--01:00:00
+  ---
+  duration_ms: 2.2614
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.defaultShiftDuration-08:60:00
+ok 434 - shared document acceptance: employees.0.workload.defaultShiftDuration-08:60:00
+  ---
+  duration_ms: 2.0049
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.regimeType-hourBased
+ok 435 - shared document acceptance: employees.0.workload.regimeType-hourBased
+  ---
+  duration_ms: 2.8456
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.workload.regimeType-other
+ok 436 - shared document acceptance: employees.0.workload.regimeType-other
+  ---
+  duration_ms: 1.8905
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.minimumRest-11:00:00
+ok 437 - shared document acceptance: company.minimumRest-11:00:00
+  ---
+  duration_ms: 2.9167
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.minimumRest-168:00:00
+ok 438 - shared document acceptance: company.minimumRest-168:00:00
+  ---
+  duration_ms: 3.1066
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.minimumRest-7.00:00:00
+ok 439 - shared document acceptance: company.minimumRest-7.00:00:00
+  ---
+  duration_ms: 2.4387
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.minimumRest-10:59:59
+ok 440 - shared document acceptance: company.minimumRest-10:59:59
+  ---
+  duration_ms: 2.5796
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.minimumRest-168:00:01
+ok 441 - shared document acceptance: company.minimumRest-168:00:01
+  ---
+  duration_ms: 2.5939
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.lunch.maximum-02:00:00
+ok 442 - shared document acceptance: company.lunch.maximum-02:00:00
+  ---
+  duration_ms: 3.2982
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.lunch.maximum-02:00:01
+ok 443 - shared document acceptance: company.lunch.maximum-02:00:01
+  ---
+  duration_ms: 2.6786
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.lunch.maximum-00:30:00
+ok 444 - shared document acceptance: company.lunch.maximum-00:30:00
+  ---
+  duration_ms: 1.9748
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.lunch.minimum-00:00:00
+ok 445 - shared document acceptance: company.lunch.minimum-00:00:00
+  ---
+  duration_ms: 5.195
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.lunch.minimum-02:00:01
+ok 446 - shared document acceptance: company.lunch.minimum-02:00:01
+  ---
+  duration_ms: 3.2071
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.lunch.preferredAfter-00:00:00
+ok 447 - shared document acceptance: company.lunch.preferredAfter-00:00:00
+  ---
+  duration_ms: 3.3596
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.lunch.preferredAfter-24:00:00
+ok 448 - shared document acceptance: company.lunch.preferredAfter-24:00:00
+  ---
+  duration_ms: 2.976
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.lunch.preferredAfter-24:00:01
+ok 449 - shared document acceptance: company.lunch.preferredAfter-24:00:01
+  ---
+  duration_ms: 2.1057
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferences.0.weight-1000
+ok 450 - shared document acceptance: employees.0.preferences.0.weight-1000
+  ---
+  duration_ms: 3.5668
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferences.0.weight--1000
+ok 451 - shared document acceptance: employees.0.preferences.0.weight--1000
+  ---
+  duration_ms: 3.5294
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferences.0.weight-1001
+ok 452 - shared document acceptance: employees.0.preferences.0.weight-1001
+  ---
+  duration_ms: 2.7193
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferences.0.weight--1001
+ok 453 - shared document acceptance: employees.0.preferences.0.weight--1001
+  ---
+  duration_ms: 2.2522
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: employees.0.preferences.0.weight-1.5
+ok 454 - shared document acceptance: employees.0.preferences.0.weight-1.5
+  ---
+  duration_ms: 1.9621
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.coverage.0.minimumEmployees-0
+ok 455 - shared document acceptance: company.coverage.0.minimumEmployees-0
+  ---
+  duration_ms: 2.5375
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.coverage.0.minimumEmployees-200
+ok 456 - shared document acceptance: company.coverage.0.minimumEmployees-200
+  ---
+  duration_ms: 2.8306
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.coverage.0.minimumEmployees--1
+ok 457 - shared document acceptance: company.coverage.0.minimumEmployees--1
+  ---
+  duration_ms: 2.1721
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.coverage.0.minimumEmployees-201
+ok 458 - shared document acceptance: company.coverage.0.minimumEmployees-201
+  ---
+  duration_ms: 2.086
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.coverage.0.scope-team
+ok 459 - shared document acceptance: company.coverage.0.scope-team
+  ---
+  duration_ms: 3.6373
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.coverage.0.scope-other
+ok 460 - shared document acceptance: company.coverage.0.scope-other
+  ---
+  duration_ms: 2.3354
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.coverage.0.daysMode-custom
+ok 461 - shared document acceptance: company.coverage.0.daysMode-custom
+  ---
+  duration_ms: 3.21
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.coverage.0.daysMode-operating
+ok 462 - shared document acceptance: company.coverage.0.daysMode-operating
+  ---
+  duration_ms: 2.5059
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.coverage.0.daysMode-null
+ok 463 - shared document acceptance: company.coverage.0.daysMode-null
+  ---
+  duration_ms: 4.2031
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.coverage.0.daysMode-other
+ok 464 - shared document acceptance: company.coverage.0.daysMode-other
+  ---
+  duration_ms: 2.4172
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: assignments.0.source-solver
+ok 465 - shared document acceptance: assignments.0.source-solver
+  ---
+  duration_ms: 2.7319
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: assignments.0.source-other
+ok 466 - shared document acceptance: assignments.0.source-other
+  ---
+  duration_ms: 2.5008
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.opensAt-23:59:59
+ok 467 - shared document acceptance: company.opensAt-23:59:59
+  ---
+  duration_ms: 2.9291
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.opensAt-24:00:00
+ok 468 - shared document acceptance: company.opensAt-24:00:00
+  ---
+  duration_ms: 2.4101
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.timeZone-UTC
+ok 469 - shared document acceptance: company.timeZone-UTC
+  ---
+  duration_ms: 3.242
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.timeZone-invalid/zone
+ok 470 - shared document acceptance: company.timeZone-invalid/zone
+  ---
+  duration_ms: 2.543
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.holidays.0.date-2024-02-29
+ok 471 - shared document acceptance: company.holidays.0.date-2024-02-29
+  ---
+  duration_ms: 2.9603
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.holidays.0.date-2026-02-30
+ok 472 - shared document acceptance: company.holidays.0.date-2026-02-30
+  ---
+  duration_ms: 2.7856
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.holidays.0.date-1899-12-31
+ok 473 - shared document acceptance: company.holidays.0.date-1899-12-31
+  ---
+  duration_ms: 2.3246
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: company.holidays.0.date-2101-01-01
+ok 474 - shared document acceptance: company.holidays.0.date-2101-01-01
+  ---
+  duration_ms: 2.2087
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: shift-duration-2026-05-20T09:00:00
+ok 475 - shared document acceptance: shift-duration-2026-05-20T09:00:00
+  ---
+  duration_ms: 3.8732
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: shift-duration-2026-05-20T09:00:01
+ok 476 - shared document acceptance: shift-duration-2026-05-20T09:00:01
+  ---
+  duration_ms: 2.0764
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: empty-guid-id
+ok 477 - shared document acceptance: empty-guid-id
+  ---
+  duration_ms: 2.1082
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: empty-guid-employees.0.id
+ok 478 - shared document acceptance: empty-guid-employees.0.id
+  ---
+  duration_ms: 2.3655
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: empty-guid-employees.0.roleId
+ok 479 - shared document acceptance: empty-guid-employees.0.roleId
+  ---
+  duration_ms: 2.5186
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: empty-guid-employees.0.coverageRoleIds.0
+ok 480 - shared document acceptance: empty-guid-employees.0.coverageRoleIds.0
+  ---
+  duration_ms: 5.0592
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: empty-guid-assignments.0.id
+ok 481 - shared document acceptance: empty-guid-assignments.0.id
+  ---
+  duration_ms: 2.3057
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: empty-guid-assignments.0.roleId
+ok 482 - shared document acceptance: empty-guid-assignments.0.roleId
+  ---
+  duration_ms: 1.6208
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: empty-guid-company.coverage.0.roleId
+ok 483 - shared document acceptance: empty-guid-company.coverage.0.roleId
+  ---
+  duration_ms: 1.7633
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: empty-guid-roles.0.id
+ok 484 - shared document acceptance: empty-guid-roles.0.id
+  ---
+  duration_ms: 1.833
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: duplicate-roles
+ok 485 - shared document acceptance: duplicate-roles
+  ---
+  duration_ms: 1.5568
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: duplicate-employees
+ok 486 - shared document acceptance: duplicate-employees
+  ---
+  duration_ms: 2.1382
+  type: 'test'
+  ...
+# Subtest: shared document acceptance: duplicate-assignments
+ok 487 - shared document acceptance: duplicate-assignments
+  ---
+  duration_ms: 2.1714
+  type: 'test'
+  ...
+1..487
+# tests 487
+# suites 0
+# pass 487
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 13383.5732

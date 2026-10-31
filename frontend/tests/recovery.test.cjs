@@ -218,3 +218,67 @@ test('retry offers an oversized document rediscovered after a read failure befor
   const copy=recovery.getSnapshot().copies.find(c=>c.reason==='Documento reencontrado no navegador');assert.ok(copy.restorable);
   assert.equal(store.getState().restoreRecovery(copy.contents),true);assert.equal(store.getState().document.company.name,d.company.name);
 });
+
+test('invalid collections in files at the byte limit reject without changing the current planning',async()=>{
+  const storage=memory(),{load}=session(storage),native=load('lib/nativeDocument.ts');
+  const {useScheduleStore:store}=load('store/scheduleStore.ts');
+  store.getState().setDocument(fixture(load));
+  const previous=plain(store.getState().document),savedBytes=storage.getItem('escalalivre-state');
+  const bad=fixture(load);bad.assignments=Array(20001).fill(null);bad.company.name='Ação 日本語 😀';
+  const text=JSON.stringify(bad),nearLimit=text+' '.repeat(native.MAX_NATIVE_BYTES-native.nativeBytes(text));
+  assert.equal(native.nativeBytes(nearLimit),native.MAX_NATIVE_BYTES);
+  await assert.rejects(async()=>store.getState().importDocument(await native.readNativeFile({size:native.MAX_NATIVE_BYTES,text:async()=>nearLimit})),/inválido/);
+  assert.throws(()=>native.parseNativeText(nearLimit+' '),/1 MiB/);
+  assert.deepEqual(plain(store.getState().document),previous);
+  assert.equal(storage.getItem('escalalivre-state'),savedBytes);
+});
+
+test('oversized invalid browser collections preserve saved bytes, live planning and recovery originals',()=>{
+  const storage=memory(),{load}=session(storage),native=load('lib/nativeDocument.ts');
+  const {useScheduleStore:store}=load('store/scheduleStore.ts'),{recovery}=load('lib/recoveryStorage.ts');
+  store.getState().setDocument(fixture(load));
+  const previous=plain(store.getState().document),savedBytes=storage.getItem('escalalivre-state');
+  const bad=fixture(load);bad.employees=Array(201).fill(null);bad.extra='x'.repeat(native.MAX_NATIVE_BYTES);
+  const contents=JSON.stringify(bad);assert.ok(native.nativeBytes(contents)>native.MAX_NATIVE_BYTES);
+  assert.throws(()=>store.getState().importDocument(bad),/inválido/);
+  assert.throws(()=>store.getState().restoreRecovery(contents),/inválido/);
+  recovery.storage.setItem('escalalivre-state',{version:2,state:{document:bad}});
+  assert.equal(recovery.getSnapshot().phase,'write-error');
+  assert.equal(storage.getItem('escalalivre-state'),savedBytes);
+  assert.deepEqual(plain(store.getState().document),previous);
+  const corrupt=saved(bad);
+  storage.setItem('escalalivre-state',corrupt);
+  storage.setItem('escalalivre-recovery',JSON.stringify({version:1,copies:[{contents:JSON.stringify(previous),reason:'Cópia válida'}]}));
+  const fresh=session(storage),{useScheduleStore:restored}=fresh.load('store/scheduleStore.ts');
+  assert.deepEqual(plain(restored.getState().document),previous);
+  const status=fresh.load('lib/recoveryStorage.ts').recovery.getSnapshot();
+  assert.equal(status.protected,true);
+  assert.ok(status.copies.some(copy=>copy.contents===corrupt&&copy.original));
+  assert.equal(storage.getItem('escalalivre-state'),corrupt);
+});
+
+test('Zod upgrade preserves Guid formats, optional/null fields and civil/duration migrations across native and browser recovery',()=>{
+  const {load}=session(memory()),native=load('lib/nativeDocument.ts'),{parseRecoveryDocument}=load('lib/recoveryStorage.ts');
+  const d=fixture(load);d.id='11111111-1111-1111-1111-111111111111';
+  d.company.defaultWorkload.defaultShiftDuration='1.00:00:00';
+  d.company.minimumRest='1.00:00:00';
+  d.company.coverage[0].daysMode=null;
+  d.assignments[0].break=null;
+  d.assignments[0].start='2026-05-18T22:00:01';d.assignments[0].end='2026-05-19T06:00:02';
+  delete d.company.holidays;delete d.company.middayClosure;
+  delete d.employees[0].shiftStartsAt;delete d.employees[0].fixedInterval;
+  const canonical=native.parseNativeText(JSON.stringify(d));
+  assert.equal(canonical.id,d.id);
+  assert.equal(canonical.company.defaultWorkload.defaultShiftDuration,'24:00:00');
+  assert.equal(canonical.company.minimumRest,'24:00:00');
+  assert.equal(canonical.company.coverage[0].daysMode,undefined);
+  assert.equal(canonical.assignments[0].break,undefined);
+  assert.equal(canonical.assignments[0].start,d.assignments[0].start);
+  assert.equal(canonical.assignments[0].end,d.assignments[0].end);
+  assert.deepEqual(plain(parseRecoveryDocument(JSON.stringify(d))),plain(canonical));
+  assert.deepEqual(plain(native.parseNativeText(native.serializeNative(canonical))),plain(canonical));
+  for(const invalid of ['00000000-0000-0000-0000-000000000000','not-a-guid'])
+    assert.throws(()=>native.validateNativeDocument({...d,id:invalid}),/inválido/);
+  const unsupported=fixture(load);unsupported.employees[0].fixedInterval=null;
+  assert.throws(()=>native.validateNativeDocument(unsupported),/inválido/);
+});

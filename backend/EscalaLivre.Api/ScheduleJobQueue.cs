@@ -1,5 +1,4 @@
 using System.Security.Cryptography;
-using System.Text.Json;
 using EscalaLivre.Application.Contracts;
 
 namespace EscalaLivre.Api;
@@ -15,61 +14,84 @@ public sealed record JobProgress(string Id, string State, int Position, int Jobs
 
 // One process, bounded memory, FIFO. Tokens are bearer secrets; never log job IDs or documents.
 public sealed class ScheduleJobQueue(ICalculationRunner runner, ProtectionOptions options,
-    ILogger<ScheduleJobQueue> logger) : BackgroundService
+    ILogger<ScheduleJobQueue> logger, TimeProvider? timeProvider = null) : BackgroundService
 {
-    private sealed class Job(string id, ScheduleRequest request)
+    private sealed class Job(string id, byte[] request, DateTimeOffset created)
     {
         public string Id { get; } = id;
-        public ScheduleRequest? Request = request;
-        public DateTimeOffset Created = DateTimeOffset.UtcNow;
+        public byte[]? Payload = request;
+        public DateTimeOffset Created = created;
         public DateTimeOffset? Started, Finished;
         public string State = "queued";
-        public ScheduleResult? Result;
         public string? Error;
-        public CancellationTokenSource Cancellation = new();
+        public CancellationTokenSource? Cancellation;
+        public long PayloadCharge = JobPayload.MaximumBytes;
     }
 
     private readonly object gate = new();
     private readonly List<Job> jobs = [];
-    private readonly SemaphoreSlim available = new(0);
+    // Coalesced wake-ups: cancelled queued jobs cannot accumulate semaphore permits.
+    private readonly SemaphoreSlim available = new(0, 1);
+    private readonly TimeProvider clock = timeProvider ?? TimeProvider.System;
+    private long payloadCharge;
     private double averageSeconds = 8;
     private bool stopping;
+
+    internal (int Tickets, long PayloadBytes) RetentionUsage
+    {
+        get { lock (gate) return (jobs.Count, payloadCharge); }
+    }
 
     public JobProgress Enqueue(ScheduleRequest request)
     {
         lock (gate)
         {
             Prune();
-            if (stopping || jobs.Count >= 32 || jobs.Count(j => j.State == "queued") >= options.JobQueueLimit)
+            if (stopping || jobs.Count >= options.JobRetentionLimit
+                || jobs.Count(j => j.State == "queued") >= options.JobQueueLimit
+                || payloadCharge + JobPayload.MaximumBytes > options.JobPayloadBudgetMb * 1024L * 1024)
                 throw new ApiFailure(503, "queueFull", "A fila de geração está cheia. Aguarde um pouco e tente novamente.");
-            var job = new Job(Convert.ToHexString(RandomNumberGenerator.GetBytes(32)).ToLowerInvariant(), request);
+            var job = new Job(Convert.ToHexString(RandomNumberGenerator.GetBytes(32)).ToLowerInvariant(),
+                JobPayload.Serialize(request), clock.GetUtcNow());
             jobs.Add(job);
-            available.Release();
+            payloadCharge += job.PayloadCharge;
+            Signal();
             return Snapshot(job);
         }
     }
 
     public JobProgress Get(string id)
     {
-        lock (gate) { Prune(); return Snapshot(Find(id)); }
+        JobProgress progress;
+        byte[]? result;
+        lock (gate)
+        {
+            Prune();
+            var job = Find(id);
+            progress = Snapshot(job);
+            result = job.State == "completed" ? job.Payload : null;
+        }
+        return WithResult(progress, result);
     }
 
     public JobProgress Cancel(string id)
     {
+        JobProgress progress;
+        byte[]? result;
         lock (gate)
         {
             Prune();
             var job = Find(id);
             if (job.State == "queued")
             {
-                job.Request = null;
-                job.State = "cancelled";
-                job.Finished = DateTimeOffset.UtcNow;
+                Finish(job, "cancelled", null, null);
             }
             // A running slot stays occupied until the calculation process really exits.
-            job.Cancellation.Cancel();
-            return Snapshot(job);
+            if (job.State == "processing") job.Cancellation!.Cancel();
+            progress = Snapshot(job);
+            result = job.State == "completed" ? job.Payload : null;
         }
+        return WithResult(progress, result);
     }
 
     private Job Find(string id) => jobs.FirstOrDefault(j => j.Id == id)
@@ -77,16 +99,41 @@ public sealed class ScheduleJobQueue(ICalculationRunner runner, ProtectionOption
 
     private void Prune()
     {
-        foreach (var job in jobs.Where(j => j.Finished < DateTimeOffset.UtcNow.AddMinutes(-2)).ToArray())
+        var expiry = clock.GetUtcNow().AddMinutes(-2);
+        foreach (var job in jobs.Where(j => j.Finished <= expiry).ToArray())
         {
             jobs.Remove(job);
-            job.Cancellation.Dispose();
+            payloadCharge -= job.PayloadCharge;
+            job.Payload = null;
         }
+    }
+
+    private static JobProgress WithResult(JobProgress progress, byte[]? result) => result is null
+        ? progress : progress with { Result = JobPayload.Deserialize<ScheduleResult>(result) };
+
+    private void Signal()
+    {
+        if (available.CurrentCount == 0) available.Release();
+    }
+
+    // Terminal publication is atomic under gate. Running jobs reach here only
+    // after the runner has returned (and reaped its child).
+    private void Finish(Job job, string state, byte[]? result, string? error)
+    {
+        payloadCharge -= job.PayloadCharge;
+        job.PayloadCharge = result?.Length ?? 0;
+        payloadCharge += job.PayloadCharge;
+        job.Payload = result;
+        job.Error = error;
+        job.State = state;
+        job.Finished = clock.GetUtcNow();
+        job.Cancellation?.Dispose();
+        job.Cancellation = null;
     }
 
     private JobProgress Snapshot(Job job)
     {
-        var now = DateTimeOffset.UtcNow;
+        var now = clock.GetUtcNow();
         var earlier = jobs.TakeWhile(j => j != job).Count(j => j.State == "queued");
         var running = jobs.Count(j => j.State == "processing");
         var queued = job.State == "queued";
@@ -95,7 +142,7 @@ public sealed class ScheduleJobQueue(ICalculationRunner runner, ProtectionOption
             queued ? (int)Math.Ceiling((earlier + running) / (double)options.ConcurrentWorkers) * runEstimate : 0,
             runEstimate, (int)((job.Finished ?? now) - job.Created).TotalSeconds,
             job.Started is { } start ? (int)((job.Finished ?? now) - start).TotalSeconds : 0,
-            options.WorkerTimeoutSeconds, 3, job.Result, job.Error);
+            options.WorkerTimeoutSeconds, 3, Error: job.Error);
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken) =>
@@ -103,7 +150,7 @@ public sealed class ScheduleJobQueue(ICalculationRunner runner, ProtectionOption
 
     private async Task Cleanup(CancellationToken cancellation)
     {
-        using var timer = new PeriodicTimer(TimeSpan.FromSeconds(30));
+        using var timer = new PeriodicTimer(TimeSpan.FromSeconds(30), clock);
         try { while (await timer.WaitForNextTickAsync(cancellation)) { lock (gate) Prune(); } }
         catch (OperationCanceledException) when (cancellation.IsCancellationRequested) { }
     }
@@ -115,48 +162,57 @@ public sealed class ScheduleJobQueue(ICalculationRunner runner, ProtectionOption
             try { await available.WaitAsync(stoppingToken); }
             catch (OperationCanceledException) { break; }
             Job? job;
-            ScheduleRequest request;
+            byte[] request;
             lock (gate)
             {
                 job = jobs.FirstOrDefault(j => j.State == "queued");
                 if (job is null) continue;
-                request = job.Request!;
-                job.Request = null;
+                request = job.Payload!;
+                job.Payload = null;
                 job.State = "processing";
-                job.Started = DateTimeOffset.UtcNow;
+                job.Started = clock.GetUtcNow();
+                job.Cancellation = new();
+                if (jobs.Any(j => j.State == "queued")) Signal();
             }
-            using var linked = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken, job.Cancellation.Token);
+            byte[]? result = null;
+            string? errorMessage = null;
+            string state = "completed";
             try
             {
-                var result = await runner.RunAsync("solve", request, linked.Token);
-                // Retention is capped at 32 jobs / 4 MiB per result / two minutes.
-                if (JsonSerializer.SerializeToUtf8Bytes(result, ScheduleJson.CreateOptions()).Length > 4 * 1024 * 1024)
-                    throw new ApiFailure(422, "resultLimit", "O resultado é muito grande. Reduza o período ou a equipe.");
-                lock (gate)
-                {
-                    if (linked.IsCancellationRequested) job.State = "cancelled";
-                    else { job.Result = result; job.State = "completed"; }
-                    averageSeconds = averageSeconds * 0.75 + Math.Min(options.WorkerTimeoutSeconds,
-                        (DateTimeOffset.UtcNow - job.Started!.Value).TotalSeconds) * 0.25;
-                }
+                using var linked = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken, job.Cancellation.Token);
+                var input = JobPayload.Deserialize<ScheduleRequest>(request);
+                request = [];
+                result = JobPayload.Serialize(await runner.RunAsync("solve", input, linked.Token));
             }
-            catch (OperationCanceledException) { lock (gate) job.State = "cancelled"; }
+            catch (OperationCanceledException) { state = "cancelled"; }
             catch (Exception error)
             {
-                lock (gate)
-                {
-                    job.State = "failed";
-                    job.Error = error is ApiFailure failure ? failure.Message : "Não foi possível concluir a geração. Tente novamente.";
-                }
+                state = "failed";
+                errorMessage = error is ApiFailure failure ? failure.Message : "Não foi possível concluir a geração. Tente novamente.";
+                errorMessage = errorMessage[..Math.Min(errorMessage.Length, 512)];
                 logger.LogWarning("Queued calculation failed: {Type}", error.GetType().Name);
             }
-            finally { lock (gate) job.Finished = DateTimeOffset.UtcNow; }
+            lock (gate)
+            {
+                if (stoppingToken.IsCancellationRequested || job.Cancellation!.IsCancellationRequested)
+                { state = "cancelled"; errorMessage = null; }
+                if (state == "completed")
+                    averageSeconds = averageSeconds * 0.75 + Math.Min(options.WorkerTimeoutSeconds,
+                        (clock.GetUtcNow() - job.Started!.Value).TotalSeconds) * 0.25;
+                Finish(job, state, state == "completed" ? result : null, errorMessage);
+            }
+            request = [];
+            result = null;
         }
     }
 
     public override Task StopAsync(CancellationToken cancellationToken)
     {
-        lock (gate) stopping = true;
+        lock (gate)
+        {
+            stopping = true;
+            foreach (var job in jobs.Where(j => j.State == "queued")) Finish(job, "cancelled", null, null);
+        }
         return base.StopAsync(cancellationToken);
     }
 }
