@@ -1,7 +1,7 @@
 import { civilDateTime } from "./dateTime";
 import { regimeDefinition } from "./regimes";
 import { datePart, displayClock } from "./dateTime";
-import type { CoverageRequirement, Employee, EscalaLivreDocument, ShiftAssignment } from "../types/schedule";
+import type { Employee, EscalaLivreDocument, ShiftAssignment } from "../types/schedule";
 
 export const dayLabels = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
 export const timelineStartHour = 7;
@@ -43,27 +43,6 @@ export function regimeLabel(employee: Employee) {
 
 export function assignmentForEmployee(document: EscalaLivreDocument, employeeId: string) {
   return document.assignments.filter((assignment) => assignment.employeeId === employeeId);
-}
-
-export function coverageForRequirement(document: EscalaLivreDocument, requirement: CoverageRequirement) {
-  const requiredStart = timeToHour(requirement.start);
-  const requiredEnd = timeToHour(requirement.end);
-  const covered = document.assignments.filter((assignment) => {
-    const start = dateToTimelineHour(assignment.start);
-    const end = dateToTimelineHour(assignment.end, datePart(assignment.start));
-    const weekday = new Date(assignment.start).getDay();
-    const effectiveEnd = requiredEnd <= requiredStart ? requiredEnd + 24 : requiredEnd;
-    const pauseStart = assignment.break ? dateToTimelineHour(assignment.break.start, datePart(assignment.start)) : Infinity;
-    const pauseEnd = assignment.break ? dateToTimelineHour(assignment.break.end, datePart(assignment.start)) : Infinity;
-    return weekday === requirement.day && assignment.role === requirement.role && start <= requiredStart && end >= effectiveEnd
-      && (!assignment.break || pauseEnd <= requiredStart || pauseStart >= effectiveEnd);
-  }).length;
-
-  return {
-    covered,
-    missing: Math.max(0, requirement.minimumEmployees - covered),
-    ratio: requirement.minimumEmployees === 0 ? 1 : covered / requirement.minimumEmployees
-  };
 }
 
 export function assignmentLabel(assignment: ShiftAssignment) {

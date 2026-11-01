@@ -15,7 +15,6 @@
     "@fullcalendar/interaction": "^6.1.17",
     "@fullcalendar/react": "^6.1.17",
     "@fullcalendar/timegrid": "^6.1.17",
-    "@tanstack/react-query": "^5.76.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.511.0",
     "react": "^19.1.0",

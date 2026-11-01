@@ -31,12 +31,3 @@ export function syncOperatingCoverage(previous: CompanyRules, next: CompanyRules
       end: !rule.allowsOutsideHours && rule.end === previous.closesAt ? next.closesAt : rule.end };
   }));
 }
-
-export function middayClosureFor(company: CompanyRules, day: Date) {
-  if (!company.middayClosure) return undefined;
-  const at = (time: string) => { const result = new Date(day); const [h,m,s] = time.split(":").map(Number); result.setHours(h,m,s ?? 0,0); return result; };
-  const opening = at(company.opensAt), start = at(company.middayClosure.start), end = at(company.middayClosure.end);
-  if (start < opening) start.setDate(start.getDate()+1);
-  if (end <= start) end.setDate(end.getDate()+1);
-  return { start: +start, end: +end };
-}
