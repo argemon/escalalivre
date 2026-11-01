@@ -29,9 +29,13 @@ public sealed class PlanningPeriodTests
     [Fact]
     public void LegacyImportMigratesWithoutAssignments()
     {
-        var bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(Document(), new JsonSerializerOptions(JsonSerializerDefaults.Web)));
+        var document = Document();
+        var zone = TimeZoneInfo.FindSystemTimeZoneById(document.Company.TimeZone);
+        var before = DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, zone).DateTime);
+        var bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(document, new JsonSerializerOptions(JsonSerializerDefaults.Web)));
         var migrated = new NativeScheduleSerializer().Import(new("legacy.escalalivre",Convert.ToBase64String(bytes),"native"));
-        Assert.Equal(DateOnly.FromDateTime(DateTime.Today), migrated.PlanningPeriod!.Start);
+        var after = DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, zone).DateTime);
+        Assert.InRange(migrated.PlanningPeriod!.Start, before, after);
         Assert.Equal(migrated.PlanningPeriod.Start.AddDays(6), migrated.PlanningPeriod.End);
     }
 
