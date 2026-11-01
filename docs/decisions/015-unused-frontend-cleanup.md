@@ -39,3 +39,14 @@ após falha EPERM na tentativa restrita. O build frontend emite avisos sobre
 comentários de anotação em Zod; a biblioteca não foi alterada nesta limpeza.
 A CI remota do novo diff ainda é necessária antes da integração. Não houve
 publicação nem medição de ganho de desempenho.
+
+## Correção da expectativa de teste encontrada na CI
+
+A primeira execução remota do PR #8 (Validate #32) identificou uma falha em
+`LegacyImportMigratesWithoutAssignments`: o teste usava `DateTime.Today` do
+servidor UTC, enquanto a importação usa a data civil da empresa em America/Cuiaba.
+Nesse horário, o servidor já estava em 01/11 e a empresa ainda em 31/10.
+A correção, em commit separado, compara com a data no fuso da empresa antes e
+depois da importação, tolerando somente a eventual passagem da meia-noite durante
+a operação. Produção e regras não mudaram. Os 379 testes de adaptador passaram
+localmente com TZ=UTC após a correção; a nova execução remota valida o diff completo.
