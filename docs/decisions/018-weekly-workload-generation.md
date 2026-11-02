@@ -91,3 +91,18 @@ A busca também compara incumbentes pela cobertura canônica, crédito normal e 
 Ambiente: Windows, SDK .NET 10.0.401 e Node 24.14.1, dependências locais existentes. Os resultados não certificam Ubuntu/Node 22, desempenho representativo nem revisão visual em navegador real. A busca permanece discreta e limitada; pode devolver déficit ou falhar preservando o documento mesmo quando houver solução matemática não encontrada.
 
 **CI remota completa pendente antes de integrar.** Não foi disparada CI para esse diff local: a sessão mantém as alterações sem commit/push, conforme solicitado. Não houve integração ou publicação. A matriz local executada não é apresentada como validação completa de CI. Os registros históricos das etapas 1/2 permanecem preservados; seus números e estados não descrevem o novo diff.
+
+## Seguimento — integração autorizada
+
+Após a conclusão das três etapas, o usuário autorizou expressamente o commit,
+o envio e a integração de todas as alterações à main, sem nova confirmação.
+As restrições anteriores de não commitar/integrar e o estado de CI pendente acima
+registram o momento da entrega local; foram sucedidos por essa autorização.
+
+O [PR #9](https://github.com/argemon/escalalivre/pull/9) reúne as três etapas e
+preserva o histórico das decisões. A integração exige aprovação integral do
+workflow Validate para seu head atual, incluindo frontend, domínio/análise,
+adaptador, arquitetura/API, HTTP/worker e paridade nos dois fusos. A evidência
+remota e a efetivação ficam vinculadas aos
+[checks do PR](https://github.com/argemon/escalalivre/pull/9/checks) e ao seu estado
+de merge. Não se presume CI aprovada apenas por criar o PR ou enviar a branch.
