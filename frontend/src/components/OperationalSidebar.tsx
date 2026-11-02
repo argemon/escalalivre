@@ -1,4 +1,5 @@
 import { formatDuration } from "../lib/duration";
+import { formatCoverageDays, groupCoverageForDisplay } from "../lib/coverageDisplay";
 import { AlertTriangle, ArrowRight, Check, Clock3, ShieldCheck, Users } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { RolesEditor } from "./RolesEditor";
@@ -67,8 +68,8 @@ export function OperationalSidebar() {
           <SectionTitle icon={<ShieldCheck className="size-4" />} title="Cobertura mínima" /><Button className="w-full" disabled={!document.roles?.length} onClick={() => setEditor("coverage")}>Editar cobertura mínima</Button>
           {!document.roles?.length && <p className="text-sm text-muted-foreground">Primeiro, complete a etapa 2: Funções.</p>}
           {!document.company.coverage.length && <p className="text-sm text-muted-foreground">Nenhuma cobertura definida. Informe quantas pessoas são necessárias por função e horário.</p>}
-          {document.company.coverage.map((requirement,index) => {
-            const blocks = analysis.coverage.filter(b => b.role === requirement.role && new Date(b.start).getDay() === requirement.day && (() => {
+          {groupCoverageForDisplay(document.company.coverage).map(({ requirement, days },index) => {
+            const blocks = analysis.coverage.filter(b => b.role === requirement.role && days.includes(new Date(b.start).getDay()) && (() => {
               const minute = (v: string) => { const [h,m] = v.split(":").map(Number); return h*60+m; };
               const start = minute(requirement.start), end = minute(requirement.end), date = new Date(b.start), at = date.getHours()*60+date.getMinutes();
               return end > start ? at >= start && at < end : at >= start || at < end;
@@ -80,14 +81,15 @@ export function OperationalSidebar() {
               <article key={index} className="rounded-md border border-border bg-background p-3">
                 <div className="flex items-center justify-between gap-2">
                   <div>
-                    <p className="text-sm font-medium capitalize">{requirement.role}</p>{outsideOperatingHours(document.company,requirement.day,requirement.start,requirement.end) && <p className="text-xs font-semibold text-amber-600">Fora do expediente · {requirement.allowsOutsideHours ? "Autorizado" : "Revisar autorização"}</p>}
-                    <p className="text-xs text-muted-foreground">{dayLabels[requirement.day]} {requirement.start.slice(0, 5)}-{requirement.end.slice(0, 5)}</p>
+                    <p className="text-sm font-medium capitalize">{requirement.role}</p>{days.some(day => outsideOperatingHours(document.company,day,requirement.start,requirement.end)) && <p className="text-xs font-semibold text-amber-600">Fora do expediente · {requirement.allowsOutsideHours ? "Autorizado" : "Revisar autorização"}</p>}
+                    <p className="text-xs text-muted-foreground">{formatCoverageDays(days)} · {requirement.start.slice(0, 5)}–{requirement.end.slice(0, 5)}</p>
                   </div>
-                  <span className={`text-sm font-semibold ${state}`}>{coverage.covered}/{requirement.minimumEmployees}</span>
+                  <span className={`text-sm font-semibold ${state}`} title={days.length > 1 ? "Menor cobertura entre os dias agrupados" : "Cobertura mínima atendida"}>{coverage.covered}/{requirement.minimumEmployees}</span>
                 </div>
                 <div className="mt-3 h-1.5 rounded bg-muted">
                   <div className={`h-1.5 rounded ${coverage.missing > 0 ? "bg-red-500" : "bg-emerald-500"}`} style={{ width: `${Math.min(100, coverage.ratio * 100)}%` }} />
                 </div>
+                {days.length > 1 && coverage.missing > 0 && <p className="mt-2 text-xs text-muted-foreground">Há falta de pessoas em parte desses dias. Confira em Onde faltam pessoas.</p>}
               </article>
             );
           })}

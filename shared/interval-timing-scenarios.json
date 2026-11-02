@@ -1,0 +1,10 @@
+{
+  "scenarios": [
+    { "id": "one-hour-each-side", "start": "2026-11-09T07:30:00", "beforeSeconds": 3600, "pauseSeconds": 3600, "afterSeconds": 3600, "allowed": true },
+    { "id": "one-second-too-early", "start": "2026-11-09T07:30:00", "beforeSeconds": 3599, "pauseSeconds": 3600, "afterSeconds": 3600, "allowed": false },
+    { "id": "one-second-too-late", "start": "2026-11-09T07:30:00", "beforeSeconds": 3600, "pauseSeconds": 3600, "afterSeconds": 3599, "allowed": false },
+    { "id": "old-one-minute-edge", "start": "2026-11-09T07:30:00", "beforeSeconds": 60, "pauseSeconds": 7200, "afterSeconds": 28740, "allowed": false },
+    { "id": "night-margin", "start": "2026-11-09T22:00:00", "beforeSeconds": 14400, "pauseSeconds": 3600, "afterSeconds": 10800, "allowed": true },
+    { "id": "short-shift-without-pause", "start": "2026-11-09T07:30:00", "beforeSeconds": 3600, "pauseSeconds": 0, "afterSeconds": 0, "allowed": true }
+  ]
+}

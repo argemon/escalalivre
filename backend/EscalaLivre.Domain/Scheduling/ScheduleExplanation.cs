@@ -18,6 +18,8 @@ public static class ScheduleExplanation
             {
                 factors.Add($"intervalo otimizado entre {assignment.Break.Start:HH\\hmm} e {assignment.Break.End:HH\\hmm}");
             }
+            if (assignment.Tags.Contains("interval-anticipated-for-coverage"))
+                factors.Add("intervalo antecipado em relação ao tempo preferencial para reduzir a falta de cobertura");
 
             yield return new SolverDecision(
                 assignment.Id,

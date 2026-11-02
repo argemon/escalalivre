@@ -2,6 +2,12 @@ import { civilDay, civilMillis, civilString, clockMillis, endOn } from "../civil
 import { workMillis } from "./effectiveWork";
 import type { CompanyRules, Employee, ShiftAssignment } from "../../types/schedule";
 export const requiredBreakMinutes=(work:number)=>work>360?60:work>240?15:0;
+// Operational generation margin; it is not a statutory numerical minimum.
+export const generationPauseMarginMillis=3600000;
+export function hasWorkAroundPause(a:ShiftAssignment):boolean {
+  return !a.break || (civilMillis(a.break.start)-civilMillis(a.start)>=generationPauseMarginMillis
+    && civilMillis(a.end)-civilMillis(a.break.end)>=generationPauseMarginMillis);
+}
 export function closureOn(company:CompanyRules,day:number):{start:number;end:number}|undefined {
   if(!company.middayClosure)return undefined;
   const c=company.middayClosure;const date=day+(clockMillis(c.start)<clockMillis(company.opensAt)?86400000:0);

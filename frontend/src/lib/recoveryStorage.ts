@@ -107,7 +107,7 @@ export function createRecoveryStorage(provider:()=>BrowserStorage = ()=>window.l
       } catch(error) {
         if(raw!==null)addCopy(raw,"Conteúdo original do navegador",true);
         readCopies();
-        publish({phase:raw===null?"read-error":"invalid",protected:true,message:raw===null?"Não foi possível ler o armazenamento. Os dados disponíveis podem ser exportados e as cópias podem ser recuperadas.":"O documento do navegador é inválido. O conteúdo original foi preservado para download; use uma cópia válida para recuperar o planejamento."});
+        publish({phase:raw===null?"read-error":"invalid",protected:true,message:raw===null?"Não foi possível ler o armazenamento. Os dados disponíveis podem ser exportados e as cópias podem ser recuperadas.":"O documento do navegador é inválido. O conteúdo original foi preservado para baixar; use uma cópia válida para recuperar o planejamento."});
         const backup=status.copies.find(c=>c.restorable);
         if(backup) {
           try {publish({message:status.message+" Uma cópia válida foi carregada nesta sessão."});return {version:2,state:{document:parseRecoveryDocument(backup.contents),theme:"light",viewMode:"timeline"}};}catch{/* Keep original contents available. */}

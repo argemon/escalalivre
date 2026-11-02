@@ -1,0 +1,12 @@
+{
+  "scenarios": [
+    { "id": "same-routine", "aDay": "2026-11-09", "bDay": "2026-11-13", "aPause": "11:00:01", "bPause": "11:00:01", "aSeconds": 3600, "bSeconds": 3600, "allowed": true },
+    { "id": "daily-change", "aDay": "2026-11-09", "bDay": "2026-11-10", "aPause": "11:00:00", "bPause": "12:00:00", "aSeconds": 3600, "bSeconds": 3600, "allowed": false },
+    { "id": "one-second-change", "aDay": "2026-11-09", "bDay": "2026-11-10", "aPause": "11:00:00", "bPause": "11:00:01", "aSeconds": 3600, "bSeconds": 3600, "allowed": false },
+    { "id": "duration-change", "aDay": "2026-11-09", "bDay": "2026-11-10", "aPause": "11:00:00", "bPause": "11:00:00", "aSeconds": 3600, "bSeconds": 3601, "allowed": false },
+    { "id": "saturday-sunday", "aDay": "2026-11-14", "bDay": "2026-11-15", "aPause": "11:00:00", "bPause": "12:00:00", "aSeconds": 3600, "bSeconds": 3600, "allowed": true },
+    { "id": "sunday-monday", "aDay": "2026-11-08", "bDay": "2026-11-09", "aPause": "11:00:00", "bPause": "12:00:00", "aSeconds": 3600, "bSeconds": 3600, "allowed": false },
+    { "id": "no-pause-short-shift", "aDay": "2026-11-09", "bDay": "2026-11-10", "aPause": "11:00:00", "bPause": null, "aSeconds": 3600, "bSeconds": 0, "allowed": true },
+    { "id": "night-routine", "aDay": "2026-11-09", "bDay": "2026-11-10", "aPause": "02:00:00", "bPause": "02:00:00", "aSeconds": 3600, "bSeconds": 3600, "night": true, "allowed": true }
+  ]
+}

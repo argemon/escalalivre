@@ -29,6 +29,22 @@ public sealed class GenerationConformanceTests
             new ScheduleAnalyzer(new ScheduleEvaluator())).Execute(r);
 
     [Fact]
+    public void OptimizerCannotApplyDailyLunchChangesAndOriginalDocumentSurvives()
+    {
+        var r = Request() with { End = Monday.AddDays(1) };
+        var original = Shift(r, Monday.AddHours(8));
+        r = r with { Document = r.Document with { Assignments = [original] } };
+        var a = Shift(r, Monday.AddHours(8)) with { Break = new(Monday.AddHours(9), Monday.AddHours(9.25)) };
+        var b = Shift(r, Monday.AddDays(1).AddHours(8)) with
+        { Break = new(Monday.AddDays(1).AddHours(8.5), Monday.AddDays(1).AddHours(8.75)) };
+        var result = Generate(r, [a, b]);
+        Assert.Equal("invalid", result.Optimization?.Status);
+        Assert.Same(r.Document.Assignments, result.Assignments);
+        Assert.Empty(result.Decisions);
+        Assert.Contains(result.Conflicts, i => i.Code == "solverInvalid");
+    }
+
+    [Fact]
     public void ANewShiftErrorIsRejectedAndOriginalDiagnosticsDescribeTheReturnedDocument()
     {
         var r = Request();var bad = Shift(r, Monday.AddHours(8), 5);

@@ -22,12 +22,12 @@ function document(start='2026-10-21T09:00:00',end='2026-10-21T18:00:00',pause={s
   d.assignments=[{...d.assignments[0],start,end,break:pause,tags:['holiday:2026-10-21']}];return d;
 }
 test('legacy UTC and offset timestamps convert in the company zone independently of the device zone',()=>{
-  assert.equal(time.civilDateTime('2026-10-21T13:00:00Z'),'2026-10-21T09:00:00');
-  assert.equal(time.civilDateTime('2026-10-21T09:00:00-04:00'),'2026-10-21T09:00:00');
+  assert.equal(time.civilDateTime('2026-10-21T13:00:00Z','America/Cuiaba'),'2026-10-21T09:00:00');
+  assert.equal(time.civilDateTime('2026-10-21T09:00:00-04:00','America/Cuiaba'),'2026-10-21T09:00:00');
   assert.equal(time.civilDateTime('2026-10-21T13:00:00Z','Asia/Tokyo'),'2026-10-21T22:00:00');
-  assert.equal(time.datePart('2026-10-21T02:00:00Z'),'2026-10-20');
-  assert.equal(time.displayClock('2026-10-21T02:00:00Z'),'22:00');
-  assert.equal(time.dateTimeInput('2026-10-21T13:00:00Z'),'2026-10-21T09:00');
+  assert.equal(time.datePart('2026-10-21T02:00:00Z','America/Cuiaba'),'2026-10-20');
+  assert.equal(time.displayClock('2026-10-21T02:00:00Z','America/Cuiaba'),'22:00');
+  assert.equal(time.dateTimeInput('2026-10-21T13:00:00Z','America/Cuiaba'),'2026-10-21T09:00');
   assert.throws(()=>time.civilDateTime('2026-02-30T13:00:00Z'));
 });
 test('09h survives calendar movement, export, import and the API payload',async()=>{
@@ -84,8 +84,16 @@ test('a version-1 browser document migrates UTC shifts once and persists version
 });
 test('older API responses normalize shift, pause and analysis times before entering state',()=>{
   const a=document('2026-10-21T13:00:00Z','2026-10-21T22:00:00Z',{start:'2026-10-21T17:00:00Z',end:'2026-10-21T18:00:00Z'}).assignments[0];
-  const result=time.normalizeResultTimes({assignments:[a],coverage:[{start:a.start,end:a.end}],gaps:[],conflicts:[],decisions:[],hiringSuggestions:[],optimizationSuggestions:[],coverageScore:1});
+  const result=time.normalizeResultTimes({assignments:[a],coverage:[{start:a.start,end:a.end}],gaps:[],conflicts:[],decisions:[],hiringSuggestions:[],optimizationSuggestions:[],coverageScore:1},'America/Cuiaba');
   assert.equal(result.assignments[0].start,'2026-10-21T09:00:00');
   assert.equal(result.assignments[0].break.start,'2026-10-21T13:00:00');
   assert.equal(result.coverage[0].start,'2026-10-21T09:00:00');
 });
+
+ test('new documents and qualified inputs follow the device clock',()=>{
+ const {emptyDocument}=load('data/sample.ts');
+ assert.equal(emptyDocument().company.timeZone,Intl.DateTimeFormat().resolvedOptions().timeZone);
+ const instant=new Date('2026-10-21T13:00:00Z');
+ assert.equal(time.civilDateTime(instant.toISOString()),time.formatCivilDateTime(instant));
+ assert.equal(time.civilDateTime('2026-10-21T09:00:00'),'2026-10-21T09:00:00');
+ });

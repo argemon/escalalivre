@@ -2,6 +2,7 @@ import { dateTimeInput } from "../lib/dateTime";
 import { regimeChoices, regimeDefinition } from "../lib/regimes";
 import { TimeInput } from "./TimeInput";
 import { DurationInput } from "./DurationInput";
+import { durationToHours, hoursToDuration } from "../lib/duration";
 import { useEditorDismiss } from "../lib/useEditorDismiss";
 import { useState, type FormEvent, type ReactNode } from "react";
 import { useScheduleStore } from "../store/scheduleStore";
@@ -52,8 +53,8 @@ function EmployeeForm({ initial, isNew }: { initial: Employee; isNew: boolean })
     if (!result.success) { setError(result.error.issues[0].message); return; }
     upsertEmployee(employee);
   }
-  return <div className="absolute inset-0 z-30 flex justify-end bg-black/40" {...backdrop}>
-    <aside role="dialog" aria-modal="true" aria-label={isNew ? "Adicionar funcionário" : "Editar funcionário"} className="h-full w-full max-w-md border-l border-border bg-card shadow-2xl" onClick={e => e.stopPropagation()} onKeyDown={e => { if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); requestClose(); } }}>
+  return <div className="absolute inset-0 z-30 flex justify-start bg-black/40" {...backdrop}>
+    <aside role="dialog" aria-modal="true" aria-label={isNew ? "Adicionar funcionário" : "Editar funcionário"} className="h-full w-full max-w-md border-r border-border bg-card shadow-2xl" onClick={e => e.stopPropagation()} onKeyDown={e => { if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); requestClose(); } }}>
       <form onSubmit={save} className="flex h-full flex-col">
         <header className="flex items-center justify-between border-b border-border p-5"><h2 className="text-xl font-semibold">{isNew ? "Adicionar funcionário" : "Editar funcionário"}</h2><Button type="button" onClick={requestClose}>Fechar</Button></header>
         <div className="min-h-0 flex-1 space-y-4 overflow-auto p-5">
@@ -67,7 +68,11 @@ function EmployeeForm({ initial, isNew }: { initial: Employee; isNew: boolean })
           <p className="text-xs text-muted-foreground">{draft.inheritsCompanyDefaults ? "Dias e jornada acompanham o padrão da empresa." : "Selecione os dias em que pode trabalhar. A empresa também precisa estar aberta nesse dia."} São dias permitidos; a escala ainda respeita jornada e descanso.</p>
           <fieldset disabled={draft.inheritsCompanyDefaults} className="space-y-3 disabled:opacity-60">
             <Field label="Regime"><select value={draft.workload.regimeType} onChange={e => workload({ regimeType: e.target.value as Employee["workload"]["regimeType"] })}>{regimeChoices.map(r=><option key={r.type} value={r.type}>{r.label}</option>)}</select></Field>
-            <div className="grid grid-cols-2 gap-3"><Field label={regimeDefinition(draft.workload.regimeType).workLabel}><input type="number" required min="1" max="168" value={draft.workload.workUnits} onChange={e => workload({ workUnits: e.target.valueAsNumber })} /></Field><Field label={regimeDefinition(draft.workload.regimeType).restLabel}><input type="number" required min="0" max="168" value={draft.workload.restUnits} onChange={e => workload({ restUnits: e.target.valueAsNumber })} /></Field></div>
+            <div className="grid grid-cols-2 gap-3">{(["workUnits", "restUnits"] as const).map(unit => <Field key={unit} label={unit === "workUnits" ? regimeDefinition(draft.workload.regimeType).workLabel : regimeDefinition(draft.workload.regimeType).restLabel}>
+              {draft.workload.regimeType === "hourBased"
+                ? <DurationInput required value={hoursToDuration(draft.workload[unit])} pattern="[0-9]{1,3}:00(?::00)?" title="Informe horas inteiras no formato HH:00 (até 168 horas)." onChange={value => workload({ [unit]: durationToHours(value) })} />
+                : <input type="number" required min={unit === "workUnits" ? 1 : 0} max="168" value={draft.workload[unit]} onChange={e => workload({ [unit]: e.target.valueAsNumber })} />}
+            </Field>)}</div>
             <Field label="Limite semanal (horas)"><input type="number" required min="1" max="44" value={draft.workload.weeklyLimitHours} onChange={e => workload({ weeklyLimitHours: e.target.valueAsNumber })} /></Field>
             <Field label="Horas de trabalho por dia"><DurationInput required value={draft.workload.defaultShiftDuration} onChange={value => workload({ defaultShiftDuration: value })} /></Field>
           </fieldset>
@@ -75,8 +80,8 @@ function EmployeeForm({ initial, isNew }: { initial: Employee; isNew: boolean })
           <label className="flex gap-2"><input type="checkbox" checked={draft.allowsNightWork} onChange={e => patch({ allowsNightWork: e.target.checked })} />Permitir trabalho noturno</label>
           <fieldset><legend className="mb-2 text-sm">Folgas preferidas</legend><div className="flex flex-wrap gap-2">{dayLabels.map((day,i) => <label key={day} className="text-sm"><input type="checkbox" checked={draft.preferredDaysOff.includes(i)} onChange={e => patch({ preferredDaysOff: e.target.checked ? [...draft.preferredDaysOff,i] : draft.preferredDaysOff.filter(d => d !== i) })} /> {day}</label>)}</div></fieldset>
           <p className="text-xs text-muted-foreground">Folgas preferidas são tentativas de evitar esses dias, sem garantia. Para impedir trabalho em um dia, desmarque-o nos dias de trabalho.</p>
-          <Windows title="Períodos em que pode trabalhar" value={draft.availability} onChange={availability => patch({ availability })} />
-          <p className="text-xs text-muted-foreground">Disponibilidade: com períodos cadastrados, o turno inteiro deve caber em um deles. Sem períodos, usa os horários da empresa. São datas específicas, sem repetição semanal. Exemplo: 14/10, das 08h às 18h.</p>
+          <Windows title="Limitar trabalho a datas e horários específicos (opcional)" value={draft.availability} onChange={availability => patch({ availability })} />
+          <p className="text-xs text-muted-foreground">Deixe vazio se a pessoa segue os dias e horários de trabalho configurados acima. Preencha apenas se ela só puder trabalhar em datas e horários específicos. Exemplo: ao adicionar 14/10, das 08h às 18h, ela só poderá ser escalada dentro desse período e não nos outros dias. Adicione todos os períodos permitidos; eles não se repetem a cada semana. Para impedir apenas uma ausência, como uma consulta, use Bloqueios de horário abaixo.</p>
           <Windows title="Bloqueios de horário" value={draft.restrictions} onChange={restrictions => patch({ restrictions })} />
           <p className="text-xs text-muted-foreground">Bloqueios impedem qualquer turno que cruze o período, por exemplo uma consulta das 14h às 16h. São datas específicas, sem repetição semanal, e prevalecem sobre a disponibilidade.</p>
           <section className="space-y-2"><h3>Preferências de turno</h3><p className="text-xs text-muted-foreground">A geração tenta atender ao tipo escolhido. O peso indica prioridade: valores maiores favorecem mais essa preferência, sem garantia e sem ultrapassar regras obrigatórias. A descrição é apenas uma anotação.</p>{draft.preferences.map((p,i) => <div key={i} className="space-y-2"><Field label="Tipo de preferência"><select value={p.code} onChange={e => patch({ preferences: draft.preferences.map((v,j) => j === i ? { ...v, code: e.target.value } : v) })}>{!["opening","closing","morning","night"].includes(p.code) && <option value={p.code}>Preferência antiga sem efeito — escolha um tipo</option>}<option value="opening">Abrir a empresa</option><option value="closing">Fechar a empresa</option><option value="morning">Começar antes das 12h</option><option value="night">Trabalhar à noite (precisa estar permitido)</option></select></Field><Field label="Anotação (opcional)"><input value={p.description} onChange={e => patch({ preferences: draft.preferences.map((v,j) => j === i ? { ...v, description: e.target.value } : v) })} /></Field><Field label="Peso (prioridade)"><input type="number" min="1" step="1" required value={p.weight} onChange={e => patch({ preferences: draft.preferences.map((v,j) => j === i ? { ...v, weight: e.target.valueAsNumber } : v) })} /></Field><Button type="button" onClick={() => patch({ preferences: draft.preferences.filter((_,j) => j !== i) })}>Remover preferência</Button></div>)}<Button type="button" onClick={() => patch({ preferences: [...draft.preferences, { code: "opening", description: "", weight: 1 }] })}>Adicionar preferência</Button></section>
@@ -89,9 +94,9 @@ function EmployeeForm({ initial, isNew }: { initial: Employee; isNew: boolean })
 }
 
 function Field({ label, children }: { label: string; children: ReactNode }) {
-  return <label className="block space-y-1 text-sm"><span>{label}</span><div className="[&>input]:w-full [&>input]:rounded [&>input]:border [&>input]:border-border [&>input]:bg-background [&>input]:p-2 [&>select]:w-full [&>select]:bg-background [&>select]:p-2">{children}</div></label>;
+  return <label className="flex flex-col gap-1 text-sm"><span className="flex-1">{label}</span><div className="[&>input]:w-full [&>input]:rounded [&>input]:border [&>input]:border-border [&>input]:bg-background [&>input]:p-2 [&>select]:w-full [&>select]:bg-background [&>select]:p-2">{children}</div></label>;
 }
 function Windows({ title, value, onChange }: { title: string; value: AvailabilityWindow[]; onChange: (v: AvailabilityWindow[]) => void }) {
-  return <section className="space-y-2"><h3>{title}</h3>{value.map((w,i) => <div key={i} className="space-y-2 rounded border border-border p-2">{(["start", "end"] as const).map(k => <Field key={k} label={k === "start" ? "Início" : "Fim"}><input type="datetime-local" required value={dateTimeInput(w[k])} onChange={e => onChange(value.map((v,j) => j === i ? { ...v, [k]: e.target.value + ":00" } : v))} /></Field>)}<Button type="button" onClick={() => onChange(value.filter((_,j) => j !== i))}>Remover janela</Button></div>)}<Button type="button" onClick={() => onChange([...value, { start: "", end: "" }])}>Adicionar janela</Button></section>;
+  return <section className="space-y-2"><h3>{title}</h3>{value.map((w,i) => <div key={i} className="space-y-2 rounded border border-border p-2">{(["start", "end"] as const).map(k => <Field key={k} label={k === "start" ? "Início" : "Fim"}><input type="datetime-local" required value={dateTimeInput(w[k])} onChange={e => onChange(value.map((v,j) => j === i ? { ...v, [k]: e.target.value + ":00" } : v))} /></Field>)}<Button type="button" onClick={() => onChange(value.filter((_,j) => j !== i))}>Remover período</Button></div>)}<Button type="button" onClick={() => onChange([...value, { start: "", end: "" }])}>Adicionar período</Button></section>;
 }
 

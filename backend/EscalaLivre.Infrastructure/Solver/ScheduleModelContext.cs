@@ -12,6 +12,7 @@ public sealed class ScheduleModelContext(ScheduleModelInput input)
     internal Dictionary<Guid, BoolVar> DecisionVars { get; } = new();
     internal List<LinearExpr> ShortageTerms { get; } = [];
     internal List<LinearExpr> OccupancyTerms { get; } = [];
+    internal BoolVar? PreferUnanticipatedIntervals { get; set; }
 }
 
 public interface IScheduleConstraintTranslator

@@ -25,6 +25,14 @@ public sealed class GenerateSchedule(IScheduleOptimizer optimizer, IScheduleAnal
         {
             return Failure(request, "invalid", [Invalid(request, "O resultado da geração não preserva a estrutura e o histórico do planejamento.")]);
         }
+        var retainedIds = request.Document.Assignments
+            .Where(a => !ScheduleWindow.Contains(a, request.Start, request.End)
+                || LaborRules.AuthorizedHolidayShift(request.Document.Company, a)).Select(a => a.Id).ToHashSet();
+        var generatedIds = selected.Where(a => !retainedIds.Contains(a.Id)).Select(a => a.Id).ToHashSet();
+        if (selected.Any(a => generatedIds.Contains(a.Id) && !IntervalTimingPolicy.HasWorkAroundPause(a)))
+            return Failure(request, "invalid", [Invalid(request, "A escala gerada posiciona intervalo perto da entrada ou saída; os turnos anteriores foram preservados.")]);
+        if (!WeeklyIntervalPolicy.AllowsGeneration(assignments, generatedIds))
+            return Failure(request, "invalid", [Invalid(request, "A escala gerada varia o intervalo do funcionário dentro da mesma semana; os turnos anteriores foram preservados.")]);
         var evaluated = analyzer.Analyze(request with { Document = request.Document with { Assignments = assignments } });
         var introduced = GenerationConformance.NewErrors(request.Document, assignments, evaluated.Conflicts);
         if (introduced.Count > 0)

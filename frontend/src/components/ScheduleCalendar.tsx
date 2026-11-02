@@ -4,6 +4,7 @@ import { Button } from "./ui";
 import { holidayOn, authorizedHolidayShift } from "../lib/holidays";
 import { HolidayEditor } from "./HolidayEditor";
 import FullCalendar from "@fullcalendar/react";
+import ptBrLocale from "@fullcalendar/core/locales/pt-br";
 import type { EventDropArg } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -68,7 +69,7 @@ export function ScheduleCalendar() {
         <span>{new Set(document.employees.map(employee=>employee.role)).size} funções</span>
         <span>{document.company.coverage.length} regras de cobertura</span>
         <Button className="ml-auto h-8 px-3 text-xs" type="button" onClick={()=>{setHolidayPickerDate(visibleDate);setAddingHoliday(true);}}>Adicionar feriado</Button>
-        <details className="calendar-help"><summary>Ajuda</summary><div><p>Clique no número do dia para editar feriados e turnos especiais.</p><p>Prévia: horário estimado. Salvo: turno cadastrado ou gerado. Verde: hoje.</p></div></details>
+        <details className="calendar-help"><summary>Ajuda</summary><div><p>Clique no número do dia para editar feriados e turnos especiais.</p><p>Prévia: horário estimado. Verde: hoje.</p></div></details>
       </div>
 
       {addingHoliday && <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 p-4"><form role="dialog" aria-modal="true" aria-label="Adicionar feriado" className="w-full max-w-sm space-y-4 rounded-xl border border-border bg-card p-5" onSubmit={e=>{e.preventDefault();const chosenDate=String(new FormData(e.currentTarget).get("holidayDate"));setAddingHoliday(false);setHolidayDate(chosenDate);}}><h2 className="text-xl font-semibold">Adicionar feriado</h2><label className="block">Data<input type="date" name="holidayDate" required value={holidayPickerDate} onChange={e=>setHolidayPickerDate(e.target.value)} className="mt-2 w-full rounded border border-border bg-background p-2" /></label><div className="flex gap-2"><Button type="submit">Continuar</Button><Button type="button" onClick={()=>setAddingHoliday(false)}>Cancelar</Button></div></form></div>}
@@ -83,7 +84,7 @@ export function ScheduleCalendar() {
           datesSet={arg => {setVisibleDate(dateKey(arg.view.currentStart));setRange(previous => previous?.start.getTime() === arg.start.getTime() && previous?.end.getTime() === arg.end.getTime() ? previous : {start:arg.start,end:arg.end});}}
           buttonText={{today:"Hoje"}}
           displayEventTime={false}
-          eventContent={arg => <div className="month-entry"><strong>{arg.event.title}</strong><small className="month-status">{arg.event.extendedProps.planned ? "Prévia" : "Salvo"}</small><span>{arg.event.start?.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}–{arg.event.end?.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}</span>{arg.event.extendedProps.break && <small>Intervalo {new Date(arg.event.extendedProps.break.start).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}–{new Date(arg.event.extendedProps.break.end).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}</small>}</div>}
+          eventContent={arg => <div className="month-entry"><div className="month-entry-header"><strong>{arg.event.title}</strong>{arg.event.extendedProps.planned && <small className="month-status">Prévia</small>}</div><span>{arg.event.start?.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}–{arg.event.end?.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}</span>{arg.event.extendedProps.break && <small>Intervalo {new Date(arg.event.extendedProps.break.start).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}–{new Date(arg.event.extendedProps.break.end).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}</small>}</div>}
           dayMaxEvents={3}
           expandRows={false}
           headerToolbar={{
@@ -95,9 +96,9 @@ export function ScheduleCalendar() {
           slotMinTime="00:00:00"
           slotMaxTime="24:00:00"
           dayCellClassNames={arg => holidayOn(document.company,dateKey(arg.date)) ? ["calendar-holiday"] : document.company.operatingDays.includes(arg.date.getDay()) ? [] : ["bg-muted", "text-muted-foreground"]}
-          dayCellContent={arg => { const holiday=holidayOn(document.company,dateKey(arg.date)); return <button type="button" className="text-right" title={holiday ? "Editar feriado e turnos: "+holiday.name : "Adicionar feriado ou turnos neste dia"} aria-label={(holiday ? "Editar feriado e turnos em " : "Adicionar feriado em ")+dateKey(arg.date)} onClick={()=>setHolidayDate(dateKey(arg.date))}>{arg.dayNumberText}{holiday ? <small className="block font-semibold">Feriado · {holiday.name}{holiday.closed ? " · Fechada" : " · Aberta"}</small> : !document.company.operatingDays.includes(arg.date.getDay()) && <small className="ml-1">Fechada</small>}</button>; }}
+          dayCellContent={arg => { const holiday=holidayOn(document.company,dateKey(arg.date)); return <button type="button" className="calendar-day-label" title={holiday ? "Editar feriado e turnos: "+holiday.name : "Adicionar feriado ou turnos neste dia"} aria-label={(holiday ? "Editar feriado e turnos em " : "Adicionar feriado em ")+dateKey(arg.date)} onClick={()=>setHolidayDate(dateKey(arg.date))}><span>{arg.dayNumberText}</span>{holiday ? <small className="font-semibold">Feriado · {holiday.name}{holiday.closed ? " · Fechada" : " · Aberta"}</small> : !document.company.operatingDays.includes(arg.date.getDay()) && <small className="ml-1">Fechada</small>}</button>; }}
           timeZone="local"
-          locale="pt-br"
+          locale={ptBrLocale}
           firstDay={0}
           height="100%"
           editable

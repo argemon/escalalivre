@@ -59,6 +59,7 @@ public sealed class ScheduleCandidateGenerator
                 {
                     if (employee.WorksDuringLunchClosure && closure is not null && breakWindow is not null && breakWindow.Start < closure.End && breakWindow.End > closure.Start) continue;
                     var candidate = new ShiftAssignment(Guid.NewGuid(),employee.Id,employee.Role,start,end,breakWindow,"solver",[]);
+                    if (!IntervalTimingPolicy.HasWorkAroundPause(candidate)) continue;
                     if(ScheduleRules.ShiftDiagnostics(company,employee,candidate).Any(c=>c.Severity=="error") || EffectiveWorkPolicy.Measure(candidate) > EffectiveWorkPolicy.DailyLimit(employee)) continue;
                     var tags = new List<string> { "net-work-duration" };
                     if (start == opening) tags.Add("opening");
@@ -112,12 +113,12 @@ public sealed class ScheduleCandidateGenerator
             DateTime start =shiftStart.Date.Add(fixedInterval.Start.ToTimeSpan());
             if(start<=shiftStart) start=start.AddDays(1);
             DateTime end =start+pauseDuration;
-            if(start>shiftStart && end<shiftEnd && (closure is null || shiftEnd<=closure.Start || shiftStart>=closure.End || (start<=closure.Start && end>=closure.End))) yield return new(start,end);
+            if(start-shiftStart>=IntervalTimingPolicy.WorkMargin && shiftEnd-end>=IntervalTimingPolicy.WorkMargin && (closure is null || shiftEnd<=closure.Start || shiftStart>=closure.End || (start<=closure.Start && end>=closure.End))) yield return new(start,end);
             yield break;
         }
         if(pauseDuration==TimeSpan.Zero) {if(closure is null || shiftEnd<=closure.Start || shiftStart>=closure.End) yield return null;yield break;}
-        DateTime earliest =shiftStart.AddMinutes(1);
-        DateTime latest =shiftEnd-pauseDuration-TimeSpan.FromMinutes(1);
+        DateTime earliest =shiftStart+IntervalTimingPolicy.WorkMargin;
+        DateTime latest =shiftEnd-pauseDuration-IntervalTimingPolicy.WorkMargin;
         if(closure is not null && shiftStart<closure.End && shiftEnd>closure.Start) {
             if(closure.End-pauseDuration>earliest) earliest=closure.End-pauseDuration;
             if(closure.Start<latest) latest=closure.Start;

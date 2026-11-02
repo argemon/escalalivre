@@ -1,6 +1,6 @@
 import { formatCivilDateTime } from "./dateTime";
 import { civilMillis, civilString } from "./civilTime";
-import { fixedBreak, closuresFor, variableIntervalLimits } from "./policies/interval";
+import { fixedBreak, closuresFor, variableIntervalLimits, generationPauseMarginMillis, hasWorkAroundPause } from "./policies/interval";
 import { shiftDiagnostics } from "./laborRules";
 import type { CompanyRules, Employee, ShiftAssignment } from "../types/schedule";
 
@@ -18,14 +18,14 @@ export function intervalFor(company:CompanyRules,e:Employee,startValue:number,en
   const startText=formatCivilDateTime(new Date(startValue)),endText=formatCivilDateTime(new Date(endValue));
   const start=civilMillis(startText),end=civilMillis(endText);
   const assignment:ShiftAssignment={id:"preview",employeeId:e.id,role:e.role,start:startText,end:endText,source:"manual",tags:[]};
-  const valid=(pause:ShiftAssignment["break"])=>!shiftDiagnostics(company,e,{...assignment,break:pause}).some(c=>["interval","fixedInterval","middayClosure"].includes(c.code));
+  const valid=(pause:ShiftAssignment["break"])=>hasWorkAroundPause({...assignment,break:pause})&&!shiftDiagnostics(company,e,{...assignment,break:pause}).some(c=>["interval","fixedInterval","middayClosure"].includes(c.code));
   const fixed=fixedBreak(e,startText);if(fixed)return valid(fixed)?fixed:undefined;
   const choices=[...new Set([...(durationMinutes===undefined?[]:[durationMinutes]),0,15,minutesOf(company.lunch.minimum),60,minutesOf(company.lunch.maximum),...Array.from({length:8},(_,i)=>(i+1)*15)])];
   const closures=closuresFor(company,start,end);
   for(const minutes of choices) {
     if(minutes<0||minutes>120)continue;
     if(minutes===0){if(valid(undefined))return undefined;continue;}
-    const duration=minutes*60000;let earliest=start+60000,latest=end-duration-60000;
+    const duration=minutes*60000;let earliest=start+generationPauseMarginMillis,latest=end-duration-generationPauseMarginMillis;
     if(!e.worksDuringLunchClosure)for(const c of closures){earliest=Math.max(earliest,c.end-duration);latest=Math.min(latest,c.start);}
     if(latest<earliest)continue;
     const preferred=Math.max(earliest,Math.min(latest,start+minutesOf(company.lunch.preferredAfter)*60000));

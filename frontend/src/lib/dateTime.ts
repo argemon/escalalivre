@@ -1,7 +1,9 @@
 import type { EscalaLivreDocument, ShiftAssignment, ScheduleResult } from "../types/schedule";
 
 // Company schedule values are civil times, never UTC instants.
+// Historical fallback for legacy files without zone metadata.
 export const DEFAULT_TIME_ZONE = "America/Cuiaba";
+export const deviceTimeZone = (): string => Intl.DateTimeFormat().resolvedOptions().timeZone;
 const pad = (n: number) => String(n).padStart(2,"0");
 export function validTimeZone(zone: string): boolean {
   try { new Intl.DateTimeFormat("en",{timeZone:zone}).format(); return !!zone; } catch { return false; }
@@ -17,7 +19,7 @@ export function validCivilDateTime(value: string): boolean {
   const date=new Date(Date.UTC(y,mo-1,d,h,mi,s));
   return y>=1900 && y<=2100 && date.getUTCFullYear()===y && date.getUTCMonth()===mo-1 && date.getUTCDate()===d && h<24 && mi<60 && s<60;
 }
-export function civilDateTime(value: string, zone=DEFAULT_TIME_ZONE): string {
+export function civilDateTime(value: string, zone=deviceTimeZone()): string {
   // An unqualified datetime already describes the company's clock. Do not apply the browser zone.
   if (validCivilDateTime(value)) return value.replace(/\.\d+$/ , "");
   if (!validCivilDateTime(value.replace(/(?:Z|[+-]\d{2}:\d{2})$/, "")) || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,7})?(?:Z|[+-]\d{2}:\d{2})$/.test(value) || !Number.isFinite(Date.parse(value))) throw new Error("Data e horário inválidos.");
@@ -27,13 +29,13 @@ export function civilDateTime(value: string, zone=DEFAULT_TIME_ZONE): string {
   if (!validCivilDateTime(result)) throw new Error("Data fora do período suportado.");
   return result;
 }
-export function datePart(value: string, zone=DEFAULT_TIME_ZONE): string {
+export function datePart(value: string, zone=deviceTimeZone()): string {
   if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
   return civilDateTime(value,zone).split("T")[0];
 }
-export function timePart(value: string, zone=DEFAULT_TIME_ZONE): string { return civilDateTime(value,zone).split("T")[1]; }
-export function displayClock(value: string, zone=DEFAULT_TIME_ZONE): string { return timePart(value,zone).split(":").slice(0,2).join(":"); }
-export function dateTimeInput(value: string, zone=DEFAULT_TIME_ZONE): string { return value ? datePart(value,zone)+"T"+displayClock(value,zone) : ""; }
+export function timePart(value: string, zone=deviceTimeZone()): string { return civilDateTime(value,zone).split("T")[1]; }
+export function displayClock(value: string, zone=deviceTimeZone()): string { return timePart(value,zone).split(":").slice(0,2).join(":"); }
+export function dateTimeInput(value: string, zone=deviceTimeZone()): string { return value ? datePart(value,zone)+"T"+displayClock(value,zone) : ""; }
 export const nowInstant = () => new Date().toISOString();
 export function utcInstant(value: string): string {
   if (!/(?:Z|[+-]\d{2}:\d{2})$/.test(value) || !Number.isFinite(Date.parse(value))) throw new Error("A atualização deve informar um instante com fuso horário.");
@@ -48,7 +50,7 @@ export function normalizeDocumentTimes(document: EscalaLivreDocument): EscalaLiv
     employees:document.employees.map(e=>({...e,availability:e.availability.map(window),restrictions:e.restrictions.map(window)})),
     assignments:document.assignments.map(a=>({...window(a),break:a.break ? window(a.break) : undefined}))};
 }
-export function moveShift(shift: ShiftAssignment, startValue: string, endValue: string, zone=DEFAULT_TIME_ZONE): ShiftAssignment {
+export function moveShift(shift: ShiftAssignment, startValue: string, endValue: string, zone=deviceTimeZone()): ShiftAssignment {
   const start=civilDateTime(startValue,zone),end=civilDateTime(endValue,zone);
   const oldStart=civilDateTime(shift.start,zone);
   const delta=Date.parse(start+"Z")-Date.parse(oldStart+"Z");
@@ -57,7 +59,7 @@ export function moveShift(shift: ShiftAssignment, startValue: string, endValue: 
     tags:datePart(start)!==datePart(oldStart) ? shift.tags.filter(t=>!t.startsWith("holiday:")) : shift.tags};
 }
 
-export function normalizeResultTimes(result: ScheduleResult, zone=DEFAULT_TIME_ZONE): ScheduleResult {
+export function normalizeResultTimes(result: ScheduleResult, zone=deviceTimeZone()): ScheduleResult {
   const window=<T extends {start?:string;end?:string}>(value:T):T => ({...value,...(value.start ? {start:civilDateTime(value.start,zone)} : {}),...(value.end ? {end:civilDateTime(value.end,zone)} : {})});
   return {...result,
     ...(result.assignments ? {assignments:result.assignments.map(a=>({...window(a),break:a.break ? window(a.break) : undefined}))} : {}),

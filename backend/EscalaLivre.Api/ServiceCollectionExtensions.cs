@@ -31,6 +31,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ScheduleCandidateGenerator>();
         services.AddSingleton<IScheduleConstraintTranslator, FixedAssignmentConstraints>();
         services.AddSingleton<IScheduleConstraintTranslator, DailyExclusivityConstraints>();
+        services.AddSingleton<IScheduleConstraintTranslator, WeeklyIntervalConstraints>();
+        services.AddSingleton<IScheduleConstraintTranslator, IntervalTimingConstraints>();
         services.AddSingleton<IScheduleConstraintTranslator, RestConstraints>();
         services.AddSingleton<IScheduleConstraintTranslator, WeeklyWorkConstraints>();
         services.AddSingleton<IScheduleConstraintTranslator, DayCycleConstraints>();

@@ -4,9 +4,11 @@ OrToolsScheduleOptimizer implementa IScheduleOptimizer; GenerateSchedule é o ca
 
 ## Construção e execução
 
-ScheduleCandidateGenerator produz entradas e pausas com as regras/granularidades anteriores. OptimizationBudget limita candidatos/fixos e passos de construção. ScheduleModelInput conserva o histórico dos dois lados; ScheduleModelBuilder cria variáveis e aplica as famílias registradas: atribuições fixas, exclusividade diária, descanso, trabalho semanal, ciclo móvel e cobertura. As políticas do domínio fornecem elegibilidade, janelas e saldos; somente Infrastructure traduz para CpModel/BoolVar/LinearExpr e executa CpSolver.
+ScheduleCandidateGenerator produz entradas e pausas em grade discreta. OptimizationBudget limita candidatos/fixos e passos de construção. ScheduleModelInput conserva o histórico dos dois lados; ScheduleModelBuilder cria variáveis e aplica as famílias registradas: atribuições fixas, exclusividade diária, rotina semanal/posicionamento dos intervalos, descanso, trabalho semanal, ciclo móvel e cobertura. As políticas do domínio fornecem elegibilidade, janelas e saldos; somente Infrastructure traduz para CpModel/BoolVar/LinearExpr e executa CpSolver.
 
 ScheduleObjective mantém penalidade de déficit por minuto × 1.000.000.000, recompensa de presença × 10.000, custo por turno 1.000.000 e ajuste limitado de preferências/pausa/fechamento. OrToolsExecution usa 5s e um worker. Grade e limites de busca são operacionais, não regras legais; aceitar um documento não garante que o gerador reproduza exatamente seus horários.
+
+Cada pessoa mantém início e duração de pausa constantes na semana civil. Novas pausas deixam pelo menos uma hora de trabalho antes e depois. O tempo preferencial desde a entrada é priorizado em uma primeira busca sem antecipação; uma segunda busca, se houver déficit, só pode substituir a primeira se reduzir a falta de cobertura medida sem arredondamento. As tentativas compartilham os cinco segundos de busca nativa e o mesmo modelo. A primeira recebe uma sugestão de rotinas semanais com almoços escalonados; a segunda recebe a primeira solução como sugestão de partida. Sugestões não dispensam nenhuma restrição. Uma antecipação aceita é explicada nas decisões. São comparadas soluções encontradas dentro do orçamento, sem prova geral de necessidade da exceção. Contrato, exceções explícitas e preservação do histórico: [decisão de intervalos](rule-parity.md#tempo-antes-do-intervalo-e-proteção-das-pontas--02112026).
 
 ## Restrições e cobertura parcial
 

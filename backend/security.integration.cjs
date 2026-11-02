@@ -63,6 +63,32 @@ function expensiveAnalysis() {
   }));
   return r;
 }
+test('interval timing respects preferred work, relaxes only for coverage and stays away from shift edges', async () => {
+  await withServer({}, async ({post}) => {
+    const {civilMillis}=require('../frontend/tests/source-loader.cjs')()('lib/civilTime.ts');
+    for (const anticipate of [false,true]) {
+      const r=request(anticipate?1:2);
+      Object.assign(r.document.company,{opensAt:'07:30:00',closesAt:'16:30:00',
+        coverage:[{role:'Atendimento',day:1,start:anticipate?'11:30:00':'07:30:00',end:'16:30:00',minimumEmployees:1}]});
+      r.document.employees.forEach(e=>{e.shiftStartsAt='07:30:00';});
+      const response=await post('/solve',r);
+      assert.equal(response.status,200);
+      const result=(await response.json()).data;
+      assert.equal(result.coverageScore,1);
+      assert.ok(result.assignments.length);
+      let foundEarly=false;
+      for(const a of result.assignments) {
+        const before=civilMillis(a.break.start)-civilMillis(a.start),after=civilMillis(a.end)-civilMillis(a.break.end);
+        assert.ok(before>=3600000&&after>=3600000);
+        if(before<4*3600000) {
+          foundEarly=true;
+          assert.ok(a.tags.includes('interval-anticipated-for-coverage'));
+        }
+      }
+      assert.equal(foundEarly,anticipate);
+    }
+  });
+});
 async function withServer(options, run) {
   const portServer = net.createServer();
   await new Promise(resolve => portServer.listen(0, '127.0.0.1', resolve));
@@ -432,7 +458,7 @@ function editingClient(url) {
   const storage={getItem:key=>data.get(key)??null,setItem:(key,value)=>data.set(key,value),removeItem:key=>data.delete(key)};
   let load,store,payload;
   const reload=()=>{
-    load=require('../frontend/tests/source-loader.cjs')(storage,{fetch:async(route,options)=>{
+    load=require('../frontend/tests/source-loader.cjs')(storage,{requestAnimationFrame:fn=>fn(),document:{activeElement:null},fetch:async(route,options)=>{
       payload=JSON.parse(options.body);
       return fetch(url+route,options);
     }});
@@ -505,7 +531,7 @@ test('editing flow: long duration input, save, persisted reload and generation p
       let duration;
       const {DurationInput}=client.load('components/DurationInput.tsx');
       DurationInput({value:client.store.getState().document.company.minimumRest,onChange:value=>{duration=value;}})
-        .props.onChange({currentTarget:{value:hours+':00'}});
+        .props.onChange({currentTarget:{value:hours+':00',setSelectionRange(){}}});
       const current=client.store.getState().document;
       const next=client.load('lib/documentSchema.ts').documentSchema.parse({...current,company:{...current.company,minimumRest:duration}});
       client.store.getState().setDocument(next);client.reload();

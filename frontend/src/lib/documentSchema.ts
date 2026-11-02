@@ -4,10 +4,13 @@ import { civilMillis, clockMillis } from "./civilTime";
 import { migrateDocument } from "./documentLifecycle";
 import { validCivilDateTime, validTimeZone } from "./dateTime";
 import { z } from "zod";
+import portuguese from "zod/v4/locales/pt.js";
 import type { EscalaLivreDocument } from "../types/schedule";
 import { regimeTypes } from "../types/schedule";
 import { migratePlanningPeriod, periodError } from "./planningPeriod";
 import { documentStructureIssue } from "./documentStructure";
+
+z.config(portuguese());
 
 // Stop at the first failing element. Even an in-bounds collection can otherwise
 // accumulate many nested errors; callers only display the first diagnostic.

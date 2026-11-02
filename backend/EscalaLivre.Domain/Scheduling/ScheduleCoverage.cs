@@ -4,6 +4,9 @@ public sealed record CoverageAssessment(IReadOnlyList<CoverageBlock> Blocks, IRe
 
 public static class ScheduleCoverage
 {
+    public static long UncoveredPersonTicks(CoverageAssessment assessment)
+        => assessment.Blocks.Sum(b => checked(Math.Max(0, b.Required - b.Assigned) * (b.End - b.Start).Ticks));
+
     public static CoverageAssessment Evaluate(EscalaLivreDocument document, DateTime start, DateTime end, IReadOnlyList<ShiftAssignment> assignments)
     {
         var coverage = BuildCoverage(document, start, end, assignments).ToList();

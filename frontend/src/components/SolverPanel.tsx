@@ -1,4 +1,6 @@
 import { solverLabels, solverDescriptions } from "../lib/solverStatus";
+import { groupDecisions } from "../lib/decisionGroups";
+import { civilDateTime } from "../lib/dateTime";
 import { HiringSuggestionCard } from "./HiringSuggestionCard";
 import { useGenerationStore } from "../store/generationStore";
 import { GenerationProgress } from "./GenerationProgress";
@@ -13,6 +15,12 @@ export function SolverPanel() {
 
   const hardViolations = analysis.conflicts.filter((item) => item.severity === "error").length;
   const softViolations = analysis.conflicts.filter((item) => item.severity !== "error").length + analysis.gaps.length;
+  const decisionGroups = groupDecisions(analysis.decisions);
+  const assignments = new Map(analysis.assignments.map(assignment => [assignment.id, assignment]));
+  const formatShiftTime = (value: string) => {
+    const [date, time] = civilDateTime(value, document.company.timeZone).split("T");
+    return `${date.split("-").reverse().join("/")} às ${time.endsWith(":00") ? time.slice(0, 5) : time}`;
+  };
 
   return (
     <Panel className="flex h-full min-h-0 w-full flex-col border-l">
@@ -68,12 +76,28 @@ export function SolverPanel() {
 
         <section className="space-y-2">
           <Title icon={<CheckCircle2 className="size-4" />} text="Por que esta escala?" />
-          {analysis.decisions.slice(0, 3).map((decision) => (
-            <article key={decision.assignmentId} className="rounded-md border border-border bg-background p-3 text-sm">
-              <p className="font-medium">{decision.reason}</p>
-              <div className="mt-2 space-y-1 text-muted-foreground">
-                {decision.factors.map((factor) => <p key={factor}>- {factor}</p>)}
-              </div>
+          {decisionGroups.map(group => (
+            <article key={group.employeeId} className="rounded-md border border-border bg-background p-3 text-sm">
+              <h4 className="font-semibold">{document.employees.find(employee => employee.id === group.employeeId)?.name ?? "Funcionário"}</h4>
+              <p className="text-xs text-muted-foreground">{group.shifts.length} {group.shifts.length === 1 ? "turno explicado" : "turnos explicados"}</p>
+              {group.reasons.map(reason => <p key={reason} className="mt-2">{reason}</p>)}
+              {group.commonFactors.length > 0 && <ul className="mt-2 list-disc space-y-1 pl-5 text-muted-foreground">
+                {group.commonFactors.map(factor => <li key={factor}>{factor}</li>)}
+              </ul>}
+              {group.shifts.some(shift => shift.factors.some(factor => !group.commonFactors.includes(factor))) && <details className="mt-3">
+                <summary className="cursor-pointer text-primary">Ver diferenças por turno</summary>
+                <ul className="mt-2 space-y-3">
+                  {group.shifts.map(shift => {
+                    const factors = shift.factors.filter(factor => !group.commonFactors.includes(factor));
+                    if (!factors.length) return null;
+                    const assignment = assignments.get(shift.assignmentId);
+                    return <li key={shift.assignmentId}>
+                      <p className="font-medium">{assignment ? `${formatShiftTime(assignment.start)} até ${formatShiftTime(assignment.end)}` : "Turno sem data disponível"}</p>
+                      <ul className="list-disc pl-5 text-muted-foreground">{factors.map(factor => <li key={factor}>{factor}</li>)}</ul>
+                    </li>;
+                  })}
+                </ul>
+              </details>}
             </article>
           ))}
           {analysis.optimizationSuggestions.map((suggestion) => (

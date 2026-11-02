@@ -10,6 +10,7 @@
   --border: 150 14% 86%;
   --primary: 164 65% 29%;
   --accent: 33 95% 55%;
+  --primary-foreground: 0 0% 100%;
 }
 
 .dark {
@@ -20,6 +21,7 @@
   --border: 218 15% 23%;
   --primary: 162 72% 48%;
   --accent: 33 95% 60%;
+  --primary-foreground: 222 47% 11%;
 }
 
 * {
@@ -36,9 +38,13 @@ body {
   --fc-page-bg-color: hsl(var(--background));
   --fc-neutral-bg-color: hsl(var(--card));
   --fc-today-bg-color: color-mix(in srgb, hsl(var(--primary)) 14%, transparent);
-  --fc-button-bg-color: hsl(var(--foreground));
-  --fc-button-border-color: hsl(var(--foreground));
-  --fc-button-text-color: hsl(var(--background));
+  --fc-button-bg-color: hsl(var(--primary));
+  --fc-button-border-color: hsl(var(--primary));
+  --fc-button-text-color: hsl(var(--primary-foreground));
+  --fc-button-hover-bg-color: color-mix(in srgb, hsl(var(--primary)) 85%, hsl(var(--foreground)));
+  --fc-button-hover-border-color: var(--fc-button-hover-bg-color);
+  --fc-button-active-bg-color: hsl(var(--foreground));
+  --fc-button-active-border-color: hsl(var(--foreground));
   height: 100%;
 }
 
@@ -72,11 +78,18 @@ button, input, select, textarea { font: inherit; }
 button, label:has(input[type="file"]) { -webkit-tap-highlight-color: transparent; }
 :is(button, input, select, textarea, a):focus-visible { outline: 3px solid hsl(var(--primary) / .65); outline-offset: 3px; }
 button:disabled { cursor: not-allowed; }
+:root button:disabled, .fc .fc-button.fc-button-primary:disabled {
+  background: hsl(var(--muted));
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+  opacity: 1;
+  box-shadow: none;
+}
 .workspace-grid > main, .workspace-grid > div { border-radius: 16px; border: 1px solid hsl(var(--border)); box-shadow: 0 3px 14px hsl(var(--foreground) / .035); }
 .workspace-grid > main { overflow: hidden; }
 .workspace-grid > div > div { border: 0; }
-.fc .fc-button { background: hsl(var(--primary)); border-color: hsl(var(--primary)); border-radius: 9px; }
-.fc .fc-button-primary:not(:disabled).fc-button-active { background: hsl(var(--foreground)); border-color: hsl(var(--foreground)); }
+.fc .fc-button { border-radius: 9px; }
+.fc .fc-button-primary:not(:disabled):is(:active, .fc-button-active) { color: hsl(var(--background)); }
 .fc .fc-toolbar { flex-wrap: wrap; gap: 12px; }
 .fc .fc-col-header-cell { padding-block: 8px; }
 .event-manual { color: white; }
@@ -98,21 +111,25 @@ button:disabled { cursor: not-allowed; }
 :root:not(.dark) :is(.text-red-300, .text-red-400) { color: #991b1b; }
 :root:not(.dark) :is(.text-sky-300, .text-sky-400) { color: #075985; }
 .event-solver { color: #3b2106; }
-.fc { --fc-button-text-color: #fff; }
 
 .monthly-calendar .fc-daygrid-day-frame { min-height:150px; }
 .monthly-calendar .fc-daygrid-event { white-space:normal; margin:4px 6px; }
 .monthly-calendar .month-assignment { border:0; border-left:3px solid hsl(var(--primary)); background:hsl(var(--card)); color:hsl(var(--foreground)); border-radius:6px; box-shadow:0 1px 3px #0001; }
 .month-entry { padding:6px 8px; display:flex; flex-direction:column; gap:2px; min-width:0; }
+.month-entry-header { display:flex; align-items:baseline; justify-content:space-between; gap:8px; min-width:0; }
+.month-entry-header strong { min-width:0; }
+.month-entry-header .month-status { flex-shrink:0; white-space:nowrap; }
 .month-entry strong { font-size:12px; overflow-wrap:anywhere; }
 .month-entry span { font-size:12px; font-weight:500; }
 .month-entry small { font-size:10px; opacity:.75; }
-.monthly-calendar .fc-daygrid-day-number { padding:8px; }
+.monthly-calendar .fc-daygrid-day-number { padding:2px 8px; line-height:1.2; min-width:0; max-width:100%; }
+.monthly-calendar .calendar-day-label { display:flex; align-items:baseline; justify-content:flex-end; gap:4px; min-width:0; max-width:100%; text-align:right; }
+.monthly-calendar .calendar-day-label > span { flex-shrink:0; }
 .monthly-calendar .fc-col-header-cell { padding:8px; text-transform:uppercase; font-size:12px; }
 
 .monthly-calendar .calendar-holiday { background:hsl(var(--primary) / .07); }
 .monthly-calendar .calendar-holiday .fc-daygrid-day-top { border-top:3px solid hsl(var(--primary)); }
-.monthly-calendar .fc-daygrid-day-number small { max-width:180px; font-size:10px; white-space:normal; }
+.monthly-calendar .fc-daygrid-day-number small { min-width:0; font-size:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
 /* FullCalendar keeps navigation and weekday labels above its own scrolling body. */
 .monthly-calendar .fc-scrollgrid-section-header > th { background:hsl(var(--card)); }
@@ -232,8 +249,8 @@ button:disabled { cursor: not-allowed; }
 .planning-period { display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; padding:5px 16px; border-top:1px solid hsl(var(--border)); }
 .planning-period label { white-space:nowrap; }
 .planning-period button { height:28px; }
-.header-view-nav { display:flex; gap:4px; overflow-x:auto; padding:4px 90px 4px 12px; border-top:1px solid hsl(var(--border)); }
-.header-view-help { position:absolute; right:12px; bottom:8px; }
+.header-view-nav { display:flex; gap:4px; overflow-x:auto; padding:4px 190px 4px 12px; border-top:1px solid hsl(var(--border)); }
+.header-view-actions { position:absolute; right:12px; bottom:8px; display:flex; align-items:center; gap:4px; background:hsl(var(--card)); }
 .header-view-help > summary { height:28px; background:hsl(var(--card)); padding:0 8px; border-radius:6px; }
 .header-view-help > p { position:absolute; right:0; top:100%; width:min(340px,calc(100vw - 24px)); padding:12px; background:hsl(var(--card)); border:1px solid hsl(var(--border)); border-radius:8px; box-shadow:0 8px 24px #0002; font-size:13px; }
 .setup-heading { padding:9px 10px 6px; display:grid; gap:5px; }

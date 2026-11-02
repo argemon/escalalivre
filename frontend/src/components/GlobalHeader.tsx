@@ -1,9 +1,10 @@
 import { useGenerationStore } from "../store/generationStore";
 import { solverLabels, solverDescriptions } from "../lib/solverStatus";
 import { RecoveryPanel, StorageBadge } from "./RecoveryPanel";
-import { Download, FileUp, Moon, Trash2, Sun, Wifi, Printer, ChevronDown, HelpCircle, Sparkles } from "lucide-react";
+import { Download, FileUp, Moon, Trash2, Sun, Wifi, Printer, ChevronDown, HelpCircle, Sparkles, BookOpen } from "lucide-react";
 import { PlanningPeriodEditor } from "./PlanningPeriodEditor";
 import { Brand } from "./Brand";
+import { UsageGuide } from "./UsageGuide";
 import { PrintSchedule } from "./PrintSchedule";
 import { useState } from "react";
 import { exportNative, importNative } from "../lib/api";
@@ -25,6 +26,7 @@ export function GlobalHeader() {
   const generationLabel = generation.active ? (generation.progress?.state === "queued" ? `Na fila · ${generation.progress.position}ª posição` : "Gerando escala…") : solverLabels[solverStatus];
   const [clearing,setClearing] = useState(false);
   const [printing,setPrinting] = useState(false);
+  const [showUsageGuide, setShowUsageGuide] = useState(false);
   const [confirmation,setConfirmation] = useState("");
   return (
     <header className="app-header shrink-0 border-b border-border bg-card"><div className="header-toolbar">
@@ -48,7 +50,7 @@ export function GlobalHeader() {
         <details className="header-tools" onKeyDown={e => {if(e.key === "Escape") {e.currentTarget.open=false;e.currentTarget.querySelector("summary")?.focus();}}}>
           <summary><ChevronDown className="size-4" /> Dados e opções</summary>
           <div className="header-tools-content">
-        <p className="flex items-center gap-1 text-xs text-muted-foreground"><Wifi className="size-3" /> Disponível offline</p>
+        <p className="flex items-center gap-1 text-xs text-muted-foreground"><Wifi className="size-3" /> Disponível sem internet</p>
         <Button className="w-full bg-card text-foreground dark:bg-card dark:text-foreground" onClick={() => {try {exportNative(document);} catch(error) {window.alert(error instanceof Error ? error.message : "Não foi possível exportar. Use a recuperação para baixar os dados disponíveis.");}}}>
           <Download className="size-4" />
           Exportar
@@ -78,6 +80,21 @@ export function GlobalHeader() {
 
         <Button className="bg-card text-red-600 dark:bg-card dark:text-red-400" onClick={() => {setConfirmation("");setClearing(true);}}><Trash2 className="size-4" />Limpar tudo</Button>
         <RecoveryPanel />
+        <section aria-label="Sobre o EscalaLivre" className="space-y-2 border-t border-border pt-3 text-xs leading-relaxed text-muted-foreground">
+          <h2 className="font-medium text-foreground">Sobre o EscalaLivre</h2>
+          <p>Sem IA, só matemática pura. Sem salvar nada na nuvem. E de graça.</p>
+          <p>
+            Com carinho,{" "}
+            <a
+              href="https://edsonargemon.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-sm underline decoration-border underline-offset-2 transition-colors hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              Edson Argemon
+            </a>
+          </p>
+        </section>
           </div>
         </details>
         <IconButton title={theme === "dark" ? "Usar tema claro" : "Usar tema escuro"} onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
@@ -87,6 +104,7 @@ export function GlobalHeader() {
       </div>
       <PlanningPeriodEditor key={document.id+document.planningPeriod.start+document.planningPeriod.end} />
       {printing && <PrintSchedule onClose={() => setPrinting(false)} />}
+      {showUsageGuide && <UsageGuide onClose={() => setShowUsageGuide(false)} />}
       {clearing && <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onKeyDown={e => {if(e.key === "Escape") setClearing(false);}}>
         <form role="dialog" aria-modal="true" aria-labelledby="clear-title" className="w-full max-w-md space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xl" onSubmit={e => {e.preventDefault();if(confirmation === "LIMPAR") {clearAll();setClearing(false);}}}>
           <h2 id="clear-title" className="text-xl font-semibold text-red-600">Apagar todos os dados?</h2>
@@ -110,10 +128,13 @@ export function GlobalHeader() {
           </button>
         ))}
       </nav>
+      <div className="header-view-actions">
+        <button type="button" aria-haspopup="dialog" className="inline-flex h-7 items-center gap-1.5 rounded-md border border-primary/30 bg-primary/10 px-2 text-xs font-semibold text-primary transition-colors hover:bg-primary/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" onClick={() => setShowUsageGuide(true)}><BookOpen className="size-3.5" aria-hidden="true" />Como usar</button>
       <details className="header-view-help">
         <summary aria-label="Ajuda sobre esta visualização"><HelpCircle className="size-4" /> Ajuda</summary>
         <p id="view-description">{viewModes.find(item => item.mode === viewMode)?.description}</p>
       </details>
+      </div>
     </header>
   );
 }

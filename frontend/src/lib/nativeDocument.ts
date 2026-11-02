@@ -23,7 +23,10 @@ export function serializeNative(document: EscalaLivreDocument): string {
 }
 export function parseNativeText(text: string): EscalaLivreDocument {
   assertNativeSize(text);
-  const document = validateNativeDocument(JSON.parse(text));
+  let input: unknown;
+  try { input = JSON.parse(text); }
+  catch { throw new Error("Não foi possível abrir o arquivo: o conteúdo JSON é inválido."); }
+  const document = validateNativeDocument(input);
   return document;
 }
 export async function readNativeFile(file: Pick<File,"size"|"text">): Promise<EscalaLivreDocument> {
