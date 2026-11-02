@@ -3,6 +3,10 @@ import { regimeConstraints } from "../regimes";
 import type { CompanyRules, Employee, ShiftAssignment, WorkloadRule } from "../../types/schedule";
 export const workMillis=(a:ShiftAssignment)=>civilMillis(a.end)-civilMillis(a.start)-(a.break?civilMillis(a.break.end)-civilMillis(a.break.start):0);
 export const workloadFor=(company:CompanyRules,e:Employee)=>e.inheritsCompanyDefaults?company.defaultWorkload:e.workload;
+export const weeklyLimitHours=(company:CompanyRules,e:Employee)=>{
+  const rule=workloadFor(company,e);
+  return Math.min(rule.weeklyLimitHours,e.allowsOvertime?168:44);
+};
 
 export const dailyLimitMillis=(employee:Employee)=>(employee.allowsOvertime?10:8)*3600000;
 export const exceedsRegimeWork=(work:number,rule:WorkloadRule)=>{

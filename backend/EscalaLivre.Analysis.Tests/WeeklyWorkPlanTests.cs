@@ -8,6 +8,11 @@ namespace EscalaLivre.Analysis.Tests;
 
 public sealed class WeeklyWorkPlanTests
 {
+    [Theory]
+    [InlineData(0)]
+    [InlineData(8)]
+    public void FlexibleDaysProtectStructuralBounds(int days)
+        => Assert.Throws<ArgumentException>(()=>new WeeklyWorkPlan(144000,new int[7],flexibleWorkDays:days));
     [Fact]
     public void SharedDistributionAndConfigurationIssues()
     {

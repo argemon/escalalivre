@@ -1,8 +1,9 @@
 import { contractDailyLimitMillis } from "./policies/weeklyWorkPlan";
+import { normalWeekSeconds } from "./policies/flexibleContract";
 import { civilDay, civilMillis, civilString, civilWeek, clockMillis } from "./civilTime";
 import { authorizedHolidayShift, closedHoliday } from "./holidays";
 import type { CompanyRules, Employee, EscalaLivreDocument, ScheduleIssue, ShiftAssignment } from "../types/schedule";
-import { workMillis, workloadFor, exceedsRegimeWork, workMillisInWeek } from "./policies/effectiveWork";
+import { workMillis, workloadFor, exceedsRegimeWork, workMillisInWeek, weeklyLimitHours } from "./policies/effectiveWork";
 import { regimeConstraints } from "./regimes";
 import { restMillis, violatesPreviousRest } from "./policies/rest";
 import { fixedBreak, closuresFor, intervalIssue, variableIntervalLimits, conflictsWithClosure } from "./policies/interval";
@@ -49,7 +50,7 @@ export function diagnoseSchedule(document:EscalaLivreDocument):ScheduleIssue[] {
       if(violatesPreviousRest(start,latestEnd,restMillis(document.company,e)))issue("minimumRest","Descanso mínimo entre turnos violado.",start,end);
       latestEnd=Math.max(latestEnd,end);
       days.set(day,[...(days.get(day)??[]),a]);
-      if(regimeConstraints(rule).rollingCycle) {
+      if(rule.weeklyPlan?.flexibleWorkDays||regimeConstraints(rule).rollingCycle) {
         if(exceedsCycleEndingOn(shifts,day,rule))issue("regime","Dias de trabalho excedem o ciclo configurado.",start,end);
       }
       for(let week=civilWeek(start);week<end;week+=7*86400000) {
@@ -60,7 +61,8 @@ export function diagnoseSchedule(document:EscalaLivreDocument):ScheduleIssue[] {
       if(items.length>1)issue("multipleShifts","Mais de um turno para a mesma pessoa e data de início.",day,day+86400000);
       if(items.reduce((n,a)=>n+workMillis(a),0)>contractDailyLimitMillis(document.company,e,civilString(day).slice(0,10)))issue("dailyLimit","Limite diário de trabalho efetivo excedido.",day,day+86400000);
     }
-    for(const [week,work] of weeks)if(work>rule.weeklyLimitHours*3600000)issue("weeklyLimit","Limite semanal excedido.",week,week+7*86400000);
+    for(const [week,work] of weeks)if(work>weeklyLimitHours(document.company,e)*3600000
+      ||(!e.allowsOvertime&&rule.weeklyPlan?.flexibleWorkDays&&shifts.filter(a=>civilWeek(civilMillis(a.start))===week).reduce((n,a)=>n+workMillis(a),0)>normalWeekSeconds(document.company,e,week)*1000))issue("weeklyLimit","Limite semanal excedido.",week,week+7*86400000);
   }
   return issues;
 }

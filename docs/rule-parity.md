@@ -291,3 +291,36 @@ O modo sem plano continua legado. Falha/rejeição/cancelamento preservam docume
 Os [cenários novos](../shared/contract-work-scenarios.json) são executados em C#
 puro, TypeScript, comparador diferencial e HTTP/worker, incluindo todos os campos
 dos relatórios de carga. Detalhes, escolhas de produto e limites estão na decisão.
+
+## Mínimo contratado e máximo com extras — 02/11/2026
+
+A [decisão 019](decisions/019-contract-minimum-and-overtime-ceiling.md) distingue
+o mínimo normal contratado do máximo total com extras. O teto estrutural passa
+de 44h para 168h; a política semanal aplica min(teto, 44h) sem autorização de
+extras e o teto explícito com autorização, mantendo limites diários, descanso,
+histórico e tempo civil. Documentos anteriores conservam comportamento.
+Contrato normal acima de 44h recebe aviso de configuração.
+
+Os cenários compartilhados verificam 48h autorizadas, autorização ausente,
+excesso do teto e saída manual com 1h faltante. C# e TypeScript mantêm o mínimo
+e a distribuição do dia após editar a saída: não há crédito implícito ou banco
+automático. As horas faltantes são diagnóstico de planejamento e não dívida
+salarial. Detalhes de compatibilidade e evidências estão na decisão.
+
+## Escala individual e dias automáticos — 02/11/2026
+
+A [decisão 020](decisions/020-individual-weekly-patterns.md) acrescenta
+`weeklyPlan.flexibleWorkDays` opcional para escolher dias/folgas em conjunto com
+horários. 5x2/6x1 usam janelas móveis de sete dias e histórico bilateral. O plano
+fixo anterior permanece igual; nenhuma carga é inferida ao abrir arquivo antigo.
+Carga automática sem turno aparece em `unassignedSeconds`, incluída no saldo
+semanal, sem criar faltas diárias em todas as folgas possíveis. Candidatos e crédito
+do objetivo respeitam os segundos restantes da divisão e dispensas explícitas.
+
+Sem dia contratual fixo, feriado fechado impede candidatos mas não concede crédito
+automático: dispensa é explícita. Fechamento da empresa não apaga contrato. Recortes
+reservam somente as cotas cabíveis após o histórico salvo; a fórmula e os limites
+estão na decisão. A comparação diferencial inclui os novos campos e cenários.
+Avisos da transição da EC 141/2026 usam o período planejado e não o relógio do
+dispositivo. São orientação de adequação, sem conversão automática ou certificado
+de enquadramento jurídico.

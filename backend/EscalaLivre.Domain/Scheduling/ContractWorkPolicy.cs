@@ -18,16 +18,17 @@ public sealed record DailyWorkload(DateTime Date, long NominalSeconds, long Excu
     long PlannedSeconds, long RecognizedSeconds, long UnmetSeconds, long ExcessSeconds);
 public sealed record WorkloadSummary(Guid EmployeeId, DateTime WeekStart, int ContractedSeconds,
     long NominalSeconds, long ExcusedSeconds, long ExpectedSeconds, long PlannedSeconds,
-    long RecognizedSeconds, long UnmetSeconds, long ExcessSeconds, long HistoricalWorkSeconds, IReadOnlyList<DailyWorkload> Days);
+    long RecognizedSeconds, long UnmetSeconds, long ExcessSeconds, long HistoricalWorkSeconds, IReadOnlyList<DailyWorkload> Days, long? UnassignedSeconds = null);
 
 public static class ContractWorkPolicy
 {
     public static int Nominal(CompanyRules company, Employee employee, DateTime day)
-        => WeeklyWorkPlanPolicy.For(company, employee)?.DailySeconds[(int)day.DayOfWeek] ?? 0;
+        => WeeklyWorkPlanPolicy.For(company, employee) is {} plan ? plan.FlexibleWorkDays is {} count
+            ? (plan.ContractedSeconds + count - 1) / count : plan.DailySeconds[(int)day.DayOfWeek] : 0;
     public static int Excused(CompanyRules company, Employee employee, DateTime day)
     {
         int nominal = Nominal(company, employee, day);
-        if (LaborRules.ClosedHoliday(company, day)) return nominal;
+        if (WeeklyWorkPlanPolicy.For(company,employee)?.FlexibleWorkDays is null && LaborRules.ClosedHoliday(company, day)) return nominal;
         return (int)Math.Min(nominal, employee.ContractLeaves?.Where(l => l.Date == DateOnly.FromDateTime(day)).Sum(l => (long)l.ExcusedSeconds) ?? 0);
     }
     public static int Target(CompanyRules company, Employee employee, DateTime day) => Nominal(company, employee, day) - Excused(company, employee, day);
@@ -54,8 +55,7 @@ public static class ContractWorkPolicy
         if (WeeklyWorkPlanPolicy.For(document.Company,employee) is null || desired<=TimeSpan.Zero) return [desired];
         var week=ScheduleWindow.WeekStart(day);
         var history=document.Assignments.Where(a=>a.EmployeeId==employee.Id && (!ScheduleWindow.Contains(a,start,end)||LaborRules.AuthorizedHolidayShift(document.Company,a)));
-        var regime=RegimeConfiguration.From(EffectiveWorkPolicy.RuleFor(document.Company,employee));
-        long remaining=ScheduleCapacityPolicy.RemainingWeeklyTicks(regime.WeeklyLimit,new Duration(TimeSpan.FromTicks(history.Sum(a=>EffectiveWorkPolicy.WorkTicksInWeek(a,week))))) / TimeSpan.TicksPerSecond;
+        long remaining=ScheduleCapacityPolicy.RemainingWeeklyTicks(EffectiveWorkPolicy.WeeklyLimit(document.Company,employee),new Duration(TimeSpan.FromTicks(history.Sum(a=>EffectiveWorkPolicy.WorkTicksInWeek(a,week))))) / TimeSpan.TicksPerSecond;
         var sums=new HashSet<long>{0};
         for(var other=week;other<week.AddDays(7);other=other.AddDays(1))
             if(other!=day.Date && other>=start.Date && other<=end.Date)
@@ -64,6 +64,11 @@ public static class ContractWorkPolicy
                 foreach(var sum in sums.ToArray()) sums.Add(sum+amount);
             }
         var choices=new SortedSet<TimeSpan>{desired};
+        if(WeeklyWorkPlanPolicy.For(document.Company,employee) is {FlexibleWorkDays: {} count} plan)
+        {
+            var basic=TimeSpan.FromSeconds(plan.ContractedSeconds/count);
+            if(basic>TimeSpan.Zero&&basic<=desired) choices.Add(basic);
+        }
         foreach(var sum in sums) if(remaining-sum>0 && remaining-sum<desired.TotalSeconds) choices.Add(TimeSpan.FromSeconds(remaining-sum));
         return choices.Reverse().ToArray();
     }
@@ -76,6 +81,7 @@ public static class ContractWorkPolicy
         {
             var plan = WeeklyWorkPlanPolicy.For(document.Company, employee);
             if (plan is null) continue;
+            if (plan.FlexibleWorkDays is not null) { summaries.AddRange(FlexibleContractPolicy.Summarize(document,employee,start,end,assignments)); continue; }
             var shifts = assignments.Where(a => a.EmployeeId == employee.Id).ToArray();
             var days = new List<DailyWorkload>();
             for (var day = start.Date; day <= end.Date; day = day.AddDays(1))

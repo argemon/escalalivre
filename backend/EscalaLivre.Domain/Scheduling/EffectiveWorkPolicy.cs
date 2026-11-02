@@ -8,6 +8,11 @@ public static class EffectiveWorkPolicy
     public static WorkloadRule RuleFor(CompanyRules company, Employee employee)
         => employee.InheritsCompanyDefaults ? company.DefaultWorkload : employee.Workload;
 
+    // A larger operational ceiling never authorizes overtime by itself.
+    public static WeeklyHours WeeklyLimit(CompanyRules company, Employee employee)
+        => new(employee.AllowsOvertime ? RuleFor(company, employee).WeeklyLimitHours
+            : Math.Min(44, RuleFor(company, employee).WeeklyLimitHours));
+
     public static TimeSpan Measure(DateTime start, DateTime end, BreakWindow? pause = null)
         => end - start - (pause is null ? TimeSpan.Zero : pause.End - pause.Start);
 

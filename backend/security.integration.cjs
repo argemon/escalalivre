@@ -600,3 +600,21 @@ test('contract generation handles uniform and reduced Friday with exact seconds 
   }
  });
 });
+
+test('individual 5x2 and 6x1 choose days in a seven-day business over the HTTP worker',async()=>{
+ await withServer({},async({post})=>{
+  for(const days of [5,6]){
+   const r=request(1,7);r.start='2026-11-08T00:00:00';r.end='2026-11-14T23:59:59';
+   const hours=days===5?40:44;
+   Object.assign(r.document.company,{opensAt:'07:30:00',closesAt:'16:30:00',operatingDays:[0,1,2,3,4,5,6],coverage:Array.from({length:7},(_,day)=>({role:'Atendimento',day,start:'07:30:00',end:'16:30:00',minimumEmployees:1}))});
+   const employee=r.document.employees[0];employee.inheritsCompanyDefaults=false;employee.workingDays=undefined;employee.shiftStartsAt='07:30:00';
+   Object.assign(employee.workload,{regimeType:'dayBased',workUnits:days,restUnits:7-days,weeklyLimitHours:44,weeklyPlan:{contractedSeconds:hours*3600,dailySeconds:[0,0,0,0,0,0,0],flexibleWorkDays:days}});
+   const response=await post('/solve',r);assert.equal(response.status,200);const result=(await response.json()).data;
+   assert.ok(['optimal','feasible'].includes(result.optimization.status));assert.ok(!result.conflicts.some(c=>c.severity==='error'));
+   assert.equal(new Set(result.assignments.map(a=>a.start.slice(0,10))).size,days);
+   assert.equal(result.workloads[0].plannedSeconds,hours*3600);assert.equal(result.workloads[0].unmetSeconds,0);
+   const analyzed=(await (await post('/analyze',{...r,document:{...r.document,assignments:result.assignments}})).json()).data;
+   assert.deepEqual(analyzed.workloads,result.workloads);
+  }
+ });
+});

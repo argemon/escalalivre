@@ -8,7 +8,7 @@ function digest(result) {
     gaps:ordered(result.gaps.map(g=>({start:g.start,end:g.end,role:g.role,missingEmployees:g.missingEmployees}))),
     workloads:ordered((result.workloads??[]).map(w=>({employeeId:w.employeeId,weekStart:w.weekStart,contractedSeconds:w.contractedSeconds,
       nominalSeconds:w.nominalSeconds,excusedSeconds:w.excusedSeconds,expectedSeconds:w.expectedSeconds,plannedSeconds:w.plannedSeconds,
-      recognizedSeconds:w.recognizedSeconds,unmetSeconds:w.unmetSeconds,excessSeconds:w.excessSeconds,historicalWorkSeconds:w.historicalWorkSeconds,
+      recognizedSeconds:w.recognizedSeconds,unmetSeconds:w.unmetSeconds,excessSeconds:w.excessSeconds,historicalWorkSeconds:w.historicalWorkSeconds,unassignedSeconds:w.unassignedSeconds??null,
       days:ordered(w.days.map(d=>({date:d.date,nominalSeconds:d.nominalSeconds,excusedSeconds:d.excusedSeconds,expectedSeconds:d.expectedSeconds,plannedSeconds:d.plannedSeconds,recognizedSeconds:d.recognizedSeconds,unmetSeconds:d.unmetSeconds,excessSeconds:d.excessSeconds})))}))),
     score:result.coverageScore
   };

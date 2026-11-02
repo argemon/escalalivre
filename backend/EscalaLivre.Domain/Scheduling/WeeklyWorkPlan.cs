@@ -22,11 +22,13 @@ public sealed class WeeklyWorkPlan
     public int ContractedSeconds { get; }
     public IReadOnlyList<int> DailySeconds { get; }
     public WeeklyCompensation? Compensation { get; }
-    public WeeklyWorkPlan(int contractedSeconds, IReadOnlyList<int> dailySeconds, WeeklyCompensation? compensation = null)
+    public int? FlexibleWorkDays { get; }
+    public WeeklyWorkPlan(int contractedSeconds, IReadOnlyList<int> dailySeconds, WeeklyCompensation? compensation = null, int? flexibleWorkDays = null)
     {
         if (contractedSeconds is < 1 or > 604800 || dailySeconds is null || dailySeconds.Count != 7 || dailySeconds.Any(s => s is < 0 or > 86400))
             throw new ArgumentException("Carga e distribuição devem usar segundos inteiros e sete dias.");
-        ContractedSeconds = contractedSeconds; DailySeconds = dailySeconds.ToImmutableArray(); Compensation = compensation;
+        if (flexibleWorkDays is < 1 or > 7) throw new ArgumentException("Quantidade de dias automáticos inválida.");
+        ContractedSeconds = contractedSeconds; DailySeconds = dailySeconds.ToImmutableArray(); Compensation = compensation; FlexibleWorkDays = flexibleWorkDays;
     }
 }
 
@@ -55,10 +57,12 @@ public static class WeeklyWorkPlanPolicy
     public static IReadOnlyList<string> Issues(WeeklyWorkPlan plan, double ceilingHours)
     {
         var issues = new List<string>();
-        if (plan.DailySeconds.Sum() != plan.ContractedSeconds) issues.Add("distributionTotal");
+        if (plan.FlexibleWorkDays is null && plan.DailySeconds.Sum() != plan.ContractedSeconds) issues.Add("distributionTotal");
         if (plan.ContractedSeconds > ceilingHours * 3600) issues.Add("contractAboveCeiling");
-        if (plan.DailySeconds.Any(s => s > 36000)) issues.Add("distributionDailyLimit");
-        if (plan.DailySeconds.Any(s => s > 28800) && plan.Compensation is null) issues.Add("compensationRequired");
+        if (plan.ContractedSeconds > 44 * 3600) issues.Add("contractAboveNormalLimit");
+        var durations = plan.FlexibleWorkDays is {} count ? new[] { (plan.ContractedSeconds + count - 1) / count } : plan.DailySeconds;
+        if (durations.Any(s => s > 36000)) issues.Add("distributionDailyLimit");
+        if (durations.Any(s => s > 28800) && plan.Compensation is null) issues.Add("compensationRequired");
         return issues;
     }
     public static TimeSpan EndOffset(TimeOnly entry, int workSeconds, int pauseSeconds)
