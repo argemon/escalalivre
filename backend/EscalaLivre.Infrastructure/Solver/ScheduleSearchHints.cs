@@ -17,9 +17,10 @@ internal static class ScheduleSearchHints
             {
                 var routines = week.Where(a => a.EmployeeId == employee.Id
                         && (employee.FixedInterval is not null || !IntervalTimingPolicy.IsEarly(company, a)))
-                    .GroupBy(a => (Start: a.Start.TimeOfDay, End: a.End - a.Start.Date, Pause: WeeklyIntervalPolicy.Pattern(a)))
+                    .GroupBy(a => (Start: a.Start.TimeOfDay, End: WeeklyWorkPlanPolicy.For(company,employee) is null ? a.End - a.Start.Date : TimeSpan.Zero, Pause: WeeklyIntervalPolicy.Pattern(a)))
                     .OrderByDescending(g => g.Select(a => a.Start.Date).Distinct().Count())
-                    .ThenByDescending(g => g.Key.End - g.Key.Start)
+                    .ThenByDescending(g => WeeklyWorkPlanPolicy.For(company,employee) is null ? 0 : g.Sum(a=>ContractWorkPolicy.Recognized(company,employee,a.Start,EffectiveWorkPolicy.Measure(a).Ticks/TimeSpan.TicksPerSecond)))
+                    .ThenByDescending(g => g.Max(a=>a.End-a.Start))
                     .ThenBy(g => g.Key.Pause is {} pause ? lunches.Sum(other =>
                         Math.Max(0, (Math.Min((pause.Start + pause.Duration).Ticks, other.End.Ticks)
                             - Math.Max(pause.Start.Ticks, other.Start.Ticks)))) : 0)
@@ -27,7 +28,7 @@ internal static class ScheduleSearchHints
                     .ThenBy(g => g.Key.Start);
                 var routine = routines.FirstOrDefault();
                 if (routine is null) continue;
-                foreach (var day in routine.GroupBy(a => a.Start.Date)) chosen.Add(day.First().Id);
+                foreach (var day in routine.GroupBy(a => a.Start.Date)) chosen.Add(day.OrderByDescending(a=>EffectiveWorkPolicy.Measure(a)).First().Id);
                 if (routine.Key.Pause is {} selected) lunches.Add((selected.Start, selected.Start + selected.Duration));
             }
         }

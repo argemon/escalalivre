@@ -103,7 +103,9 @@ public static class ScheduleJson
             }
             if (updated is not null && !(updated.EndsWith('Z') || (updated.Length >= 6 && updated[^6] is '+' or '-')))
                 throw new JsonException("A atualização deve informar um instante com fuso horário.");
-            var document = ScheduleDocumentMapper.ToProjection(node.Deserialize<EscalaLivreDocumentDto>(Plain(options)));
+            EscalaLivreDocument? document;
+            try { document = ScheduleDocumentMapper.ToProjection(node.Deserialize<EscalaLivreDocumentDto>(Plain(options))); }
+            catch (ArgumentException error) { throw new JsonException("Configuração de jornada inválida.", error); }
             return document is null ? null : document with { UpdatedAt = document.UpdatedAt.ToUniversalTime(), Company = document.Company is null ? null! : document.Company with { TimeZone = zone } };
         }
         public override void Write(Utf8JsonWriter writer, EscalaLivreDocument document, JsonSerializerOptions options)

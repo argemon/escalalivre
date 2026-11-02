@@ -43,6 +43,7 @@ public sealed class CoverageConstraints : IScheduleConstraintTranslator
                 }
                 var shortage = model.NewIntVar(0, requirement.MinimumEmployees, $"shortage_{context.ShortageTerms.Count}");
                 model.Add(LinearExpr.Sum(allocated) + shortage >= requirement.MinimumEmployees);
+                context.CoverageDeficitTerms.Add(LinearExpr.Term(shortage,(block.End-block.Start).Ticks/TimeSpan.TicksPerSecond));
                 context.ShortageTerms.Add(LinearExpr.Term(shortage, ScheduleObjective.ShortageWeight(block.End - block.Start)));
             }
             foreach (var person in allocation) model.Add(LinearExpr.Sum(person.Value) <= present[person.Key]);

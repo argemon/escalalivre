@@ -1,0 +1,229 @@
+{
+  "scenarios": [
+    {
+      "id": "uniform-44",
+      "seconds": 158400,
+      "days": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "expected": [
+        0,
+        31680,
+        31680,
+        31680,
+        31680,
+        31680,
+        0
+      ],
+      "issues": [
+        "compensationRequired"
+      ]
+    },
+    {
+      "id": "friday-44",
+      "seconds": 158400,
+      "days": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "friday": 28800,
+      "expected": [
+        0,
+        32400,
+        32400,
+        32400,
+        32400,
+        28800,
+        0
+      ],
+      "issues": [
+        "compensationRequired"
+      ]
+    },
+    {
+      "id": "remainder-seconds",
+      "seconds": 144001,
+      "days": [
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "expected": [
+        0,
+        28801,
+        28800,
+        28800,
+        28800,
+        28800,
+        0
+      ],
+      "issues": [
+        "compensationRequired"
+      ]
+    },
+    {
+      "id": "uniform-40",
+      "seconds": 144000,
+      "days": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "expected": [
+        0,
+        28800,
+        28800,
+        28800,
+        28800,
+        28800,
+        0
+      ],
+      "issues": []
+    },
+    {
+      "id": "custom-mismatch",
+      "seconds": 158400,
+      "custom": [
+        0,
+        28800,
+        28800,
+        28800,
+        28800,
+        28800,
+        0
+      ],
+      "expected": [
+        0,
+        28800,
+        28800,
+        28800,
+        28800,
+        28800,
+        0
+      ],
+      "issues": [
+        "distributionTotal"
+      ]
+    },
+    {
+      "id": "above-ceiling",
+      "seconds": 158400,
+      "ceiling": 40,
+      "days": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "expected": [
+        0,
+        31680,
+        31680,
+        31680,
+        31680,
+        31680,
+        0
+      ],
+      "issues": [
+        "contractAboveCeiling",
+        "compensationRequired"
+      ]
+    },
+    {
+      "id": "explicit-compensation",
+      "seconds": 158400,
+      "days": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "compensation": true,
+      "expected": [
+        0,
+        31680,
+        31680,
+        31680,
+        31680,
+        31680,
+        0
+      ],
+      "issues": []
+    },
+    {
+      "id": "custom-daily-excess",
+      "seconds": 158400,
+      "custom": [
+        0,
+        39600,
+        39600,
+        39600,
+        39600,
+        0,
+        0
+      ],
+      "compensation": true,
+      "expected": [
+        0,
+        39600,
+        39600,
+        39600,
+        39600,
+        0,
+        0
+      ],
+      "issues": [
+        "distributionDailyLimit"
+      ]
+    }
+  ],
+  "exits": [
+    {
+      "work": 31680,
+      "expected": "17:18:00"
+    },
+    {
+      "work": 32400,
+      "expected": "17:30:00"
+    },
+    {
+      "work": 28800,
+      "expected": "16:30:00"
+    },
+    {
+      "work": 31681,
+      "expected": "17:18:01"
+    }
+  ],
+  "compensationDates": [
+    {
+      "date": "2025-12-31",
+      "expected": false
+    },
+    {
+      "date": "2026-01-01",
+      "expected": true
+    },
+    {
+      "date": "2026-12-31",
+      "expected": true
+    },
+    {
+      "date": "2027-01-01",
+      "expected": false
+    }
+  ]
+}

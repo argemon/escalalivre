@@ -58,7 +58,16 @@ const days = boundedArray(z.number().int().min(0).max(6),limits.days).refine(v =
 // Invalid date fields must remain schema errors rather than throw from civil arithmetic.
 const civilTimestamp = (value:string) => validCivilDateTime(value) ? civilMillis(value) : NaN;
 const windowSchema = z.object({start:date,end:date}).refine(v => civilTimestamp(v.end)>civilTimestamp(v.start), "Fim deve ser posterior ao inicio");
+const weeklyPlan = z.object({
+  contractedSeconds:z.number().int().min(1).max(604800),
+  dailySeconds:boundedArray(z.number().int().min(0).max(86400),7).refine(v=>v.length===7,"Informe sete durações diárias."),
+  compensation:z.object({instrument:boundedString(200).refine(v=>v.trim().length>0,"Informe o instrumento."),
+    startsOn:z.string().refine(v=>validCivilDateTime(v+"T00:00:00"),"Vigência inválida"),
+    endsOn:z.string().refine(v=>validCivilDateTime(v+"T00:00:00"),"Vigência inválida")
+  }).refine(v=>v.endsOn>=v.startsOn,"Vigência invertida").nullish().transform(v=>v??undefined)
+});
 const workload = z.object({
+  weeklyPlan:weeklyPlan.nullish().transform(v=>v??undefined),
   regimeType:z.enum(regimeTypes),workUnits:z.number().int().min(1).max(limits.workUnits),
   restUnits:z.number().int().min(0).max(limits.workUnits),weeklyLimitHours:z.number().positive().max(limits.weeklyHours),
   defaultShiftDuration:boundedDuration(1,limits.shiftDurationSeconds)
@@ -81,6 +90,7 @@ const canonicalDocumentSchema = z.object({
   employees:boundedArray(z.object({
     id,name:text,roleId:id.optional(),role:text,inheritsCompanyDefaults:z.boolean(),
     coverageRoleIds:boundedArray(id,limits.coverageRoles).optional(),coverageRoles:boundedArray(text,limits.coverageRoles).optional(),fixedInterval:z.object({start:time,end:time}).optional(),shiftStartsAt:time.optional(),worksDuringLunchClosure:z.boolean().optional(),
+    contractLeaves:boundedArray(z.object({date:z.string().refine(v=>validCivilDateTime(v+"T00:00:00"),"Data inválida"),excusedSeconds:z.number().int().min(1).max(86400)}),limits.windows).nullish().transform(v=>v??undefined),
     workload,availability:boundedArray(windowSchema,limits.windows),restrictions:boundedArray(windowSchema,limits.windows),
     preferences:boundedArray(z.object({code:text,weight:z.number().int().min(-limits.preferenceWeight).max(limits.preferenceWeight),description}),limits.preferences),
     allowsOvertime:z.boolean(),allowsNightWork:z.boolean(),preferredDaysOff:days,workingDays:days.refine(v=>v.length>0,"Selecione ao menos um dia de trabalho.").optional()

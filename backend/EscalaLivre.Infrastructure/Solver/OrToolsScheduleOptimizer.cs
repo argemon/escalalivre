@@ -13,14 +13,15 @@ public sealed class OrToolsScheduleOptimizer(ScheduleCandidateGenerator generato
         var budget = new OptimizationBudget();
         var input = new ScheduleModelInput(request, generator.Generate(request), budget);
         var context = builder.Build(input, budget);
+        ScheduleOptimizationResult Search(double seconds) => context.ContractCredit is null ? reader.Read(context,execution.Solve(context.Model,seconds)) : ContractObjectiveSearch.Solve(context,execution,reader,seconds);
         var preference = context.PreferUnanticipatedIntervals;
-        if (preference is null) return reader.Read(context, execution.Solve(context.Model));
+        if (preference is null) return Search(OrToolsExecution.MaximumSeconds);
 
         // One model/budget and at most five seconds of native search across both attempts.
         context.Model.AddAssumption(preference);
         ScheduleSearchHints.Apply(context);
         var timer = Stopwatch.StartNew();
-        var preferred = reader.Read(context, execution.Solve(context.Model, OrToolsExecution.MaximumSeconds / 2));
+        var preferred = Search(OrToolsExecution.MaximumSeconds / 2);
         if (preferred.Status is not ("optimal" or "feasible")) return preferred;
         long uncovered = Uncovered(request, preferred);
         if (uncovered == 0) return preferred;
@@ -36,7 +37,7 @@ public sealed class OrToolsScheduleOptimizer(ScheduleCandidateGenerator generato
                 || fixedIds.Contains(decision.Key) ? 1 : 0);
         double remaining = OrToolsExecution.MaximumSeconds - timer.Elapsed.TotalSeconds;
         if (remaining <= 0) return preferred;
-        var relaxed = reader.Read(context, execution.Solve(context.Model, remaining));
+        var relaxed = Search(remaining);
         if (relaxed.Status is not ("optimal" or "feasible") || Uncovered(request, relaxed) >= uncovered) return preferred;
         var early = relaxed.SelectedAssignments.Where(a => IntervalTimingPolicy.IsEarly(request.Document.Company, a)
             && request.Document.Employees.First(e => e.Id == a.EmployeeId).FixedInterval is null

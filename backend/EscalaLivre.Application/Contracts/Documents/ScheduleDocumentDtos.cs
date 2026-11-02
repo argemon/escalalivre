@@ -52,14 +52,21 @@ public sealed record EmployeeDto(
     MiddayClosureDto? FixedInterval = null,
     IReadOnlyList<string>? CoverageRoles = null,
     Guid? RoleId = null,
-    IReadOnlyList<Guid>? CoverageRoleIds = null);
+    IReadOnlyList<Guid>? CoverageRoleIds = null,
+    IReadOnlyList<ContractLeaveDto>? ContractLeaves = null);
+
+public sealed record ContractLeaveDto(DateOnly Date, int ExcusedSeconds);
 
 public sealed record WorkloadRuleDto(
     string RegimeType,
     int WorkUnits,
     int RestUnits,
     double WeeklyLimitHours,
-    TimeSpan DefaultShiftDuration);
+    TimeSpan DefaultShiftDuration,
+    WeeklyWorkPlanDto? WeeklyPlan = null);
+
+public sealed record WeeklyWorkPlanDto(int ContractedSeconds, IReadOnlyList<int> DailySeconds, WeeklyCompensationDto? Compensation = null);
+public sealed record WeeklyCompensationDto(string Instrument, DateOnly StartsOn, DateOnly EndsOn);
 
 public sealed record LunchRuleDto(TimeSpan Minimum, TimeSpan Maximum, TimeSpan PreferredAfter);
 

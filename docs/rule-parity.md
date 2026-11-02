@@ -39,10 +39,11 @@ implementações de negócio C#/TypeScript. Reprodução e validação estão no
 | Intervalo variável | Mínimo é o maior entre o mínimo da empresa, o obrigatório pela jornada e a duração do fechamento atravessado. Máximo é limitado a 2h; mínimo obrigatório prevalece sobre máximo menor configurado na empresa. | `interval` |
 | Intervalo fixo | Horários devem coincidir exatamente com o intervalo da pessoa, inclusive a data. Início da pausa menor ou igual ao início do turno pertence ao dia seguinte; fim menor ou igual ao início da pausa pertence ao dia seguinte. Substitui os limites variáveis da empresa, preservando os limites obrigatórios da jornada. | `fixedInterval`, `interval` |
 | Fechamento para almoço | Pausa deve cobrir todo o fechamento atravessado. Inclui o fechamento da operação iniciada no dia anterior. Quem trabalha durante o fechamento deve manter sua pausa fora dele; essa opção não dispensa pausa obrigatória. | `middayClosure` |
-| Jornada configurada | Trabalho efetivo não pode exceder `defaultShiftDuration`, herdado da empresa ou próprio da pessoa. | `workload` |
+| Jornada configurada | Sem plano contratado, trabalho efetivo não pode exceder `defaultShiftDuration`. Com plano explícito, usa distribuição do dia, compensação vigente e autorização separada de extras, conforme etapa 3. | `workload` |
 | Regime em horas | Trabalho efetivo, descontada a pausa, não pode exceder `workUnits`. Descanso usa o maior entre `restUnits` em horas e o mínimo da empresa. | `regime`, `minimumRest` |
-| Limite diário | Soma do trabalho efetivo dos turnos com início na mesma data: 8h ou 10h quando a pessoa permite horas extras. A configuração de horas extras não amplia automaticamente a jornada nem o regime. | `dailyLimit` |
+| Limite diário | Soma por data inicial. Legado: 8h ou 10h com extras. Plano: limite normal do dia mais até 2h se extras autorizadas, limitado a 10h. Compensação vigente pode autorizar distribuição normal acima de 8h. Regime e teto continuam obrigatórios. | `dailyLimit` |
 | Um turno por dia | No máximo um turno por pessoa e data de início. Um turno noturno pertence inteiro à data de início para essa regra e para substituição. | `multipleShifts` |
+| Carga contratada | Meta diária explícita, dispensa por feriado/crédito líquido de afastamento e saldo como soma das faltas diárias; extras não apagam falta normal. Cobertura e carga são métricas distintas. | `workloadShortfall` (warning) e relatórios `workloads` |
 | Limite semanal | Semana civil de domingo a sábado. Divide o trabalho e a pausa na meia-noite de domingo, considerando o histórico dos dois lados do período. | `weeklyLimit` |
 | Disponibilidade | Quando informada, uma única janela deve conter o turno inteiro, incluindo a pausa. Janelas adjacentes não são unidas implicitamente. | `availability` |
 | Restrições de horário | Qualquer sobreposição com o turno, inclusive durante a pausa, bloqueia o turno. Encostar no início/fim é permitido. | `availability` |
@@ -251,3 +252,42 @@ Validação local: `dotnet test EscalaLivre.slnx -c Release --no-restore -m:1` a
 ## Fuso automático do dispositivo — 01/11/2026
 
 Removida a configuração manual. Novos documentos detectam o fuso do PC; helpers de entrada sem contexto explícito usam esse relógio. 13:00Z corresponde a 09:00 em Cuiabá e 22:00 em Tóquio. Horários civis permanecem iguais, inclusive no servidor em outro fuso. Arquivos antigos preservam o metadado e o fallback histórico para conversão idempotente de instantes legados. As políticas C# e a conversão explícita por metadados permanecem iguais. Regressões em frontend/tests/date-time.test.cjs verificam detecção, entradas qualificadas, preservação e payload da API.
+
+## Jornada semanal e intervalos — investigação de 02/11/2026
+
+A [etapa 1](decisions/016-weekly-workload-contract.md) caracteriza teto, candidatos,
+limite diário, extras, duração e rotina semanal de pausas, sem alterar produção.
+O contrato proposto separa carga contratada opcional de teto e distribuição;
+compensação não será inferida da autorização de extras. A rotina semanal continua
+obrigatória inclusive na sexta reduzida e nos recortes com histórico bilateral.
+Arquivos antigos não terão teto convertido em carga contratada. Cenários futuros,
+matriz, fontes oficiais e pendência de enquadramento jurídico estão na decisão;
+os exemplos de 44h não constituem afirmação de teto legal universal vigente.
+
+## Carga contratada — configuração preparatória de 02/11/2026
+
+O [contrato da etapa 2](decisions/017-weekly-workload-configuration.md) acrescenta
+weeklyPlan opcional, segundos inteiros e sete durações canônicas. Ausência mantém
+modo legado, sem converter teto em meta. Políticas puras C#/TS compartilham
+[cenários de distribuição e prévia](../shared/weekly-work-plan-scenarios.json).
+Conflitos de configuração permanecem editáveis; o suporte de carga/compensação
+na geração e diagnóstico de turnos ainda não está implementado. A geração com
+plano efetivo é bloqueada explicitamente antes do otimizador e na interface.
+A rotina semanal de intervalos não foi relaxada. Salvamentos preservam turnos.
+
+## Geração contratada — 02/11/2026
+
+A [etapa 3](decisions/018-weekly-workload-generation.md) habilita o plano explícito
+na geração e nos diagnósticos. Compensação vigente permite a distribuição normal;
+extras não preenchem meta automaticamente. Carga, teto, saldo e cobertura são
+métricas distintas. Faltas diárias não são compensadas por excessos em outros dias.
+Feriado fechado e créditos líquidos explícitos de afastamento reduzem somente a
+meta do dia; bloqueios e disponibilidade não concedem crédito.
+
+A otimização contratada fixa prioridades sucessivas de cobertura, carga normal
+reconhecida e preferências dentro do orçamento anterior. Rotina semanal, histórico
+bilateral, precisão de segundos, fechamento e intervalo individual são preservados.
+O modo sem plano continua legado. Falha/rejeição/cancelamento preservam documento.
+Os [cenários novos](../shared/contract-work-scenarios.json) são executados em C#
+puro, TypeScript, comparador diferencial e HTTP/worker, incluindo todos os campos
+dos relatórios de carga. Detalhes, escolhas de produto e limites estão na decisão.

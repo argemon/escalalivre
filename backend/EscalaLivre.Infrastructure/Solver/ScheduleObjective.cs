@@ -21,6 +21,13 @@ public sealed class ScheduleObjective
         var request = context.Input.Request;
         var terms = context.Input.Candidates.Select(candidate => LinearExpr.Term(context.DecisionVars[candidate.Id],
             CandidateWeight(request.Document.Company, request.Document.Employees.First(e => e.Id == candidate.EmployeeId), candidate)));
-        context.Model.Maximize(LinearExpr.Sum(terms.Concat(context.ShortageTerms).Concat(context.OccupancyTerms)));
+        context.PreferenceObjective = LinearExpr.Sum(terms.Concat(context.OccupancyTerms));
+        if (WeeklyWorkPlanPolicy.HasContractPlans(request.Document))
+        {
+            context.ContractCredit = LinearExpr.Sum(context.Input.Candidates.Select(a => LinearExpr.Term(context.DecisionVars[a.Id],
+                ContractWorkPolicy.Recognized(request.Document.Company,request.Document.Employees.First(e=>e.Id==a.EmployeeId),a.Start,EffectiveWorkPolicy.Measure(a).Ticks/TimeSpan.TicksPerSecond))));
+            context.Model.Minimize(LinearExpr.Sum(context.CoverageDeficitTerms));
+        }
+        else context.Model.Maximize(LinearExpr.Sum(terms.Concat(context.ShortageTerms).Concat(context.OccupancyTerms)));
     }
 }

@@ -9,5 +9,5 @@ internal static class ScheduleResultAssembler
         => new(request.Document.Assignments, evaluation.Conflicts, evaluation.Coverage.Blocks,
             evaluation.Coverage.Gaps, evaluation.HiringSuggestions, evaluation.OptimizationSuggestions,
             ScheduleExplanation.Describe(request.Document.Employees, request.Document.Assignments).ToList(),
-            evaluation.Coverage.Score, new("not-run"));
+            evaluation.Coverage.Score, new("not-run"), evaluation.Workloads);
 }

@@ -70,3 +70,22 @@ Execute também node tools/parity-differential.cjs na raiz e com TZ=America/New_
 ## Desempenho atual
 
 O [relatório de desempenho atual](decisions/012-current-performance.md) descreve entradas sintéticas, snapshots isolados, aquecimento, repetições, fases, memória, modelos, HTTP/fila/worker e alertas. Use tools/performance-benchmark.cjs, tools/performance-http.cjs e tools/performance-alerts.cjs conforme os comandos documentados. O workflow manual Performance evidence coleta dados sem impor os limites locais Windows à CI Ubuntu. Não execute builds/testes concorrentes às amostras. A instrumentação é copiada para diretórios isolados; os projetos de produção não recebem sondas de benchmark.
+
+## Carga contratada — etapa 2
+
+As políticas puras novas usam shared/weekly-work-plan-scenarios.json nos testes
+C# e TS. Casos de interface/arquivo/herança/preservação estão em
+frontend/tests/weekly-work-plan.test.cjs; domínio e mapeadores em
+WeeklyWorkPlanTests. O teste HTTP `weekly plan contracts` verifica round-trip,
+bloqueio de capacidade e rejeição estrutural com worker real. Execute a matriz
+completa antes de integrar; evidências e limites desta entrega estão no
+[relatório](decisions/017-weekly-workload-configuration.md#validação-local-desta-entrega).
+
+## Jornada contratada — etapa 3
+
+O corpus diferencial passa a incluir shared/contract-work-scenarios.json e o digest
+compara relatórios semanais/diários de carga além de diagnósticos/cobertura/lacunas.
+ContractWorkTests roda sem OR-Tools; ContractGenerationTests verifica geração e
+prioridades com o adaptador real. HTTP compara os mesmos documentos pelo worker
+e gera 44h uniforme/sexta reduzida. A matriz anterior continua obrigatória.
+Evidências, CI pendente e limitações: [etapa 3](decisions/018-weekly-workload-generation.md).

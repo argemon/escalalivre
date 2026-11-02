@@ -10,6 +10,9 @@ public sealed class ScheduleModelContext(ScheduleModelInput input)
     public ScheduleModelInput Input { get; } = input;
     internal CpModel Model { get; } = new();
     internal Dictionary<Guid, BoolVar> DecisionVars { get; } = new();
+    internal List<LinearExpr> CoverageDeficitTerms { get; } = [];
+    internal LinearExpr? ContractCredit { get; set; }
+    internal LinearExpr? PreferenceObjective { get; set; }
     internal List<LinearExpr> ShortageTerms { get; } = [];
     internal List<LinearExpr> OccupancyTerms { get; } = [];
     internal BoolVar? PreferUnanticipatedIntervals { get; set; }

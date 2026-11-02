@@ -32,6 +32,7 @@ public static class DocumentSafety
         foreach (var employee in document.Employees)
         {
             if (employee is null || employee.Id == Guid.Empty || !ids.Add(employee.Id) || !Text(employee.Name) || !Text(employee.Role)
+                || (employee.ContractLeaves is {} leaves && (leaves.Count > L.Windows || leaves.Any(l => l is null || l.Date.Year is < 1900 or > 2100 || l.ExcusedSeconds is < 1 or > 86400)))
                 || !Workload(employee.Workload) || !Windows(employee.Availability) || !Windows(employee.Restrictions)
                 || employee.Preferences is null || employee.Preferences.Count > L.Preferences
                 || employee.Preferences.Any(p => p is null || !Text(p.Code) || !Text(p.Description, true) || (p.Weight < -L.PreferenceWeight || p.Weight > L.PreferenceWeight))

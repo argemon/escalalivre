@@ -11,7 +11,7 @@ function api(fetch) {
     .replaceAll('import.meta.env', 'testEnv');
   const code = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
   vm.runInNewContext(code, { exports, testEnv: { DEV: false }, fetch, AbortSignal, DOMException,TextEncoder,
-    require: name => name === './analysis' ? { planningPeriod: () => ({ start: '', end: '' }) } : name === './dateTime' ? { normalizeDocumentTimes: d => d, normalizeResultTimes: r => r } : {} });
+    require: name => name === './policies/weeklyWorkPlan' ? {generationUnavailable:()=>false} : name === './analysis' ? { planningPeriod: () => ({ start: '', end: '' }) } : name === './dateTime' ? { normalizeDocumentTimes: d => d, normalizeResultTimes: r => r } : {} });
   return exports;
 }
 

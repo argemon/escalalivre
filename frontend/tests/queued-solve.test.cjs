@@ -6,7 +6,7 @@ function service(fetch){
  const source=fs.readFileSync(path.join(__dirname,'../src/lib/queuedSolve.ts'),'utf8').replaceAll('import.meta.env','testEnv');
  const code=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
  vm.runInNewContext(code,{exports,testEnv:{DEV:false},fetch,AbortSignal,TextEncoder,setTimeout:fn=>{fn();return 1;},
- require:name=>name==='./analysis'?{planningPeriod:()=>({start:'',end:''})}:{normalizeDocumentTimes:d=>d,normalizeResultTimes:r=>r}});
+ require:name=>name==='./policies/weeklyWorkPlan'?{generationUnavailable:()=>false}:name==='./analysis'?{planningPeriod:()=>({start:'',end:''})}:{normalizeDocumentTimes:d=>d,normalizeResultTimes:r=>r}});
  return exports;
 }
 const reply=data=>Response.json({success:true,data});

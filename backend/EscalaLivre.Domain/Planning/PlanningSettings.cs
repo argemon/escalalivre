@@ -77,10 +77,12 @@ public sealed class PlanningSettings
         if (employee.CoverageRoleIds?.Any(id => id == Guid.Empty) == true || employee.CoverageRoles?.Any(string.IsNullOrWhiteSpace) == true)
             throw new ArgumentException("Coverage references must be nonempty.");
         if (employee.Preferences.Any(p => p is null || string.IsNullOrWhiteSpace(p.Code) || p.Description is null)) throw new ArgumentException("Preference structure is invalid.");
+        if (employee.ContractLeaves is {} leaves && leaves.Any(l => l is null || l.Date.Year is < 1900 or > 2100 || l.ExcusedSeconds is < 1 or > 86400)) throw new ArgumentException("Invalid contractual leave.");
         // Windows are structurally validated, without imposing shift availability or rest policy.
         foreach (var w in employee.Availability.Concat(employee.Restrictions)) _ = new CivilWindow(w.Start, w.End);
         return employee with
         {
+            ContractLeaves = employee.ContractLeaves is null ? null : Copy(employee.ContractLeaves),
             Availability = Copy(employee.Availability), Restrictions = Copy(employee.Restrictions), Preferences = Copy(employee.Preferences),
             PreferredDaysOff = Copy(employee.PreferredDaysOff), WorkingDays = employee.WorkingDays is null ? null : Copy(employee.WorkingDays),
             CoverageRoles = employee.CoverageRoles is null ? null : Copy(employee.CoverageRoles),

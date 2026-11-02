@@ -103,3 +103,11 @@ test('selection replacement, deletion and arrow navigation preserve the mask',()
  assert.equal(e.key('ArrowLeft'),false);assert.equal(e.key('Tab'),false);
  e.element.select();e.key('Delete');assert.equal(e.display,'00:00');assert.equal(e.value,'00:00:00');
 });
+
+test('weekly duration fields expose and edit seconds even when initially zero',()=>{
+ let value='08:48:00';
+ const input=DurationInput({value,showSeconds:true,onChange:next=>value=next});
+ assert.equal(input.props.value,'08:48:00');
+ input.props.onChange({currentTarget:{value:'08:48:01',setSelectionRange(){}}});
+ assert.equal(value,'08:48:01');
+});
