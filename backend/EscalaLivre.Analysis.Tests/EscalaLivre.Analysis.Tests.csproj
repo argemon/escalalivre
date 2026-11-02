@@ -9,6 +9,8 @@
     <Compile Include="../TestSupport/PureComposition.cs" Link="Support/PureComposition.cs" />
     <Using Include="EscalaLivre.TestSupport" />
     <ProjectReference Include="../EscalaLivre.Application/EscalaLivre.Application.csproj" />
+    <None Include="../../shared/contract-work-scenarios.json" Link="contract-work-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../shared/weekly-work-plan-scenarios.json" Link="weekly-work-plan-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../shared/weekly-interval-scenarios.json" Link="weekly-interval-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../shared/interval-timing-scenarios.json" Link="interval-timing-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../shared/regime-contract-scenarios.json" Link="regime-contract-scenarios.json" CopyToOutputDirectory="PreserveNewest" />

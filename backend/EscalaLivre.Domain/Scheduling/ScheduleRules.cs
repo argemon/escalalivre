@@ -22,7 +22,7 @@ public static class ScheduleRules
         if(LaborRules.ClosedHoliday(company,a.Start)&&!LaborRules.AuthorizedHolidayShift(company,a))yield return Issue("holiday","Turno em feriado configurado como fechado.");
         if(!e.AllowsNightWork&&ShiftEligibilityPolicy.IsNight(a.Start,a.End))yield return Issue("nightWork","Trabalho noturno não permitido.");
         if(!ShiftEligibilityPolicy.MatchesFixedStart(e,a.Start))yield return Issue("fixedStart","Entrada diferente do horário fixo configurado.");
-        if(work>rule.DefaultShiftDuration)yield return Issue("workload","Trabalho efetivo excede a jornada configurada.");
+        if(work>(rule.WeeklyPlan is null ? rule.DefaultShiftDuration : ContractWorkPolicy.DailyLimit(company,e,a.Start)))yield return Issue("workload","Trabalho efetivo excede a jornada configurada.");
         if(EffectiveWorkPolicy.ExceedsRegimeWork(work,rule))yield return Issue("regime","Trabalho efetivo excede o regime em horas.");
         bool invalidPause=!IntervalPolicy.Valid(a);
         if(invalidPause)yield return Issue("interval","Intervalo obrigatório ausente, insuficiente ou fora da jornada.");
@@ -67,7 +67,7 @@ public static class ScheduleRules
             foreach(var day in shifts.GroupBy(a=>a.Start.Date))
             {
                 if(day.Count()>1)yield return Issue("multipleShifts","Mais de um turno para a mesma pessoa e data de início.",day.Key,day.Key.AddDays(1));
-                if(day.Sum(a=>EffectiveWorkPolicy.Measure(a).Ticks)>EffectiveWorkPolicy.DailyLimit(e).Ticks)yield return Issue("dailyLimit","Limite diário de trabalho efetivo excedido.",day.Key,day.Key.AddDays(1));
+                if(day.Sum(a=>EffectiveWorkPolicy.Measure(a).Ticks)>ContractWorkPolicy.DailyLimit(document.Company,e,day.Key).Ticks)yield return Issue("dailyLimit","Limite diário de trabalho efetivo excedido.",day.Key,day.Key.AddDays(1));
             }
             foreach(var week in shifts.SelectMany(ScheduleWindow.Weeks).Distinct().Order())
                 if(shifts.Sum(a=>EffectiveWorkPolicy.WorkTicksInWeek(a,week))>rule.WeeklyLimitHours*TimeSpan.TicksPerHour)

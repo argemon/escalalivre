@@ -420,7 +420,7 @@ test('civil 09h and overnight dates survive the HTTP API, worker and native roun
 test('shared documents produce equivalent browser and HTTP diagnostics, coverage and gaps', async () => {
   const load=require('../frontend/tests/source-loader.cjs')();
   const {analyzeDocument}=load('lib/analysis.ts');
-  const scenarios=[...require('../shared/rule-scenarios.json').scenarios,...require('../shared/parity-boundaries.json').scenarios];
+  const scenarios=[...require('../shared/rule-scenarios.json').scenarios,...require('../shared/parity-boundaries.json').scenarios,...require('../shared/contract-work-scenarios.json').scenarios];
   const {digest}=require('../shared/parity-contract.cjs');
   await withServer({},async({post})=>{
     for(const scenario of scenarios.filter(s=>s.apiValid)) {
@@ -564,4 +564,39 @@ test('overlapping preserved history counts people in team and directional role c
       assert.equal(JSON.stringify(s.request),before);
     }
   });
+});
+
+test('weekly plan contracts survive HTTP round trip and generation applies the plan',async()=>{
+ await withServer({},async({post})=>{
+  const r=request();r.document.company.defaultWorkload.weeklyPlan={contractedSeconds:158400,dailySeconds:[0,31680,31680,31680,31680,31680,0],compensation:{instrument:'Acordo',startsOn:'2026-01-01',endsOn:'2026-12-31'}};
+  const shift={id:randomUUID(),employeeId:r.document.employees[0].id,role:'Atendimento',start:'2026-10-19T08:00:00',end:'2026-10-19T17:00:00',break:{start:'2026-10-19T12:00:00',end:'2026-10-19T13:00:00'},source:'manual',tags:['preserved']};
+  r.document.assignments=[shift];
+  const response=await post('/solve',r);assert.equal(response.status,200);
+  const result=(await response.json()).data;
+  const preserved=items=>items.map(({roleId,...item})=>{assert.equal(roleId??null,null);return item;});
+  assert.ok(['optimal','feasible'].includes(result.optimization.status));assert.equal(result.workloads[0].expectedSeconds,31680);assert.equal(result.workloads[0].unmetSeconds,0);
+  const exported=await (await post('/export',{document:r.document,format:'native'})).json();
+  const imported=await (await post('/import',{fileName:'plan.escalalivre',format:'native',contentBase64:exported.data.contentBase64})).json();
+  assert.equal(imported.success,true);assert.deepEqual(imported.data.company.defaultWorkload.weeklyPlan,r.document.company.defaultWorkload.weeklyPlan);
+  assert.deepEqual(preserved(imported.data.assignments),[shift]);
+  r.document.company.defaultWorkload.weeklyPlan.dailySeconds=[1];
+  assert.equal((await post('/analyze',r)).status,400);
+ });
+});
+
+test('contract generation handles uniform and reduced Friday with exact seconds over HTTP worker',async()=>{
+ await withServer({},async({post})=>{
+  for(const daily of [[0,31680,31680,31680,31680,31680,0],[0,32400,32400,32400,32400,28800,0]]) {
+   const r=request(2,5);r.start='2026-11-09T00:00:00';r.end='2026-11-13T23:59:59';
+   Object.assign(r.document.company,{opensAt:'07:30:00',closesAt:'17:30:00',operatingDays:[1,2,3,4,5],coverage:[1,2,3,4,5].map(day=>({role:'Atendimento',day,start:'07:30:00',end:'17:30:00',minimumEmployees:1}))});
+   r.document.company.defaultWorkload.weeklyPlan={contractedSeconds:158400,dailySeconds:daily,compensation:{instrument:'Acordo',startsOn:'2026-01-01',endsOn:'2026-12-31'}};
+   r.document.employees.forEach(e=>e.shiftStartsAt='07:30:00');
+   const response=await post('/solve',r);assert.equal(response.status,200);const result=(await response.json()).data;
+   assert.ok(['optimal','feasible'].includes(result.optimization.status));assert.equal(result.workloads.length,2);
+   for(const summary of result.workloads){assert.equal(summary.expectedSeconds,158400);assert.equal(summary.plannedSeconds,158400);assert.equal(summary.unmetSeconds,0);}
+   assert.ok(!result.conflicts.some(c=>c.severity==='error'));
+   const copy={...r,document:{...r.document,assignments:result.assignments}};
+   const analyzed=(await (await post('/analyze',copy)).json()).data;assert.deepEqual(analyzed.workloads,result.workloads);
+  }
+ });
 });

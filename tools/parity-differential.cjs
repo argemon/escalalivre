@@ -35,7 +35,7 @@ function check(scenario,remote){
  for(const code of scenario.requiredCodes??[])assert.ok(local.conflicts.some(c=>c.code===code),'missing aggregate anchor '+code);
 }
 function main(){
- const options=args();let scenarios=options.input?[JSON.parse(fs.readFileSync(options.input,'utf8')).scenario]:options.seed?generated(Number(options.seed)):corpus();
+ const options=args();let scenarios=options.input?[JSON.parse(fs.readFileSync(options.input,'utf8')).scenario]:options.seed?generated(Number(options.seed)):[...corpus(),...require('../shared/contract-work-scenarios.json').scenarios];
  if(options.case)scenarios=scenarios.filter(s=>s.id===options.case);
  if(!scenarios.length||scenarios.length>256)throw new Error('Select 1..256 cases');
  const build=spawnSync('dotnet',['build','tools/EscalaLivre.ParityProbe/EscalaLivre.ParityProbe.csproj','-c','Release','--no-incremental','--nologo'],{cwd:root,encoding:'utf8',timeout:120000,windowsHide:true});
@@ -46,6 +46,6 @@ function main(){
    const file=path.join(out,'failure.json');fs.writeFileSync(file,JSON.stringify({scenario:scenarios[i],csharp:results[i],typescript:plain(analyzeDocument(scenarios[i].request.document)),error:String(error),runtime:{node:process.version,tz:process.env.TZ??Intl.DateTimeFormat().resolvedOptions().timeZone}},null,2));
    throw new Error(scenarios[i].id+': '+error+'; replay: node tools/parity-differential.cjs --input '+file);
  }
- console.log(JSON.stringify({status:'passed',cases:scenarios.length,seeds:require('../shared/parity-corpus.cjs').SEEDS,node:process.version,tz:process.env.TZ??Intl.DateTimeFormat().resolvedOptions().timeZone,properties:['input immutability','migration idempotence','whole-shift preservation','bilateral replacement'],comparison:['diagnostic code/severity/person/period/role','coverage','gaps','score']}));
+ console.log(JSON.stringify({status:'passed',cases:scenarios.length,seeds:require('../shared/parity-corpus.cjs').SEEDS,node:process.version,tz:process.env.TZ??Intl.DateTimeFormat().resolvedOptions().timeZone,properties:['input immutability','migration idempotence','whole-shift preservation','bilateral replacement'],comparison:['diagnostic code/severity/person/period/role','coverage','gaps','score','workload summaries and daily balances']}));
 }
 main();

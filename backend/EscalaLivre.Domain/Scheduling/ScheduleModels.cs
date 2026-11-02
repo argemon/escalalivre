@@ -53,14 +53,16 @@ public sealed record Employee(
     MiddayClosure? FixedInterval = null,
     IReadOnlyList<string>? CoverageRoles = null,
     Guid? RoleId = null,
-    IReadOnlyList<Guid>? CoverageRoleIds = null);
+    IReadOnlyList<Guid>? CoverageRoleIds = null,
+    IReadOnlyList<ContractLeave>? ContractLeaves = null);
 
 public sealed record WorkloadRule(
     string RegimeType,
     int WorkUnits,
     int RestUnits,
     double WeeklyLimitHours,
-    TimeSpan DefaultShiftDuration);
+    TimeSpan DefaultShiftDuration,
+    WeeklyWorkPlan? WeeklyPlan = null);
 
 public sealed record LunchRule(TimeSpan Minimum, TimeSpan Maximum, TimeSpan PreferredAfter);
 

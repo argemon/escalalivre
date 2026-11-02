@@ -9,7 +9,7 @@ const record=(value:unknown):value is Record<string,unknown> => value!==null && 
 export function documentStructureIssue(input:unknown):Issue|undefined {
   const invalid=(path:Path):Issue=>({path,message:"Estrutura ou coleção inválida ou acima do limite."});
   const array=(value:unknown,max:number,path:Path,optional=false):Issue|undefined =>
-    optional && value===undefined ? undefined : !Array.isArray(value) || value.length>max ? invalid(path) : undefined;
+    optional && (value===undefined || (path[path.length-1]==="contractLeaves" && value===null)) ? undefined : !Array.isArray(value) || value.length>max ? invalid(path) : undefined;
   if(!record(input))return invalid([]);
   if(!record(input.company))return invalid(["company"]);
   const top:[unknown,number,Path,boolean?][]=[
@@ -25,7 +25,7 @@ export function documentStructureIssue(input:unknown):Issue|undefined {
     const path:Path=["employees",i];
     if(!record(employee))return invalid(path);
     const collections:[string,number,boolean?][]=[
-      ["availability",limits.windows],["restrictions",limits.windows],
+      ["contractLeaves",limits.windows,true],["availability",limits.windows],["restrictions",limits.windows],
       ["preferences",limits.preferences],["preferredDaysOff",limits.days],
       ["workingDays",limits.days,true],["coverageRoleIds",limits.coverageRoles,true],
       ["coverageRoles",limits.coverageRoles,true]

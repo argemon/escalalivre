@@ -75,7 +75,8 @@ public static class ScheduleDocumentMapper
             ToProjection(value.FixedInterval),
             Copy(value.CoverageRoles),
             value.RoleId,
-            Copy(value.CoverageRoleIds));
+            Copy(value.CoverageRoleIds),
+            value.ContractLeaves is null ? null : Map(value.ContractLeaves, l => l is null ? null! : new ContractLeave(l.Date,l.ExcusedSeconds)));
 
     public static WorkloadRule ToProjection(WorkloadRuleDto? value)
         => value is null ? null! : new(
@@ -83,7 +84,7 @@ public static class ScheduleDocumentMapper
             value.WorkUnits,
             value.RestUnits,
             value.WeeklyLimitHours,
-            value.DefaultShiftDuration);
+            value.DefaultShiftDuration, ToProjection(value.WeeklyPlan));
 
     public static LunchRule ToProjection(LunchRuleDto? value)
         => value is null ? null! : new(
@@ -201,7 +202,8 @@ public static class ScheduleDocumentMapper
             ToDto(value.FixedInterval),
             Copy(value.CoverageRoles),
             value.RoleId,
-            Copy(value.CoverageRoleIds));
+            Copy(value.CoverageRoleIds),
+            value.ContractLeaves is null ? null : Map(value.ContractLeaves, l => l is null ? null! : new ContractLeaveDto(l.Date,l.ExcusedSeconds)));
 
     public static WorkloadRuleDto ToDto(WorkloadRule? value)
         => value is null ? null! : new(
@@ -209,7 +211,7 @@ public static class ScheduleDocumentMapper
             value.WorkUnits,
             value.RestUnits,
             value.WeeklyLimitHours,
-            value.DefaultShiftDuration);
+            value.DefaultShiftDuration, ToDto(value.WeeklyPlan));
 
     public static LunchRuleDto ToDto(LunchRule? value)
         => value is null ? null! : new(
@@ -256,6 +258,13 @@ public static class ScheduleDocumentMapper
         => value is null ? null! : new(
             value.Start,
             value.End);
+
+    public static WeeklyWorkPlan? ToProjection(WeeklyWorkPlanDto? value)
+        => value is null ? null : new(value.ContractedSeconds, value.DailySeconds,
+            value.Compensation is null ? null : new(value.Compensation.Instrument, value.Compensation.StartsOn, value.Compensation.EndsOn));
+    public static WeeklyWorkPlanDto? ToDto(WeeklyWorkPlan? value)
+        => value is null ? null : new(value.ContractedSeconds, Copy(value.DailySeconds),
+            value.Compensation is null ? null : new(value.Compensation.Instrument, value.Compensation.StartsOn, value.Compensation.EndsOn));
 
     private static IReadOnlyList<T> Copy<T>(IReadOnlyList<T>? values)
         => values is null ? null! : values.ToImmutableArray();

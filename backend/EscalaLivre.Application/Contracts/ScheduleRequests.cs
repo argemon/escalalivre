@@ -13,7 +13,8 @@ public sealed record ScheduleResult(
     IReadOnlyList<OptimizationSuggestion> OptimizationSuggestions,
     IReadOnlyList<SolverDecision> Decisions,
     double CoverageScore,
-    OptimizationInfo? Optimization = null);
+    OptimizationInfo? Optimization = null,
+    IReadOnlyList<WorkloadSummary>? Workloads = null);
 
 public sealed record OptimizationInfo(string Status);
 

@@ -1,7 +1,8 @@
+import { contractDailyLimitMillis } from "./policies/weeklyWorkPlan";
 import { civilDay, civilMillis, civilString, civilWeek, clockMillis } from "./civilTime";
 import { authorizedHolidayShift, closedHoliday } from "./holidays";
 import type { CompanyRules, Employee, EscalaLivreDocument, ScheduleIssue, ShiftAssignment } from "../types/schedule";
-import { workMillis, workloadFor, dailyLimitMillis, exceedsRegimeWork, workMillisInWeek } from "./policies/effectiveWork";
+import { workMillis, workloadFor, exceedsRegimeWork, workMillisInWeek } from "./policies/effectiveWork";
 import { regimeConstraints } from "./regimes";
 import { restMillis, violatesPreviousRest } from "./policies/rest";
 import { fixedBreak, closuresFor, intervalIssue, variableIntervalLimits, conflictsWithClosure } from "./policies/interval";
@@ -21,7 +22,7 @@ export function shiftDiagnostics(company:CompanyRules,e:Employee,a:ShiftAssignme
   if(closedHoliday(company,civilString(start).split("T")[0])&&!authorizedHolidayShift(company,a))issue("holiday","Turno em feriado configurado como fechado.");
   if(!e.allowsNightWork&&isNight(start,end))issue("nightWork","Trabalho noturno não permitido.");
   if(!matchesFixedStart(e,start))issue("fixedStart","Entrada diferente do horário fixo configurado.");
-  if(work>clockMillis(rule.defaultShiftDuration))issue("workload","Trabalho efetivo excede a jornada configurada.");
+  if(work>(rule.weeklyPlan?contractDailyLimitMillis(company,e,a.start.slice(0,10)):clockMillis(rule.defaultShiftDuration)))issue("workload","Trabalho efetivo excede a jornada configurada.");
   if(exceedsRegimeWork(work,rule))issue("regime","Trabalho efetivo excede o regime em horas.");
   const pauseProblem=intervalIssue(a);if(pauseProblem)issue("interval",pauseProblem);
   const fixed=fixedBreak(e,a.start);
@@ -57,7 +58,7 @@ export function diagnoseSchedule(document:EscalaLivreDocument):ScheduleIssue[] {
     }
     for(const [day,items] of days) {
       if(items.length>1)issue("multipleShifts","Mais de um turno para a mesma pessoa e data de início.",day,day+86400000);
-      if(items.reduce((n,a)=>n+workMillis(a),0)>dailyLimitMillis(e))issue("dailyLimit","Limite diário de trabalho efetivo excedido.",day,day+86400000);
+      if(items.reduce((n,a)=>n+workMillis(a),0)>contractDailyLimitMillis(document.company,e,civilString(day).slice(0,10)))issue("dailyLimit","Limite diário de trabalho efetivo excedido.",day,day+86400000);
     }
     for(const [week,work] of weeks)if(work>rule.weeklyLimitHours*3600000)issue("weeklyLimit","Limite semanal excedido.",week,week+7*86400000);
   }

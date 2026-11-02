@@ -61,3 +61,22 @@ No frontend, componentes apresentam, Zustand coordena estado/recuperação e lib
 Testes puros, adaptador, API, arquitetura e HTTP possuem execuções separadas, conforme [guia de validação](testing.md). CI tem jobs separados e mantém o gate backend para compatibilidade com o nome anterior. Não houve publicação/integração nesta sessão.
 
 Medição exploratória reproduz baseline/final isolados com ferramentas iguais e duas entradas antigas; resultados mistos, sem ganho global demonstrado. Metodologia/dados em [desempenho](decisions/stage-6-performance.md). Limites representativos de regressão continuam pendentes. A execução remota Validate #20 foi conferida, com todos os jobs verdes e merge de teste sem diferença de arquivos para d40f887; configuração de workflow por si só não foi tratada como evidência.
+
+## Configuração de carga contratada — 02/11/2026
+
+Domain fornece WeeklyWorkPlan/WeeklyCompensation imutáveis e política canônica
+para distribuição e conflitos de configuração; DTOs e mapeadores na Application
+preservam o formato opcional. A interface usa política TS equivalente, sem cálculos
+no store. GenerateSchedule bloqueia planos efetivos até o suporte do adaptador.
+Detalhes, compatibilidade e limites: [etapa 2](decisions/017-weekly-workload-configuration.md).
+
+## Geração e diagnóstico de carga contratada — 02/11/2026
+
+ContractWorkPolicy centraliza meta, dispensas explícitas, compensação vigente,
+limites e reconhecimento da carga, com equivalente TypeScript verificado por
+cenários compartilhados. O adaptador usa duração diária e saldo semanal restante,
+e ordena objetivos de cobertura/carga/preferências sem ampliar o orçamento nativo.
+A geração com plano foi habilitada; a indisponibilidade da etapa 2 é histórica.
+Relatórios e avisos distinguem falta de carga e cobertura. Leitores/DTOs preservam
+contractLeaves opcional sem converter restrições em créditos. Worker isolado e
+limites operacionais mantidos. [Decisão e evidências](decisions/018-weekly-workload-generation.md).

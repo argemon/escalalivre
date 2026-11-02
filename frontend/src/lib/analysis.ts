@@ -1,3 +1,4 @@
+import { summarizeWorkloads, weeklyPlanIssues, planFor } from "./policies/weeklyWorkPlan";
 import { buildHiringSuggestions } from "./hiringDemand";
 import { normalizeDocumentTimes } from "./dateTime";
 import { civilMillis, civilDay, civilString, clockMillis, endOn } from "./civilTime";
@@ -14,6 +15,14 @@ export function analyzeDocument(input:EscalaLivreDocument):ScheduleResult {
   const document=normalizeDocumentTimes(input);
   const result:ScheduleResult={assignments:input.assignments,coverage:[],gaps:[],conflicts:diagnoseSchedule(document),decisions:[],hiringSuggestions:[],optimizationSuggestions:[],coverageScore:1,optimization:{status:"not-run"}};
   const period=planningPeriod(document);
+  const workloads=summarizeWorkloads(document,period.start,period.end);
+  if(workloads)result.workloads=workloads;
+  for(const e of document.employees){
+   const plan=planFor(document.company,e);if(!plan)continue;
+   for(const code of weeklyPlanIssues(plan,(e.inheritsCompanyDefaults?document.company.defaultWorkload:e.workload).weeklyLimitHours))
+    result.conflicts.push({code,severity:"warning",message:"Revise a carga contratada, a distribuição diária e a compensação configuradas.",start:civilString(civilDay(civilMillis(period.start))),end:civilString(civilDay(civilMillis(period.end))+86400000),role:e.role,employeeId:e.id});
+  }
+  for(const summary of workloads??[])if(summary.unmetSeconds>0)result.conflicts.push({code:"workloadShortfall",severity:"warning",message:"Carga contratada não atendida integralmente.",start:summary.days[0].date,end:civilString(civilMillis(summary.days[summary.days.length-1].date)+86400000),employeeId:summary.employeeId,role:document.employees.find(e=>e.id===summary.employeeId)!.role});
   const windows:{rule:typeof document.company.coverage[number];from:number;to:number;closure?:{start:number;end:number}}[]=[];
   for(let day=civilDay(civilMillis(period.start));day<=civilMillis(period.end);day+=86400000) {
     if(closedHoliday(document.company,civilString(day).split("T")[0]))continue;
