@@ -13,6 +13,7 @@ export function weeklyCoverage(document: EscalaLivreDocument, date: string): Wee
   const predicted: WeeklyCoverage[] = [];
   for (const employee of document.employees) {
     if (actual.some(a => a.employeeId === employee.id)) continue;
+    if ((employee.inheritsCompanyDefaults ? document.company.defaultWorkload : employee.workload).weeklyPlan?.flexibleWorkDays) continue;
     const workingDays = employee.inheritsCompanyDefaults ? document.company.operatingDays : employee.workingDays ?? document.company.operatingDays;
     if (!workingDays.includes(day)) continue;
     const rules = document.company.coverage.filter(r => r.day === day && canCover(employee,r) && r.minimumEmployees > 0);

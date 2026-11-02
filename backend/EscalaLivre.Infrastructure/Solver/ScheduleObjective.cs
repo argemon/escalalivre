@@ -24,8 +24,33 @@ public sealed class ScheduleObjective
         context.PreferenceObjective = LinearExpr.Sum(terms.Concat(context.OccupancyTerms));
         if (WeeklyWorkPlanPolicy.HasContractPlans(request.Document))
         {
-            context.ContractCredit = LinearExpr.Sum(context.Input.Candidates.Select(a => LinearExpr.Term(context.DecisionVars[a.Id],
-                ContractWorkPolicy.Recognized(request.Document.Company,request.Document.Employees.First(e=>e.Id==a.EmployeeId),a.Start,EffectiveWorkPolicy.Measure(a).Ticks/TimeSpan.TicksPerSecond))));
+            var credits = new List<LinearExpr>();
+            foreach(var group in context.Input.Candidates.GroupBy(a=>(a.EmployeeId,Week:ScheduleWindow.WeekStart(a.Start))))
+            {
+                var employee=request.Document.Employees.First(e=>e.Id==group.Key.EmployeeId);
+                var credit=LinearExpr.Sum(group.Select(a=>LinearExpr.Term(context.DecisionVars[a.Id],
+                    ContractWorkPolicy.Recognized(request.Document.Company,employee,a.Start,EffectiveWorkPolicy.Measure(a).Ticks/TimeSpan.TicksPerSecond))));
+                if(WeeklyWorkPlanPolicy.For(request.Document.Company,employee)?.FlexibleWorkDays is not null)
+                {
+                    var plan=WeeklyWorkPlanPolicy.For(request.Document.Company,employee)!;
+                    long basic=plan.ContractedSeconds/plan.FlexibleWorkDays!.Value;
+                    long Basis(ShiftAssignment a)=>Math.Min(ContractWorkPolicy.Recognized(request.Document.Company,employee,a.Start,EffectiveWorkPolicy.Measure(a).Ticks/TimeSpan.TicksPerSecond),
+                        Math.Max(0,basic-ContractWorkPolicy.Excused(request.Document.Company,employee,a.Start)));
+                    var baseline=LinearExpr.Sum(group.Select(a=>LinearExpr.Term(context.DecisionVars[a.Id],Basis(a))));
+                    var extras=LinearExpr.Sum(group.Select(a=>LinearExpr.Term(context.DecisionVars[a.Id],Math.Min(1,
+                        Math.Max(0,ContractWorkPolicy.Recognized(request.Document.Company,employee,a.Start,EffectiveWorkPolicy.Measure(a).Ticks/TimeSpan.TicksPerSecond)-Basis(a))))));
+                    long extraBudget=FlexibleContractPolicy.ExtraSecondsInPeriod(request.Document.Company,employee,group.Key.Week,request.Start,request.End,context.Input.Preserved);
+                    var extraCredit=context.Model.NewIntVar(0,extraBudget,"contract-remainder-"+group.Key.EmployeeId+group.Key.Week.Ticks);
+                    context.Model.AddMinEquality(extraCredit,new LinearExpr[]{extras,LinearExpr.Constant(extraBudget)});
+                    credit=baseline+extraCredit;
+                    long target=FlexibleContractPolicy.ExpectedInPeriod(request.Document.Company,employee,group.Key.Week,request.Start,request.End,context.Input.Preserved);
+                    var capped=context.Model.NewIntVar(0,target,"contract-credit-"+group.Key.EmployeeId+group.Key.Week.Ticks);
+                    context.Model.AddMinEquality(capped,new LinearExpr[]{credit,LinearExpr.Constant(target)});
+                    credits.Add(capped);
+                }
+                else credits.Add(credit);
+            }
+            context.ContractCredit = LinearExpr.Sum(credits);
             context.Model.Minimize(LinearExpr.Sum(context.CoverageDeficitTerms));
         }
         else context.Model.Maximize(LinearExpr.Sum(terms.Concat(context.ShortageTerms).Concat(context.OccupancyTerms)));

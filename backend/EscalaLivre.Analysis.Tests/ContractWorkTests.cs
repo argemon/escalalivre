@@ -43,6 +43,8 @@ public sealed class ContractWorkTests
         Assert.Equal(expected.TryGetProperty("history",out var history)?history.GetInt64():0,summary.HistoricalWorkSeconds);
         Assert.Equal(expected.GetProperty("errors").EnumerateArray().Select(x=>x.GetString()).Order(),result.Conflicts.Where(c=>c.Severity=="error").Select(c=>c.Code).Distinct().Order());
         Assert.Equal(summary.UnmetSeconds>0,result.Conflicts.Any(c=>c.Code=="workloadShortfall"));
+        if(expected.TryGetProperty("transitionCodes",out var codes))
+            Assert.Equal(codes.EnumerateArray().Select(c=>c.GetString()).Order(),result.Conflicts.Where(c=>c.Code.EndsWith("Transition")).Select(c=>c.Code).Distinct().Order());
         Assert.Equal(before,JsonSerializer.Serialize(request,options));
         Assert.Equal(before,JsonSerializer.Serialize(JsonSerializer.Deserialize<ScheduleRequest>(before,options),options));
     }

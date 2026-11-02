@@ -3,6 +3,7 @@ export const regimeTypes = ["dayBased", "hourBased"] as const;
 export type RegimeType = typeof regimeTypes[number];
 
 export type WeeklyWorkPlan = {
+  flexibleWorkDays?: number;
   contractedSeconds: number;
   dailySeconds: number[];
   compensation?: { instrument: string; startsOn: string; endsOn: string };
@@ -159,7 +160,7 @@ export type SolverDecision = {
 export type OptimizationInfo={status:"not-run"|"feasible"|"optimal"|"infeasible"|"timeout"|"invalid"};
 
 export type DailyWorkload = { date:string; nominalSeconds:number; excusedSeconds:number; expectedSeconds:number; plannedSeconds:number; recognizedSeconds:number; unmetSeconds:number; excessSeconds:number };
-export type WorkloadSummary = { employeeId:string; weekStart:string; contractedSeconds:number; nominalSeconds:number; excusedSeconds:number; expectedSeconds:number; plannedSeconds:number; recognizedSeconds:number; unmetSeconds:number; excessSeconds:number; historicalWorkSeconds:number; days:DailyWorkload[] };
+export type WorkloadSummary = { employeeId:string; weekStart:string; contractedSeconds:number; nominalSeconds:number; excusedSeconds:number; expectedSeconds:number; plannedSeconds:number; recognizedSeconds:number; unmetSeconds:number; excessSeconds:number; historicalWorkSeconds:number; days:DailyWorkload[]; unassignedSeconds?:number };
 export type ScheduleResult = {
   workloads?: WorkloadSummary[];
   optimization?: OptimizationInfo;

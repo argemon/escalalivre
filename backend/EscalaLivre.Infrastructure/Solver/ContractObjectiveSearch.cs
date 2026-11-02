@@ -28,7 +28,7 @@ internal static class ContractObjectiveSearch
             var candidate = reader.Read(context,run);
             var request=context.Input.Request;
             long uncovered=ScheduleCoverage.UncoveredPersonTicks(ScheduleCoverage.Evaluate(request.Document,request.Start,request.End,candidate.Assignments));
-            long credit=candidate.SelectedAssignments.Sum(a=>ContractWorkPolicy.Recognized(request.Document.Company,request.Document.Employees.First(e=>e.Id==a.EmployeeId),a.Start,EffectiveWorkPolicy.Measure(a).Ticks/TimeSpan.TicksPerSecond));
+            long credit=ContractWorkPolicy.Summarize(request.Document,request.Start,request.End,candidate.Assignments)?.Sum(w=>w.RecognizedSeconds) ?? 0;
             long preference=run.Solver.Value(context.PreferenceObjective!);
             // A merely feasible run may not recover even the previous hint. Also, model
             // allocation may undercount actual coverage. Compare canonical incumbents.

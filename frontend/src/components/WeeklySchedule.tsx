@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { secondsDuration } from "../lib/policies/weeklyWorkPlan";
 import { datePart, displayClock, timePart } from "../lib/dateTime";
 import { authorizedHolidayShift, holidayOn } from "../lib/holidays";
 import { weekStart } from "../lib/printSchedule";
@@ -11,7 +12,7 @@ import { Button } from "./ui";
 const dateKey = (day: Date) => [day.getFullYear(), String(day.getMonth() + 1).padStart(2, "0"), String(day.getDate()).padStart(2, "0")].join("-");
 
 export function WeeklySchedule() {
-  const { document, setSelectedEmployeeId } = useScheduleStore();
+  const { document, analysis, setSelectedEmployeeId } = useScheduleStore();
   const [anchor, setAnchor] = useState(() => document.planningPeriod.start);
   const first = weekStart(new Date(anchor + "T00:00:00"));
   const days = Array.from({ length: 7 }, (_, index) => {
@@ -57,6 +58,7 @@ export function WeeklySchedule() {
             </th>
             {days.map(({ day, key, inPeriod, closed, shifts }) => {
               const personShifts = shifts.filter(shift => shift.employeeId === employee.id).sort((a, b) => a.start.localeCompare(b.start));
+              const workload = analysis.workloads?.filter(w=>w.employeeId===employee.id).flatMap(w=>w.days).find(d=>d.date.slice(0,10)===key);
               return <td key={key} className={"border-r border-b border-border px-2 py-3 align-top " + (!inPeriod || closed && !personShifts.length ? "bg-muted/40" : "bg-card")}>
                 {personShifts.length ? <div className="space-y-2">{personShifts.map(shift => {
                   const overnight = datePart(shift.end) > datePart(shift.start);
@@ -69,6 +71,7 @@ export function WeeklySchedule() {
                     {outside && <span className="block text-[10px] text-amber-700 dark:text-amber-300">Fora do expediente</span>}
                   </button>;
                 })}</div> : <span className="text-muted-foreground">{!inPeriod ? "—" : closed ? "Fechada" : "Sem turno"}</span>}
+                {inPeriod && workload && workload.unmetSeconds > 0 && <p className="mt-2 text-amber-700 dark:text-amber-300">Faltam {secondsDuration(workload.unmetSeconds)} de jornada</p>}
               </td>;
             })}
           </tr>)}

@@ -1,4 +1,5 @@
 import { summarizeWorkloads, weeklyPlanIssues, planFor } from "./policies/weeklyWorkPlan";
+import { transitionIssues } from "./policies/employeeSchedule";
 import { buildHiringSuggestions } from "./hiringDemand";
 import { normalizeDocumentTimes } from "./dateTime";
 import { civilMillis, civilDay, civilString, clockMillis, endOn } from "./civilTime";
@@ -17,6 +18,8 @@ export function analyzeDocument(input:EscalaLivreDocument):ScheduleResult {
   const period=planningPeriod(document);
   const workloads=summarizeWorkloads(document,period.start,period.end);
   if(workloads)result.workloads=workloads;
+  for(const e of document.employees)for(const code of transitionIssues(document.company,e,period.end))
+   result.conflicts.push({code,severity:"warning",message:"Revise a escala e a carga contratada conforme a transição da EC 141/2026 e o enquadramento aplicável.",start:civilString(civilDay(civilMillis(period.start))),end:civilString(civilDay(civilMillis(period.end))+86400000),role:e.role,employeeId:e.id});
   for(const e of document.employees){
    const plan=planFor(document.company,e);if(!plan)continue;
    for(const code of weeklyPlanIssues(plan,(e.inheritsCompanyDefaults?document.company.defaultWorkload:e.workload).weeklyLimitHours))
@@ -48,6 +51,6 @@ export function analyzeDocument(input:EscalaLivreDocument):ScheduleResult {
   const required=result.coverage.reduce((n,b)=>n+b.required*(civilMillis(b.end)-civilMillis(b.start)),0);
   const covered=result.coverage.reduce((n,b)=>n+Math.min(b.required,b.assigned)*(civilMillis(b.end)-civilMillis(b.start)),0);
   result.coverageScore=required?Math.round(covered/required*1000)/1000:1;
-  result.hiringSuggestions=buildHiringSuggestions(result.gaps,document.company.defaultWorkload.weeklyLimitHours);
+  result.hiringSuggestions=buildHiringSuggestions(result.gaps,Math.min(44,document.company.defaultWorkload.weeklyLimitHours));
   return result;
 }

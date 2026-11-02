@@ -51,7 +51,7 @@ public static class ScheduleRules
         foreach(var e in document.Employees)
         {
             var rule=EffectiveWorkPolicy.RuleFor(document.Company,e);var shifts=assignments.Where(a=>a.EmployeeId==e.Id).OrderBy(a=>a.Start).ThenBy(a=>a.Id.ToString()).ToList();
-            var cycle=RegimeConfiguration.From(rule).RollingCycle;
+            var cycle=EmployeeSchedulePolicy.Cycle(document.Company,e);
             ScheduleIssue Issue(string code,string message,DateTime start,DateTime end)=>new("error",code,message,start,end,e.Role,e.Id);
             var latestEnd=DateTime.MinValue;
             foreach(var a in shifts)
@@ -70,7 +70,10 @@ public static class ScheduleRules
                 if(day.Sum(a=>EffectiveWorkPolicy.Measure(a).Ticks)>ContractWorkPolicy.DailyLimit(document.Company,e,day.Key).Ticks)yield return Issue("dailyLimit","Limite diário de trabalho efetivo excedido.",day.Key,day.Key.AddDays(1));
             }
             foreach(var week in shifts.SelectMany(ScheduleWindow.Weeks).Distinct().Order())
-                if(shifts.Sum(a=>EffectiveWorkPolicy.WorkTicksInWeek(a,week))>rule.WeeklyLimitHours*TimeSpan.TicksPerHour)
+                if(shifts.Sum(a=>EffectiveWorkPolicy.WorkTicksInWeek(a,week))>ScheduleCapacityPolicy.WeeklyLimitTicks(EffectiveWorkPolicy.WeeklyLimit(document.Company,e))
+                    || (!e.AllowsOvertime && rule.WeeklyPlan?.FlexibleWorkDays is not null
+                        && shifts.Where(a=>ScheduleWindow.WeekStart(a.Start)==week).Sum(a=>EffectiveWorkPolicy.Measure(a).Ticks)
+                            >FlexibleContractPolicy.NormalWeekSeconds(document.Company,e,week)*TimeSpan.TicksPerSecond))
                     yield return Issue("weeklyLimit","Limite semanal excedido.",week,week.AddDays(7));
         }
     }

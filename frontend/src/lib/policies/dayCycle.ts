@@ -3,6 +3,7 @@ import { regimeConstraints } from "../regimes";
 import type { ShiftAssignment, WorkloadRule } from "../../types/schedule";
 
 function cycleFor(rule:WorkloadRule) {
+  if(rule.weeklyPlan?.flexibleWorkDays)return {workDays:rule.weeklyPlan.flexibleWorkDays,restDays:7-rule.weeklyPlan.flexibleWorkDays};
   const cycle=regimeConstraints(rule).rollingCycle;
   if(!cycle)throw new Error("O regime não fornece ciclo em dias.");
   return cycle;

@@ -1478,7 +1478,7 @@
     },
     {
       "id": "company.defaultWorkload.weeklyLimitHours-44.1",
-      "accepted": false,
+      "accepted": true,
       "changes": [
         {
           "path": [
@@ -1783,7 +1783,7 @@
     },
     {
       "id": "employees.0.workload.weeklyLimitHours-44.1",
-      "accepted": false,
+      "accepted": true,
       "changes": [
         {
           "path": [
@@ -2654,6 +2654,64 @@
           ],
           "repeat": 2,
           "uniqueIds": false
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.weeklyLimitHours-168",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "weeklyLimitHours"
+          ],
+          "value": 168
+        }
+      ]
+    },
+    {
+      "id": "company.defaultWorkload.weeklyLimitHours-168.1",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "company",
+            "defaultWorkload",
+            "weeklyLimitHours"
+          ],
+          "value": 168.1
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.weeklyLimitHours-168",
+      "accepted": true,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "weeklyLimitHours"
+          ],
+          "value": 168
+        }
+      ]
+    },
+    {
+      "id": "employees.0.workload.weeklyLimitHours-168.1",
+      "accepted": false,
+      "changes": [
+        {
+          "path": [
+            "employees",
+            "0",
+            "workload",
+            "weeklyLimitHours"
+          ],
+          "value": 168.1
         }
       ]
     }

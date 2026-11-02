@@ -80,3 +80,17 @@ A geração com plano foi habilitada; a indisponibilidade da etapa 2 é históri
 Relatórios e avisos distinguem falta de carga e cobertura. Leitores/DTOs preservam
 contractLeaves opcional sem converter restrições em créditos. Worker isolado e
 limites operacionais mantidos. [Decisão e evidências](decisions/018-weekly-workload-generation.md).
+
+O cadastro distingue mínimo contratado de máximo total com extras. O teto
+estrutural aceita até 168h, mas a política semanal mantém até 44h sem autorização
+individual de extras, além dos limites diários e descanso. O editor permite
+ajustar a saída de turnos salvos; faltas aparecem por dia e semana, sem reduzir
+implicitamente a meta. [Contrato e validação](decisions/019-contract-minimum-and-overtime-ceiling.md).
+
+Na escala individual automática, `EmployeeSchedulePolicy` fornece ciclo efetivo
+e avisos de transição. `FlexibleContractPolicy` fornece cotas do recorte, meta e
+relatório sem dias fixos; `ContractWorkPolicy` mantém limites e durações. O adaptador
+limita crédito semanal e segundos restantes por essas políticas. TypeScript mantém
+alvos e relatórios em módulos puros sem dependência circular. DTOs preservam o campo
+opcional `flexibleWorkDays`; o resultado distingue `unassignedSeconds`. Detalhes e
+compatibilidade: [escala individual](decisions/020-individual-weekly-patterns.md).

@@ -40,13 +40,13 @@ Na lateral **Configure sua escala**, preencha os quatro cadastros na ordem indic
 | **1. Empresa** | Nome, dias e horários de funcionamento, jornada padrão, descanso e intervalos. |
 | **2. Funções** | Os cargos usados na operação, como Vendedor, Caixa ou Segurança. |
 | **3. Cobertura** | Quantas pessoas são necessárias em cada função, dia e faixa de horário. |
-| **4. Equipe** | Pessoas, funções, jornadas e eventuais disponibilidades ou restrições individuais. |
+| **4. Equipe** | Pessoas, funções, mínimo contratado, máximo semanal com extras e eventuais disponibilidades ou restrições individuais. |
 
 Depois dos cadastros:
 
 1. No cabeçalho, escolha **Início** e **Fim (inclusive)** e clique em **Aplicar período**.
 2. Abra o botão verde **Assistente de escala**, com o ícone de brilho, e clique em **Gerar escala**. A etapa **5. Revisar e gerar** também abre o assistente quando os quatro cadastros estão completos.
-3. Revise a cobertura atendida, os conflitos e as sugestões. Uma escala parcial pode ter horários válidos e ainda deixar demanda descoberta.
+3. Revise a cobertura atendida, as horas faltantes da carga contratada, os conflitos e as sugestões. Uma escala parcial pode ter horários válidos e ainda deixar demanda descoberta ou carga incompleta.
 4. Consulte a escala diária, semanal ou mensal. Na semana, cada pessoa aparece uma única vez, com os horários nas colunas dos dias.
 5. Use **Dados e opções → Exportar** para guardar uma cópia ou **Imprimir** para preparar a escala para o mural.
 
@@ -82,7 +82,7 @@ flowchart LR
 
 O núcleo usa **Google OR-Tools CP-SAT**, um motor de otimização por restrições. Ele avalia combinações de turnos e intervalos para reduzir a falta de cobertura, respeitando as regras representadas no modelo.
 
-A busca combina pesos para reduzir lacunas, favorecer presença nos períodos de demanda, evitar turnos adicionais e considerar preferências. O resultado inclui turnos, conflitos, cobertura por período, sugestões e explicações baseadas nas regras avaliadas. Os detalhes e os pesos estão na [seção técnica](#para-os-nerds-o-algoritmo-por-dentro).
+Quando há carga contratada configurada, a busca prioriza reduzir lacunas de cobertura, depois cumprir a carga normal e, por fim, atender preferências e desempates. Sem plano contratado, mantém a função ponderada anterior. O resultado inclui turnos, conflitos, cobertura por período, saldos diários e semanais quando há plano, sugestões e explicações baseadas nas regras avaliadas. Os detalhes estão na [seção técnica](#para-os-nerds-o-algoritmo-por-dentro).
 
 A execução possui limite de tempo e pode encontrar uma solução viável sem comprovar que ela é a melhor possível. A interface permite revisar o resultado e continuar ajustando o planejamento.
 
@@ -92,6 +92,9 @@ A execução possui limite de tempo e pode encontrar uma solução viável sem c
 | --- | --- |
 | **Configuração da empresa** | Definir funcionamento, horas efetivas de trabalho, descanso, limites de intervalo e fechamento para almoço. |
 | **Funções e equipe** | Cadastrar funções e definir, por pessoa, jornada, dias de trabalho, entrada fixa, disponibilidade e restrições. |
+| **Mínimo contratado e máximo semanal** | Separar a carga normal a cumprir do teto total com extras autorizadas, com distribuição diária uniforme, sexta reduzida ou personalizada. |
+| **Escala individual 5x2 e 6x1** | Escolher o modelo da pessoa e deixar o gerador definir dias, folgas e horários, ou restringir a dias fixos, independentemente de a empresa abrir sete dias. |
+| **Saída antecipada e horas faltantes** | Ajustar a saída de turnos salvos e conferir o saldo por dia e semana, sem reduzir automaticamente a carga contratada. |
 | **Substituições autorizadas** | Informar quais outras funções cada pessoa pode cobrir, sem contar a mesma pessoa duas vezes no mesmo horário. |
 | **Cobertura em vários dias** | Aplicar a mesma necessidade a dias selecionados, a todos os dias ou aos dias de funcionamento. |
 | **Cobertura da equipe inteira** | Exigir uma quantidade mínima de pessoas presentes, independentemente da função. |
@@ -162,6 +165,32 @@ São mantidas até **três cópias de planejamento** para recuperação, além d
 **Edição, análise local e importação/exportação nativa funcionam sem consultar a API. A geração automática precisa do backend.** Ao gerar, o documento é enviado à API configurada. Consulte [recuperação de dados](docs/recovery.md) para o comportamento em falhas.
 
 ## Recursos em detalhe
+
+### Mínimo contratado, máximo semanal e horas faltantes
+
+Em **Equipe**, abra o funcionário. Ele pode herdar o padrão da empresa ou ter uma configuração própria. Em **Escala do funcionário**, escolha **5x2**, **6x1** ou **Ciclo personalizado**. A escolha de 5x2/6x1 mantém a carga existente; quando ainda não há contrato, sugere 40h/44h para revisão. Documentos antigos continuam sem mínimo inferido ao abrir.
+
+Com **Deixar o programa escolher os dias de trabalho e as folgas**, a carga é distribuída entre os dias que o gerador selecionar junto com os horários. Uma empresa aberta sete dias pode ter pessoas em 5x2 com folgas diferentes: abrir todos os dias não obriga cada funcionário a trabalhar todos eles. O ciclo considera também o histórico fora do período. Desmarque a opção para informar dias fixos permitidos e confira a distribuição da carga nesses dias. As folgas não precisam ser sábado e domingo nem consecutivas; restrições podem impedir completar os dias e as horas previstos.
+
+| Campo | Significado |
+| --- | --- |
+| **Mínimo semanal — jornada contratada** | Trabalho normal previsto na semana completa, sem contar pausas ou horas extras. Nos dias fixos, a distribuição define cada meta; no automático, a escala define os dias que receberão a carga. |
+| **Máximo semanal, incluindo extras** | Teto de trabalho líquido de domingo a sábado, incluindo extras autorizadas e turnos preservados. Não é uma meta nem uma autorização de extras por si só. |
+| **Permitir hora extra** | Autorização individual, separada da compensação semanal. Limites diários, descanso e demais regras continuam valendo. |
+
+Por exemplo, **mínimo 40h e máximo 48h** mantêm 40h de jornada normal prevista. As horas além do contrato exigem autorização de extras e precisam caber nos limites aplicáveis; configurar 48h no máximo não obriga a trabalhar 48h. Sem autorização de extras, o teto normal continua limitado a até 44h semanais. A compensação semanal possui instrumento e vigência próprios; permitir extras não a substitui.
+
+Para ajustar um dia, abra **Ajustar saída dos turnos salvos**, altere a saída e clique em **Salvar saída manual**. Esse botão salva imediatamente, independentemente das alterações cadastrais ainda não salvas. Entrada e intervalo são preservados; a saída precisa manter a pausa dentro do turno.
+
+**Exemplo:** em um contrato de 40h distribuídas em cinco dias de 8h, com entrada às 07:30 e intervalo das 12h às 13h, mudar a saída de segunda de 16:30 para 15:30 deixa **39h planejadas e 1h faltante**. A falta aparece no dia da escala semanal e no relatório do Assistente de escala. Esse é um saldo do planejamento, sem apuração de ponto, desconto salarial ou banco de horas automático. Extras em outro dia não quitam a falta automaticamente.
+
+No plano de dias fixos, feriados fechados e dispensas explicitamente registradas reduzem a meta do dia. Na escolha automática, um feriado não tem dia contratual previamente definido: o fechamento impede turnos, mas a dispensa de carga precisa ser registrada quando aplicável. Bloqueios ou saída antecipada, sozinhos, não concedem crédito. A empresa abrir menos dias também não apaga o contrato.
+
+No automático, horas ainda sem turno aparecem como **Carga ainda sem dia definido**, incluídas no saldo semanal, sem marcar cada possível folga como falta diária. Períodos parciais reservam as cotas cabíveis após o histórico salvo. O gerador pode informar carga incompleta mesmo com cobertura atendida e não cria turnos sem demanda apenas para zerar o saldo.
+
+**Mudanças da legislação:** a EC 141/2026 prevê a transição para dois repousos semanais, 42h normais após dois meses da publicação de 16/10/2026 e 40h um ano depois desse prazo. O cadastro e a análise avisam quando o período planejado alcança a transição e exige revisão de escala/carga. Não convertem contratos nem aplicam exceções coletivas automaticamente. O [registro da pesquisa e da implementação](docs/decisions/020-individual-weekly-patterns.md) explica os prazos do texto oficial e os limites desses avisos.
+
+Ao salvar e reabrir, carga, distribuição, dispensas e horários são preservados. Use uma versão atualizada para editar arquivos com esses recursos: leitores antigos podem ignorar os novos campos ou rejeitar tetos acima de 44h. Consulte o [contrato de mínimo, máximo e saída antecipada](docs/decisions/019-contract-minimum-and-overtime-ceiling.md).
 
 ### Intervalo e fechamento são coisas diferentes
 
@@ -254,7 +283,8 @@ Para cada pessoa e dia, o motor constrói candidatos que combinam entrada, saíd
 - Entradas variáveis são exploradas em passos de **30 minutos**, incluindo alternativas de abertura, fechamento e início de disponibilidade. Quando há entrada fixa, ela restringe essa busca.
 - Durações de intervalo incluem os limites configurados e alternativas em passos de **15 minutos**.
 - Inícios de pausa incluem passos de **30 minutos**, limites viáveis e o horário preferido. Um intervalo fixo substitui essa busca.
-- A jornada é calculada em **minutos efetivamente trabalhados**: duração total menos pausa.
+- A jornada preserva **precisão de segundos civis**: duração total menos pausa. Com plano contratado, as durações candidatas seguem a distribuição do dia e consideram o saldo semanal disponível após o histórico.
+- Com dias automáticos, os candidatos podem ocorrer em qualquer dia elegível. O modelo escolhe quais datas usar, respeitando o ciclo, a carga semanal e os segundos restantes da divisão entre dias.
 
 Candidatos incompatíveis são descartados antes da otimização. A implementação verifica, entre outras condições, trabalho noturno autorizado, limites diários e intervalo dentro do turno. O fechamento para almoço e a autorização de trabalho durante ele também afetam as pausas possíveis.
 
@@ -268,7 +298,7 @@ Uma pessoa cobre um bloco somente se trabalha durante **todo** ele e não está 
 
 ### 3. Escolher turnos e distribuir pessoas sem duplicá-las
 
-Cada candidato `c` recebe uma variável binária `x[c]`: **1** seleciona o turno; **0** o descarta. O modelo limita cada pessoa a um turno por dia, impede combinações sem descanso suficiente e restringe minutos semanais e ciclos em dias. No ciclo em dias, turnos anteriores ao período também reduzem a capacidade disponível nas janelas que os alcançam.
+Cada candidato `c` recebe uma variável binária `x[c]`: **1** seleciona o turno; **0** o descarta. O modelo limita cada pessoa a um turno por dia, impede combinações sem descanso suficiente e restringe trabalho semanal e ciclos em dias. O histórico nas duas bordas do período consome o teto semanal; turnos noturnos e pausas são repartidos na virada da semana. No ciclo em dias, turnos anteriores ao período também reduzem a capacidade disponível nas janelas que os alcançam.
 
 Para cada bloco `b` e função `r`, uma variável binária `y[c,b,r]` representa o uso daquele candidato na cobertura específica. Ela só existe para pessoas habilitadas e obedece a:
 
@@ -293,9 +323,17 @@ Somente Ana presente → uma vaga coberta, uma vaga faltando
 
 Esse remanejamento evita um erro de contagem simples: usar a pessoa mais versátil numa vaga que outra já poderia preencher e deixar descoberta a função que só ela pode atender. A distribuição é recalculada por bloco; o resultado mantém a função principal no turno e informa a cobertura obtida.
 
-### 4. Otimizar com pesos explícitos
+### 4. Otimizar cobertura, carga e preferências
 
-O CP-SAT **maximiza uma única função objetivo ponderada**. Os coeficientes atuais são:
+Quando existe plano contratado efetivo, o CP-SAT executa três objetivos sucessivos:
+
+1. Minimizar déficit de cobertura em segundos × pessoas.
+2. Conservar a cobertura encontrada e maximizar a carga normal reconhecida, limitada à meta de cada dia.
+3. Conservar também a carga encontrada e aplicar preferências, ocupação e desempates.
+
+As fases compartilham o orçamento de busca. Uma fase sem prova de ótimo fixa o melhor valor encontrado, sem garantir ótimo global; se uma fase inferior não melhorar o resultado, o incumbente anterior é preservado. Não se geram extras automaticamente para preencher a meta. Consulte as [prioridades e limitações da geração contratada](docs/decisions/018-weekly-workload-generation.md#prioridades-da-busca).
+
+**Sem plano contratado**, o CP-SAT mantém uma única função ponderada. Os coeficientes desse modo são:
 
 | Termo | Peso no objetivo | Efeito |
 | --- | --- | --- |
@@ -304,7 +342,7 @@ O CP-SAT **maximiza uma única função objetivo ponderada**. Os coeficientes at
 | Turno selecionado | `−1.000.000` | Evitar adicionar turnos com pouco benefício para a cobertura. |
 | Ajuste por turno | Entre `−1.000` e `+1.000` | Considerar preferências, proximidade da pausa ao horário preferido e bônus de fechamento. |
 
-São pesos de uma soma, não etapas de otimização lexicográfica. Preferências não substituem restrições obrigatórias. A duração dos blocos multiplica os termos de falta e presença, fazendo uma lacuna de 15 minutos pesar menos que uma lacuna igual de uma hora.
+Nesse modo, os pesos pertencem a uma soma. Preferências não substituem restrições obrigatórias em nenhum dos modos. A duração dos blocos multiplica os termos de falta e presença, fazendo uma lacuna de 15 minutos pesar menos que uma lacuna igual de uma hora.
 
 O solver está configurado com **limite interno de 5 segundos e 1 trabalhador de busca**. Um resultado `Feasible` é viável; `Optimal` comprova o ótimo do modelo construído. O limite de tempo pode terminar sem encontrar solução viável, e múltiplas soluções equivalentes podem produzir escalas diferentes.
 
@@ -425,7 +463,7 @@ A interface usa a geração assíncrona: `POST /solve/jobs` recebe documento e p
 
 O projeto inclui testes de cobertura, intervalos, descanso, turnos noturnos, substituições autorizadas, feriados, impressão, período de planejamento, datas e horários, recuperação, preservação de turnos e segurança. As suítes separam domínio/aplicação puros, adaptadores com OR-Tools real, API e arquitetura.
 
-A comparação diferencial entre C# e TypeScript usa cenários determinísticos para conferir diagnósticos, cobertura, lacunas e pontuação, além de propriedades de imutabilidade, migração e preservação de histórico. A autorização por IDs explícitos prevalece sobre nomes legados, inclusive quando uma autorização é revogada.
+A comparação diferencial entre C# e TypeScript usa cenários determinísticos para conferir diagnósticos, cobertura, lacunas, pontuação e saldos diários e semanais de carga contratada, além de propriedades de imutabilidade, migração e preservação de histórico. Os testes incluem saída antecipada, dispensas explícitas e teto semanal com e sem autorização de extras. A autorização por IDs explícitos prevalece sobre nomes legados, inclusive quando uma autorização é revogada.
 
 Na raiz do repositório:
 
@@ -521,6 +559,10 @@ A validação cobre regras implementadas, como descanso e limite semanal. Ela n�
 - [Cotas HTTP por endpoint e IP](docs/decisions/013-http-rate-limits.md)
 - [Orçamento e retenção da fila](docs/decisions/014-job-retention-budget.md)
 - [Zod, auditorias e validação segura de documentos](docs/decisions/015-zod-validation-security.md)
+- [Configuração da carga contratada e distribuição diária](docs/decisions/017-weekly-workload-configuration.md)
+- [Geração e diagnóstico da carga contratada](docs/decisions/018-weekly-workload-generation.md)
+- [Mínimo contratado, máximo com extras e saída antecipada](docs/decisions/019-contract-minimum-and-overtime-ceiling.md)
+- [Escala individual 5x2/6x1 e dias escolhidos pelo gerador](docs/decisions/020-individual-weekly-patterns.md)
 - [Fila, estimativas e cancelamento de geração](docs/processing-queue.md)
 - [Identidade visual](docs/brand.md)
 

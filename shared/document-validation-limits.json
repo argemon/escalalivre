@@ -13,7 +13,7 @@
   "tags": 50,
   "preferenceWeight": 1000,
   "workUnits": 168,
-  "weeklyHours": 44,
+  "weeklyHours": 168,
   "minimumRestSeconds": 39600,
   "maximumRestSeconds": 604800,
   "shiftDurationSeconds": 86400,

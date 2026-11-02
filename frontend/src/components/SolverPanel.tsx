@@ -1,4 +1,4 @@
-import { secondsDuration } from "../lib/policies/weeklyWorkPlan";
+import { WorkloadSummaryCard } from "./WorkloadSummaryCard";
 import { solverLabels, solverDescriptions } from "../lib/solverStatus";
 import { groupDecisions } from "../lib/decisionGroups";
 import { civilDateTime } from "../lib/dateTime";
@@ -55,7 +55,7 @@ export function SolverPanel() {
           {active ? "Preparando sua escala…" : "Gerar escala"}
         </Button>
 
-        {analysis.workloads?.map(w=><section key={w.employeeId+w.weekStart} className="rounded border border-border p-3"><h3>{document.employees.find(e=>e.id===w.employeeId)?.name} · semana {w.weekStart.slice(0,10)}</h3><p>Prevista no período: {secondsDuration(w.expectedSeconds)} · Planejada no período: {secondsDuration(w.plannedSeconds)} · Reconhecida como jornada normal: {secondsDuration(w.recognizedSeconds)} · Saldo não atendido: {secondsDuration(w.unmetSeconds)}</p><p>Dispensada: {secondsDuration(w.excusedSeconds)} · Excesso: {secondsDuration(w.excessSeconds)}</p></section>)}
+        {analysis.workloads?.map(w=><WorkloadSummaryCard key={w.employeeId+w.weekStart} summary={w} name={document.employees.find(e=>e.id===w.employeeId)?.name} />)}
         <GenerationProgress />
         <p className="text-xs text-muted-foreground">A geração substitui por inteiro os turnos que começam de {document.planningPeriod.start.split("-").reverse().join("/")} a {document.planningPeriod.end.split("-").reverse().join("/")}, inclusive os que terminam no dia seguinte. Os demais turnos serão preservados.</p>
         {(!document.employees.length || !document.company.coverage.some(r => r.minimumEmployees > 0)) && <p className="text-sm text-muted-foreground">Para gerar a escala, cadastre funcionários e ao menos uma regra de cobertura com quantidade maior que zero.</p>}

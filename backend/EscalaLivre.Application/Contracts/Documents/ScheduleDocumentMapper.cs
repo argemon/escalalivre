@@ -261,10 +261,10 @@ public static class ScheduleDocumentMapper
 
     public static WeeklyWorkPlan? ToProjection(WeeklyWorkPlanDto? value)
         => value is null ? null : new(value.ContractedSeconds, value.DailySeconds,
-            value.Compensation is null ? null : new(value.Compensation.Instrument, value.Compensation.StartsOn, value.Compensation.EndsOn));
+            value.Compensation is null ? null : new(value.Compensation.Instrument, value.Compensation.StartsOn, value.Compensation.EndsOn), value.FlexibleWorkDays);
     public static WeeklyWorkPlanDto? ToDto(WeeklyWorkPlan? value)
         => value is null ? null : new(value.ContractedSeconds, Copy(value.DailySeconds),
-            value.Compensation is null ? null : new(value.Compensation.Instrument, value.Compensation.StartsOn, value.Compensation.EndsOn));
+            value.Compensation is null ? null : new(value.Compensation.Instrument, value.Compensation.StartsOn, value.Compensation.EndsOn), value.FlexibleWorkDays);
 
     private static IReadOnlyList<T> Copy<T>(IReadOnlyList<T>? values)
         => values is null ? null! : values.ToImmutableArray();

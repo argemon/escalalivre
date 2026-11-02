@@ -1,9 +1,10 @@
-import type { CompanyRules, Employee, EscalaLivreDocument, WeeklyWorkPlan, WorkloadSummary, DailyWorkload } from "../../types/schedule";
-import { clockMillis, civilMillis, civilString, civilDay, civilWeek } from "../civilTime";
-import { closedHoliday } from "../holidays";
+export { planFor, hasContractPlans, compensationAppliesOn, nominalSeconds, excusedSeconds, targetSeconds, normalLimitSeconds, contractDailyLimitMillis, desiredWorkSeconds, recognizedSeconds, durationSeconds } from "./contractWorkTargets";
+import { planFor, nominalSeconds, excusedSeconds, recognizedSeconds, durationSeconds } from "./contractWorkTargets";
+import type { CompanyRules, EscalaLivreDocument, WeeklyWorkPlan, WorkloadSummary, DailyWorkload } from "../../types/schedule";
+import { civilMillis, civilString, civilDay, civilWeek } from "../civilTime";
 import { workMillis, workMillisInWeek } from "./effectiveWork";
-import { regimeConstraints } from "../regimes";
 import { hoursToDuration, formatDuration } from "../duration";
+import { summarizeFlexible } from "./flexibleContract";
 
 export function distributeWeekly(seconds:number, days:number[], fridaySeconds?:number):WeeklyWorkPlan {
   if(!Number.isInteger(seconds)||seconds<1||seconds>604800||!days.length||new Set(days).size!==days.length||days.some(d=>!Number.isInteger(d)||d<0||d>6)
@@ -15,17 +16,17 @@ export function distributeWeekly(seconds:number, days:number[], fridaySeconds?:n
   if(dailySeconds.some(s=>s>86400))throw new Error("Duração diária acima de 24h.");
   return {contractedSeconds:seconds,dailySeconds};
 }
-export const planFor=(company:CompanyRules,employee:Employee)=> (employee.inheritsCompanyDefaults?company.defaultWorkload:employee.workload).weeklyPlan;
-export const hasContractPlans=(planning:EscalaLivreDocument)=>planning.employees.some(e=>planFor(planning.company,e)!=null);
 export function weeklyPlanIssues(plan:WeeklyWorkPlan,ceilingHours:number):string[] {
   const issues:string[]=[];
-  if(plan.dailySeconds.reduce((a,b)=>a+b,0)!==plan.contractedSeconds)issues.push("distributionTotal");
+  if(!plan.flexibleWorkDays&&plan.dailySeconds.reduce((a,b)=>a+b,0)!==plan.contractedSeconds)issues.push("distributionTotal");
   if(plan.contractedSeconds>ceilingHours*3600)issues.push("contractAboveCeiling");
-  if(plan.dailySeconds.some(s=>s>36000))issues.push("distributionDailyLimit");
-  if(plan.dailySeconds.some(s=>s>28800)&&!plan.compensation)issues.push("compensationRequired");
+  if(plan.contractedSeconds>44*3600)issues.push("contractAboveNormalLimit");
+  const durations=plan.flexibleWorkDays?[Math.ceil(plan.contractedSeconds/plan.flexibleWorkDays)]:plan.dailySeconds;
+  if(durations.some(s=>s>36000))issues.push("distributionDailyLimit");
+  if(durations.some(s=>s>28800)&&!plan.compensation)issues.push("compensationRequired");
   return issues;
 }
-export const durationSeconds=(value:string)=>Math.round(clockMillis(value)/1000);
+
 export const secondsDuration=(seconds:number)=>hoursToDuration(seconds/3600);
 export function plannedExit(entry:string,workSeconds:number,pauseSeconds:number):string {
   const total=durationSeconds(entry)+workSeconds+pauseSeconds,days=Math.floor(total/86400);
@@ -37,35 +38,18 @@ export function intervalDescription(lunch:CompanyRules["lunch"]):string {
     : `Faixa permitida: ${formatDuration(lunch.minimum)}–${formatDuration(lunch.maximum)}`;
 }
 export const weeklyPlanMessages:Record<string,string>={
+  contractAboveNormalLimit:"A jornada normal contratada supera o limite geral de 44h semanais. Horas extras devem ficar no máximo, sem aumentar o mínimo contratado.",
   distributionTotal:"A soma dos dias difere da carga contratada.",contractAboveCeiling:"A carga contratada supera o teto semanal.",
   distributionDailyLimit:"A distribuição supera 10h em um dia.",compensationRequired:"Trabalho normal acima de 8h exige compensação própria; permitir extras não a substitui."
 };
 
 export const weeklyPlanTotal=(plan:WeeklyWorkPlan)=>plan.dailySeconds.reduce((a,b)=>a+b,0);
 
-export const compensationAppliesOn=(plan:WeeklyWorkPlan,date:string)=>Boolean(plan.compensation && date>=plan.compensation.startsOn && date<=plan.compensation.endsOn);
-
-export const nominalSeconds=(company:CompanyRules,e:Employee,date:string)=>planFor(company,e)?.dailySeconds[new Date(civilMillis(date+"T00:00:00")).getUTCDay()]??0;
-export function excusedSeconds(company:CompanyRules,e:Employee,date:string):number {
- const nominal=nominalSeconds(company,e,date);
- return closedHoliday(company,date)?nominal:Math.min(nominal,(e.contractLeaves??[]).filter(l=>l.date===date).reduce((n,l)=>n+l.excusedSeconds,0));
-}
-export const targetSeconds=(company:CompanyRules,e:Employee,date:string)=>nominalSeconds(company,e,date)-excusedSeconds(company,e,date);
-export function normalLimitSeconds(company:CompanyRules,e:Employee,date:string):number {
- const plan=planFor(company,e);
- return plan?Math.min(Math.max(0,nominalSeconds(company,e,date)-(e.contractLeaves??[]).filter(l=>l.date===date).reduce((n,l)=>n+l.excusedSeconds,0)),compensationAppliesOn(plan,date)?36000:28800):durationSeconds((e.inheritsCompanyDefaults?company.defaultWorkload:e.workload).defaultShiftDuration);
-}
-export const contractDailyLimitMillis=(company:CompanyRules,e:Employee,date:string)=>planFor(company,e)?Math.min(36000,normalLimitSeconds(company,e,date)+(e.allowsOvertime?7200:0))*1000:(e.allowsOvertime?10:8)*3600000;
-export function desiredWorkSeconds(company:CompanyRules,e:Employee,date:string):number {
- const rule=e.inheritsCompanyDefaults?company.defaultWorkload:e.workload;
- if(!planFor(company,e))return durationSeconds(rule.defaultShiftDuration);
- return Math.min(targetSeconds(company,e,date),normalLimitSeconds(company,e,date),(regimeConstraints(rule).maximumWorkMillis??Infinity)/1000);
-}
-export const recognizedSeconds=(company:CompanyRules,e:Employee,date:string,work:number)=>Math.max(0,Math.min(work,targetSeconds(company,e,date),desiredWorkSeconds(company,e,date)));
 export function summarizeWorkloads(planning:EscalaLivreDocument,start:string,end:string):WorkloadSummary[]|undefined {
  const summaries:WorkloadSummary[]=[];
  for(const e of planning.employees) {
   const plan=planFor(planning.company,e);if(!plan)continue;
+  if(plan.flexibleWorkDays){summaries.push(...summarizeFlexible(planning,e,start,end));continue;}
   const shifts=planning.assignments.filter(a=>a.employeeId===e.id),weeks=new Map<number,DailyWorkload[]>();
   for(let day=civilDay(civilMillis(start));day<=civilDay(civilMillis(end));day+=86400000){
    const date=civilString(day),key=date.slice(0,10),nominal=nominalSeconds(planning.company,e,key),excused=excusedSeconds(planning.company,e,key),expected=nominal-excused;
