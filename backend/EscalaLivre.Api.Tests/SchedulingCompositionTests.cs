@@ -47,7 +47,7 @@ public sealed class SchedulingCompositionTests
         using var services = new ServiceCollection().AddScheduleAnalysis().AddScheduleOptimization().BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true });
         Assert.IsType<OrToolsScheduleOptimizer>(services.GetRequiredService<IScheduleOptimizer>());
         Assert.NotNull(services.GetRequiredService<GenerateSchedule>());
-        Assert.Equal(new[] { typeof(FixedAssignmentConstraints), typeof(DailyExclusivityConstraints), typeof(WeeklyIntervalConstraints), typeof(IntervalTimingConstraints), typeof(RestConstraints),
+        Assert.Equal(new[] { typeof(FixedAssignmentConstraints), typeof(DailyExclusivityConstraints), typeof(WeeklyIntervalConstraints), typeof(IntervalTimingConstraints), typeof(IntervalDurationConstraints), typeof(RestConstraints),
             typeof(WeeklyWorkConstraints), typeof(DayCycleConstraints), typeof(CoverageConstraints) },
             services.GetServices<IScheduleConstraintTranslator>().Select(t => t.GetType()));
     }

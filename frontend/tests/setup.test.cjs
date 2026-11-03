@@ -36,7 +36,8 @@ test('predicted weekly coverage excludes the lunch closure', () => {
   const shifts=weeklyCoverage(doc,'2026-05-18');
   assert.ok(shifts.length);
   assert.ok(shifts.every(a => a.break?.start.slice(11,16)<='12:00' && a.break?.end.slice(11,16)>='13:00'));
-  assert.ok(shifts.every(a => a.end.slice(11,16)==='17:30'));
+  assert.ok(shifts.every(a => a.end.slice(11,16)==='16:30'));
+  assert.ok(shifts.every(a => Date.parse(a.break.end)-Date.parse(a.break.start)===3600000));
 });
 
 const { holidayOn } = load('lib/holidays.ts');
@@ -68,11 +69,11 @@ test('every preview has a valid interval even without company closure',()=>{
  }
 });
 
-test('preview evaluates the maximum interval to cover the end of the day',()=>{
+test('preview prefers minimum interval and preserves fixed individual intervals',()=>{
  const doc=structuredClone(sampleDocument);doc.planningPeriod={start:"2026-10-12",end:"2026-10-18"};doc.assignments=[];doc.employees.forEach(e=>e.inheritsCompanyDefaults=true);
  doc.company.opensAt='07:30:00';doc.company.closesAt='17:30:00';doc.company.coverage=[];
  doc.company.lunch={minimum:'01:00:00',maximum:'02:00:00',preferredAfter:'04:00:00'};
- for(const a of weeklyCoverage(doc,'2026-10-14')) {assert.equal(a.end.slice(11,16),'17:30');assert.equal((Date.parse(a.break.end)-Date.parse(a.break.start))/3600000,2);}
+ for(const a of weeklyCoverage(doc,'2026-10-14')) {assert.equal(a.end.slice(11,16),'16:30');assert.equal((Date.parse(a.break.end)-Date.parse(a.break.start))/3600000,1);}
  doc.employees[0].fixedInterval={start:'12:00:00',end:'13:30:00'};
  const fixed=weeklyCoverage(doc,'2026-10-14').find(a=>a.employeeId===doc.employees[0].id);
  assert.equal(fixed.break.start.slice(11,16),'12:00');assert.equal(fixed.break.end.slice(11,16),'13:30');assert.equal(fixed.end.slice(11,16),'17:00');

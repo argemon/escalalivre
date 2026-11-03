@@ -13,39 +13,69 @@ public sealed class OrToolsScheduleOptimizer(ScheduleCandidateGenerator generato
         var budget = new OptimizationBudget();
         var input = new ScheduleModelInput(request, generator.Generate(request), budget);
         var context = builder.Build(input, budget);
-        ScheduleOptimizationResult Search(double seconds) => context.ContractCredit is null ? reader.Read(context,execution.Solve(context.Model,seconds)) : ContractObjectiveSearch.Solve(context,execution,reader,seconds);
-        var preference = context.PreferUnanticipatedIntervals;
-        if (preference is null) return Search(OrToolsExecution.MaximumSeconds);
-
-        // One model/budget and at most five seconds of native search across both attempts.
-        context.Model.AddAssumption(preference);
-        ScheduleSearchHints.Apply(context);
         var timer = Stopwatch.StartNew();
-        var preferred = Search(OrToolsExecution.MaximumSeconds / 2);
-        if (preferred.Status is not ("optimal" or "feasible")) return preferred;
-        long uncovered = Uncovered(request, preferred);
-        if (uncovered == 0) return preferred;
+        bool hasDurationChoice = context.PreferMinimumIntervals is not null;
 
-        context.Model.ClearAssumptions();
-        context.Model.Add(preference == 0);
-        // Reuse the already feasible assignment as a starting hint for the fallback.
-        context.Model.ClearHints();
-        var selectedIds = preferred.SelectedAssignments.Select(a => a.Id).ToHashSet();
-        var fixedIds = input.FixedCoverage.Select(a => a.Id).ToHashSet();
-        foreach (var decision in context.DecisionVars)
-            context.Model.AddHint(decision.Value, selectedIds.Contains(decision.Key)
-                || fixedIds.Contains(decision.Key) ? 1 : 0);
+        ScheduleOptimizationResult Search(double seconds) => context.ContractCredit is null && context.IntervalExtension is null
+            ? reader.Read(context, execution.Solve(context.Model, seconds))
+            : ScheduleObjectiveSearch.Solve(context, execution, reader, seconds);
+
+        void Prepare(bool minimumOnly, bool unanticipatedOnly, ScheduleOptimizationResult? previous = null)
+        {
+            // Clear search-local objective locks as well as the previous preference assumptions.
+            context.Model.ClearAssumptions();
+            if (context.PreferMinimumIntervals is {} duration)
+                context.Model.AddAssumption(minimumOnly ? duration : duration.Not());
+            if (context.PreferUnanticipatedIntervals is {} timing)
+                context.Model.AddAssumption(unanticipatedOnly ? timing : timing.Not());
+            context.Model.ClearHints();
+            if (previous is null) ScheduleSearchHints.Apply(context, minimumOnly);
+            else
+            {
+                var selected = previous.SelectedAssignments.Concat(input.FixedCoverage).Select(a => a.Id).ToHashSet();
+                foreach (var decision in context.DecisionVars)
+                    context.Model.AddHint(decision.Value, selected.Contains(decision.Key) ? 1 : 0);
+            }
+        }
+
+        ScheduleOptimizationResult SearchWithTiming(bool minimumOnly, double seconds)
+        {
+            var timingTimer = Stopwatch.StartNew();
+            Prepare(minimumOnly, true);
+            bool hasTimingChoice = context.PreferUnanticipatedIntervals is not null;
+            var preferred = Search(hasTimingChoice ? seconds / 2 : seconds);
+            if (!hasTimingChoice || !Succeeded(preferred) || Uncovered(request, preferred) == 0) return preferred;
+            double remaining = seconds - timingTimer.Elapsed.TotalSeconds;
+            if (remaining <= 0) return preferred;
+            Prepare(minimumOnly, false, preferred);
+            var relaxed = Search(remaining);
+            if (!Succeeded(relaxed) || Uncovered(request, relaxed) >= Uncovered(request, preferred)) return preferred;
+            return Explain(relaxed, "interval-anticipated-for-coverage", a =>
+                IntervalTimingPolicy.IsEarly(request.Document.Company, a)
+                && request.Document.Employees.First(e => e.Id == a.EmployeeId).FixedInterval is null
+                && !input.HolidayShifts.Any(h => h.Id == a.Id));
+        }
+
+        // Always obtain a minimum-duration incumbent before allowing longer automatic pauses.
+        // All attempts share one model, one construction budget and five seconds of native search.
+        var minimum = SearchWithTiming(true, hasDurationChoice ? OrToolsExecution.MaximumSeconds / 2 : OrToolsExecution.MaximumSeconds);
+        if (!hasDurationChoice || !Succeeded(minimum) || Uncovered(request, minimum) == 0) return minimum;
         double remaining = OrToolsExecution.MaximumSeconds - timer.Elapsed.TotalSeconds;
-        if (remaining <= 0) return preferred;
-        var relaxed = Search(remaining);
-        if (relaxed.Status is not ("optimal" or "feasible") || Uncovered(request, relaxed) >= uncovered) return preferred;
-        var early = relaxed.SelectedAssignments.Where(a => IntervalTimingPolicy.IsEarly(request.Document.Company, a)
-            && request.Document.Employees.First(e => e.Id == a.EmployeeId).FixedInterval is null
-            && !input.HolidayShifts.Any(h => h.Id == a.Id)).Select(a => a.Id).ToHashSet();
-        ShiftAssignment Explain(ShiftAssignment a) => early.Contains(a.Id)
-            ? a with { Tags = a.Tags.Append("interval-anticipated-for-coverage").ToArray() } : a;
-        return relaxed with { Assignments = relaxed.Assignments.Select(Explain).ToArray(),
-            SelectedAssignments = relaxed.SelectedAssignments.Select(Explain).ToArray() };
+        if (remaining <= 0) return minimum;
+        var extended = SearchWithTiming(false, remaining);
+        if (!Succeeded(extended) || Uncovered(request, extended) >= Uncovered(request, minimum)) return minimum;
+        return Explain(extended, "interval-extended-for-coverage", a => context.IntervalExtensionSeconds.ContainsKey(a.Id));
+    }
+
+    private static bool Succeeded(ScheduleOptimizationResult result) => result.Status is "optimal" or "feasible";
+
+    private static ScheduleOptimizationResult Explain(ScheduleOptimizationResult result, string tag, Func<ShiftAssignment, bool> applies)
+    {
+        var selected = result.SelectedAssignments.Select(a => a.Id).ToHashSet();
+        ShiftAssignment Annotate(ShiftAssignment assignment) => selected.Contains(assignment.Id) && applies(assignment)
+            ? assignment with { Tags = assignment.Tags.Append(tag).ToArray() } : assignment;
+        return result with { Assignments = result.Assignments.Select(Annotate).ToArray(),
+            SelectedAssignments = result.SelectedAssignments.Select(Annotate).ToArray() };
     }
 
     private static long Uncovered(ScheduleRequest request, ScheduleOptimizationResult result)

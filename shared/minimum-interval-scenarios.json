@@ -1,0 +1,127 @@
+{
+  "scenarios": [
+    {
+      "id": "one-hour-minimum",
+      "start": "2026-11-04T07:30:00",
+      "end": "2026-11-04T17:30:00",
+      "pauseStart": "2026-11-04T11:30:00",
+      "pauseEnd": "2026-11-04T12:30:00",
+      "minimum": "01:00:00",
+      "maximum": "02:00:00",
+      "expectedSeconds": 0
+    },
+    {
+      "id": "two-hours-is-one-hour-extra",
+      "start": "2026-11-04T07:30:00",
+      "end": "2026-11-04T17:30:00",
+      "pauseStart": "2026-11-04T11:30:00",
+      "pauseEnd": "2026-11-04T13:30:00",
+      "minimum": "01:00:00",
+      "maximum": "02:00:00",
+      "expectedSeconds": 3600
+    },
+    {
+      "id": "one-second-extra",
+      "start": "2026-11-04T07:30:00",
+      "end": "2026-11-04T17:30:00",
+      "pauseStart": "2026-11-04T11:30:00",
+      "pauseEnd": "2026-11-04T12:30:01",
+      "minimum": "01:00:00",
+      "maximum": "02:00:00",
+      "expectedSeconds": 1
+    },
+    {
+      "id": "company-minimum-ninety-minutes",
+      "start": "2026-11-04T07:30:00",
+      "end": "2026-11-04T17:30:00",
+      "pauseStart": "2026-11-04T11:30:00",
+      "pauseEnd": "2026-11-04T13:30:00",
+      "minimum": "01:30:00",
+      "maximum": "02:00:00",
+      "expectedSeconds": 1800
+    },
+    {
+      "id": "two-hour-company-minimum",
+      "start": "2026-11-04T07:30:00",
+      "end": "2026-11-04T17:30:00",
+      "pauseStart": "2026-11-04T11:30:00",
+      "pauseEnd": "2026-11-04T13:30:00",
+      "minimum": "02:00:00",
+      "maximum": "02:00:00",
+      "expectedSeconds": 0
+    },
+    {
+      "id": "fixed-pause-is-authoritative",
+      "start": "2026-11-04T07:30:00",
+      "end": "2026-11-04T17:30:00",
+      "pauseStart": "2026-11-04T11:30:00",
+      "pauseEnd": "2026-11-04T13:30:00",
+      "minimum": "01:00:00",
+      "maximum": "02:00:00",
+      "expectedSeconds": 0,
+      "fixedInterval": {
+        "start": "11:30:00",
+        "end": "13:30:00"
+      }
+    },
+    {
+      "id": "closure-requires-longer-pause",
+      "start": "2026-11-04T07:30:00",
+      "end": "2026-11-04T17:30:00",
+      "pauseStart": "2026-11-04T11:30:00",
+      "pauseEnd": "2026-11-04T13:30:00",
+      "minimum": "01:00:00",
+      "maximum": "02:00:00",
+      "expectedSeconds": 0,
+      "middayClosure": {
+        "start": "11:30:00",
+        "end": "13:30:00"
+      }
+    },
+    {
+      "id": "closure-does-not-apply-to-working-person",
+      "start": "2026-11-04T07:30:00",
+      "end": "2026-11-04T17:30:00",
+      "pauseStart": "2026-11-04T11:30:00",
+      "pauseEnd": "2026-11-04T13:30:00",
+      "minimum": "01:00:00",
+      "maximum": "02:00:00",
+      "expectedSeconds": 3600,
+      "middayClosure": {
+        "start": "11:30:00",
+        "end": "13:30:00"
+      },
+      "worksDuringLunchClosure": true
+    },
+    {
+      "id": "work-minimum-exceeds-company-minimum",
+      "start": "2026-11-04T07:30:00",
+      "end": "2026-11-04T17:30:00",
+      "pauseStart": "2026-11-04T11:30:00",
+      "pauseEnd": "2026-11-04T12:30:00",
+      "minimum": "00:15:00",
+      "maximum": "02:00:00",
+      "expectedSeconds": 0
+    },
+    {
+      "id": "night-preserves-elapsed-duration",
+      "start": "2026-11-04T20:00:00",
+      "end": "2026-11-05T06:00:00",
+      "pauseStart": "2026-11-05T00:00:00",
+      "pauseEnd": "2026-11-05T02:00:00",
+      "minimum": "01:00:00",
+      "maximum": "02:00:00",
+      "expectedSeconds": 3600
+    },
+    {
+      "id": "shift-without-pause",
+      "start": "2026-11-04T07:30:00",
+      "end": "2026-11-04T11:30:00",
+      "pauseStart": null,
+      "pauseEnd": null,
+      "minimum": "01:00:00",
+      "maximum": "02:00:00",
+      "expectedSeconds": 0
+    }
+  ]
+}

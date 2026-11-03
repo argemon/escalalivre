@@ -205,7 +205,7 @@ public sealed class ContractGenerationTests
         var a=new ShiftAssignment(Guid.NewGuid(),employee.Id,employee.Role,r.Start.AddHours(7.5),r.Start.AddHours(17.3),new(r.Start.AddHours(12),r.Start.AddHours(13)),"solver",[]);
         var b=a with {Id=Guid.NewGuid(),End=r.Start.AddHours(17.5),Break=new(r.Start.AddHours(11.5),r.Start.AddHours(13.5)),Tags=["closing"]};
         var budget=new OptimizationBudget();var context=AdapterComposition.Builder().Build(new(r,[a,b],budget),budget);
-        var result=ContractObjectiveSearch.Solve(context,new OrToolsExecution(),new ScheduleResultReader(),5);
+        var result=ScheduleObjectiveSearch.Solve(context,new OrToolsExecution(),new ScheduleResultReader(),5);
         Assert.Contains(result.Status,new[]{"optimal","feasible"});
         Assert.Equal(demandAtClosing?28800:31680,EffectiveWorkPolicy.Measure(Assert.Single(result.SelectedAssignments)).TotalSeconds);
     }

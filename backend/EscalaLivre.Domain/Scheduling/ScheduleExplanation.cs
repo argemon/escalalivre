@@ -21,6 +21,9 @@ public static class ScheduleExplanation
             if (assignment.Tags.Contains("interval-anticipated-for-coverage"))
                 factors.Add("intervalo antecipado em relação ao tempo preferencial para reduzir a falta de cobertura");
 
+            if (assignment.Tags.Contains("interval-extended-for-coverage"))
+                factors.Add("intervalo ampliado em relação ao mínimo da empresa para reduzir a falta de cobertura");
+
             yield return new SolverDecision(
                 assignment.Id,
                 assignment.EmployeeId,

@@ -15,6 +15,9 @@ public sealed class ScheduleModelContext(ScheduleModelInput input)
     internal LinearExpr? PreferenceObjective { get; set; }
     internal List<LinearExpr> ShortageTerms { get; } = [];
     internal List<LinearExpr> OccupancyTerms { get; } = [];
+    internal Dictionary<Guid, long> IntervalExtensionSeconds { get; } = new();
+    internal LinearExpr? IntervalExtension { get; set; }
+    internal BoolVar? PreferMinimumIntervals { get; set; }
     internal BoolVar? PreferUnanticipatedIntervals { get; set; }
 }
 
