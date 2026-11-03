@@ -44,6 +44,14 @@ public static class IntervalPolicy
         return (TimeSpan.FromTicks(minimum), TimeSpan.FromTicks(maximum));
     }
 
+    // Preference for generated pauses; explicit intervals remain authoritative.
+    public static TimeSpan Extension(CompanyRules company, Employee employee, ShiftAssignment shift)
+    {
+        if (employee.FixedInterval is not null || shift.Break is not {} pause) return TimeSpan.Zero;
+        var minimum = VariableLimits(company, employee, EffectiveWorkPolicy.Measure(shift), Closures(company, shift.Start, shift.End).ToArray()).Minimum;
+        return TimeSpan.FromTicks(Math.Max(0, (pause.End - pause.Start - minimum).Ticks));
+    }
+
     public static bool ConflictsWithClosure(BreakWindow? pause, BreakWindow closure, bool worksDuringClosure)
         => worksDuringClosure
             ? pause is not null && pause.Start < closure.End && closure.Start < pause.End

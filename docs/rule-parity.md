@@ -336,3 +336,12 @@ O desvio do almoço usa datas civis completas e dois pontos por segundo, fora do
 A [decisão 022](decisions/022-role-coverage-grants.md) acrescenta `roles[].coverageRoleIds` opcional. Cada funcionário pode cobrir sua função principal, os destinos autorizados diretamente pela função e suas permissões individuais adicionais. Não há reversão nem transitividade implícita. Sem o campo novo, o contrato individual anterior é preservado. Revogar uma permissão da função afeta todas as pessoas dela, sem alterar turnos ou converter as permissões em listas individuais.
 
 RoleCoveragePolicy/CanCover e o equivalente TypeScript recebem o catálogo completo em análise, validação, prévia, demanda contratada e geração, incluindo exceções de expediente. Os 12 documentos de role-coverage-scenarios.json são executados em C# puro, TS, comparação diferencial e HTTP/worker. DTOs e snapshot copiam as listas aninhadas; formulário e arquivo nativo têm regressões próprias.
+
+## Preferência pelo intervalo mínimo — 03/11/2026
+
+A [decisão 023](decisions/023-minimum-automatic-interval.md) exige uma solução inicial
+com o intervalo mínimo efetivo e aceita ampliação apenas com redução estrita de
+lacunas. Entre alternativas ampliadas, cobertura precede menor ampliação, carga
+contratada e preferências. Pausas fixas, fechamento, rotinas históricas e antecipação
+preservam seus contratos. A prévia TypeScript usa o mínimo efetivo. Os cenários de
+minimum-interval-scenarios.json verificam C#/TS sem alterar diagnósticos de arquivo.

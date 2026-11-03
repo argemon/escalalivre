@@ -82,7 +82,7 @@ flowchart LR
 
 O núcleo usa **Google OR-Tools CP-SAT**, um motor de otimização por restrições. Ele avalia combinações de turnos e intervalos para reduzir a falta de cobertura, respeitando as regras representadas no modelo.
 
-Quando há carga contratada configurada, a busca prioriza reduzir lacunas de cobertura, depois cumprir a carga normal e, por fim, atender preferências e desempates. Sem plano contratado, mantém a função ponderada anterior. O resultado inclui turnos, conflitos, cobertura por período, saldos diários e semanais quando há plano, sugestões e explicações baseadas nas regras avaliadas. Os detalhes estão na [seção técnica](#para-os-nerds-o-algoritmo-por-dentro).
+A busca começa pelo intervalo mínimo efetivo. Uma pausa maior só é aceita se reduzir as lacunas de cobertura. Entre alternativas ampliadas, o motor prioriza cobertura, menor ampliação total dos intervalos, carga normal contratada quando configurada e preferências. O resultado inclui turnos, conflitos, cobertura por período, saldos diários e semanais quando há plano, sugestões e explicações baseadas nas regras avaliadas. Os detalhes estão na [seção técnica](#para-os-nerds-o-algoritmo-por-dentro).
 
 A execução possui limite de tempo e pode encontrar uma solução viável sem comprovar que ela é a melhor possível. A interface permite revisar o resultado e continuar ajustando o planejamento.
 
@@ -91,7 +91,7 @@ A execução possui limite de tempo e pode encontrar uma solução viável sem c
 | Recurso | Utilidade no dia a dia |
 | --- | --- |
 | **Configuração da empresa** | Definir funcionamento, horas efetivas de trabalho, descanso, limites de intervalo e fechamento para almoço. |
-| **Funções e equipe** | Cadastrar funções e definir, por pessoa, jornada, dias de trabalho, entrada fixa, disponibilidade e restrições. |
+| **Funções e equipe** | Editar a função dentro do próprio cartão e definir, por pessoa, jornada, dias de trabalho, entrada fixa, disponibilidade e restrições. |
 | **Mínimo contratado e máximo semanal** | Separar a carga normal a cumprir do teto total com extras autorizadas, com distribuição diária uniforme, sexta reduzida ou personalizada. |
 | **Escala individual 5x2 e 6x1** | Escolher o modelo da pessoa e deixar o gerador definir dias, folgas e horários, ou restringir a dias fixos, independentemente de a empresa abrir sete dias. |
 | **Saída antecipada e horas faltantes** | Ajustar a saída de turnos salvos e conferir o saldo por dia e semana, sem reduzir automaticamente a carga contratada. |
@@ -99,7 +99,7 @@ A execução possui limite de tempo e pode encontrar uma solução viável sem c
 | **Cobertura em vários dias** | Aplicar a mesma necessidade a dias selecionados, a todos os dias ou aos dias de funcionamento. |
 | **Cobertura da equipe inteira** | Exigir uma quantidade mínima de pessoas presentes, independentemente da função. |
 | **Operação fora do expediente** | Autorizar necessidades específicas em outros horários ou dias, como segurança e limpeza. |
-| **Intervalos flexíveis ou fixos** | Deixar o gerador escolher início e duração da pausa, ou fixar o intervalo de uma pessoa. |
+| **Intervalos flexíveis ou fixos** | Priorizar a pausa mínima, ampliar somente para reduzir lacunas de cobertura ou respeitar o intervalo fixo de uma pessoa. |
 | **Feriados e turnos especiais** | Configurar abertura ou fechamento por data e manter turnos específicos mesmo com a empresa fechada. |
 | **Geração automática** | Buscar turnos e intervalos que atendam à operação dentro das restrições do modelo. |
 | **Fila e tempo de espera** | Acompanhar a posição real, os pedidos à frente, a estimativa de espera e o tempo decorrido até receber a escala. |
@@ -198,11 +198,11 @@ A empresa pode fechar durante o almoço. Nesse período, as regras normais deixa
 
 Uma pessoa que precisa continuar trabalhando, como um segurança, pode receber a opção **Trabalha durante o fechamento para intervalo** e fazer sua pausa em outro horário. Regras excepcionais de cobertura continuam podendo exigir pessoas durante o fechamento.
 
-Sem intervalo fixo, o motor compara durações entre o mínimo e o máximo configurados, além de diferentes horários de início. Com intervalo fixo, respeita a pausa individual. Isso permite, por exemplo, avaliar uma pausa maior para alcançar o fechamento da loja sem aumentar as horas efetivamente trabalhadas.
+Sem intervalo fixo, o motor começa pela menor duração compatível com o mínimo da empresa, a jornada e o fechamento para almoço. Só aceita uma solução com pausas maiores se ela reduzir a falta de cobertura; apenas transferir um buraco para outro horário não justifica ampliar o intervalo. Quando precisa ampliar, prioriza a menor ampliação total encontrada. Se duas pausas de uma hora atendem toda a demanda, mantém uma hora para ambas. Intervalos fixos e rotinas já ancoradas pelo histórico são respeitados. A prévia também usa o mínimo efetivo; a escolha conjunta dos horários acontece na geração.
 
 ### Uma pessoa pode ajudar em outra função — com autorização
 
-Na etapa **Funções**, edite uma função e selecione uma ou mais opções em **Esta função também pode cobrir**. Exemplo: autorize **Farmacêutico → Atendente** uma vez para todos os farmacêuticos. Ou marque **Caixa** e **Vendedor** na função **Gerente**: um gerente trabalhando sozinho atende as três funções. Quem for cadastrado depois herda as mesmas permissões.
+Na etapa **Funções**, clique em **Editar** para abrir o formulário no próprio cartão da função e selecione uma ou mais opções em **Esta função também pode cobrir**. Exemplo: autorize **Farmacêutico → Atendente** uma vez para todos os farmacêuticos. Ou marque **Caixa** e **Vendedor** na função **Gerente**: um gerente trabalhando sozinho atende as três funções. Quem for cadastrado depois herda as mesmas permissões.
 
 No cadastro da pessoa, **Substituições individuais** acrescenta permissões e informa as herdadas da função. As duas fontes são somadas; desmarcar uma opção individual não revoga a permissão da função. Alterar as autorizações da função atualiza todos os funcionários sem reescrever seus turnos salvos.
 
@@ -326,17 +326,20 @@ Necessidade de 2 Monitores → uma pessoa sozinha continua insuficiente
 
 A variável inteira de falta permite devolver cobertura parcial. O mesmo contrato vale na análise TypeScript, no domínio C# e no modelo do gerador. A função principal permanece no turno. [Decisão e regressões](docs/decisions/021-simultaneous-authorized-coverage.md).
 
-### 4. Otimizar cobertura, carga e preferências
+### 4. Otimizar cobertura, duração dos intervalos, carga e preferências
 
-Quando existe plano contratado efetivo, o CP-SAT executa três objetivos sucessivos:
+A primeira tentativa admite somente pausas automáticas com a duração mínima efetiva. Se ainda houver déficit, uma tentativa com pausas maiores só substitui essa solução quando reduz estritamente a falta de cobertura em ticks × pessoas, sem usar o score arredondado. A antecipação em relação ao horário preferido também exige melhora de cobertura. Empate, falha ou prazo esgotado preservam a solução anterior. Pausas fixas, fechamento, feriados autorizados e rotina histórica mantêm suas regras.
+
+Quando há alternativas acima do intervalo mínimo ou plano contratado efetivo, o CP-SAT aplica objetivos sucessivos:
 
 1. Minimizar déficit de cobertura em segundos × pessoas.
-2. Conservar a cobertura encontrada e maximizar a carga normal reconhecida, limitada à meta de cada dia.
-3. Conservar também a carga encontrada e aplicar preferências, ocupação e desempates.
+2. Conservar a cobertura e minimizar a ampliação total das pausas automáticas, quando houver essa escolha.
+3. Conservar os valores anteriores e maximizar a carga normal reconhecida, limitada à meta de cada dia, quando houver plano contratado.
+4. Conservar também a carga encontrada e aplicar preferências, ocupação e desempates.
 
-As fases compartilham o orçamento de busca. Uma fase sem prova de ótimo fixa o melhor valor encontrado, sem garantir ótimo global; se uma fase inferior não melhorar o resultado, o incumbente anterior é preservado. Não se geram extras automaticamente para preencher a meta. Consulte as [prioridades e limitações da geração contratada](docs/decisions/018-weekly-workload-generation.md#prioridades-da-busca).
+As fases e tentativas compartilham o orçamento de busca. Uma fase sem prova de ótimo fixa o melhor valor encontrado, sem garantir ótimo global; se uma fase inferior piorar as prioridades anteriores, o resultado anterior é preservado. Não se geram extras automaticamente para preencher a meta. Consulte a [preferência pelo intervalo mínimo](docs/decisions/023-minimum-automatic-interval.md) e as [limitações da geração contratada](docs/decisions/018-weekly-workload-generation.md#prioridades-da-busca).
 
-**Sem plano contratado**, o CP-SAT mantém uma única função ponderada. Os coeficientes desse modo são:
+**Sem plano contratado e sem alternativas acima do intervalo mínimo**, o CP-SAT mantém uma única função ponderada. Os coeficientes desse modo são:
 
 | Termo | Peso no objetivo | Efeito |
 | --- | --- | --- |
@@ -348,7 +351,7 @@ As fases compartilham o orçamento de busca. Uma fase sem prova de ótimo fixa o
 
 Nesse modo, os pesos pertencem a uma soma. Preferências não substituem restrições obrigatórias em nenhum dos modos. A duração dos blocos multiplica os termos de falta e presença, fazendo uma lacuna de 15 minutos pesar menos que uma lacuna igual de uma hora.
 
-O solver está configurado com **limite interno de 5 segundos e 1 trabalhador de busca**. Um resultado `Feasible` é viável; `Optimal` comprova o ótimo do modelo construído. O limite de tempo pode terminar sem encontrar solução viável, e múltiplas soluções equivalentes podem produzir escalas diferentes.
+O solver está configurado com **limite interno de 5 segundos e 1 trabalhador de busca**. Um resultado `Feasible` é viável; `Optimal` comprova o ótimo das fases do modelo considerado, dentro das condições da tentativa. O limite de tempo pode terminar sem encontrar solução viável, e múltiplas soluções equivalentes podem produzir escalas diferentes.
 
 Turnos preservados fora do período e turnos manuais autorizados de feriado são incluídos como decisões fixas (`x = 1`); candidatos regulares para a mesma pessoa e data são retirados. Se essas decisões entram em conflito com outras restrições, o resultado aponta o problema e mantém esses turnos para revisão.
 
@@ -567,6 +570,9 @@ A validação cobre regras implementadas, como descanso e limite semanal. Ela n�
 - [Geração e diagnóstico da carga contratada](docs/decisions/018-weekly-workload-generation.md)
 - [Mínimo contratado, máximo com extras e saída antecipada](docs/decisions/019-contract-minimum-and-overtime-ceiling.md)
 - [Escala individual 5x2/6x1 e dias escolhidos pelo gerador](docs/decisions/020-individual-weekly-patterns.md)
+- [Cobertura simultânea por função autorizada](docs/decisions/021-simultaneous-authorized-coverage.md)
+- [Autorizações herdadas da função](docs/decisions/022-role-coverage-grants.md)
+- [Preferência pelo intervalo automático mínimo](docs/decisions/023-minimum-automatic-interval.md)
 - [Fila, estimativas e cancelamento de geração](docs/processing-queue.md)
 - [Identidade visual](docs/brand.md)
 

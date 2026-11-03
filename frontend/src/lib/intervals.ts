@@ -11,7 +11,7 @@ export function previewPause(company:CompanyRules,e:Employee,work:number,start:n
   if(fixed)return (civilMillis(fixed.end)-civilMillis(fixed.start))/60000;
   const closures=closuresFor(company,civilMillis(formatCivilDateTime(new Date(start))),civilMillis(formatCivilDateTime(new Date(limit))));
   const limits=variableIntervalLimits(company,e,work*60000,closures);
-  return Math.max(limits.minimum/60000,Math.min(limits.maximum/60000,(limit-start)/60000-work));
+  return limits.minimum/60000;
 }
 // Explicit construction for a new/manual shift or a preview; never called as normalization.
 export function intervalFor(company:CompanyRules,e:Employee,startValue:number,endValue:number,durationMinutes?:number) {

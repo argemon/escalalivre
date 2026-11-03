@@ -36,6 +36,13 @@ export function variableIntervalLimits(company:CompanyRules,e:Employee,work:numb
   const minimum=Math.max(requiredBreakMinutes(work/60000)*60000,clockMillis(company.lunch.minimum),...(!e.worksDuringLunchClosure?closures.map(c=>c.end-c.start):[0]));
   return {minimum,maximum:Math.min(7200000,Math.max(minimum,clockMillis(company.lunch.maximum)))};
 }
+// Preference only; it does not invalidate existing or manually edited shifts.
+export function intervalExtensionMillis(company:CompanyRules,e:Employee,a:ShiftAssignment):number {
+  if(e.fixedInterval||!a.break)return 0;
+  const start=civilMillis(a.start),end=civilMillis(a.end);
+  const minimum=variableIntervalLimits(company,e,workMillis(a),closuresFor(company,start,end)).minimum;
+  return Math.max(0,civilMillis(a.break.end)-civilMillis(a.break.start)-minimum);
+}
 export function conflictsWithClosure(a:ShiftAssignment,c:{start:number;end:number},worksDuringClosure=false) {
   const overlaps=a.break&&civilMillis(a.break.start)<c.end&&c.start<civilMillis(a.break.end);
   return worksDuringClosure?overlaps:(!a.break||civilMillis(a.break.start)>c.start||civilMillis(a.break.end)<c.end);

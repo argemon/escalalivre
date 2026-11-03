@@ -14,11 +14,11 @@ public class VariableIntervalTests {
         ShiftAssignment a =Assert.Single(result.Assignments);Assert.Empty(result.Gaps);Assert.Empty(result.Conflicts);
   Assert.Equal(new TimeSpan(17,30,0),a.End.TimeOfDay);Assert.Equal(TimeSpan.FromHours(2),a.Break!.End-a.Break.Start);
  }
- [Fact] public void LongerIntervalCanCoverClosingWithoutHidingRemainingGap() {
+ [Fact] public void MovingTheSameGapDoesNotJustifyAnExtendedInterval() {
         ScheduleResult result =AdapterComposition.Generate().Execute(Request(new(new(12,0),new(13,0))));
-        ShiftAssignment a =Assert.Single(result.Assignments);Assert.Equal(new TimeSpan(17,30,0),a.End.TimeOfDay);
-  Assert.Equal(TimeSpan.FromHours(2),a.Break!.End-a.Break.Start);Assert.NotEmpty(result.Gaps);
-  Assert.DoesNotContain(result.Gaps,g=>g.End.TimeOfDay==new TimeSpan(17,30,0));
+        ShiftAssignment a =Assert.Single(result.Assignments);Assert.Equal(new TimeSpan(16,30,0),a.End.TimeOfDay);
+  Assert.Equal(TimeSpan.FromHours(1),a.Break!.End-a.Break.Start);Assert.NotEmpty(result.Gaps);
+  Assert.Contains(result.Gaps,g=>g.End.TimeOfDay==new TimeSpan(17,30,0));
  }
  [Fact] public void TwoEmployeesStaggerExtendedBreaksAndCoverWholeDay() {
         ScheduleResult result =AdapterComposition.Generate().Execute(Request(new(new(12,0),new(13,0)),employees:2));

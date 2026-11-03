@@ -671,3 +671,40 @@ test('individual 5x2 and 6x1 choose days in a seven-day business over the HTTP w
   }
  });
 });
+
+test('automatic lunches stay at company minimum unless extension improves coverage',async()=>{
+  const load=require('../frontend/tests/source-loader.cjs')();
+  const {civilMillis}=load('lib/civilTime.ts');
+  const {analyzeDocument}=load('lib/analysis.ts');
+  const {digest}=require('../shared/parity-contract.cjs');
+  const fixture=require('../shared/simultaneous-coverage-scenarios.json').scenarios[0].request;
+  await withServer({},async({post})=>{
+    for(const end of ['16:30:00','17:00:00']) {
+      const r=structuredClone(fixture);
+      r.end='2026-11-06T23:59:59';
+      r.document.planningPeriod={start:'2026-11-04',end:'2026-11-06'};
+      r.document.assignments=[];
+      const c=r.document.company;
+      c.closesAt='17:30:00';c.operatingDays=[3,4,5];
+      c.lunch={minimum:'01:00:00',maximum:'02:00:00',preferredAfter:'04:00:00'};
+      c.coverage=[3,4,5].flatMap(day=>fixture.document.company.coverage.map(rule=>({...rule,day,end})));
+      const response=await post('/solve',r);assert.equal(response.status,200);
+      const result=(await response.json()).data;
+      assert.equal(result.assignments.length,6);assert.equal(result.coverageScore,1);
+      assert.equal(result.gaps.length,0);
+      assert.ok(!result.conflicts.some(c=>c.severity==='error'));
+      for(const date of ['2026-11-04','2026-11-05','2026-11-06']) {
+        const shifts=result.assignments.filter(a=>a.start.slice(0,10)===date);
+        const excess=shifts.reduce((total,a)=>total+civilMillis(a.break.end)-civilMillis(a.break.start)-3600000,0);
+        assert.equal(excess,end==='16:30:00'?0:1800000);
+        for(const a of shifts)if(civilMillis(a.break.end)-civilMillis(a.break.start)>3600000)
+          assert.ok(a.tags.includes('interval-extended-for-coverage'));
+      }
+      assert.deepEqual(digest(result),digest(analyzeDocument({...r.document,assignments:result.assignments})));
+      for(const id of r.document.employees.map(e=>e.id)) {
+        const patterns=result.assignments.filter(a=>a.employeeId===id).map(a=>a.break.start.slice(11)+'/'+a.break.end.slice(11));
+        assert.equal(new Set(patterns).size,1);
+      }
+    }
+  });
+});
