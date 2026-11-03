@@ -1,5 +1,11 @@
 # Arquitetura atual
 
+Seguimento de 03/11/2026: RoleCoveragePolicy centraliza as autorizações diretas
+por pessoa e por função. O catálogo é passado explicitamente à avaliação e à
+geração; as listas opcionais de destinos são copiadas nos DTOs e congeladas no
+snapshot de planejamento. Contrato, interface e verificações na
+[decisão 022](decisions/022-role-coverage-grants.md).
+
 Estado em 26/10/2026: implementação das seis etapas verificada localmente. Revalidação dos fontes e CI remota para o código de d40f887 conferidas em 26/10/2026, conforme [evidências atuais](decisions/stage-6-current-validation.md). Aceite integral do plano permanece aberto para calibração de desempenho em carga representativa. O [relatório final](decisions/stage-6-final-review.md) distingue implementação, evidência e limitações; os relatórios anteriores são históricos.
 
 Seguimento em 26/10/2026: [fronteiras operacionais validadas](decisions/009-validated-operational-boundaries.md) reforça unidades/configuração na geração e a saída do agregado. Validação local atual: 612 testes .NET, 373 frontend em cada fuso e 16 HTTP. A CI verde de d40f887 é evidência do baseline; não cobre este diff local, cuja CI permanece pendente antes de integrar.

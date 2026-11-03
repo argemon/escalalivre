@@ -38,7 +38,7 @@ Na lateral **Configure sua escala**, preencha os quatro cadastros na ordem indic
 | Etapa | O que preencher |
 | --- | --- |
 | **1. Empresa** | Nome, dias e horários de funcionamento, jornada padrão, descanso e intervalos. |
-| **2. Funções** | Os cargos usados na operação, como Vendedor, Caixa ou Segurança. |
+| **2. Funções** | Os cargos usados na operação e quais outras funções cada um pode cobrir. |
 | **3. Cobertura** | Quantas pessoas são necessárias em cada função, dia e faixa de horário. |
 | **4. Equipe** | Pessoas, funções, mínimo contratado, máximo semanal com extras e eventuais disponibilidades ou restrições individuais. |
 
@@ -95,7 +95,7 @@ A execução possui limite de tempo e pode encontrar uma solução viável sem c
 | **Mínimo contratado e máximo semanal** | Separar a carga normal a cumprir do teto total com extras autorizadas, com distribuição diária uniforme, sexta reduzida ou personalizada. |
 | **Escala individual 5x2 e 6x1** | Escolher o modelo da pessoa e deixar o gerador definir dias, folgas e horários, ou restringir a dias fixos, independentemente de a empresa abrir sete dias. |
 | **Saída antecipada e horas faltantes** | Ajustar a saída de turnos salvos e conferir o saldo por dia e semana, sem reduzir automaticamente a carga contratada. |
-| **Substituições autorizadas** | Informar quais outras funções cada pessoa pode cobrir, sem contar a mesma pessoa duas vezes no mesmo horário. |
+| **Substituições autorizadas** | Definir várias funções cobertas por uma função, herdadas por toda a equipe daquele cargo, e acrescentar permissões individuais. |
 | **Cobertura em vários dias** | Aplicar a mesma necessidade a dias selecionados, a todos os dias ou aos dias de funcionamento. |
 | **Cobertura da equipe inteira** | Exigir uma quantidade mínima de pessoas presentes, independentemente da função. |
 | **Operação fora do expediente** | Autorizar necessidades específicas em outros horários ou dias, como segurança e limpeza. |
@@ -202,9 +202,13 @@ Sem intervalo fixo, o motor compara durações entre o mínimo e o máximo confi
 
 ### Uma pessoa pode ajudar em outra função — com autorização
 
-No cadastro, **Substituições autorizadas** define quais outras funções alguém pode cobrir. A autorização tem direção: permitir que um farmacêutico cubra atendimento não autoriza um atendente a cobrir a função de farmacêutico.
+Na etapa **Funções**, edite uma função e selecione uma ou mais opções em **Esta função também pode cobrir**. Exemplo: autorize **Farmacêutico → Atendente** uma vez para todos os farmacêuticos. Ou marque **Caixa** e **Vendedor** na função **Gerente**: um gerente trabalhando sozinho atende as três funções. Quem for cadastrado depois herda as mesmas permissões.
 
-Se o mesmo horário exige **um farmacêutico e um atendente**, uma única pessoa habilitada para ambos não resolve as duas necessidades ao mesmo tempo. O sistema distribui as pessoas entre as funções e mostra o que ainda falta. Uma exigência de **equipe inteira** mede o total de pessoas presentes; ela pode coexistir com mínimos por função.
+No cadastro da pessoa, **Substituições individuais** acrescenta permissões e informa as herdadas da função. As duas fontes são somadas; desmarcar uma opção individual não revoga a permissão da função. Alterar as autorizações da função atualiza todos os funcionários sem reescrever seus turnos salvos.
+
+A autorização tem direção e vale apenas para as funções selecionadas: Farmacêutico → Atendente não autoriza o contrário. Gerente → Caixa e Caixa → Vendedor não autoriza automaticamente Gerente → Vendedor; selecione Vendedor diretamente. Cada pessoa conta uma vez em cada função autorizada e uma vez na equipe. Durante a pausa, deixa de contar em todas elas.
+
+Se o mesmo horário exige **um farmacêutico e um atendente**, um farmacêutico autorizado e presente atende as duas funções. Se a exigência for de **dois atendentes**, uma pessoa sozinha continua insuficiente. Uma exigência de **equipe inteira** mede o total de pessoas presentes e pode coexistir com mínimos por função.
 
 ### Feriado fechado, segurança escalada
 
@@ -300,28 +304,27 @@ Uma pessoa cobre um bloco somente se trabalha durante **todo** ele e não está 
 
 Cada candidato `c` recebe uma variável binária `x[c]`: **1** seleciona o turno; **0** o descarta. O modelo limita cada pessoa a um turno por dia, impede combinações sem descanso suficiente e restringe trabalho semanal e ciclos em dias. O histórico nas duas bordas do período consome o teto semanal; turnos noturnos e pausas são repartidos na virada da semana. No ciclo em dias, turnos anteriores ao período também reduzem a capacidade disponível nas janelas que os alcançam.
 
-Para cada bloco `b` e função `r`, uma variável binária `y[c,b,r]` representa o uso daquele candidato na cobertura específica. Ela só existe para pessoas habilitadas e obedece a:
+Para cada bloco, a presença de uma pessoa é o OR dos seus turnos que cobrem todo o trecho. Turnos históricos sobrepostos continuam no documento, mas não multiplicam a contagem. Cada exigência soma as pessoas presentes habilitadas para a própria função ou por substituição explicitamente autorizada:
 
 ```text
-y[c,b,r] ≤ x[c]                 só alocar quem foi escalado
-Σ por função y[c,b,r] ≤ x[c]    uma pessoa cobre no máximo uma função por bloco
-Σ por candidato y[c,b,r] + falta[b,r] ≥ mínimo[b,r]
+presente[p,b] = OR dos candidatos selecionados da pessoa p que cobrem b
+Σ pessoas habilitadas presente[p,b] + falta[b,r] ≥ mínimo[b,r]
 ```
 
-A variável inteira `falta[b,r]` permite devolver cobertura parcial sem transformar toda falta de pessoal em um problema sem solução. Restrições obrigatórias continuam valendo. Para **equipe inteira**, a contagem usa diretamente os turnos presentes, independentemente da função.
-
-Na análise dos turnos existentes, tanto no frontend quanto no backend, a distribuição por função usa **emparelhamento bipartido com caminhos aumentantes**: de um lado estão as pessoas presentes; do outro, as vagas de cobertura. A busca tenta a função principal primeiro e pode realocar uma pessoa para abrir espaço a outra.
+A pessoa presente conta uma vez em cada função autorizada e conserva a cobertura da própria função. A autorização continua direcional. Para equipe inteira, conta uma única pessoa independentemente de quantas funções ela pode exercer. A pausa não fornece cobertura.
 
 ```text
-Necessidade: 1 vaga de farmacêutico + 1 vaga de atendente
-Ana: farmacêutica, autorizada a cobrir atendimento
-Bruno: atendente
+Necessidade: 1 STAFF + 1 Monitor
+Edson: STAFF, autorizado a cobrir Monitor
+Alex: Monitor, autorizado a cobrir STAFF
 
-Ana → farmacêutico    Bruno → atendente    duas vagas cobertas
-Somente Ana presente → uma vaga coberta, uma vaga faltando
+Alex almoçando → Edson atende STAFF e Monitor
+Edson almoçando → Alex atende STAFF e Monitor
+Ambos almoçando → as duas funções ficam descobertas
+Necessidade de 2 Monitores → uma pessoa sozinha continua insuficiente
 ```
 
-Esse remanejamento evita um erro de contagem simples: usar a pessoa mais versátil numa vaga que outra já poderia preencher e deixar descoberta a função que só ela pode atender. A distribuição é recalculada por bloco; o resultado mantém a função principal no turno e informa a cobertura obtida.
+A variável inteira de falta permite devolver cobertura parcial. O mesmo contrato vale na análise TypeScript, no domínio C# e no modelo do gerador. A função principal permanece no turno. [Decisão e regressões](docs/decisions/021-simultaneous-authorized-coverage.md).
 
 ### 4. Otimizar cobertura, carga e preferências
 
@@ -340,7 +343,8 @@ As fases compartilham o orçamento de busca. Uma fase sem prova de ótimo fixa o
 | Falta de uma pessoa por minuto de demanda | `−1.000.000.000` | Penalizar fortemente a cobertura insuficiente. |
 | Minuto com pelo menos uma pessoa elegível presente em um bloco de demanda | `+10.000` | Favorecer presença distribuída nos períodos necessários. |
 | Turno selecionado | `−1.000.000` | Evitar adicionar turnos com pouco benefício para a cobertura. |
-| Ajuste por turno | Entre `−1.000` e `+1.000` | Considerar preferências, proximidade da pausa ao horário preferido e bônus de fechamento. |
+| Ajuste por turno | Entre `−1.000` e `+1.000` | Considerar preferências e bônus de fechamento. |
+| Desvio do almoço em relação à entrada + pausa preferencial | `−2` por segundo de desvio | Favorecer almoço próximo do horário configurado, inclusive em turnos noturnos. |
 
 Nesse modo, os pesos pertencem a uma soma. Preferências não substituem restrições obrigatórias em nenhum dos modos. A duração dos blocos multiplica os termos de falta e presença, fazendo uma lacuna de 15 minutos pesar menos que uma lacuna igual de uma hora.
 

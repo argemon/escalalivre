@@ -31,23 +31,8 @@ public static class ScheduleCoverage
         var byEmployee = assignments.ToLookup(a => a.EmployeeId);
         foreach((DateTime Start, DateTime End, List<CoverageRequirement> Rules) block in CoverageDemand.Blocks(document.Company,start,end,assignments)) {
             var people=document.Employees.Where(e=>byEmployee[e.Id].Any(a=>CoverageDemand.Covers(a,block.Start,block.End))).ToList();
-            var slots=block.Rules.Where(r=>r.Scope!="team").SelectMany(r=>Enumerable.Repeat(r,r.MinimumEmployees)).ToList();
-            var owners=new Dictionary<Guid,int>();
-            bool Match(int slot,HashSet<Guid> visited) {
-                foreach(Employee? employee in people.OrderByDescending(e=>e.Role==slots[slot].Role)) {
-                    if(!ScheduleRules.CanCover(employee,slots[slot]) || !visited.Add(employee.Id))continue;
-                    if(!owners.TryGetValue(employee.Id,out int previous) || Match(previous,visited)){owners[employee.Id]=slot;return true;}
-                }
-                return false;
-            }
-            for(int i =0;i<slots.Count;i++) Match(i,[]);
-            var counts=owners.Values.GroupBy(i=>slots[i].Role).ToDictionary(g=>g.Key,g=>g.Count());
-            foreach(Employee? person in people.Where(e=>!owners.ContainsKey(e.Id))) {
-                CoverageRequirement? role =block.Rules.FirstOrDefault(r=>r.Scope!="team" && r.Role==person.Role) ?? block.Rules.FirstOrDefault(r=>r.Scope!="team" && ScheduleRules.CanCover(person,r));
-                if(role is not null)counts[role.Role]=counts.GetValueOrDefault(role.Role)+1;
-            }
             foreach(CoverageRequirement rule in block.Rules) {
-                int assigned =rule.Scope=="team" ? people.Count : counts.GetValueOrDefault(rule.Role);
+                int assigned =people.Count(e => ScheduleRules.CanCover(e, rule, document.Roles));
                 yield return new(block.Start,block.End,rule.Role,rule.MinimumEmployees,assigned,assigned>=rule.MinimumEmployees ? "healthy" : assigned==0 ? "uncovered" : "warning");
             }
         }

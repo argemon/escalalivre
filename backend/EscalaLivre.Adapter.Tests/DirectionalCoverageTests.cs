@@ -36,9 +36,9 @@ public class DirectionalCoverageTests {
         ScheduleResult authorized =AdapterComposition.Generate().Execute(Request(true,true));Assert.Contains(authorized.Gaps,g=>g.Role=="Farmacêutico" && g.Start.Hour==11);
   Assert.DoesNotContain(authorized.Gaps,g=>g.Role=="Atendente");
  }
- [Fact] public void OnePersonCannotCoverTwoRequiredRolesSimultaneously() {
+ [Fact] public void AuthorizedPersonRetainsOwnCoverageWhileCoveringAnotherRole() {
         ScheduleRequest r =Request(true,true);r=r with {Document=r.Document with {Employees=[r.Document.Employees[0] with {FixedInterval=new(new(13,0),new(14,0))}]}};
-        ScheduleResult result =AdapterComposition.Generate().Execute(r);Assert.NotEmpty(result.Gaps);Assert.All(result.Coverage.GroupBy(c=>c.Start),g=>Assert.True(g.Sum(b=>b.Assigned)<=1));
+        ScheduleResult result =AdapterComposition.Generate().Execute(r);Assert.Empty(result.Gaps);Assert.All(result.Coverage,b=>Assert.Equal(1,b.Assigned));
  }
  [Fact] public void TeamCoverageLetsDifferentRolesAlternateWithoutSubstitution() {
         ScheduleRequest r =Request(false);r=r with {Document=r.Document with {Company=r.Document.Company with {Coverage=[new("Equipe",DayOfWeek.Wednesday,new(11,0),new(13,0),1,Scope:"team")]}}};

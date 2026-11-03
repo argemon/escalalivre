@@ -5,18 +5,15 @@ namespace EscalaLivre.Domain.Scheduling;
 public static class ScheduleRules
 {
     public static DateTime EndOn(DateTime day,TimeOnly start,TimeOnly end)=>day.Date+end.ToTimeSpan()+(end<=start?TimeSpan.FromDays(1):TimeSpan.Zero);
-    // Explicit IDs, including an empty list, override stale legacy transport names.
-    public static bool CanCover(Employee e,CoverageRequirement r)
-        => r.Scope=="team" || e.Role==r.Role || (e.CoverageRoleIds is { } ids
-            ? r.RoleId is { } id && ids.Contains(id)
-            : e.CoverageRoles?.Contains(r.Role) ?? false);
-    public static IEnumerable<ScheduleIssue> ShiftDiagnostics(CompanyRules company,Employee e,ShiftAssignment a)
+    public static bool CanCover(Employee e,CoverageRequirement r,IReadOnlyList<DocumentRole>? roles = null)
+        => RoleCoveragePolicy.CanCover(e,r,roles);
+    public static IEnumerable<ScheduleIssue> ShiftDiagnostics(CompanyRules company,Employee e,ShiftAssignment a,IReadOnlyList<DocumentRole>? roles = null)
     {
         ScheduleIssue Issue(string code,string message,string severity="error")=>new(severity,code,message,a.Start,a.End,a.Role,e.Id);
         var rule=EffectiveWorkPolicy.RuleFor(company,e);var work=EffectiveWorkPolicy.Measure(a);
         if(a.End<=a.Start||a.Role!=e.Role)yield return Issue("invalidShift","Turno inválido ou função divergente.");
         if(!AvailabilityPolicy.Allows(e,a.Start,a.End))yield return Issue("availability","Turno fora da disponibilidade ou em horário bloqueado.");
-        bool exception=ShiftEligibilityPolicy.HasOperatingException(company,e,a);
+        bool exception=ShiftEligibilityPolicy.HasOperatingException(company,e,a,roles);
         if(!ShiftEligibilityPolicy.IsWorkingDay(company,e,a.Start,exception))yield return Issue("workingDay","Turno fora dos dias de trabalho.");
         if(ShiftEligibilityPolicy.OutsideHours(company,a))yield return Issue("outsideHours",exception?"Fora do expediente com autorização específica.":"Fora do expediente sem autorização específica.",exception?"info":"error");
         if(LaborRules.ClosedHoliday(company,a.Start)&&!LaborRules.AuthorizedHolidayShift(company,a))yield return Issue("holiday","Turno em feriado configurado como fechado.");
@@ -46,7 +43,7 @@ public static class ScheduleRules
         {
             var e=document.Employees.FirstOrDefault(e=>e.Id==a.EmployeeId);
             if(e is null){yield return new("error","unknownEmployee","Turno referencia pessoa inexistente.",a.Start,a.End,a.Role,a.EmployeeId);continue;}
-            foreach(var issue in ShiftDiagnostics(document.Company,e,a))yield return issue;
+            foreach(var issue in ShiftDiagnostics(document.Company,e,a,document.Roles))yield return issue;
         }
         foreach(var e in document.Employees)
         {

@@ -27,7 +27,7 @@ public sealed class ScheduleCandidateGenerator
                 var regime = settings.RegimeFor(employee.Id);
                 var windows = new List<(DateTime Start, DateTime End)>();
                 if (company.OperatingDays.Contains(day.DayOfWeek)) windows.Add((day.Add(company.OpensAt.ToTimeSpan()), ScheduleRules.EndOn(day, company.OpensAt, company.ClosesAt)));
-                windows.AddRange(company.Coverage.Where(c => c.AllowsOutsideHours && CanCover(employee,c) && c.Day == day.DayOfWeek).Select(c => (day.Add(c.Start.ToTimeSpan()), ScheduleRules.EndOn(day,c.Start,c.End))));
+                windows.AddRange(company.Coverage.Where(c => c.AllowsOutsideHours && ScheduleRules.CanCover(employee,c,request.Document.Roles) && c.Day == day.DayOfWeek).Select(c => (day.Add(c.Start.ToTimeSpan()), ScheduleRules.EndOn(day,c.Start,c.End))));
                 var usableWindows = WeeklyWorkPlanPolicy.For(company,employee) is null ? windows : windows.SelectMany(w=>AvailabilityPolicy.GenerationWindows(employee,w.Start,w.End)).ToList();
                 foreach ((DateTime Start, DateTime End) window in usableWindows.Distinct()) {
                     DateTime opening = window.Start;
@@ -65,8 +65,8 @@ public sealed class ScheduleCandidateGenerator
                     if (employee.WorksDuringLunchClosure && closure is not null && breakWindow is not null && breakWindow.Start < closure.End && breakWindow.End > closure.Start) continue;
                     var candidate = new ShiftAssignment(Guid.NewGuid(),employee.Id,employee.Role,start,end,breakWindow,"solver",[]);
                     if (!IntervalTimingPolicy.HasWorkAroundPause(candidate)) continue;
-                    if(ScheduleRules.ShiftDiagnostics(company,employee,candidate).Any(c=>c.Severity=="error") || EffectiveWorkPolicy.Measure(candidate) > ContractWorkPolicy.DailyLimit(company,employee,day)) continue;
-                    if (WeeklyWorkPlanPolicy.For(company,employee) is not null && !CoverageDemand.HasRelevantDemand(company,employee,candidate)) continue;
+                    if(ScheduleRules.ShiftDiagnostics(company,employee,candidate,request.Document.Roles).Any(c=>c.Severity=="error") || EffectiveWorkPolicy.Measure(candidate) > ContractWorkPolicy.DailyLimit(company,employee,day)) continue;
+                    if (WeeklyWorkPlanPolicy.For(company,employee) is not null && !CoverageDemand.HasRelevantDemand(company,employee,candidate,request.Document.Roles)) continue;
                     var tags = new List<string> { "net-work-duration" };
                     if (WeeklyWorkPlanPolicy.For(company,employee) is null ? start == opening : windows.Any(w=>w.Start==start)) tags.Add("opening");
                     if (WeeklyWorkPlanPolicy.For(company,employee) is null ? end == closing : windows.Any(w=>w.End==end)) tags.Add("closing");
@@ -95,8 +95,6 @@ public sealed class ScheduleCandidateGenerator
     private static bool IsNight(DateTime start, DateTime end)
         => ShiftEligibilityPolicy.IsNight(start, end);
 
-    private static bool CanCover(Employee employee,CoverageRequirement rule)
-        => ScheduleRules.CanCover(employee,rule);
 
     private static bool IsAvailable(Employee employee, DateTime start, DateTime end) => AvailabilityPolicy.Allows(employee,start,end);
 

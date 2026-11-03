@@ -1,0 +1,744 @@
+{
+  "scenarios": [
+    {
+      "id": "edson-alex-staggered",
+      "request": {
+        "start": "2026-11-04T00:00:00",
+        "end": "2026-11-04T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-11-04",
+            "end": "2026-11-04"
+          },
+          "company": {
+            "name": "Argemon Games",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "16:30:00",
+            "operatingDays": [
+              3
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "01:00:00",
+              "maximum": "01:00:00",
+              "preferredAfter": "03:30:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "STAFF",
+                "roleId": "11000000-0000-4000-8000-000000000010",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "16:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Monitor",
+                "roleId": "11000000-0000-4000-8000-000000000011",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "16:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "11000000-0000-4000-8000-000000000001",
+              "name": "Edson",
+              "role": "STAFF",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "11000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [
+                "11000000-0000-4000-8000-000000000011"
+              ],
+              "coverageRoles": [
+                "Monitor"
+              ],
+              "shiftStartsAt": "07:30:00"
+            },
+            {
+              "id": "11000000-0000-4000-8000-000000000002",
+              "name": "Alex",
+              "role": "Monitor",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "11000000-0000-4000-8000-000000000011",
+              "coverageRoleIds": [
+                "11000000-0000-4000-8000-000000000010"
+              ],
+              "coverageRoles": [
+                "STAFF"
+              ],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "11000000-0000-4000-8000-000000000020",
+              "employeeId": "11000000-0000-4000-8000-000000000001",
+              "role": "STAFF",
+              "roleId": "11000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T16:30:00",
+              "break": {
+                "start": "2026-11-04T11:00:00",
+                "end": "2026-11-04T12:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "11000000-0000-4000-8000-000000000021",
+              "employeeId": "11000000-0000-4000-8000-000000000002",
+              "role": "Monitor",
+              "roleId": "11000000-0000-4000-8000-000000000011",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T16:30:00",
+              "break": {
+                "start": "2026-11-04T12:00:00",
+                "end": "2026-11-04T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "roles": [
+            {
+              "id": "11000000-0000-4000-8000-000000000010",
+              "name": "STAFF"
+            },
+            {
+              "id": "11000000-0000-4000-8000-000000000011",
+              "name": "Monitor"
+            }
+          ]
+        }
+      },
+      "expectedScore": 1,
+      "expectedGaps": 0
+    },
+    {
+      "id": "single-authorized-person",
+      "request": {
+        "start": "2026-11-04T00:00:00",
+        "end": "2026-11-04T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-11-04",
+            "end": "2026-11-04"
+          },
+          "company": {
+            "name": "Argemon Games",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "16:30:00",
+            "operatingDays": [
+              3
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "01:00:00",
+              "maximum": "01:00:00",
+              "preferredAfter": "03:30:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "STAFF",
+                "roleId": "11000000-0000-4000-8000-000000000010",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:00:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Monitor",
+                "roleId": "11000000-0000-4000-8000-000000000011",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:00:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "11000000-0000-4000-8000-000000000001",
+              "name": "Edson",
+              "role": "STAFF",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "11000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [
+                "11000000-0000-4000-8000-000000000011"
+              ],
+              "coverageRoles": [
+                "Monitor"
+              ],
+              "shiftStartsAt": "07:30:00"
+            },
+            {
+              "id": "11000000-0000-4000-8000-000000000002",
+              "name": "Alex",
+              "role": "Monitor",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "11000000-0000-4000-8000-000000000011",
+              "coverageRoleIds": [
+                "11000000-0000-4000-8000-000000000010"
+              ],
+              "coverageRoles": [
+                "STAFF"
+              ],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "11000000-0000-4000-8000-000000000020",
+              "employeeId": "11000000-0000-4000-8000-000000000001",
+              "role": "STAFF",
+              "roleId": "11000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T11:00:00",
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "roles": [
+            {
+              "id": "11000000-0000-4000-8000-000000000010",
+              "name": "STAFF"
+            },
+            {
+              "id": "11000000-0000-4000-8000-000000000011",
+              "name": "Monitor"
+            }
+          ]
+        }
+      },
+      "expectedScore": 1,
+      "expectedGaps": 0,
+      "expectedAssigned": {
+        "STAFF": 1,
+        "Monitor": 1
+      }
+    },
+    {
+      "id": "revoked-ids-stay-revoked",
+      "request": {
+        "start": "2026-11-04T00:00:00",
+        "end": "2026-11-04T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-11-04",
+            "end": "2026-11-04"
+          },
+          "company": {
+            "name": "Argemon Games",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "16:30:00",
+            "operatingDays": [
+              3
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "01:00:00",
+              "maximum": "01:00:00",
+              "preferredAfter": "03:30:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "STAFF",
+                "roleId": "11000000-0000-4000-8000-000000000010",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "16:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Monitor",
+                "roleId": "11000000-0000-4000-8000-000000000011",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "16:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "11000000-0000-4000-8000-000000000001",
+              "name": "Edson",
+              "role": "STAFF",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "11000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [
+                "Monitor"
+              ],
+              "shiftStartsAt": "07:30:00"
+            },
+            {
+              "id": "11000000-0000-4000-8000-000000000002",
+              "name": "Alex",
+              "role": "Monitor",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "11000000-0000-4000-8000-000000000011",
+              "coverageRoleIds": [],
+              "coverageRoles": [
+                "STAFF"
+              ],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "11000000-0000-4000-8000-000000000020",
+              "employeeId": "11000000-0000-4000-8000-000000000001",
+              "role": "STAFF",
+              "roleId": "11000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T16:30:00",
+              "break": {
+                "start": "2026-11-04T11:00:00",
+                "end": "2026-11-04T12:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "11000000-0000-4000-8000-000000000021",
+              "employeeId": "11000000-0000-4000-8000-000000000002",
+              "role": "Monitor",
+              "roleId": "11000000-0000-4000-8000-000000000011",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T16:30:00",
+              "break": {
+                "start": "2026-11-04T12:00:00",
+                "end": "2026-11-04T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "roles": [
+            {
+              "id": "11000000-0000-4000-8000-000000000010",
+              "name": "STAFF"
+            },
+            {
+              "id": "11000000-0000-4000-8000-000000000011",
+              "name": "Monitor"
+            }
+          ]
+        }
+      },
+      "expectedScore": 0.889,
+      "expectedGaps": 2
+    },
+    {
+      "id": "both-on-break",
+      "request": {
+        "start": "2026-11-04T00:00:00",
+        "end": "2026-11-04T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-11-04",
+            "end": "2026-11-04"
+          },
+          "company": {
+            "name": "Argemon Games",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "16:30:00",
+            "operatingDays": [
+              3
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "01:00:00",
+              "maximum": "01:00:00",
+              "preferredAfter": "03:30:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "STAFF",
+                "roleId": "11000000-0000-4000-8000-000000000010",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "16:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Monitor",
+                "roleId": "11000000-0000-4000-8000-000000000011",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "16:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "11000000-0000-4000-8000-000000000001",
+              "name": "Edson",
+              "role": "STAFF",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "11000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [
+                "11000000-0000-4000-8000-000000000011"
+              ],
+              "coverageRoles": [
+                "Monitor"
+              ],
+              "shiftStartsAt": "07:30:00"
+            },
+            {
+              "id": "11000000-0000-4000-8000-000000000002",
+              "name": "Alex",
+              "role": "Monitor",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "11000000-0000-4000-8000-000000000011",
+              "coverageRoleIds": [
+                "11000000-0000-4000-8000-000000000010"
+              ],
+              "coverageRoles": [
+                "STAFF"
+              ],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "11000000-0000-4000-8000-000000000020",
+              "employeeId": "11000000-0000-4000-8000-000000000001",
+              "role": "STAFF",
+              "roleId": "11000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T16:30:00",
+              "break": {
+                "start": "2026-11-04T11:00:00",
+                "end": "2026-11-04T12:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "11000000-0000-4000-8000-000000000021",
+              "employeeId": "11000000-0000-4000-8000-000000000002",
+              "role": "Monitor",
+              "roleId": "11000000-0000-4000-8000-000000000011",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T16:30:00",
+              "break": {
+                "start": "2026-11-04T11:00:00",
+                "end": "2026-11-04T12:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "roles": [
+            {
+              "id": "11000000-0000-4000-8000-000000000010",
+              "name": "STAFF"
+            },
+            {
+              "id": "11000000-0000-4000-8000-000000000011",
+              "name": "Monitor"
+            }
+          ]
+        }
+      },
+      "expectedScore": 0.889,
+      "expectedGaps": 2
+    },
+    {
+      "id": "team-minimum-counts-distinct-people",
+      "request": {
+        "start": "2026-11-04T00:00:00",
+        "end": "2026-11-04T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-11-04",
+            "end": "2026-11-04"
+          },
+          "company": {
+            "name": "Argemon Games",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "16:30:00",
+            "operatingDays": [
+              3
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "08:00:00"
+            },
+            "lunch": {
+              "minimum": "01:00:00",
+              "maximum": "01:00:00",
+              "preferredAfter": "03:30:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Equipe",
+                "roleId": "11000000-0000-4000-8000-000000000010",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "16:30:00",
+                "minimumEmployees": 2,
+                "scope": "team"
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "11000000-0000-4000-8000-000000000001",
+              "name": "Edson",
+              "role": "STAFF",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "11000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [
+                "11000000-0000-4000-8000-000000000011"
+              ],
+              "coverageRoles": [
+                "Monitor"
+              ],
+              "shiftStartsAt": "07:30:00"
+            },
+            {
+              "id": "11000000-0000-4000-8000-000000000002",
+              "name": "Alex",
+              "role": "Monitor",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "08:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "11000000-0000-4000-8000-000000000011",
+              "coverageRoleIds": [
+                "11000000-0000-4000-8000-000000000010"
+              ],
+              "coverageRoles": [
+                "STAFF"
+              ],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "11000000-0000-4000-8000-000000000020",
+              "employeeId": "11000000-0000-4000-8000-000000000001",
+              "role": "STAFF",
+              "roleId": "11000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T16:30:00",
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "11000000-0000-4000-8000-000000000030",
+              "employeeId": "11000000-0000-4000-8000-000000000001",
+              "role": "STAFF",
+              "roleId": "11000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T16:30:00",
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "roles": [
+            {
+              "id": "11000000-0000-4000-8000-000000000010",
+              "name": "STAFF"
+            },
+            {
+              "id": "11000000-0000-4000-8000-000000000011",
+              "name": "Monitor"
+            }
+          ]
+        }
+      },
+      "expectedScore": 0.5,
+      "expectedGaps": 1,
+      "expectedAssigned": {
+        "Equipe": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,1771 @@
+{
+  "scenarios": [
+    {
+      "id": "manager-covers-cashier-and-seller-alone",
+      "request": {
+        "start": "2026-11-04T00:00:00",
+        "end": "2026-11-04T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-11-04",
+            "end": "2026-11-04"
+          },
+          "company": {
+            "name": "Argemon Games",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "11:30:00",
+            "operatingDays": [
+              3
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "04:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "03:30:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Gerente",
+                "roleId": "22000000-0000-4000-8000-000000000010",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Caixa",
+                "roleId": "22000000-0000-4000-8000-000000000011",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Vendedor",
+                "roleId": "22000000-0000-4000-8000-000000000012",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "22000000-0000-4000-8000-000000000001",
+              "name": "Gerente 1",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000002",
+              "name": "Gerente 2",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "22000000-0000-4000-8000-000000000020",
+              "employeeId": "22000000-0000-4000-8000-000000000001",
+              "role": "Gerente",
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T11:30:00",
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "roles": [
+            {
+              "id": "22000000-0000-4000-8000-000000000010",
+              "name": "Gerente",
+              "coverageRoleIds": [
+                "22000000-0000-4000-8000-000000000011",
+                "22000000-0000-4000-8000-000000000012"
+              ]
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000011",
+              "name": "Caixa"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000012",
+              "name": "Vendedor"
+            }
+          ]
+        }
+      },
+      "expectedScore": 1,
+      "expectedCounts": {
+        "Gerente": 1,
+        "Caixa": 1,
+        "Vendedor": 1
+      },
+      "apiValid": true
+    },
+    {
+      "id": "role-grant-absent-keeps-legacy-personal-semantics",
+      "request": {
+        "start": "2026-11-04T00:00:00",
+        "end": "2026-11-04T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-11-04",
+            "end": "2026-11-04"
+          },
+          "company": {
+            "name": "Argemon Games",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "11:30:00",
+            "operatingDays": [
+              3
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "04:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "03:30:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Gerente",
+                "roleId": "22000000-0000-4000-8000-000000000010",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Caixa",
+                "roleId": "22000000-0000-4000-8000-000000000011",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Vendedor",
+                "roleId": "22000000-0000-4000-8000-000000000012",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "22000000-0000-4000-8000-000000000001",
+              "name": "Gerente 1",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000002",
+              "name": "Gerente 2",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "22000000-0000-4000-8000-000000000020",
+              "employeeId": "22000000-0000-4000-8000-000000000001",
+              "role": "Gerente",
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T11:30:00",
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "roles": [
+            {
+              "id": "22000000-0000-4000-8000-000000000010",
+              "name": "Gerente"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000011",
+              "name": "Caixa"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000012",
+              "name": "Vendedor"
+            }
+          ]
+        }
+      },
+      "expectedScore": 0.333,
+      "expectedCounts": {
+        "Gerente": 1,
+        "Caixa": 0,
+        "Vendedor": 0
+      },
+      "apiValid": true
+    },
+    {
+      "id": "revoking-one-role-grant-updates-all-managers",
+      "request": {
+        "start": "2026-11-04T00:00:00",
+        "end": "2026-11-04T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-11-04",
+            "end": "2026-11-04"
+          },
+          "company": {
+            "name": "Argemon Games",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "11:30:00",
+            "operatingDays": [
+              3
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "04:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "03:30:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Gerente",
+                "roleId": "22000000-0000-4000-8000-000000000010",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Caixa",
+                "roleId": "22000000-0000-4000-8000-000000000011",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Vendedor",
+                "roleId": "22000000-0000-4000-8000-000000000012",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "22000000-0000-4000-8000-000000000001",
+              "name": "Gerente 1",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000002",
+              "name": "Gerente 2",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "22000000-0000-4000-8000-000000000020",
+              "employeeId": "22000000-0000-4000-8000-000000000001",
+              "role": "Gerente",
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T11:30:00",
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "roles": [
+            {
+              "id": "22000000-0000-4000-8000-000000000010",
+              "name": "Gerente",
+              "coverageRoleIds": [
+                "22000000-0000-4000-8000-000000000011"
+              ]
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000011",
+              "name": "Caixa"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000012",
+              "name": "Vendedor"
+            }
+          ]
+        }
+      },
+      "expectedScore": 0.667,
+      "expectedCounts": {
+        "Gerente": 1,
+        "Caixa": 1,
+        "Vendedor": 0
+      },
+      "apiValid": true
+    },
+    {
+      "id": "role-grants-do-not-reverse",
+      "request": {
+        "start": "2026-11-04T00:00:00",
+        "end": "2026-11-04T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-11-04",
+            "end": "2026-11-04"
+          },
+          "company": {
+            "name": "Argemon Games",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "11:30:00",
+            "operatingDays": [
+              3
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "04:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "03:30:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Gerente",
+                "roleId": "22000000-0000-4000-8000-000000000010",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Caixa",
+                "roleId": "22000000-0000-4000-8000-000000000011",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Vendedor",
+                "roleId": "22000000-0000-4000-8000-000000000012",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "22000000-0000-4000-8000-000000000001",
+              "name": "Gerente 1",
+              "role": "Caixa",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000011",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000002",
+              "name": "Gerente 2",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "22000000-0000-4000-8000-000000000020",
+              "employeeId": "22000000-0000-4000-8000-000000000001",
+              "role": "Caixa",
+              "roleId": "22000000-0000-4000-8000-000000000011",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T11:30:00",
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "roles": [
+            {
+              "id": "22000000-0000-4000-8000-000000000010",
+              "name": "Gerente",
+              "coverageRoleIds": [
+                "22000000-0000-4000-8000-000000000011",
+                "22000000-0000-4000-8000-000000000012"
+              ]
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000011",
+              "name": "Caixa"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000012",
+              "name": "Vendedor"
+            }
+          ]
+        }
+      },
+      "expectedScore": 0.333,
+      "expectedCounts": {
+        "Gerente": 0,
+        "Caixa": 1,
+        "Vendedor": 0
+      },
+      "apiValid": true
+    },
+    {
+      "id": "role-grants-do-not-chain",
+      "request": {
+        "start": "2026-11-04T00:00:00",
+        "end": "2026-11-04T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-11-04",
+            "end": "2026-11-04"
+          },
+          "company": {
+            "name": "Argemon Games",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "11:30:00",
+            "operatingDays": [
+              3
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "04:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "03:30:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Gerente",
+                "roleId": "22000000-0000-4000-8000-000000000010",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Caixa",
+                "roleId": "22000000-0000-4000-8000-000000000011",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Vendedor",
+                "roleId": "22000000-0000-4000-8000-000000000012",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "22000000-0000-4000-8000-000000000001",
+              "name": "Gerente 1",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000002",
+              "name": "Gerente 2",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "22000000-0000-4000-8000-000000000020",
+              "employeeId": "22000000-0000-4000-8000-000000000001",
+              "role": "Gerente",
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T11:30:00",
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "roles": [
+            {
+              "id": "22000000-0000-4000-8000-000000000010",
+              "name": "Gerente",
+              "coverageRoleIds": [
+                "22000000-0000-4000-8000-000000000011"
+              ]
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000011",
+              "name": "Caixa",
+              "coverageRoleIds": [
+                "22000000-0000-4000-8000-000000000012"
+              ]
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000012",
+              "name": "Vendedor"
+            }
+          ]
+        }
+      },
+      "expectedScore": 0.667,
+      "expectedCounts": {
+        "Gerente": 1,
+        "Caixa": 1,
+        "Vendedor": 0
+      },
+      "apiValid": true
+    },
+    {
+      "id": "personal-and-role-grants-are-additive",
+      "request": {
+        "start": "2026-11-04T00:00:00",
+        "end": "2026-11-04T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-11-04",
+            "end": "2026-11-04"
+          },
+          "company": {
+            "name": "Argemon Games",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "11:30:00",
+            "operatingDays": [
+              3
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "04:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "03:30:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Gerente",
+                "roleId": "22000000-0000-4000-8000-000000000010",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Caixa",
+                "roleId": "22000000-0000-4000-8000-000000000011",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Vendedor",
+                "roleId": "22000000-0000-4000-8000-000000000012",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "22000000-0000-4000-8000-000000000001",
+              "name": "Gerente 1",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [
+                "22000000-0000-4000-8000-000000000012"
+              ],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000002",
+              "name": "Gerente 2",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "22000000-0000-4000-8000-000000000020",
+              "employeeId": "22000000-0000-4000-8000-000000000001",
+              "role": "Gerente",
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T11:30:00",
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "roles": [
+            {
+              "id": "22000000-0000-4000-8000-000000000010",
+              "name": "Gerente",
+              "coverageRoleIds": [
+                "22000000-0000-4000-8000-000000000011"
+              ]
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000011",
+              "name": "Caixa"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000012",
+              "name": "Vendedor"
+            }
+          ]
+        }
+      },
+      "expectedScore": 1,
+      "expectedCounts": {
+        "Gerente": 1,
+        "Caixa": 1,
+        "Vendedor": 1
+      },
+      "apiValid": true
+    },
+    {
+      "id": "multiple-managers-inherit-without-personal-grants",
+      "request": {
+        "start": "2026-11-04T00:00:00",
+        "end": "2026-11-04T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-11-04",
+            "end": "2026-11-04"
+          },
+          "company": {
+            "name": "Argemon Games",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "11:30:00",
+            "operatingDays": [
+              3
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "04:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "03:30:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Gerente",
+                "roleId": "22000000-0000-4000-8000-000000000010",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Caixa",
+                "roleId": "22000000-0000-4000-8000-000000000011",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Vendedor",
+                "roleId": "22000000-0000-4000-8000-000000000012",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "22000000-0000-4000-8000-000000000001",
+              "name": "Gerente 1",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000002",
+              "name": "Gerente 2",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "22000000-0000-4000-8000-000000000020",
+              "employeeId": "22000000-0000-4000-8000-000000000001",
+              "role": "Gerente",
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T11:30:00",
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000021",
+              "employeeId": "22000000-0000-4000-8000-000000000002",
+              "role": "Gerente",
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T11:30:00",
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "roles": [
+            {
+              "id": "22000000-0000-4000-8000-000000000010",
+              "name": "Gerente",
+              "coverageRoleIds": [
+                "22000000-0000-4000-8000-000000000011",
+                "22000000-0000-4000-8000-000000000012"
+              ]
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000011",
+              "name": "Caixa"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000012",
+              "name": "Vendedor"
+            }
+          ]
+        }
+      },
+      "expectedScore": 1,
+      "expectedCounts": {
+        "Gerente": 2,
+        "Caixa": 2,
+        "Vendedor": 2
+      },
+      "apiValid": true
+    },
+    {
+      "id": "inherited-coverage-does-not-multiply-people-in-team",
+      "request": {
+        "start": "2026-11-04T00:00:00",
+        "end": "2026-11-04T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-11-04",
+            "end": "2026-11-04"
+          },
+          "company": {
+            "name": "Argemon Games",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "11:30:00",
+            "operatingDays": [
+              3
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "04:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "03:30:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Equipe",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 2,
+                "scope": "team"
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "22000000-0000-4000-8000-000000000001",
+              "name": "Gerente 1",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000002",
+              "name": "Gerente 2",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "22000000-0000-4000-8000-000000000020",
+              "employeeId": "22000000-0000-4000-8000-000000000001",
+              "role": "Gerente",
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T11:30:00",
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "roles": [
+            {
+              "id": "22000000-0000-4000-8000-000000000010",
+              "name": "Gerente",
+              "coverageRoleIds": [
+                "22000000-0000-4000-8000-000000000011",
+                "22000000-0000-4000-8000-000000000012"
+              ]
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000011",
+              "name": "Caixa"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000012",
+              "name": "Vendedor"
+            }
+          ]
+        }
+      },
+      "expectedScore": 0.5,
+      "expectedCounts": {
+        "Equipe": 1
+      },
+      "apiValid": true
+    },
+    {
+      "id": "inherited-coverage-stops-during-break",
+      "request": {
+        "start": "2026-11-04T00:00:00",
+        "end": "2026-11-04T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-11-04",
+            "end": "2026-11-04"
+          },
+          "company": {
+            "name": "Argemon Games",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "11:30:00",
+            "operatingDays": [
+              3
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "04:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "03:30:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Gerente",
+                "roleId": "22000000-0000-4000-8000-000000000010",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Caixa",
+                "roleId": "22000000-0000-4000-8000-000000000011",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Vendedor",
+                "roleId": "22000000-0000-4000-8000-000000000012",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "22000000-0000-4000-8000-000000000001",
+              "name": "Gerente 1",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000002",
+              "name": "Gerente 2",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "22000000-0000-4000-8000-000000000020",
+              "employeeId": "22000000-0000-4000-8000-000000000001",
+              "role": "Gerente",
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T11:30:00",
+              "source": "manual",
+              "tags": [],
+              "break": {
+                "start": "2026-11-04T09:00:00",
+                "end": "2026-11-04T10:00:00"
+              }
+            }
+          ],
+          "roles": [
+            {
+              "id": "22000000-0000-4000-8000-000000000010",
+              "name": "Gerente",
+              "coverageRoleIds": [
+                "22000000-0000-4000-8000-000000000011",
+                "22000000-0000-4000-8000-000000000012"
+              ]
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000011",
+              "name": "Caixa"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000012",
+              "name": "Vendedor"
+            }
+          ]
+        }
+      },
+      "expectedScore": 0.75,
+      "apiValid": true
+    },
+    {
+      "id": "role-reference-survives-target-rename",
+      "request": {
+        "start": "2026-11-04T00:00:00",
+        "end": "2026-11-04T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-11-04",
+            "end": "2026-11-04"
+          },
+          "company": {
+            "name": "Argemon Games",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "11:30:00",
+            "operatingDays": [
+              3
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "04:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "03:30:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Gerente",
+                "roleId": "22000000-0000-4000-8000-000000000010",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Operador de caixa",
+                "roleId": "22000000-0000-4000-8000-000000000011",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Vendedor",
+                "roleId": "22000000-0000-4000-8000-000000000012",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "22000000-0000-4000-8000-000000000001",
+              "name": "Gerente 1",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000002",
+              "name": "Gerente 2",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "22000000-0000-4000-8000-000000000020",
+              "employeeId": "22000000-0000-4000-8000-000000000001",
+              "role": "Gerente",
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T11:30:00",
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "roles": [
+            {
+              "id": "22000000-0000-4000-8000-000000000010",
+              "name": "Gerente",
+              "coverageRoleIds": [
+                "22000000-0000-4000-8000-000000000011",
+                "22000000-0000-4000-8000-000000000012"
+              ]
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000011",
+              "name": "Operador de caixa"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000012",
+              "name": "Vendedor"
+            }
+          ]
+        }
+      },
+      "expectedScore": 1,
+      "expectedCounts": {
+        "Gerente": 1,
+        "Operador de caixa": 1,
+        "Vendedor": 1
+      },
+      "apiValid": true
+    },
+    {
+      "id": "legacy-own-role-name-inherits-when-id-absent",
+      "request": {
+        "start": "2026-11-04T00:00:00",
+        "end": "2026-11-04T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-11-04",
+            "end": "2026-11-04"
+          },
+          "company": {
+            "name": "Argemon Games",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "11:30:00",
+            "operatingDays": [
+              3
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "04:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "03:30:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Gerente",
+                "roleId": "22000000-0000-4000-8000-000000000010",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Caixa",
+                "roleId": "22000000-0000-4000-8000-000000000011",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Vendedor",
+                "roleId": "22000000-0000-4000-8000-000000000012",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "22000000-0000-4000-8000-000000000001",
+              "name": "Gerente 1",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000002",
+              "name": "Gerente 2",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "22000000-0000-4000-8000-000000000020",
+              "employeeId": "22000000-0000-4000-8000-000000000001",
+              "role": "Gerente",
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T11:30:00",
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "roles": [
+            {
+              "id": "22000000-0000-4000-8000-000000000010",
+              "name": "Gerente",
+              "coverageRoleIds": [
+                "22000000-0000-4000-8000-000000000011",
+                "22000000-0000-4000-8000-000000000012"
+              ]
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000011",
+              "name": "Caixa"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000012",
+              "name": "Vendedor"
+            }
+          ]
+        }
+      },
+      "expectedScore": 1,
+      "expectedCounts": {
+        "Gerente": 1,
+        "Caixa": 1,
+        "Vendedor": 1
+      },
+      "apiValid": true
+    },
+    {
+      "id": "role-authorizes-outside-hours-demand",
+      "request": {
+        "start": "2026-11-04T00:00:00",
+        "end": "2026-11-04T23:59:59",
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "00000000-0000-4000-8000-000000000101",
+          "updatedAt": "2026-10-21T13:00:00.000Z",
+          "planningPeriod": {
+            "start": "2026-11-04",
+            "end": "2026-11-04"
+          },
+          "company": {
+            "name": "Argemon Games",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "11:30:00",
+            "operatingDays": [],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 44,
+              "defaultShiftDuration": "04:00:00"
+            },
+            "lunch": {
+              "minimum": "00:00:00",
+              "maximum": "02:00:00",
+              "preferredAfter": "03:30:00"
+            },
+            "minimumRest": "11:00:00",
+            "coverage": [
+              {
+                "role": "Caixa",
+                "roleId": "22000000-0000-4000-8000-000000000011",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1,
+                "allowsOutsideHours": true
+              },
+              {
+                "role": "Vendedor",
+                "roleId": "22000000-0000-4000-8000-000000000012",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "11:30:00",
+                "minimumEmployees": 1,
+                "allowsOutsideHours": true
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "22000000-0000-4000-8000-000000000001",
+              "name": "Gerente 1",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000002",
+              "name": "Gerente 2",
+              "role": "Gerente",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 44,
+                "defaultShiftDuration": "04:00:00"
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": true,
+              "preferredDaysOff": [],
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "coverageRoleIds": [],
+              "coverageRoles": [],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "22000000-0000-4000-8000-000000000020",
+              "employeeId": "22000000-0000-4000-8000-000000000001",
+              "role": "Gerente",
+              "roleId": "22000000-0000-4000-8000-000000000010",
+              "start": "2026-11-04T07:30:00",
+              "end": "2026-11-04T11:30:00",
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "roles": [
+            {
+              "id": "22000000-0000-4000-8000-000000000010",
+              "name": "Gerente",
+              "coverageRoleIds": [
+                "22000000-0000-4000-8000-000000000011",
+                "22000000-0000-4000-8000-000000000012"
+              ]
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000011",
+              "name": "Caixa"
+            },
+            {
+              "id": "22000000-0000-4000-8000-000000000012",
+              "name": "Vendedor"
+            }
+          ]
+        }
+      },
+      "expectedScore": 1,
+      "expectedCounts": {
+        "Caixa": 1,
+        "Vendedor": 1
+      },
+      "apiValid": true
+    }
+  ]
+}

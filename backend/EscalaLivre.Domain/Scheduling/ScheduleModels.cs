@@ -13,7 +13,7 @@ public sealed record EscalaLivreDocument(
     IReadOnlyList<DocumentRole>? Roles = null,
     DocumentSetup? Setup = null);
 
-public sealed record DocumentRole(Guid Id, string Name);
+public sealed record DocumentRole(Guid Id, string Name, IReadOnlyList<Guid>? CoverageRoleIds = null);
 public sealed record DocumentSetup(bool CompanyConfigured);
 
 public sealed record PlanningPeriod(DateOnly Start, DateOnly End);

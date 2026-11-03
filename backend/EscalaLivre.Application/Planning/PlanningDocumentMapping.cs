@@ -20,7 +20,7 @@ public sealed class PlanningDocumentMapping
         if (document.PlanningPeriod is { } declared && (declared.Start != period.Start || declared.End != period.End))
             throw new FormatException("Planning context must match the document period.");
         initialPeriod = period;
-        template = document with { Roles = document.Roles is null ? null : document.Roles.ToImmutableArray() };
+        template = document with { Roles = document.Roles is null ? null : document.Roles.Select(r => r with { CoverageRoleIds = r.CoverageRoleIds?.ToImmutableArray() }).ToImmutableArray() };
         Settings = new(document.Company, document.Employees);
         Schedule = new(document.Id, period, Settings.Employees.Select(e => e.Id), document.Assignments.Select(ImportAssignment));
     }

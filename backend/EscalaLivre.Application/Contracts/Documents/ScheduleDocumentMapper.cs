@@ -20,7 +20,8 @@ public static class ScheduleDocumentMapper
     public static DocumentRole ToProjection(DocumentRoleDto? value)
         => value is null ? null! : new(
             value.Id,
-            value.Name);
+            value.Name,
+            Copy(value.CoverageRoleIds));
 
     public static DocumentSetup ToProjection(DocumentSetupDto? value)
         => value is null ? null! : new(
@@ -147,7 +148,8 @@ public static class ScheduleDocumentMapper
     public static DocumentRoleDto ToDto(DocumentRole? value)
         => value is null ? null! : new(
             value.Id,
-            value.Name);
+            value.Name,
+            Copy(value.CoverageRoleIds));
 
     public static DocumentSetupDto ToDto(DocumentSetup? value)
         => value is null ? null! : new(

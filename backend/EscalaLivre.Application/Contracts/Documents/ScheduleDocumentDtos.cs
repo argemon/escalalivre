@@ -12,7 +12,8 @@ public sealed record EscalaLivreDocumentDto(
     IReadOnlyList<DocumentRoleDto>? Roles = null,
     DocumentSetupDto? Setup = null);
 
-public sealed record DocumentRoleDto(Guid Id, string Name);
+public sealed record DocumentRoleDto(Guid Id, string Name,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<Guid>? CoverageRoleIds = null);
 public sealed record DocumentSetupDto(bool CompanyConfigured);
 
 public sealed record PlanningPeriodDto(DateOnly Start, DateOnly End);

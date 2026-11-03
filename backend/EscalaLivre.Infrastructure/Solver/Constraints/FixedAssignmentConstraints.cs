@@ -18,7 +18,7 @@ public sealed class FixedAssignmentConstraints : IScheduleConstraintTranslator
         foreach(var shift in holidayShifts)
         {
             var employee=request.Document.Employees.First(e=>e.Id==shift.EmployeeId);
-            if(ScheduleRules.ShiftDiagnostics(request.Document.Company,employee,shift).Any(c=>c.Severity=="error"))model.Add(decisionVars[shift.Id]==0);
+            if(ScheduleRules.ShiftDiagnostics(request.Document.Company,employee,shift,request.Document.Roles).Any(c=>c.Severity=="error"))model.Add(decisionVars[shift.Id]==0);
         }
 
     }

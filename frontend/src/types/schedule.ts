@@ -88,9 +88,11 @@ export type ShiftAssignment = {
   tags: string[];
 };
 
+export type DocumentRole = { id:string; name:string; coverageRoleIds?:string[] };
+
 export type EscalaLivreDocument = {
   planningPeriod: { start: string; end: string };
-  roles?: { id: string; name: string }[];
+  roles?: DocumentRole[];
   setup?: { companyConfigured: boolean };
   schemaVersion: string;
   id: string;

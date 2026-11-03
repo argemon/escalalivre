@@ -35,7 +35,7 @@ public sealed class ProductionRegressionTests
     {
         ScheduleRequest request = Request();
         request = request with { Document = request.Document with {
-            Company = request.Document.Company with { Coverage = [new("nurse", DayOfWeek.Monday, new(10, 0), new(12, 0), 1)] },
+            Company = request.Document.Company with { Lunch = request.Document.Company.Lunch with { PreferredAfter = TimeSpan.FromHours(4) }, Coverage = [new("nurse", DayOfWeek.Monday, new(10, 0), new(12, 0), 1)] },
             Employees = [request.Document.Employees[0] with { Preferences = [new("closing", 10, "Fechar")] }]
         } };
         ScheduleResult result = AdapterComposition.Generate().Execute(request);

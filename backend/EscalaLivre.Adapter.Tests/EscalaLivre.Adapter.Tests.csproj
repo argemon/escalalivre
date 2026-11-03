@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><IsPackable>false</IsPackable></PropertyGroup>
   <ItemGroup>
+    <None Include="../../shared/role-coverage-scenarios.json" Link="role-coverage-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../shared/simultaneous-coverage-scenarios.json" Link="simultaneous-coverage-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
     <ProjectReference Include="../EscalaLivre.Infrastructure/EscalaLivre.Infrastructure.csproj" />
     <None Include="../../shared/solver-regression-scenarios.json" Link="solver-regression-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../shared/document-validation-scenarios.json" Link="document-validation-scenarios.json" CopyToOutputDirectory="PreserveNewest" />

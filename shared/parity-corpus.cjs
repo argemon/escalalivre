@@ -24,5 +24,5 @@ function generated(seed,count=24) {
     return scenario;
   });
 }
-function corpus(){return [...baseline.filter(s=>s.apiValid),...boundaries(),...SEEDS.flatMap(seed=>generated(seed))];}
+function corpus(){return [...baseline.filter(s=>s.apiValid),...boundaries(),...clone(require("./simultaneous-coverage-scenarios.json").scenarios),...clone(require("./role-coverage-scenarios.json").scenarios),...SEEDS.flatMap(seed=>generated(seed))];}
 module.exports={boundaries,generated,corpus,SEEDS};

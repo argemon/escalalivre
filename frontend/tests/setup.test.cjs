@@ -87,7 +87,7 @@ test('directional substitution covers attendant but never replaces pharmacist in
  const first=coverageAllocation(doc,Date.parse('2026-10-14T11:00:00'),Date.parse('2026-10-14T12:00:00'),rules);
  assert.equal(first.find(b=>b.rule.role==='Farmacêutico').assigned,0);
  const second=coverageAllocation(doc,Date.parse('2026-10-14T12:00:00'),Date.parse('2026-10-14T13:00:00'),rules);
- assert.equal(second.reduce((n,b)=>n+b.assigned,0),1);
+ assert.equal(second.reduce((n,b)=>n+b.assigned,0),2);
  const onlyAttendant=coverageAllocation(doc,Date.parse('2026-10-14T12:00:00'),Date.parse('2026-10-14T13:00:00'),[rules[1]]);assert.equal(onlyAttendant[0].assigned,1);
 });
 
