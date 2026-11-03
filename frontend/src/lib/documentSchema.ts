@@ -75,7 +75,7 @@ const workload = z.object({
 });
 const canonicalDocumentSchema = z.object({
   planningPeriod:z.object({start:z.string(),end:z.string()}).refine(p => !periodError(p), "Período inválido: use de 1 a 31 dias entre 1900 e 2100.").optional(),
-  roles:boundedArray(z.object({id,name:text}),limits.roles).refine(v => new Set(v.map(r=>r.id)).size===v.length,"Cargos duplicados").optional(),
+  roles:boundedArray(z.object({id,name:text,coverageRoleIds:boundedArray(id,limits.coverageRoles).nullish().transform(v=>v??undefined)}),limits.roles).refine(v => new Set(v.map(r=>r.id)).size===v.length,"Cargos duplicados").optional(),
   setup:z.object({companyConfigured:z.boolean()}).optional(),
   schemaVersion:z.literal("1.0.0"),id,updatedAt:instant,
   company:z.object({

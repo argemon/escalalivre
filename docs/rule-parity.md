@@ -54,7 +54,7 @@ implementações de negócio C#/TypeScript. Reprodução e validação estão no
 | Feriados | Feriado fechado remove demanda normal e bloqueia turnos comuns. Autorização de feriado excepciona expediente, não disponibilidade, descanso, jornada ou pausa. | `holiday`, `outsideHours` |
 | Entrada fixa | Início deve coincidir com `shiftStartsAt` na data do turno. | `fixedStart` |
 | Trabalho noturno | Sem permissão, início antes de 06h ou fim depois de 22h da data de início é inválido. | `nightWork` |
-| Cobertura por função | Substituição é direcional; a mesma pessoa não cobre duas exigências de função simultaneamente. Cobertura por equipe conta pessoas elegíveis. Sobreposições da mesma pessoa não duplicam sua capacidade. | Blocos de cobertura e lacunas |
+| Cobertura por função | Substituição é direcional; a pessoa presente conta na própria função e em cada função autorizada simultaneamente. Conta uma única vez em cada função e na equipe, mesmo com turnos sobrepostos. | Blocos de cobertura e lacunas |
 | Pausas e cobertura | Pausa não fornece cobertura; fechamento remove demanda normal, mantendo exigências explicitamente autorizadas fora do expediente. Limites de turnos, pausas e exigências subdividem os blocos. | Blocos de cobertura e lacunas |
 | Pontuação | Minutos cobertos ponderados pela quantidade exigida / minutos exigidos; arredondamento de 3 casas. Lacunas consecutivas da mesma função e déficit são agrupadas. | `coverageScore`, `gaps` |
 
@@ -324,3 +324,15 @@ estão na decisão. A comparação diferencial inclui os novos campos e cenário
 Avisos da transição da EC 141/2026 usam o período planejado e não o relógio do
 dispositivo. São orientação de adequação, sem conversão automática ou certificado
 de enquadramento jurídico.
+
+## Cobertura autorizada simultânea e almoço — 03/11/2026
+
+A [decisão 021](decisions/021-simultaneous-authorized-coverage.md) substitui a alocação exclusiva por presença por função autorizada. Cada pessoa conta uma vez em cada exigência elegível e uma vez na equipe. Pausas e turnos sobrepostos mantêm os limites anteriores. A descrição histórica de uma única alocação nas etapas 1–5 foi superada por esta decisão explícita.
+
+O desvio do almoço usa datas civis completas e dois pontos por segundo, fora do clamp das demais preferências; um minuto de atraso supera o bônus de fechamento de 100 pontos. A busca discreta, a rotina semanal, o fallback de antecipação e o formato do documento são preservados. Os cenários compartilhados em simultaneous-coverage-scenarios.json são executados em C# puro, TS, paridade diferencial e HTTP/worker; o adaptador real verifica almoço 11h/12h por um e três dias.
+
+## Autorizações herdadas da função — 03/11/2026
+
+A [decisão 022](decisions/022-role-coverage-grants.md) acrescenta `roles[].coverageRoleIds` opcional. Cada funcionário pode cobrir sua função principal, os destinos autorizados diretamente pela função e suas permissões individuais adicionais. Não há reversão nem transitividade implícita. Sem o campo novo, o contrato individual anterior é preservado. Revogar uma permissão da função afeta todas as pessoas dela, sem alterar turnos ou converter as permissões em listas individuais.
+
+RoleCoveragePolicy/CanCover e o equivalente TypeScript recebem o catálogo completo em análise, validação, prévia, demanda contratada e geração, incluindo exceções de expediente. Os 12 documentos de role-coverage-scenarios.json são executados em C# puro, TS, comparação diferencial e HTTP/worker. DTOs e snapshot copiam as listas aninhadas; formulário e arquivo nativo têm regressões próprias.

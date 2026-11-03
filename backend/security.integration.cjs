@@ -57,10 +57,13 @@ function expensiveAnalysis() {
   r.document.company.coverage = Array.from({ length: 1000 }, (_, i) => ({
     role: 'OtherRole' + i, day: 1, start: '08:00:00', end: '18:00:00', minimumEmployees: 200
   }));
-  r.document.assignments = r.document.employees.map(person => ({
-    id: randomUUID(), employeeId: person.id, role: person.role, start: '2026-10-19T08:00:00', end: '2026-10-19T18:00:00',
+  // Deliberately distinct boundaries keep this a heavy analysis even without
+  // the former exclusive-role matching algorithm. Overlapping history is valid input.
+  r.document.assignments = r.document.employees.flatMap((person, index) => Array.from({length:10}, (_, part) => ({
+    id: randomUUID(), employeeId: person.id, role: person.role,
+    start: new Date(Date.UTC(2026,9,19,8,0,index*10+part)).toISOString().slice(0,19), end: '2026-10-19T18:00:00',
     break: { start: '2026-10-19T12:00:00', end: '2026-10-19T13:00:00' }, source: 'manual', tags: []
-  }));
+  })));
   return r;
 }
 test('interval timing respects preferred work, relaxes only for coverage and stays away from shift edges', async () => {
@@ -434,6 +437,56 @@ test('shared documents produce equivalent browser and HTTP diagnostics, coverage
         const {data:result}=await response.json();assert.ok(result.assignments.length,scenario.id);assert.ok(!result.conflicts.some(c=>c.severity==='error'),scenario.id+': '+JSON.stringify(result.conflicts));
         const checked=analyzeDocument({...scenario.request.document,assignments:result.assignments});assert.deepEqual(digest(result),digest(checked),scenario.id+' generated diagnostics');
       }
+    }
+  });
+});
+
+test('authorized simultaneous coverage agrees across browser, HTTP and generation', async () => {
+  const {analyzeDocument}=require('../frontend/tests/source-loader.cjs')()('lib/analysis.ts');
+  const {digest}=require('../shared/parity-contract.cjs');
+  const scenarios=require('../shared/simultaneous-coverage-scenarios.json').scenarios;
+  await withServer({},async({post})=>{
+    for(const s of scenarios)for(const route of ['/analyze','/validate']) {
+      const response=await post(route,s.request);
+      assert.equal(response.status,200,s.id+route);
+      const result=(await response.json()).data;
+      assert.equal(result.coverageScore,s.expectedScore,s.id);
+      assert.deepEqual(digest(result),digest(analyzeDocument(s.request.document)),s.id+route);
+    }
+    const scenario=scenarios[0];
+    const response=await post('/solve',{...scenario.request,document:{...scenario.request.document,assignments:[]}});
+    assert.equal(response.status,200);
+    const result=(await response.json()).data;
+    assert.equal(result.coverageScore,1);
+    assert.deepEqual(digest(result),digest(analyzeDocument({...scenario.request.document,assignments:result.assignments})));
+    assert.deepEqual(result.assignments.map(a=>a.break.start.slice(11,16)).sort(),['11:00','12:00']);
+  });
+});
+
+test('role grants cover multiple functions across HTTP, native reload and actual generation',async()=>{
+  const scenarios=require('../shared/role-coverage-scenarios.json').scenarios;
+  const {analyzeDocument}=require('../frontend/tests/source-loader.cjs')()('lib/analysis.ts');
+  const {digest}=require('../shared/parity-contract.cjs');
+  await withServer({},async({post})=>{
+    for(const s of scenarios)for(const route of ['/analyze','/validate']){
+      const response=await post(route,s.request);assert.equal(response.status,200,s.id+route);
+      const result=(await response.json()).data;
+      assert.equal(result.coverageScore,s.expectedScore,s.id);
+      assert.deepEqual(digest(result),digest(analyzeDocument(s.request.document)),s.id+route);
+    }
+    const request=scenarios[0].request;
+    const exported=await (await post('/export',{document:request.document,format:'native'})).json();
+    const imported=await (await post('/import',{fileName:'manager.escalalivre',format:'native',contentBase64:exported.data.contentBase64})).json();
+    assert.deepEqual(imported.data.roles,request.document.roles);
+    assert.deepEqual(imported.data.employees.map(e=>e.coverageRoleIds),[[],[]]);
+    const response=await post('/solve',{...request,document:{...imported.data,assignments:[]}});
+    assert.equal(response.status,200);
+    const result=(await response.json()).data;
+    assert.equal(result.coverageScore,1);assert.equal(result.assignments.length,1);
+    assert.deepEqual(digest(result),digest(analyzeDocument({...imported.data,assignments:result.assignments})));
+    for(const invalid of [Array(51).fill(request.document.roles[1].id),['00000000-0000-0000-0000-000000000000']]){
+      const doc=structuredClone(request.document);doc.roles[0].coverageRoleIds=invalid;
+      assert.equal((await post('/analyze',{...request,document:doc})).status,400);
     }
   });
 });

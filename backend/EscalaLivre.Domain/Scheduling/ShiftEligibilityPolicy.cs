@@ -15,9 +15,9 @@ public static class ShiftEligibilityPolicy
         return cursor<a.End;
     }
 
-    public static bool HasOperatingException(CompanyRules company, Employee employee, ShiftAssignment shift)
+    public static bool HasOperatingException(CompanyRules company, Employee employee, ShiftAssignment shift, IReadOnlyList<DocumentRole>? roles = null)
         => LaborRules.AuthorizedHolidayShift(company, shift) || company.Coverage.Any(r => r.AllowsOutsideHours
-            && ScheduleRules.CanCover(employee, r) && r.Day == shift.Start.DayOfWeek
+            && ScheduleRules.CanCover(employee, r, roles) && r.Day == shift.Start.DayOfWeek
             && shift.Start.Date + r.Start.ToTimeSpan() <= shift.Start
             && shift.End <= ScheduleRules.EndOn(shift.Start.Date, r.Start, r.End));
 

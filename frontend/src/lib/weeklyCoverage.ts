@@ -15,11 +15,11 @@ export function weeklyCoverage(document: EscalaLivreDocument, date: string): Wee
     if (actual.some(a => a.employeeId === employee.id)) continue;
     if ((employee.inheritsCompanyDefaults ? document.company.defaultWorkload : employee.workload).weeklyPlan?.flexibleWorkDays) continue;
     const workingDays = employee.inheritsCompanyDefaults ? document.company.operatingDays : employee.workingDays ?? document.company.operatingDays;
-    if (!workingDays.includes(day)) continue;
-    const rules = document.company.coverage.filter(r => r.day === day && canCover(employee,r) && r.minimumEmployees > 0);
+    if (!workingDays.includes(day) && ((!employee.inheritsCompanyDefaults && employee.workingDays) || !document.company.coverage.some(r=>r.day===day && r.allowsOutsideHours && r.minimumEmployees>0 && canCover(employee,r,document.roles)))) continue;
+    const rules = document.company.coverage.filter(r => r.day === day && canCover(employee,r,document.roles) && r.minimumEmployees > 0);
     if (!rules.length && document.company.operatingDays.includes(day)) rules.push({role:employee.role,day,start:document.company.opensAt,end:document.company.closesAt,minimumEmployees:1});
     for (const [index, rule] of rules.entries()) {
-      if (rule.day !== day || !canCover(employee,rule) || rule.minimumEmployees === 0) continue;
+      if (rule.day !== day || !canCover(employee,rule,document.roles) || rule.minimumEmployees === 0) continue;
       if (!rule.allowsOutsideHours && outsideOperatingHours(document.company,day,rule.start,rule.end)) continue;
       const start = new Date(date+"T"+(employee.shiftStartsAt ?? rule.start)), end = new Date(date+"T"+rule.end);
       if (end <= start) end.setDate(end.getDate()+1);

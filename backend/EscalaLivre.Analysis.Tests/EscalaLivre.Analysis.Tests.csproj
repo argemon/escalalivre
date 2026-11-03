@@ -6,6 +6,8 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="../../shared/role-coverage-scenarios.json" Link="role-coverage-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../shared/simultaneous-coverage-scenarios.json" Link="simultaneous-coverage-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
     <Compile Include="../TestSupport/PureComposition.cs" Link="Support/PureComposition.cs" />
     <Using Include="EscalaLivre.TestSupport" />
     <ProjectReference Include="../EscalaLivre.Application/EscalaLivre.Application.csproj" />

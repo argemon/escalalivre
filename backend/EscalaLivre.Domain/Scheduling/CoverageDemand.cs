@@ -26,9 +26,9 @@ public static class CoverageDemand
         }
     }
 
-    public static bool HasRelevantDemand(CompanyRules company, Employee employee, ShiftAssignment candidate)
+    public static bool HasRelevantDemand(CompanyRules company, Employee employee, ShiftAssignment candidate, IReadOnlyList<DocumentRole>? roles = null)
         => Blocks(company,candidate.Start.Date,candidate.Start.Date,[candidate]).Any(b => Covers(candidate,b.Start,b.End)
-            && b.Rules.Any(r => r.MinimumEmployees > 0 && ScheduleRules.CanCover(employee,r)));
+            && b.Rules.Any(r => r.MinimumEmployees > 0 && ScheduleRules.CanCover(employee,r,roles)));
 
     public static bool Covers(ShiftAssignment assignment, DateTime start, DateTime end)
     {

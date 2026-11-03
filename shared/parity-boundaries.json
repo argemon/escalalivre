@@ -589,7 +589,7 @@
       ]
     },
     {
-      "id": "directional-roles-compete-for-one-person",
+      "id": "authorized-person-covers-own-and-substitute-roles",
       "request": {
         "start": "2026-10-19T00:00:00",
         "end": "2026-10-19T23:59:59",
@@ -703,7 +703,7 @@
         }
       },
       "apiValid": true,
-      "expectedScore": 0.5
+      "expectedScore": 1
     },
     {
       "id": "explicit-empty-ids-revoke-stale-names",

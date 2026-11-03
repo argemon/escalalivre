@@ -9,7 +9,7 @@ const record=(value:unknown):value is Record<string,unknown> => value!==null && 
 export function documentStructureIssue(input:unknown):Issue|undefined {
   const invalid=(path:Path):Issue=>({path,message:"Estrutura ou coleção inválida ou acima do limite."});
   const array=(value:unknown,max:number,path:Path,optional=false):Issue|undefined =>
-    optional && (value===undefined || (path[path.length-1]==="contractLeaves" && value===null)) ? undefined : !Array.isArray(value) || value.length>max ? invalid(path) : undefined;
+    optional && (value===undefined || ((path[path.length-1]==="contractLeaves" || (path[0]==="roles" && path[path.length-1]==="coverageRoleIds")) && value===null)) ? undefined : !Array.isArray(value) || value.length>max ? invalid(path) : undefined;
   if(!record(input))return invalid([]);
   if(!record(input.company))return invalid(["company"]);
   const top:[unknown,number,Path,boolean?][]=[
@@ -21,6 +21,10 @@ export function documentStructureIssue(input:unknown):Issue|undefined {
     [input.company.operatingDays,limits.days,["company","operatingDays"]]
   ];
   for(const args of top){const issue=array(...args);if(issue)return issue;}
+  for(const [i,role] of ((input.roles ?? []) as unknown[]).entries()) {
+    if(!record(role))return invalid(["roles",i]);
+    const issue=array(role.coverageRoleIds,limits.coverageRoles,["roles",i,"coverageRoleIds"],true);if(issue)return issue;
+  }
   for(const [i,employee] of (input.employees as unknown[]).entries()) {
     const path:Path=["employees",i];
     if(!record(employee))return invalid(path);

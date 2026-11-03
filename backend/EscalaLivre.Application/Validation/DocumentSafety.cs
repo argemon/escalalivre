@@ -14,7 +14,7 @@ public static class DocumentSafety
         if (document.Employees.Count > L.Employees || document.Assignments.Count > L.Assignments) return "Limite de funcionários ou turnos excedido.";
         if (document.PlanningPeriod is { } period && (period.Start.Year < 1900 || period.End.Year > 2100
             || period.End < period.Start || period.End.DayNumber - period.Start.DayNumber >= 31)) return "Período de planejamento inválido.";
-        if (document.Roles is { } roles && (roles.Count > L.Roles || roles.Any(r => r is null || r.Id == Guid.Empty || !Text(r.Name))
+        if (document.Roles is { } roles && (roles.Count > L.Roles || roles.Any(r => r is null || r.Id == Guid.Empty || !Text(r.Name) || r.CoverageRoleIds?.Count > L.CoverageRoles || r.CoverageRoleIds?.Any(id => id == Guid.Empty) == true)
             || roles.Select(r => r.Id).Distinct().Count() != roles.Count)) return "Cargos inválidos ou acima dos limites.";
         var company = document.Company;
         if (!EscalaLivre.Application.Contracts.ScheduleJson.ValidTimeZone(company.TimeZone)) return "Fuso horário da empresa inválido.";
