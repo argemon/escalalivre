@@ -118,5 +118,5 @@ export const sampleDocument: EscalaLivreDocument = {
 };
 
 export function emptyDocument(): EscalaLivreDocument {
-  return { ...structuredClone(sampleDocument), planningPeriod: defaultPlanningPeriod(), roles: [], setup: { companyConfigured: false }, id: crypto.randomUUID(), company: { ...structuredClone(sampleDocument.company), name: "Escala Livre", timeZone: deviceTimeZone(), coverage: [] }, employees: [], assignments: [], updatedAt: nowInstant() };
+  return { ...structuredClone(sampleDocument), planningPeriod: defaultPlanningPeriod(), roles: [], setup: { companyConfigured: false }, id: crypto.randomUUID(), company: { ...structuredClone(sampleDocument.company), name: "Escala Livre", timeZone: deviceTimeZone(), coverageMode:"exclusive", coverage: [] }, employees: [], assignments: [], updatedAt: nowInstant() };
 }

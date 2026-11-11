@@ -27,7 +27,7 @@ public sealed class GenerateSchedule(IScheduleOptimizer optimizer, IScheduleAnal
         }
         var retainedIds = request.Document.Assignments
             .Where(a => !ScheduleWindow.Contains(a, request.Start, request.End)
-                || LaborRules.AuthorizedHolidayShift(request.Document.Company, a)).Select(a => a.Id).ToHashSet();
+                || a.Pinned==true || LaborRules.AuthorizedHolidayShift(request.Document.Company, a)).Select(a => a.Id).ToHashSet();
         var generatedIds = selected.Where(a => !retainedIds.Contains(a.Id)).Select(a => a.Id).ToHashSet();
         if (selected.Any(a => generatedIds.Contains(a.Id) && !IntervalTimingPolicy.HasWorkAroundPause(a)))
             return Failure(request, "invalid", [Invalid(request, "A escala gerada posiciona intervalo perto da entrada ou saída; os turnos anteriores foram preservados.")]);

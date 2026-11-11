@@ -31,7 +31,7 @@ var results = requests.Select(request => {
     // Replacement may reorder history before selected shifts; compare whole records by stable identity.
     var preserveReplacement = assignmentsById(request.Document.Assignments) == assignmentsById(replaced);
     mapping.Schedule.ReplacePeriod([]);
-    var history = request.Document.Assignments.Where(a => !mapping.Schedule.Period.ContainsStart(new(a.Start, a.End))).ToArray();
+    var history = request.Document.Assignments.Where(a => a.Pinned==true || !mapping.Schedule.Period.ContainsStart(new(a.Start, a.End))).ToArray();
     var preserveExternalHistory = assignmentsById(history) == assignmentsById(mapping.ToDocument().Assignments);
     return new { analysis, validation,
         inputUnchanged = before == JsonSerializer.Serialize(request, options),

@@ -7,13 +7,14 @@ public sealed class ScheduledAssignment
     public Guid EmployeeId { get; }
     public string Role { get; }
     public Guid? RoleId { get; }
+    public bool? Pinned { get; }
     public CivilWindow Window { get; }
     public ShiftPause? Pause { get; }
     public string Source { get; }
     public IReadOnlyList<string> Tags { get; }
 
     public ScheduledAssignment(Guid id, Guid employeeId, string role, CivilWindow window, ShiftPause? pause,
-        string source, IEnumerable<string> tags, Guid? roleId = null)
+        string source, IEnumerable<string> tags, Guid? roleId = null, bool? pinned = null)
     {
         if (id == Guid.Empty || employeeId == Guid.Empty || roleId == Guid.Empty) throw new ArgumentException("Identity must not be empty.");
         if (string.IsNullOrWhiteSpace(role)) throw new ArgumentException("A role is required.");
@@ -25,7 +26,7 @@ public sealed class ScheduledAssignment
         Id = id;
         EmployeeId = employeeId;
         Role = role;
-        RoleId = roleId;
+        RoleId = roleId; Pinned=pinned;
         Pause = pause;
         Source = source;
         Tags = copy.ToImmutableArray();
@@ -37,9 +38,9 @@ public sealed class ScheduledAssignment
         ArgumentNullException.ThrowIfNull(target);
         var pause = Pause is null ? null : new ShiftPause(Pause.Window.MoveBy(target.Start - Window.Start));
         var tags = target.Start.Date == Window.Start.Date ? Tags : Tags.Where(t => !t.StartsWith("holiday:", StringComparison.Ordinal));
-        return new(Id, EmployeeId, Role, target, pause, Source, tags, RoleId);
+        return new(Id, EmployeeId, Role, target, pause, Source, tags, RoleId, Pinned);
     }
 
     public ScheduledAssignment ChangeRole(string role, Guid? roleId)
-        => new(Id, EmployeeId, role, Window, Pause, Source, Tags, roleId);
+        => new(Id, EmployeeId, role, Window, Pause, Source, Tags, roleId, Pinned);
 }

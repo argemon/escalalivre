@@ -16,7 +16,9 @@ public static class DocumentSafety
             || period.End < period.Start || period.End.DayNumber - period.Start.DayNumber >= 31)) return "Período de planejamento inválido.";
         if (document.Roles is { } roles && (roles.Count > L.Roles || roles.Any(r => r is null || r.Id == Guid.Empty || !Text(r.Name) || r.CoverageRoleIds?.Count > L.CoverageRoles || r.CoverageRoleIds?.Any(id => id == Guid.Empty) == true)
             || roles.Select(r => r.Id).Distinct().Count() != roles.Count)) return "Cargos inválidos ou acima dos limites.";
+        if (PublicationSafety.Error(document) is {} publicationError) return publicationError;
         var company = document.Company;
+        if (company.CoverageMode is not (null or "exclusive")) return "Modo de cobertura inválido.";
         if (!EscalaLivre.Application.Contracts.ScheduleJson.ValidTimeZone(company.TimeZone)) return "Fuso horário da empresa inválido.";
         if (!Text(company.Name) || !Days(company.OperatingDays) || !Workload(company.DefaultWorkload) || company.Lunch is null
             || company.Coverage is null || company.Coverage.Count > L.Coverage || company.Holidays?.Count > L.Holidays
@@ -33,6 +35,9 @@ public static class DocumentSafety
         {
             if (employee is null || employee.Id == Guid.Empty || !ids.Add(employee.Id) || !Text(employee.Name) || !Text(employee.Role)
                 || (employee.ContractLeaves is {} leaves && (leaves.Count > L.Windows || leaves.Any(l => l is null || l.Date.Year is < 1900 or > 2100 || l.ExcusedSeconds is < 1 or > 86400)))
+                || !AbsencePolicy.Valid(employee)
+                || !ExclusiveCoveragePolicy.ValidGroup(employee)
+                || !EmploymentPolicy.ValidHistory(employee)
                 || !Workload(employee.Workload) || !Windows(employee.Availability) || !Windows(employee.Restrictions)
                 || employee.Preferences is null || employee.Preferences.Count > L.Preferences
                 || employee.Preferences.Any(p => p is null || !Text(p.Code) || !Text(p.Description, true) || (p.Weight < -L.PreferenceWeight || p.Weight > L.PreferenceWeight))

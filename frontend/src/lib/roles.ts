@@ -8,7 +8,7 @@ export function normalizeRoles(document: EscalaLivreDocument): EscalaLivreDocume
     if (!role) { role = { id: crypto.randomUUID(), name: item.role.trim() }; roles.push(role); }
     return { ...item, roleId: role.id, role: role.name };
   };
-  const employees = document.employees.map(e => ({ ...e, ...resolve(e), coverageRoleIds:e.coverageRoleIds ?? [] }));
+  const employees = document.employees.map(e => ({ ...e, ...resolve(e), roleHistory:e.roleHistory?.map(t=>({...t,...resolve(t)})), coverageRoleIds:e.coverageRoleIds ?? [] }));
   const coverage = document.company.coverage.map(r => r.scope === "team" ? {...r,roleId:undefined,role:"Equipe (qualquer função)"} : ({ ...r, ...resolve(r) }));
   const assignments = document.assignments.map(a => ({...a,...resolve(a)}));
   return normalizeCoverageRoles({ ...document, roles, employees, assignments, company: { ...document.company, coverage } });

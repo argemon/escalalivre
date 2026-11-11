@@ -8,8 +8,10 @@ public static class ScheduleWindow
 
     public static IReadOnlyList<ShiftAssignment> Replace(
         IReadOnlyList<ShiftAssignment> original, IEnumerable<ShiftAssignment> generated, DateTime start, DateTime end)
-        => original.Where(a => !Contains(a, start, end))
-            .Concat(generated.Where(a => Contains(a, start, end))).ToList();
+        {
+            var retained=original.Where(a => a.Pinned==true || !Contains(a,start,end)).ToArray();
+            return retained.Concat(generated.Where(a=>Contains(a,start,end)&&!retained.Any(old=>old.Pinned==true&&old.Id==a.Id))).ToList();
+        }
 
 
     public static DateTime WeekStart(DateTime date) => date.Date.AddDays(-(int)date.DayOfWeek);

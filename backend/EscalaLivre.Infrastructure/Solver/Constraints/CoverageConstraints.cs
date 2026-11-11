@@ -24,16 +24,26 @@ public sealed class CoverageConstraints : IScheduleConstraintTranslator
                 model.Add(active <= LinearExpr.Sum(person.Select(a => decisions[a.Id])));
                 present.Add(person.Key, active);
             }
+            var exclusiveAllocations=new Dictionary<Guid,List<BoolVar>>();
             foreach (var requirement in block.Rules)
             {
                 budget.Spend();
-                var eligible = covering.Where(a => ScheduleRules.CanCover(request.Document.Employees.First(e => e.Id == a.EmployeeId), requirement, request.Document.Roles)).ToList();
+                bool Allowed(ShiftAssignment a){var e=EmploymentPolicy.ForShift(request.Document.Employees.First(e=>e.Id==a.EmployeeId),a);return ScheduleRules.CanCover(e,requirement,request.Document.Roles) && (request.Document.Company.CoverageMode!="exclusive" || requirement.Scope=="team" || e.AccumulationRoleIds is null || e.AccumulationRoleIds.Count==0 || ExclusiveCoveragePolicy.AccumulationAllows(e,requirement,request.Document.Roles));}
+                var eligible = covering.Where(Allowed).ToList();
                 // Preserve the old budget unit: every eligible assignment/requirement pair, even when deduplicated below.
                 foreach (var shift in eligible) budget.Spend();
                 var allocated = new List<LinearExpr>();
                 foreach (var person in eligible.Select(a => a.EmployeeId).Distinct())
                 {
-                    allocated.Add(present[person]);
+                    var eligiblePerson=model.NewBoolVar($"eligible_{blockIndex}_{person:N}_{context.ShortageTerms.Count}");
+                    var choices=eligible.Where(a=>a.EmployeeId==person).Select(a=>decisions[a.Id]).ToArray();
+                    foreach(var choice in choices)model.Add(choice<=eligiblePerson);
+                    model.Add(eligiblePerson<=LinearExpr.Sum(choices));
+                    var employee=request.Document.Employees.First(e=>e.Id==person);
+                    if(request.Document.Company.CoverageMode=="exclusive" && requirement.Scope!="team" && (employee.AccumulationRoleIds is null || employee.AccumulationRoleIds.Count==0)){
+                        var allocation=model.NewBoolVar($"allocation_{blockIndex}_{person:N}_{context.ShortageTerms.Count}");model.Add(allocation<=eligiblePerson);
+                        if(!exclusiveAllocations.ContainsKey(person))exclusiveAllocations[person]=[];exclusiveAllocations[person].Add(allocation);allocated.Add(allocation);
+                    }else allocated.Add(eligiblePerson);
                 }
                 var shortage = model.NewIntVar(0, requirement.MinimumEmployees, $"shortage_{context.ShortageTerms.Count}");
                 model.Add(LinearExpr.Sum(allocated) + shortage >= requirement.MinimumEmployees);
@@ -41,8 +51,10 @@ public sealed class CoverageConstraints : IScheduleConstraintTranslator
                 context.ShortageTerms.Add(LinearExpr.Term(shortage, ScheduleObjective.ShortageWeight(block.End - block.Start)));
             }
 
+            foreach(var (person,allocations)in exclusiveAllocations)model.Add(LinearExpr.Sum(allocations)<=present[person]);
             var relevant = covering.Where(a => block.Rules.Any(r => r.MinimumEmployees > 0
-                && ScheduleRules.CanCover(request.Document.Employees.First(e => e.Id == a.EmployeeId), r, request.Document.Roles))).Select(a => a.EmployeeId).Distinct().ToList();
+                && ScheduleRules.CanCover(EmploymentPolicy.ForShift(request.Document.Employees.First(e => e.Id == a.EmployeeId),a), r, request.Document.Roles)
+                && (request.Document.Company.CoverageMode!="exclusive" || r.Scope=="team" || request.Document.Employees.First(e=>e.Id==a.EmployeeId).AccumulationRoleIds is not {Count:>0} || ExclusiveCoveragePolicy.AccumulationAllows(request.Document.Employees.First(e=>e.Id==a.EmployeeId),r,request.Document.Roles)))).Select(a => a.EmployeeId).Distinct().ToList();
             if (relevant.Count > 0)
             {
                 var occupied = model.NewBoolVar($"someone_present_{blockIndex}");

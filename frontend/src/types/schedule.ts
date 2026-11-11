@@ -23,7 +23,13 @@ export type AvailabilityWindow = {
   end: string;
 };
 
+export type RoleTenure = { startsOn:string; role:string; roleId:string; coverageRoleIds?:string[] };
+export type AbsenceEvent={id:string;category:"vacation"|"medical"|"leave"|"unavailable";start:string;end:string;credits:{date:string;excusedSeconds:number}[]};
 export type Employee = {
+  absences?: AbsenceEvent[];
+  accumulationRoleIds?: string[];
+  roleHistory?: RoleTenure[];
+  inactiveFrom?: string;
   contractLeaves?: { date:string; excusedSeconds:number }[];
   coverageRoleIds?: string[];
   coverageRoles?: string[];
@@ -46,6 +52,7 @@ export type Employee = {
 };
 
 export type CompanyRules = {
+  coverageMode?: "exclusive";
   /** IANA zone used only to interpret qualified legacy datetimes; schedules use civil time. */
   timeZone?: string;
   holidays?: { date:string; name:string; closed:boolean }[];
@@ -77,6 +84,7 @@ export type CoverageRequirement = {
 };
 
 export type ShiftAssignment = {
+  pinned?: boolean;
   id: string;
   employeeId: string;
   roleId?: string;
@@ -91,6 +99,8 @@ export type ShiftAssignment = {
 export type DocumentRole = { id:string; name:string; coverageRoleIds?:string[] };
 
 export type EscalaLivreDocument = {
+  publications?: import("../lib/publicationSchema").Publication[];
+  publicationSelections?: import("../lib/publicationSchema").PublicationSelection[];
   planningPeriod: { start: string; end: string };
   roles?: DocumentRole[];
   setup?: { companyConfigured: boolean };
@@ -111,6 +121,7 @@ export type CoverageGap = {
 };
 
 export type CoverageBlock = {
+  employeeIds?: string[];
   start: string;
   end: string;
   roleId?: string;

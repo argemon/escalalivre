@@ -19,5 +19,7 @@
   "shiftDurationSeconds": 86400,
   "lunchSeconds": 7200,
   "preferredAfterSeconds": 86400,
-  "assignmentSeconds": 172800
+  "assignmentSeconds": 172800,
+  "absences": 50,
+  "absenceCredits": 366
 }

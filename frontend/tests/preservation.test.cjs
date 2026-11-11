@@ -20,7 +20,7 @@ const {analyzeDocument}=load('lib/analysis.ts');
 const plain=x=>JSON.parse(JSON.stringify(x));
 function document() {const d=structuredClone(sampleDocument);d.planningPeriod={start:'2026-10-19',end:'2026-10-19'};d.assignments=[];return d;}
 function shift(id,start,end) {return {...structuredClone(sampleDocument.assignments[0]),id,start,end,break:undefined,tags:['original'],source:'manual'};}
-const result=assignments=>({assignments,conflicts:[],coverage:[],gaps:[],hiringSuggestions:[],optimizationSuggestions:[],decisions:[],coverageScore:1});
+const result=assignments=>({assignments,conflicts:[],coverage:[],gaps:[],hiringSuggestions:[],optimizationSuggestions:[],decisions:[],coverageScore:1,optimization:{status:"feasible"}});
 
 test('replacement owns the entire overnight shift by its start date',()=>{
   const d=document(),before=shift('before','2026-10-18T22:00:00','2026-10-19T06:00:00'),old=shift('old','2026-10-19T22:00:00','2026-10-20T06:00:00'),after=shift('after','2026-10-20T22:00:00','2026-10-21T06:00:00'),fresh={...old,id:'fresh'};
@@ -31,14 +31,14 @@ test('replacement owns the entire overnight shift by its start date',()=>{
   assert.deepEqual(plain(replacePeriodAssignments({...d,assignments:actual},[fresh]).map(a=>a.id)),['before','after','fresh']);
 });
 test('store applies a full response without duplicates or normalizing preserved shifts again',()=>{
-  const d=document();d.assignments=[shift('old','2026-10-19T08:00:00','2026-10-19T12:00:00')];store.getState().setDocument(d);
+  const d=document();d.assignments=[shift(crypto.randomUUID(),'2026-10-19T08:00:00','2026-10-19T12:00:00')];store.getState().setDocument(d);
   // Emulate stored legacy data: generation must never rewrite it.
   const submitted=store.getState().document;
-  const before=shift('before','2026-10-18T22:00:00','2026-10-19T06:00:00');
-  const after=shift('after','2026-10-20T22:00:00','2026-10-21T06:00:00');
+  const before=shift(crypto.randomUUID(),'2026-10-18T22:00:00','2026-10-19T06:00:00');
+  const after=shift(crypto.randomUUID(),'2026-10-20T22:00:00','2026-10-21T06:00:00');
   submitted.assignments.push(before,after);
   const snapshot=JSON.stringify([before,after]);
-  const fresh=shift('fresh','2026-10-19T22:00:00','2026-10-20T06:00:00');
+  const fresh=shift(crypto.randomUUID(),'2026-10-19T22:00:00','2026-10-20T06:00:00');
   store.getState().applyGeneratedSchedule(submitted,result([before,fresh,after]));
   const actual=store.getState().document.assignments;
   assert.equal(actual.length,3);assert.equal(actual[0],before);assert.equal(actual[1],after);

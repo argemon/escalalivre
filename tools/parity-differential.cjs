@@ -36,7 +36,7 @@ function check(scenario,remote){
 }
 function main(){
  const options=args();let scenarios=options.input?[JSON.parse(fs.readFileSync(options.input,'utf8')).scenario]:options.seed?generated(Number(options.seed)):[...corpus(),...require('../shared/contract-work-scenarios.json').scenarios];
- if(options.case)scenarios=scenarios.filter(s=>s.id===options.case);
+ if(options.case)scenarios=scenarios.filter(s=>options.case.split(",").includes(s.id));
  if(!scenarios.length||scenarios.length>256)throw new Error('Select 1..256 cases');
  const build=spawnSync('dotnet',['build','tools/EscalaLivre.ParityProbe/EscalaLivre.ParityProbe.csproj','-c','Release','--no-incremental','--nologo'],{cwd:root,encoding:'utf8',timeout:120000,windowsHide:true});
  process.stdout.write(build.stdout??'');if(build.error||build.status!==0)throw new Error('Current build failed: '+(build.error??build.stderr));

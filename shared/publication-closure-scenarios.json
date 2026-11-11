@@ -1,0 +1,55 @@
+{
+  "scenarios": [
+    {
+      "id": "clean",
+      "mandatory": false,
+      "pending": [],
+      "ack": [],
+      "allowed": true
+    },
+    {
+      "id": "mandatory",
+      "mandatory": true,
+      "pending": [],
+      "ack": [],
+      "allowed": false
+    },
+    {
+      "id": "gap-unacknowledged",
+      "mandatory": false,
+      "pending": [
+        "staffing"
+      ],
+      "ack": [],
+      "allowed": false
+    },
+    {
+      "id": "all-acknowledged",
+      "mandatory": false,
+      "pending": [
+        "staffing",
+        "workload",
+        "warning",
+        "preference"
+      ],
+      "ack": [
+        "staffing",
+        "workload",
+        "warning",
+        "preference"
+      ],
+      "allowed": true
+    },
+    {
+      "id": "preference-distinct",
+      "mandatory": false,
+      "pending": [
+        "preference"
+      ],
+      "ack": [
+        "warning"
+      ],
+      "allowed": false
+    }
+  ]
+}

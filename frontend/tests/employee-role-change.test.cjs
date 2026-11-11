@@ -21,7 +21,7 @@ function fixture() {
   store.getState().setDocument(document);
   return {load,store,employee:store.getState().document.employees.find(e=>e.id===employee.id)};
 }
-test('changing employee role updates name and ID together on every registered shift',()=>{
+test('changing employee registration preserves every registered shift role',()=>{
   const {load,store,employee}=fixture();
   const before=plain(store.getState().document);
   const role=before.roles.find(r=>r.name==='caixa');
@@ -30,14 +30,14 @@ test('changing employee role updates name and ID together on every registered sh
   assert.equal(saved.employees.find(e=>e.id===employee.id).roleId,role.id);
   for(const shift of saved.assignments) {
     const original=before.assignments.find(a=>a.id===shift.id);
-    assert.deepEqual(plain(shift),shift.employeeId===employee.id?{...original,roleId:role.id,role:role.name}:original);
+    assert.deepEqual(plain(shift),original);
   }
-  assert.ok(!store.getState().analysis.conflicts.some(c=>c.code==='invalidShift'&&c.employeeId===employee.id));
+  assert.ok(store.getState().analysis.conflicts.some(c=>c.code==='invalidShift'&&c.employeeId===employee.id));
   const {normalizeDocument}=load('lib/documentLifecycle.ts');
   const {serializeNative,parseNativeText}=load('lib/nativeDocument.ts');
   for(const document of [normalizeDocument(saved),parseNativeText(serializeNative(saved))]) {
     for(const shift of document.assignments.filter(a=>a.employeeId===employee.id)) {
-      assert.equal(shift.roleId,role.id);assert.equal(shift.role,role.name);
+      assert.equal(shift.roleId,employee.roleId);assert.equal(shift.role,employee.role);
     }
   }
 });
@@ -47,7 +47,7 @@ test('editing an employee without changing role preserves shift contents',()=>{
   store.getState().upsertEmployee({...employee,name:'Nome atualizado'});
   assert.deepEqual(plain(store.getState().document.assignments),before);
 });
-test('a new role without an ID is resolved once and shared by the employee and shifts',()=>{
+test('a new registration role without ID is resolved without rewriting historical shifts',()=>{
   const {store,employee}=fixture();
   store.getState().upsertEmployee({...employee,roleId:undefined,role:'Supervisor'});
   const document=store.getState().document;
@@ -55,7 +55,7 @@ test('a new role without an ID is resolved once and shared by the employee and s
   assert.ok(updated.roleId);
   assert.equal(updated.role,'Supervisor');
   for(const shift of document.assignments.filter(a=>a.employeeId===employee.id)) {
-    assert.equal(shift.roleId,updated.roleId);assert.equal(shift.role,updated.role);
+    assert.equal(shift.roleId,employee.roleId);assert.equal(shift.role,employee.role);
   }
-  assert.ok(!store.getState().analysis.conflicts.some(c=>c.code==='invalidShift'&&c.employeeId===employee.id));
+  assert.ok(store.getState().analysis.conflicts.some(c=>c.code==='invalidShift'&&c.employeeId===employee.id));
 });

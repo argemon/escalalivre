@@ -24,6 +24,7 @@ public sealed class ScheduleEvaluator
         foreach (var summary in workloads ?? [])
             if (summary.UnmetSeconds > 0)
                 conflicts.Add(new("warning","workloadShortfall",$"Carga prevista: {summary.ExpectedSeconds}s; planejada: {summary.PlannedSeconds}s; saldo não atendido: {summary.UnmetSeconds}s.",summary.Days[0].Date,summary.Days[^1].Date.AddDays(1),document.Employees.First(e=>e.Id==summary.EmployeeId).Role,summary.EmployeeId));
+        foreach(var employee in document.Employees)foreach(var absence in employee.Absences??[])foreach(var credit in absence.Credits)if(credit.ExcusedSeconds>ContractWorkPolicy.Nominal(document.Company,employee,credit.Date.ToDateTime(TimeOnly.MinValue)))conflicts.Add(new("warning","absenceCredit","Dispensa da ausência acima da carga prevista; o crédito efetivo fica limitado ao previsto.",credit.Date.ToDateTime(TimeOnly.MinValue),credit.Date.AddDays(1).ToDateTime(TimeOnly.MinValue),employee.Role,employee.Id));
         var coverage = ScheduleCoverage.Evaluate(document, start, end, assignments);
         return new(conflicts, coverage,
             HiringDemand.Suggest(coverage.Gaps, Math.Min(44, document.Company.DefaultWorkload.WeeklyLimitHours)),

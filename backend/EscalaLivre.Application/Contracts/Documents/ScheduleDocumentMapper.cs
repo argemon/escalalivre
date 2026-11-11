@@ -15,7 +15,7 @@ public static class ScheduleDocumentMapper
             value.UpdatedAt,
             ToProjection(value.PlanningPeriod),
             Map(value.Roles, item => ToProjection(item)),
-            ToProjection(value.Setup));
+            ToProjection(value.Setup), Map(value.Publications, PublicationProjection), Map(value.PublicationSelections, s=>new PublicationSelection(s.Start,s.End,s.VersionId)));
 
     public static DocumentRole ToProjection(DocumentRoleDto? value)
         => value is null ? null! : new(
@@ -44,7 +44,7 @@ public static class ScheduleDocumentMapper
             Map(value.Coverage, item => ToProjection(item)),
             ToProjection(value.MiddayClosure),
             Map(value.Holidays, item => ToProjection(item)),
-            value.TimeZone);
+            value.TimeZone, value.CoverageMode);
 
     public static Holiday ToProjection(HolidayDto? value)
         => value is null ? null! : new(
@@ -77,7 +77,9 @@ public static class ScheduleDocumentMapper
             Copy(value.CoverageRoles),
             value.RoleId,
             Copy(value.CoverageRoleIds),
-            value.ContractLeaves is null ? null : Map(value.ContractLeaves, l => l is null ? null! : new ContractLeave(l.Date,l.ExcusedSeconds)));
+            value.ContractLeaves is null ? null : Map(value.ContractLeaves, l => l is null ? null! : new ContractLeave(l.Date,l.ExcusedSeconds)),
+            value.RoleHistory is null ? null : Map(value.RoleHistory, t => t is null ? null! : new RoleTenure(t.StartsOn,t.Role,t.RoleId,Copy(t.CoverageRoleIds))),
+            value.InactiveFrom, Copy(value.AccumulationRoleIds), value.Absences is null ? null : Map(value.Absences,a=>a is null ? null! : new AbsenceEvent(a.Id,a.Category,a.Start,a.End,Map(a.Credits,c=>c is null ? null! : new AbsenceCredit(c.Date,c.ExcusedSeconds)))));
 
     public static WorkloadRule ToProjection(WorkloadRuleDto? value)
         => value is null ? null! : new(
@@ -126,7 +128,7 @@ public static class ScheduleDocumentMapper
             ToProjection(value.Break),
             value.Source,
             Copy(value.Tags),
-            value.RoleId);
+            value.RoleId, value.Pinned);
 
     public static BreakWindow ToProjection(BreakWindowDto? value)
         => value is null ? null! : new(
@@ -143,7 +145,7 @@ public static class ScheduleDocumentMapper
             value.UpdatedAt,
             ToDto(value.PlanningPeriod),
             Map(value.Roles, item => ToDto(item)),
-            ToDto(value.Setup));
+            ToDto(value.Setup), Map(value.Publications, PublicationDtoValue), Map(value.PublicationSelections, s=>new PublicationDtoSelection(s.Start,s.End,s.VersionId)));
 
     public static DocumentRoleDto ToDto(DocumentRole? value)
         => value is null ? null! : new(
@@ -172,7 +174,7 @@ public static class ScheduleDocumentMapper
             Map(value.Coverage, item => ToDto(item)),
             ToDto(value.MiddayClosure),
             Map(value.Holidays, item => ToDto(item)),
-            value.TimeZone);
+            value.TimeZone, value.CoverageMode);
 
     public static HolidayDto ToDto(Holiday? value)
         => value is null ? null! : new(
@@ -205,7 +207,9 @@ public static class ScheduleDocumentMapper
             Copy(value.CoverageRoles),
             value.RoleId,
             Copy(value.CoverageRoleIds),
-            value.ContractLeaves is null ? null : Map(value.ContractLeaves, l => l is null ? null! : new ContractLeaveDto(l.Date,l.ExcusedSeconds)));
+            value.ContractLeaves is null ? null : Map(value.ContractLeaves, l => l is null ? null! : new ContractLeaveDto(l.Date,l.ExcusedSeconds)),
+            value.RoleHistory is null ? null : Map(value.RoleHistory, t => t is null ? null! : new RoleTenureDto(t.StartsOn,t.Role,t.RoleId,Copy(t.CoverageRoleIds))),
+            value.InactiveFrom, Copy(value.AccumulationRoleIds), value.Absences is null ? null : Map(value.Absences,a=>a is null ? null! : new AbsenceEventDto(a.Id,a.Category,a.Start,a.End,Map(a.Credits,c=>c is null ? null! : new AbsenceCreditDto(c.Date,c.ExcusedSeconds)))));
 
     public static WorkloadRuleDto ToDto(WorkloadRule? value)
         => value is null ? null! : new(
@@ -254,7 +258,7 @@ public static class ScheduleDocumentMapper
             ToDto(value.Break),
             value.Source,
             Copy(value.Tags),
-            value.RoleId);
+            value.RoleId, value.Pinned);
 
     public static BreakWindowDto ToDto(BreakWindow? value)
         => value is null ? null! : new(
@@ -268,6 +272,8 @@ public static class ScheduleDocumentMapper
         => value is null ? null : new(value.ContractedSeconds, Copy(value.DailySeconds),
             value.Compensation is null ? null : new(value.Compensation.Instrument, value.Compensation.StartsOn, value.Compensation.EndsOn), value.FlexibleWorkDays);
 
+    private static Publication PublicationProjection(PublicationDto? v)=>v is null?null!:new(v.Id,v.Number,v.Period is null?null!:new(v.Period.Start,v.Period.End),v.ClosedAt,v.CompanyName,v.CompanyTimeZone,Map(v.People,p=>p is null?null!:new PublicationPerson(p.Id,p.Name,p.Role)),Map(v.Shifts,s=>s is null?null!:new PublicationShift(s.Id,s.EmployeeId,s.Role,s.Start,s.End,s.Break is {} b?new(b.Start,b.End):null)),Map(v.Acknowledgements,a=>a is null?null!:new PublicationAcknowledgement(a.Category,a.Groups,a.Occurrences)));
+    private static PublicationDto PublicationDtoValue(Publication? v)=>v is null?null!:new(v.Id,v.Number,v.Period is null?null!:new(v.Period.Start,v.Period.End),v.ClosedAt,v.CompanyName,v.CompanyTimeZone,Map(v.People,p=>new PublicationDtoPerson(p.Id,p.Name,p.Role)),Map(v.Shifts,s=>new PublicationDtoShift(s.Id,s.EmployeeId,s.Role,s.Start,s.End,s.Break is {} b?new(b.Start,b.End):null)),Map(v.Acknowledgements,a=>new PublicationDtoAcknowledgement(a.Category,a.Groups,a.Occurrences)));
     private static IReadOnlyList<T> Copy<T>(IReadOnlyList<T>? values)
         => values is null ? null! : values.ToImmutableArray();
 

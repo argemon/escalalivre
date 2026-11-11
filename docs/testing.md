@@ -89,3 +89,8 @@ ContractWorkTests roda sem OR-Tools; ContractGenerationTests verifica geração 
 prioridades com o adaptador real. HTTP compara os mesmos documentos pelo worker
 e gera 44h uniforme/sexta reduzida. A matriz anterior continua obrigatória.
 Evidências, CI pendente e limitações: [etapa 3](decisions/018-weekly-workload-generation.md).
+
+
+## Operação — conclusão local de 11/11/2026
+
+As nove tasks estão concluídas localmente. [Validação consolidada](tasks/operacao/VALIDACAO-FINAL.md) registra a execução integral, expectativas antigas corrigidas, rechecagens focadas, manifesto dos fontes, cenário final real e inspeção PDF/PNG/XLSX. O inventário final coberto por esses escopos é 855 .NET e 674 frontend por fuso, além de 33 HTTP e 216 cenários diferenciais por fuso. Isto não declara CI remota aprovada nem uma segunda execução integral posterior às correções. CI da revisão exata permanece pendente antes de integrar.

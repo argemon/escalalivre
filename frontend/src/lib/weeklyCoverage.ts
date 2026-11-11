@@ -1,3 +1,4 @@
+import { activeOn, employeeOn } from "./policies/employment";
 import { datePart, formatCivilDateTime } from "./dateTime";
 import { canCover } from "./coverageAllocation";
 import { closedHoliday } from "./holidays";
@@ -11,7 +12,9 @@ export function weeklyCoverage(document: EscalaLivreDocument, date: string): Wee
   if (closedHoliday(document.company,date)) return actual;
   const day = new Date(date+"T00:00:00").getDay();
   const predicted: WeeklyCoverage[] = [];
-  for (const employee of document.employees) {
+  for (const registered of document.employees) {
+    if(!activeOn(registered,date))continue;
+    const employee=employeeOn(registered,date);
     if (actual.some(a => a.employeeId === employee.id)) continue;
     if ((employee.inheritsCompanyDefaults ? document.company.defaultWorkload : employee.workload).weeklyPlan?.flexibleWorkDays) continue;
     const workingDays = employee.inheritsCompanyDefaults ? document.company.operatingDays : employee.workingDays ?? document.company.operatingDays;
@@ -25,7 +28,7 @@ export function weeklyCoverage(document: EscalaLivreDocument, date: string): Wee
       if (end <= start) end.setDate(end.getDate()+1);
       let windows = [{start:+start,end:+end}];
       if (employee.availability.length) windows = employee.availability.map(w => ({start:Math.max(+start,Date.parse(w.start)),end:Math.min(+end,Date.parse(w.end))})).filter(w => w.end > w.start);
-      for (const restriction of employee.restrictions) {
+      for (const restriction of [...employee.restrictions,...(employee.absences??[])]) {
         const from = Date.parse(restriction.start), to = Date.parse(restriction.end);
         windows = windows.flatMap(w => to <= w.start || from >= w.end ? [w] : [{start:w.start,end:Math.min(from,w.end)},{start:Math.max(to,w.start),end:w.end}].filter(v => v.end > v.start));
       }
@@ -37,7 +40,7 @@ export function weeklyCoverage(document: EscalaLivreDocument, date: string): Wee
         const interval=intervalFor(document.company,employee,window.start,window.end,pause);
         const local = (n: number) => formatCivilDateTime(new Date(n));
         if (predicted.some(a => a.employeeId === employee.id && Date.parse(a.start) === window.start && Date.parse(a.end) === window.end)) continue;
-        predicted.push({id:"preview-"+date+"-"+employee.id+"-"+index+"-"+part,employeeId:employee.id,role:employee.role,start:local(window.start),end:local(window.end),source:"manual",tags:[],break:interval,planned:true});
+        predicted.push({id:"preview-"+date+"-"+employee.id+"-"+index+"-"+part,employeeId:employee.id,role:employee.role,roleId:employee.roleId,start:local(window.start),end:local(window.end),source:"manual",tags:[],break:interval,planned:true});
       }
     }
   }

@@ -87,7 +87,7 @@ test('failed checkpoint blocks import until its recovery copy has been downloade
 test('a generation checkpoint precedes replacement, failures and stale results do not replace data',()=>{
   const storage=memory(),{load}=session(storage),{useScheduleStore:store}=load('store/scheduleStore.ts'),{recovery}=load('lib/recoveryStorage.ts');
   const submitted=store.getState().document;
-  const result={assignments:[],coverage:[],gaps:[],conflicts:[],decisions:[],optimizationSuggestions:[],hiringSuggestions:[],coverageScore:1};
+  const result={assignments:[],coverage:[],gaps:[],conflicts:[],decisions:[],optimizationSuggestions:[],hiringSuggestions:[],coverageScore:1,optimization:{status:"feasible"}};
   store.getState().applyGeneratedSchedule(submitted,{...result,conflicts:[{code:'solverTimeout',severity:'error',message:'Timeout'}]});
   assert.equal(store.getState().document,submitted);assert.equal(recovery.getSnapshot().copies.length,0);
   storage.setItem=()=>{throw new Error('Quota');};

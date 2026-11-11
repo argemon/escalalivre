@@ -47,7 +47,7 @@ export function normalizeDocumentTimes(document: EscalaLivreDocument): EscalaLiv
   if (!validTimeZone(zone)) throw new Error("Fuso horário da empresa inválido.");
   const window=<T extends { start: string; end: string }>(w: T): T => ({...w,start:civilDateTime(w.start,zone),end:civilDateTime(w.end,zone)});
   return {...document, company:{...document.company,timeZone:zone}, updatedAt:utcInstant(document.updatedAt),
-    employees:document.employees.map(e=>({...e,availability:e.availability.map(window),restrictions:e.restrictions.map(window)})),
+    employees:document.employees.map(e=>({...e,availability:e.availability.map(window),restrictions:e.restrictions.map(window),absences:e.absences?.map(window)})),
     assignments:document.assignments.map(a=>({...window(a),break:a.break ? window(a.break) : undefined}))};
 }
 export function moveShift(shift: ShiftAssignment, startValue: string, endValue: string, zone=deviceTimeZone()): ShiftAssignment {

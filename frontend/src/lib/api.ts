@@ -3,7 +3,7 @@ import { downloadText, readNativeFile, serializeNative } from "./nativeDocument"
 export { serializeNative } from "./nativeDocument";
 import type { EscalaLivreDocument, ScheduleResult } from "../types/schedule";
 
-const API_URL = (import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? "http://localhost:5003" : "")).replace(/\/$/, "");
+export const API_URL = (import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? "http://localhost:5003" : "")).replace(/\/$/, "");
 export { planningPeriod } from "./analysis";
 import { planningPeriod } from "./analysis";
 

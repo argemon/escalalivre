@@ -18,7 +18,7 @@ public sealed class NativeScheduleSerializer
     public ExportResult Export(ExportRequest request)
     {
         if (request is null || DocumentSafety.Error(request.Document) is not null) throw new FormatException("Documento inválido.");
-        if (request.Format is null) throw new FormatException("Formato inválido.");
+        if (request.Format is null || request.PublicationLabel is { Length: > 200 }) throw new FormatException("Formato ou identificação inválida.");
         string json = JsonSerializer.Serialize(WithPlanningPeriod(request.Document), JsonOptions);
         if (request.Format.ToLowerInvariant() is "native" or "escalalivre")
         {
@@ -36,8 +36,8 @@ public sealed class NativeScheduleSerializer
         }
         return request.Format.ToLowerInvariant() switch
         {
-            "xlsx" => new ExportResult("escala.xlsx", Convert.ToBase64String(ToXlsx(request.Document)), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
-            "pdf" => new ExportResult("escala.pdf", Convert.ToBase64String(SchedulePdfExporter.Export(request.Document)), "application/pdf"),
+            "xlsx" => new ExportResult("escala.xlsx", Convert.ToBase64String(ToXlsx(request.Document,request.PublicationLabel)), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
+            "pdf" => new ExportResult("escala.pdf", Convert.ToBase64String(SchedulePdfExporter.Export(request.Document,request.PublicationLabel)), "application/pdf"),
             _ => throw new FormatException("Formato de exportação não suportado.")
         };
     }
@@ -68,7 +68,7 @@ public sealed class NativeScheduleSerializer
         return document with { PlanningPeriod = new(start, start.AddDays(6)) };
     }
 
-    private static byte[] ToXlsx(EscalaLivreDocument document)
+    private static byte[] ToXlsx(EscalaLivreDocument document,string? publicationLabel=null)
     {
         using var stream = new MemoryStream();
         using (var archive = new ZipArchive(stream, ZipArchiveMode.Create, true))
@@ -100,31 +100,34 @@ public sealed class NativeScheduleSerializer
                   <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
                 </Relationships>
                 """);
-            WriteEntry(archive, "xl/worksheets/sheet1.xml", BuildWorksheet(document));
+            WriteEntry(archive, "xl/worksheets/sheet1.xml", BuildWorksheet(document,publicationLabel));
         }
 
         return stream.ToArray();
     }
 
-    private static string BuildWorksheet(EscalaLivreDocument document)
+    private static string BuildWorksheet(EscalaLivreDocument document,string? publicationLabel=null)
     {
         var rows = new List<string[]>
         {
             new[] { "Funcionario", "Funcao", "Inicio", "Fim", "Intervalo inicio", "Intervalo fim", "Origem" }
         };
-        rows.AddRange(document.Assignments.Select(assignment =>
+        if(publicationLabel is not null) rows = [new[]{document.Company.Name},new[]{publicationLabel},new[]{$"Período: {document.PlanningPeriod?.Start:dd/MM/yyyy} a {document.PlanningPeriod?.End:dd/MM/yyyy}"},new[]{"Intervalo = pausa sem cobertura. Sem intervalo = nenhuma pausa registrada."},new[]{"Funcionário","Função","Início","Fim","Intervalo início","Intervalo fim"}];
+        if(publicationLabel is not null && document.Employees.Count==1)rows.Insert(4,new[]{"Pessoa: "+document.Employees[0].Name});
+        rows.AddRange(document.Assignments.OrderBy(a=>a.EmployeeId).ThenBy(a=>a.Start).Select(assignment =>
         {
             Employee? employee = document.Employees.FirstOrDefault(x => x.Id == assignment.EmployeeId);
-            return new[]
+            var values = new[]
             {
                 employee?.Name ?? assignment.EmployeeId.ToString(),
                 assignment.Role,
-                assignment.Start.ToString("O"),
-                assignment.End.ToString("O"),
-                assignment.Break?.Start.ToString("O") ?? "",
-                assignment.Break?.End.ToString("O") ?? "",
+                assignment.Start.ToString(publicationLabel is null?"O":"dd/MM/yyyy HH:mm:ss"),
+                assignment.End.ToString(publicationLabel is null?"O":"dd/MM/yyyy HH:mm:ss"),
+                assignment.Break?.Start.ToString(publicationLabel is null?"O":"dd/MM/yyyy HH:mm:ss") ?? "",
+                assignment.Break?.End.ToString(publicationLabel is null?"O":"dd/MM/yyyy HH:mm:ss") ?? "",
                 assignment.Source
             };
+            return publicationLabel is null?values:values.Take(6).ToArray();
         }));
 
         IEnumerable<string> rowXml = rows.Select((row, index) =>
@@ -137,6 +140,7 @@ public sealed class NativeScheduleSerializer
         return $"""
             <?xml version="1.0" encoding="UTF-8"?>
             <worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+              <cols><col min="1" max="2" width="32" customWidth="1"/><col min="3" max="6" width="24" customWidth="1"/></cols>
               <sheetData>{string.Concat(rowXml)}</sheetData>
             </worksheet>
             """;

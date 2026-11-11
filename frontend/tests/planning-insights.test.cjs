@@ -15,7 +15,7 @@ test('local analysis calculates a full 31-day hiring demand without truncating t
   assert.equal(result.optimization.status,'not-run');
 });
 function generation(overrides={}){return {assignments:[],conflicts:[],coverage:[],gaps:[],decisions:[],optimizationSuggestions:[],hiringSuggestions:[],coverageScore:1,...overrides};}
-for(const status of ['feasible','optimal',undefined])test('generation only claims an optimum when the response proves it: '+status,()=>{
+for(const status of ['feasible','optimal'])test('generation only claims an optimum when the response proves it: '+status,()=>{
   const local=sourceLoader(),{useScheduleStore:store}=local('store/scheduleStore.ts');
   store.getState().setDocument(structuredClone(fixtures.document));const submitted=store.getState().document;
   store.getState().applyGeneratedSchedule(submitted,generation({optimization:status?{status}:undefined,gaps:fixtures.scenarios[2].gaps}));
@@ -36,3 +36,5 @@ test('a stale optimal response cannot mark a changed planning as optimal',()=>{
   store.getState().applyGeneratedSchedule(submitted,generation({optimization:{status:'optimal'}}));
   assert.equal(store.getState().document,current);assert.equal(store.getState().solverStatus,'idle');
 });
+
+test('an unproven generation response is rejected without applying or inventing a feasible status',()=>{const local=sourceLoader(),{useScheduleStore:store}=local('store/scheduleStore.ts');store.getState().setDocument(structuredClone(fixtures.document));const submitted=store.getState().document;assert.throws(()=>store.getState().applyGeneratedSchedule(submitted,generation()),/proposta admissível/);assert.equal(store.getState().document,submitted);assert.equal(store.getState().solverStatus,'idle');});

@@ -1,3 +1,4 @@
+import { nominalSeconds } from "./policies/contractWorkTargets";
 import { summarizeWorkloads, weeklyPlanIssues, planFor } from "./policies/weeklyWorkPlan";
 import { transitionIssues } from "./policies/employeeSchedule";
 import { buildHiringSuggestions } from "./hiringDemand";
@@ -26,6 +27,7 @@ export function analyzeDocument(input:EscalaLivreDocument):ScheduleResult {
     result.conflicts.push({code,severity:"warning",message:"Revise a carga contratada, a distribuição diária e a compensação configuradas.",start:civilString(civilDay(civilMillis(period.start))),end:civilString(civilDay(civilMillis(period.end))+86400000),role:e.role,employeeId:e.id});
   }
   for(const summary of workloads??[])if(summary.unmetSeconds>0)result.conflicts.push({code:"workloadShortfall",severity:"warning",message:"Carga contratada não atendida integralmente.",start:summary.days[0].date,end:civilString(civilMillis(summary.days[summary.days.length-1].date)+86400000),employeeId:summary.employeeId,role:document.employees.find(e=>e.id===summary.employeeId)!.role});
+  for(const e of document.employees)for(const a of e.absences??[])for(const credit of a.credits)if(credit.excusedSeconds>nominalSeconds(document.company,e,credit.date))result.conflicts.push({code:"absenceCredit",severity:"warning",message:"Dispensa da ausência acima da carga prevista; o crédito efetivo fica limitado ao previsto.",start:credit.date+"T00:00:00",end:civilString(civilMillis(credit.date+"T00:00:00")+86400000),role:e.role,employeeId:e.id});
   const windows:{rule:typeof document.company.coverage[number];from:number;to:number;closure?:{start:number;end:number}}[]=[];
   for(let day=civilDay(civilMillis(period.start));day<=civilMillis(period.end);day+=86400000) {
     if(closedHoliday(document.company,civilString(day).split("T")[0]))continue;
@@ -41,8 +43,8 @@ export function analyzeDocument(input:EscalaLivreDocument):ScheduleResult {
    for(const w of windows.filter(w=>w.from<=start && w.to>=finish && !(w.closure && start>=w.closure.start && finish<=w.closure.end))) {
     const key=(w.rule.scope ?? "role")+w.rule.role;const previous=groups.get(key);if(!previous || previous.minimumEmployees<w.rule.minimumEmployees)groups.set(key,w.rule);
    }
-   for(const {rule,assigned} of coverageAllocation(document,start,finish,[...groups.values()],"civil")) {
-    const block={start:civilString(start),end:civilString(finish),role:rule.role,required:rule.minimumEmployees,assigned,state:assigned>=rule.minimumEmployees ? "healthy" as const : assigned===0 ? "uncovered" as const : "warning" as const};
+   for(const {rule,assigned,employeeIds} of coverageAllocation(document,start,finish,[...groups.values()],"civil")) {
+    const block={...(employeeIds?{employeeIds}:{}),start:civilString(start),end:civilString(finish),role:rule.role,required:rule.minimumEmployees,assigned,state:assigned>=rule.minimumEmployees ? "healthy" as const : assigned===0 ? "uncovered" as const : "warning" as const};
     result.coverage.push(block);
     if(assigned<rule.minimumEmployees){const missingEmployees=rule.minimumEmployees-assigned;const last=[...result.gaps].reverse().find(g=>g.role===rule.role);if(last && last.end===block.start && last.missingEmployees===missingEmployees)last.end=block.end;else result.gaps.push({start:block.start,end:block.end,role:rule.role,missingEmployees});}
    }

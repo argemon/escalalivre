@@ -20,6 +20,6 @@ public sealed record OptimizationInfo(string Status);
 
 public sealed record ImportRequest(string FileName, string ContentBase64, string Format);
 
-public sealed record ExportRequest(EscalaLivreDocument Document, string Format);
+public sealed record ExportRequest(EscalaLivreDocument Document, string Format, string? PublicationLabel = null);
 
 public sealed record ExportResult(string FileName, string ContentBase64, string MimeType);

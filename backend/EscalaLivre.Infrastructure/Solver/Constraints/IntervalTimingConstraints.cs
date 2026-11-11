@@ -7,7 +7,7 @@ public sealed class IntervalTimingConstraints : IScheduleConstraintTranslator
     public void Apply(ScheduleModelContext context, OptimizationBudget budget)
     {
         var input = context.Input;
-        var retained = input.HolidayShifts.Select(a => a.Id).ToHashSet();
+        var retained = input.RetainedInside.Select(a => a.Id).ToHashSet();
         foreach (var candidate in input.Candidates.Where(a => !retained.Contains(a.Id)))
         {
             budget.Spend();

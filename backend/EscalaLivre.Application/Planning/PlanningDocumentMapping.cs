@@ -20,7 +20,7 @@ public sealed class PlanningDocumentMapping
         if (document.PlanningPeriod is { } declared && (declared.Start != period.Start || declared.End != period.End))
             throw new FormatException("Planning context must match the document period.");
         initialPeriod = period;
-        template = document with { Roles = document.Roles is null ? null : document.Roles.Select(r => r with { CoverageRoleIds = r.CoverageRoleIds?.ToImmutableArray() }).ToImmutableArray() };
+        template = EscalaLivre.Application.Contracts.Documents.ScheduleDocumentMapper.ToProjection(EscalaLivre.Application.Contracts.Documents.ScheduleDocumentMapper.ToDto(document));
         Settings = new(document.Company, document.Employees);
         Schedule = new(document.Id, period, Settings.Employees.Select(e => e.Id), document.Assignments.Select(ImportAssignment));
     }
@@ -33,7 +33,7 @@ public sealed class PlanningDocumentMapping
         ArgumentNullException.ThrowIfNull(assignment);
         var pause = assignment.Break is null ? null : new ShiftPause(new(assignment.Break.Start, assignment.Break.End));
         var value = new ScheduledAssignment(assignment.Id, assignment.EmployeeId, assignment.Role,
-            new(assignment.Start, assignment.End), pause, assignment.Source, assignment.Tags, assignment.RoleId);
+            new(assignment.Start, assignment.End), pause, assignment.Source, assignment.Tags, assignment.RoleId, assignment.Pinned);
         return value;
     }
 
@@ -41,7 +41,7 @@ public sealed class PlanningDocumentMapping
     {
         return new(assignment.Id, assignment.EmployeeId, assignment.Role, assignment.Window.Start, assignment.Window.End,
             assignment.Pause is null ? null : new(assignment.Pause.Window.Start, assignment.Pause.Window.End),
-            assignment.Source, assignment.Tags, assignment.RoleId);
+            assignment.Source, assignment.Tags, assignment.RoleId, assignment.Pinned);
     }
 
     public EscalaLivreDocument ToDocument(bool writePeriod = false)
@@ -64,7 +64,7 @@ public sealed class PlanningDocumentMapping
         if (DocumentSafety.Error(ToDocument() with { Employees = Settings.Employees.Select(e => e.Id == id ? employee : e).ToArray() }) is { } error)
             throw new FormatException(error);
         var updated = Settings.WithEmployee(id, employee);
-        Schedule.ChangeEmployeeRole(id, employee.Role, employee.RoleId);
+        // Registration edits preserve exercised roles in every saved assignment.
         Settings = updated;
     }
 
@@ -83,7 +83,7 @@ public sealed class PlanningDocumentMapping
     }
 
     private static bool Same(ShiftAssignment a, ShiftAssignment b)
-        => a.Id == b.Id && a.EmployeeId == b.EmployeeId && a.Role == b.Role && a.RoleId == b.RoleId
+        => a.Id == b.Id && a.EmployeeId == b.EmployeeId && a.Role == b.Role && a.RoleId == b.RoleId && a.Pinned == b.Pinned
             && a.Start.ToBinary() == b.Start.ToBinary() && a.End.ToBinary() == b.End.ToBinary()
             && SamePause(a.Break, b.Break) && a.Source == b.Source && a.Tags.SequenceEqual(b.Tags);
 

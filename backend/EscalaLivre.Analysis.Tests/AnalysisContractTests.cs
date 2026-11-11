@@ -42,6 +42,14 @@ public sealed class AnalysisContractTests
             Assert.Equal(before, JsonSerializer.Serialize(request, options));
             using var hashes = JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "analysis-baseline-hashes.json")));
             var expected = hashes.RootElement.EnumerateArray().Single(s => s.GetProperty("id").GetString() == id).GetProperty("sha256").GetString();
+            // ADR 024 explicitly changes only the role-mismatch coverage: use the exercised role.
+            // Keep the original 58 baseline hashes untouched as historical evidence.
+            if(id=="role-mismatch-is-not-normalized-away") {
+                Assert.All(analysis.Coverage,b=>Assert.Equal(0,b.Assigned));
+                Assert.Equal(0,analysis.CoverageScore);
+                Assert.Contains(analysis.Conflicts,c=>c.Code=="invalidShift");
+                expected="2211E95A604C7317622AE0A4A51691128312A74C5F9A4A2F4A1047EE232437A1";
+            }
             Assert.Equal(expected, Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(serialized))));
             Assert.Equal("not-run", analysis.Optimization?.Status);
             Assert.Same(request.Document.Assignments, analysis.Assignments);

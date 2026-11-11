@@ -9,11 +9,13 @@ public static class ScheduleRules
         => RoleCoveragePolicy.CanCover(e,r,roles);
     public static IEnumerable<ScheduleIssue> ShiftDiagnostics(CompanyRules company,Employee e,ShiftAssignment a,IReadOnlyList<DocumentRole>? roles = null)
     {
+        e=EmploymentPolicy.On(e,a.Start);
         ScheduleIssue Issue(string code,string message,string severity="error")=>new(severity,code,message,a.Start,a.End,a.Role,e.Id);
         var rule=EffectiveWorkPolicy.RuleFor(company,e);var work=EffectiveWorkPolicy.Measure(a);
+        if(!EmploymentPolicy.ActiveOn(e,a.Start))yield return Issue("inactiveEmployee","Turno iniciado após a inativação da pessoa.");
         if(a.End<=a.Start||a.Role!=e.Role)yield return Issue("invalidShift","Turno inválido ou função divergente.");
         if(!AvailabilityPolicy.Allows(e,a.Start,a.End))yield return Issue("availability","Turno fora da disponibilidade ou em horário bloqueado.");
-        bool exception=ShiftEligibilityPolicy.HasOperatingException(company,e,a,roles);
+        bool exception=ShiftEligibilityPolicy.HasOperatingException(company,EmploymentPolicy.ForShift(e,a),a,roles);
         if(!ShiftEligibilityPolicy.IsWorkingDay(company,e,a.Start,exception))yield return Issue("workingDay","Turno fora dos dias de trabalho.");
         if(ShiftEligibilityPolicy.OutsideHours(company,a))yield return Issue("outsideHours",exception?"Fora do expediente com autorização específica.":"Fora do expediente sem autorização específica.",exception?"info":"error");
         if(LaborRules.ClosedHoliday(company,a.Start)&&!LaborRules.AuthorizedHolidayShift(company,a))yield return Issue("holiday","Turno em feriado configurado como fechado.");

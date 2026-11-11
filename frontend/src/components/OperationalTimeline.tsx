@@ -2,7 +2,7 @@ import { datePart, timePart } from "../lib/dateTime";
 import { planningDays } from "../lib/planningPeriod";
 import { outsideOperatingHours } from "../lib/coverageRules";
 import { Activity, Flame, Layers3 } from "lucide-react";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import {
   assignmentForEmployee,
   assignmentLabel,
@@ -16,11 +16,11 @@ import { Badge } from "./ui";
 const dayLabels = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
 
 export function OperationalTimeline() {
-  const { viewMode, setSelectedEmployeeId } = useScheduleStore();
+  const { viewMode, setSelectedEmployeeId, planningFocus, focusPlanning } = useScheduleStore();
   const document=useScheduleStore(state=>state.document);
   const dates=planningDays(document);
   const [selectedDate,setSelectedDate]=useState(dates[0] ?? "");
-  const activeDate=dates.includes(selectedDate) ? selectedDate : dates[0] ?? "";
+  const activeDate=planningFocus?.date??(dates.includes(selectedDate) ? selectedDate : dates[0] ?? "");
 
   return (
     <main className="min-w-0 flex-1 overflow-hidden bg-background">
@@ -40,7 +40,7 @@ export function OperationalTimeline() {
         </section>
 
         <section className="min-h-0 flex-1 overflow-auto p-5">
-          {viewMode === "coverage" ? <CoverageTable /> : viewMode === "heatmap" ? <Heatmap /> : <TimelineRows onEmployeeClick={setSelectedEmployeeId} selectedDate={activeDate} setSelectedDate={setSelectedDate} />}
+          {viewMode === "coverage" ? <CoverageTable /> : viewMode === "heatmap" ? <Heatmap /> : <TimelineRows onEmployeeClick={setSelectedEmployeeId} selectedDate={activeDate} setSelectedDate={date=>{setSelectedDate(date);focusPlanning(date);}} />}
         </section>
       </div>
     </main>
@@ -49,7 +49,9 @@ export function OperationalTimeline() {
 
 function TimelineRows({ onEmployeeClick,selectedDate,setSelectedDate }: { onEmployeeClick: (id: string) => void;selectedDate:string;setSelectedDate:(date:string)=>void }) {
   const document = useScheduleStore((state) => state.document);
-  const dates = planningDays(document);
+  const planningFocus=useScheduleStore(state=>state.planningFocus);
+  useEffect(()=>{if(!planningFocus)return;const frame=window.requestAnimationFrame(()=>{if(!planningFocus.employeeId){window.document.querySelector<HTMLSelectElement>("[data-planning-date]")?.focus();return;}const row=window.document.querySelector<HTMLElement>('[data-employee-row="'+planningFocus.employeeId+'"]');row?.scrollIntoView({block:"nearest"});row?.querySelector<HTMLButtonElement>("button")?.focus();});return()=>window.cancelAnimationFrame(frame);},[planningFocus]);
+  const dates = [...new Set([...planningDays(document),selectedDate].filter(Boolean))].sort();
 
   const activeDate = dates.includes(selectedDate) ? selectedDate : dates[0] ?? "";
   const hours = (v: string) => { const [h,m] = v.split(":").map(Number); return h+m/60; };
@@ -64,7 +66,7 @@ function TimelineRows({ onEmployeeClick,selectedDate,setSelectedDate }: { onEmpl
 
   return (
     <div className="min-w-[960px] rounded-md border border-border bg-card">
-      <label className="flex items-center gap-3 border-b border-border p-3 text-sm">Dia do planejamento<select className="rounded border border-border bg-background p-2" value={activeDate} onChange={e => setSelectedDate(e.target.value)}>{dates.map(date => <option key={date} value={date}>{date.split("-").reverse().join("/")}</option>)}</select>{dates.length === 0 && <span>Sem turnos cadastrados</span>}</label>
+      <label className="flex items-center gap-3 border-b border-border p-3 text-sm">Dia do planejamento<select data-planning-date className="rounded border border-border bg-background p-2" value={activeDate} onChange={e => setSelectedDate(e.target.value)}>{dates.map(date => <option key={date} value={date}>{date.split("-").reverse().join("/")}</option>)}</select>{dates.length === 0 && <span>Sem turnos cadastrados</span>}</label>
       <div className="sticky top-0 z-10 grid grid-cols-[180px_1fr] border-b border-border bg-card">
         <div className="border-r border-border px-3 py-2 text-xs font-semibold uppercase text-muted-foreground">Pessoa</div>
         <div className="relative h-10">
@@ -79,7 +81,7 @@ function TimelineRows({ onEmployeeClick,selectedDate,setSelectedDate }: { onEmpl
       {document.employees.map((employee) => {
         const assignments = assignmentForEmployee(document, employee.id).filter(a => datePart(a.start) === activeDate);
         return (
-          <div key={employee.id} className="grid min-h-20 grid-cols-[180px_1fr] border-b border-border last:border-b-0">
+          <div data-employee-row={employee.id} key={employee.id} className="grid min-h-20 grid-cols-[180px_1fr] border-b border-border last:border-b-0">
             <button className="border-r border-border px-3 py-3 text-left hover:bg-muted" onClick={() => onEmployeeClick(employee.id)}>
               <p className="text-sm font-medium">{employee.name}</p>
               <p className="text-xs text-muted-foreground capitalize">{employee.role}</p>
@@ -93,13 +95,14 @@ function TimelineRows({ onEmployeeClick,selectedDate,setSelectedDate }: { onEmpl
                 const overnight = new Date(assignment.end).getDate() !== new Date(assignment.start).getDate();
                 return (
                   <div
+                    role="button" tabIndex={0} aria-label={"Editar turno de "+employee.name+" em "+activeDate} onClick={()=>useScheduleStore.getState().selectShift({id:assignment.id,employeeId:employee.id,date:activeDate})} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();useScheduleStore.getState().selectShift({id:assignment.id,employeeId:employee.id,date:activeDate});}}}
                     key={assignment.id}
                     className={`absolute top-4 h-11 rounded-md border px-2 py-1 shadow-sm ${overnight ? "border-sky-400/60 bg-sky-500/25" : assignment.source === "solver" ? "border-emerald-400/60 bg-emerald-500/25" : "border-violet-400/60 bg-violet-500/25"}`}
                     style={{ left: `${percentAt(start)}%`, width: `${durationPercent(start, end)}%` }}
                     title={assignmentLabel(assignment) + (outsideOperatingHours(document.company,new Date(assignment.start).getDay(),timePart(assignment.start),timePart(assignment.end)) ? " · Fora do expediente" : "")}
                   >
                     <div className="flex items-center justify-between gap-2 text-xs font-semibold">
-                      <span>{assignmentLabel(assignment)}{outsideOperatingHours(document.company,new Date(assignment.start).getDay(),timePart(assignment.start),timePart(assignment.end)) && " · Fora do expediente"}</span>
+                      <span>{assignment.pinned&&"🔒 "}{assignmentLabel(assignment)}{outsideOperatingHours(document.company,new Date(assignment.start).getDay(),timePart(assignment.start),timePart(assignment.end)) && " · Fora do expediente"}</span>
                       {overnight && <span>+1d</span>}
                     </div>
                     {lunchStart !== undefined && lunchEnd !== undefined && (

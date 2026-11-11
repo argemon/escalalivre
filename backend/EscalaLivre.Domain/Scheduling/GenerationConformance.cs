@@ -6,7 +6,7 @@ namespace EscalaLivre.Domain.Scheduling;
 public static class GenerationConformance
 {
     public static bool SameAssignment(ShiftAssignment a, ShiftAssignment b)
-        => a.Id == b.Id && a.EmployeeId == b.EmployeeId && a.Role == b.Role && a.RoleId == b.RoleId
+        => a.Id == b.Id && a.EmployeeId == b.EmployeeId && a.Role == b.Role && a.RoleId == b.RoleId && a.Pinned == b.Pinned
             && a.Start.ToBinary() == b.Start.ToBinary() && a.End.ToBinary() == b.End.ToBinary()
             && (a.Break is null ? b.Break is null : b.Break is not null
                 && a.Break.Start.ToBinary() == b.Break.Start.ToBinary() && a.Break.End.ToBinary() == b.Break.End.ToBinary())
@@ -48,7 +48,7 @@ public static class GenerationConformance
             "minimumRest" => added.Start <= start && RestPolicy.Conflicts(added.Start, added.End, start, end, RestPolicy.Required(document.Company, rule)),
             "invalidShift" or "availability" or "workingDay" or "outsideHours" or "holiday" or "nightWork"
                 or "fixedStart" or "workload" or "regime" or "interval" or "fixedInterval" or "middayClosure"
-                or "unknownEmployee" => added.Start == start && added.End == end,
+                or "unknownEmployee" or "inactiveEmployee" => added.Start == start && added.End == end,
             _ => true // A new diagnostic family needs an explicit participation contract before allowing additions.
         };
     }

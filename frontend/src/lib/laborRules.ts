@@ -1,3 +1,4 @@
+import { employeeOn, employeeForShift, activeOn } from "./policies/employment";
 import { contractDailyLimitMillis } from "./policies/weeklyWorkPlan";
 import { normalWeekSeconds } from "./policies/flexibleContract";
 import { civilDay, civilMillis, civilString, civilWeek, clockMillis } from "./civilTime";
@@ -12,12 +13,14 @@ import { isAvailable } from "./policies/availability";
 import { exceedsCycleEndingOn } from "./policies/dayCycle";
 
 export function shiftDiagnostics(company:CompanyRules,e:Employee,a:ShiftAssignment,roles:DocumentRole[]=[]):ScheduleIssue[] {
+  e=employeeOn(e,a.start);
   const result:ScheduleIssue[]=[];
   const issue=(code:string,message:string,severity:ScheduleIssue["severity"]="error")=>result.push({code,message,severity,start:a.start,end:a.end,role:a.role,employeeId:e.id});
   const start=civilMillis(a.start),end=civilMillis(a.end),weekday=new Date(start).getUTCDay(),rule=workloadFor(company,e),work=workMillis(a);
+  if(!activeOn(e,a.start))issue("inactiveEmployee","Turno iniciado após a inativação da pessoa.");
   if(end<=start||a.role!==e.role)issue("invalidShift","Turno inválido ou função divergente.");
   if(!isAvailable(e,start,end))issue("availability","Turno fora da disponibilidade ou em horário bloqueado.");
-  const exception=hasOperatingException(company,e,a,roles);
+  const exception=hasOperatingException(company,employeeForShift(e,a),a,roles);
   if(!isWorkingDay(company,e,weekday,exception))issue("workingDay","Turno fora dos dias de trabalho.");
   if(outsideHours(company,a))issue("outsideHours",exception?"Fora do expediente com autorização específica.":"Fora do expediente sem autorização específica.",exception?"info":"error");
   if(closedHoliday(company,civilString(start).split("T")[0])&&!authorizedHolidayShift(company,a))issue("holiday","Turno em feriado configurado como fechado.");

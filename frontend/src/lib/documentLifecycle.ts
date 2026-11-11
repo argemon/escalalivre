@@ -10,7 +10,7 @@ export const DOCUMENT_MIGRATIONS = {
 export function migrateDocument(input:EscalaLivreDocument):{document:EscalaLivreDocument;applied:string[]} {
   const applied:string[]=[];
   if(!input.company.timeZone)applied.push(DOCUMENT_MIGRATIONS.companyZone);
-  const windows=[...input.assignments.flatMap(a=>[a,...(a.break?[a.break]:[])]),...input.employees.flatMap(e=>[...e.availability,...e.restrictions])];
+  const windows=[...input.assignments.flatMap(a=>[a,...(a.break?[a.break]:[])]),...input.employees.flatMap(e=>[...e.availability,...e.restrictions,...(e.absences??[])])];
   if(windows.some(w=>[w.start,w.end].some(s=>/(?:Z|[+-]\d{2}:\d{2})$/.test(s))))applied.push(DOCUMENT_MIGRATIONS.civilTimes);
   if(windows.some(w=>[w.start,w.end].some(s=>/\.\d+/.test(s))))applied.push(DOCUMENT_MIGRATIONS.precision);
   if(!input.planningPeriod)applied.push(DOCUMENT_MIGRATIONS.period);
