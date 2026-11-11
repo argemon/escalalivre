@@ -8,8 +8,8 @@ export function belongsToPeriod(shift: ShiftAssignment, period: PlanningPeriod):
   return date >= period.start && date <= period.end;
 }
 export function replacePeriodAssignments(document: EscalaLivreDocument, generated: ShiftAssignment[]): ShiftAssignment[] {
-  return [...document.assignments.filter(a => !belongsToPeriod(a, document.planningPeriod)),
-    ...generated.filter(a => belongsToPeriod(a, document.planningPeriod))];
+  const retained=document.assignments.filter(a => a.pinned || !belongsToPeriod(a, document.planningPeriod));
+  return [...retained,...generated.filter(a => belongsToPeriod(a, document.planningPeriod)&&!retained.some(old=>old.pinned&&old.id===a.id))];
 }
 export function weeklyWork(shift: ShiftAssignment): { start: Date; milliseconds: number }[] {
   const start = new Date(shift.start), end = new Date(shift.end);

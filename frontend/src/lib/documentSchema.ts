@@ -1,3 +1,4 @@
+import { publicationSchema,publicationSelectionSchema,archiveError } from "./publicationSchema";
 import { normalizeCoverageRoles } from "./roles";
 import limits from "../../../shared/document-validation-limits.json";
 import { civilMillis, clockMillis } from "./civilTime";
@@ -74,6 +75,8 @@ const workload = z.object({
   defaultShiftDuration:boundedDuration(1,limits.shiftDurationSeconds)
 });
 const canonicalDocumentSchema = z.object({
+  publications:z.array(publicationSchema).max(10).nullish().transform(v=>v??undefined),
+  publicationSelections:z.array(publicationSelectionSchema).max(10).nullish().transform(v=>v??undefined),
   planningPeriod:z.object({start:z.string(),end:z.string()}).refine(p => !periodError(p), "Período inválido: use de 1 a 31 dias entre 1900 e 2100.").optional(),
   roles:boundedArray(z.object({id,name:text,coverageRoleIds:boundedArray(id,limits.coverageRoles).nullish().transform(v=>v??undefined)}),limits.roles).refine(v => new Set(v.map(r=>r.id)).size===v.length,"Cargos duplicados").optional(),
   setup:z.object({companyConfigured:z.boolean()}).optional(),
@@ -86,10 +89,15 @@ const canonicalDocumentSchema = z.object({
     minimumRest:boundedDuration(limits.minimumRestSeconds,limits.maximumRestSeconds),
     lunch:z.object({minimum:boundedDuration(0,limits.lunchSeconds),maximum:boundedDuration(0,limits.lunchSeconds),preferredAfter:boundedDuration(0,limits.preferredAfterSeconds)})
       .refine(v=>clockMillis(v.maximum)>=clockMillis(v.minimum),"Intervalo máximo deve ser maior ou igual ao mínimo"),
+    coverageMode:z.literal("exclusive").nullish().transform(v=>v??undefined),
     coverage:boundedArray(z.object({scope:z.enum(["role","team"]).optional(),daysMode:z.enum(["operating","custom"]).nullish().transform(v=>v??undefined),allowsOutsideHours:z.boolean().optional(),roleId:id.optional(),role:text,day:z.number().int().min(0).max(6),start:time,end:time,minimumEmployees:z.number().int().min(0).max(limits.employees)}),limits.coverage)
   }),
   employees:boundedArray(z.object({
+    absences:boundedArray(z.object({id,category:z.enum(["vacation","medical","leave","unavailable"]),start:date,end:date,credits:boundedArray(z.object({date:z.string().refine(v=>validCivilDateTime(v+"T00:00:00"),"Data inválida"),excusedSeconds:z.number().int().min(1).max(86400)}),limits.absenceCredits)}).refine(a=>civilTimestamp(a.end)>civilTimestamp(a.start)&&civilTimestamp(a.end)-civilTimestamp(a.start)<=366*86400000&&new Set(a.credits.map(c=>c.date)).size===a.credits.length&&a.credits.every(c=>civilTimestamp(c.date+"T00:00:00")<civilTimestamp(a.end)&&civilTimestamp(c.date+"T00:00:00")+86400000>civilTimestamp(a.start)),"Ausência ou dispensa inválida"),limits.absences).refine(events=>new Set(events.map(a=>a.id)).size===events.length&&events.reduce((n,a)=>n+a.credits.length,0)<=limits.absenceCredits,"Ausências duplicadas ou acima dos limites").nullish().transform(v=>v??undefined),
+    accumulationRoleIds:boundedArray(id,limits.coverageRoles).refine(v=>v.length===0||v.length>=2,"Selecione ao menos duas funções para acumulação").refine(v=>new Set(v).size===v.length,"Funções de acumulação duplicadas").nullish().transform(v=>v??undefined),
     id,name:text,roleId:id.optional(),role:text,inheritsCompanyDefaults:z.boolean(),
+    inactiveFrom:z.string().refine(v=>validCivilDateTime(v+"T00:00:00"),"Data de inativação inválida").nullish().transform(v=>v??undefined),
+    roleHistory:boundedArray(z.object({startsOn:z.string().refine(v=>validCivilDateTime(v+"T00:00:00"),"Vigência inválida"),roleId:id,role:text,coverageRoleIds:boundedArray(id,limits.coverageRoles).optional()}),limits.windows).refine(v=>new Set(v.map(t=>t.startsOn)).size===v.length,"Vigências duplicadas").nullish().transform(v=>v??undefined),
     coverageRoleIds:boundedArray(id,limits.coverageRoles).optional(),coverageRoles:boundedArray(text,limits.coverageRoles).optional(),fixedInterval:z.object({start:time,end:time}).optional(),shiftStartsAt:time.optional(),worksDuringLunchClosure:z.boolean().optional(),
     contractLeaves:boundedArray(z.object({date:z.string().refine(v=>validCivilDateTime(v+"T00:00:00"),"Data inválida"),excusedSeconds:z.number().int().min(1).max(86400)}),limits.windows).nullish().transform(v=>v??undefined),
     workload,availability:boundedArray(windowSchema,limits.windows),restrictions:boundedArray(windowSchema,limits.windows),
@@ -97,7 +105,7 @@ const canonicalDocumentSchema = z.object({
     allowsOvertime:z.boolean(),allowsNightWork:z.boolean(),preferredDaysOff:days,workingDays:days.refine(v=>v.length>0,"Selecione ao menos um dia de trabalho.").optional()
   }),limits.employees),
   assignments:boundedArray(z.object({
-    id,employeeId:id,roleId:id.optional(),role:text,start:date,end:date,
+    id,employeeId:id,roleId:id.optional(),role:text,start:date,end:date,pinned:z.boolean().nullish().transform(v=>v??undefined),
     break:windowSchema.nullish().transform(v=>v??undefined),source:z.enum(["manual","solver"]),tags:boundedArray(text,limits.tags)
   }).refine(v=>civilTimestamp(v.end)>civilTimestamp(v.start) && civilTimestamp(v.end)-civilTimestamp(v.start)<=limits.assignmentSeconds*1000,"Turno inválido ou acima do limite de duração"),limits.assignments)
 }).superRefine((doc,ctx)=>{
@@ -114,6 +122,8 @@ const structureSchema=z.unknown().transform((input,ctx)=>{
   if(issue){ctx.addIssue({code:"custom",...issue});return z.NEVER;}
   return input;
 });
-export const documentSchema=structureSchema.pipe(z.preprocess(input=>{
+const baseDocumentSchema=structureSchema.pipe(z.preprocess(input=>{
   try{return migrateDocument(input as EscalaLivreDocument).document;}catch{return input;}
 },canonicalDocumentSchema.transform(normalizeCoverageRoles)));
+
+export const documentSchema=baseDocumentSchema.refine(v=>!archiveError(v),{message:"Versões fechadas ou seleção vigente inválidas/acima da cota."});

@@ -5,7 +5,7 @@ import { Download, FileUp, Moon, Trash2, Sun, Wifi, Printer, ChevronDown, HelpCi
 import { PlanningPeriodEditor } from "./PlanningPeriodEditor";
 import { Brand } from "./Brand";
 import { UsageGuide } from "./UsageGuide";
-import { PrintSchedule } from "./PrintSchedule";
+import { PublicationPanel } from "./PublicationPanel";
 import { useState } from "react";
 import { exportNative, importNative } from "../lib/api";
 import { useScheduleStore, type ViewMode } from "../store/scheduleStore";
@@ -13,7 +13,7 @@ import { Badge, Button, IconButton } from "./ui";
 
 const viewModes: { mode: ViewMode; label: string; description: string }[] = [
   { mode: "timeline", label: "Escala do dia", description: "Veja os horários de cada pessoa no dia selecionado. Clique em um nome para editar seu cadastro." }, { mode: "week", label: "Escala semanal", description: "Veja os turnos e a disponibilidade de cada pessoa na semana. Clique em um nome para editar." },
-  { mode: "month", label: "Escala mensal", description: "Veja os turnos salvos e as prévias estimadas do mês. Clique no número do dia para configurar feriados; clique em um turno para abrir o cadastro da pessoa." }, { mode: "coverage", label: "Pessoas por horário", description: "Confira quantas pessoas estão escaladas e quantas são necessárias em cada período e função." },
+  { mode: "month", label: "Escala mensal", description: "Veja os turnos salvos e as prévias estimadas do mês. Clique no número do dia para configurar feriados; clique em um turno salvo para editar seus horários; prévias são apenas estimativas." }, { mode: "coverage", label: "Pessoas por horário", description: "Confira quantas pessoas estão escaladas e quantas são necessárias em cada período e função." },
   { mode: "heatmap", label: "Onde faltam pessoas", description: "Identifique os dias e as funções que precisam de mais pessoas na escala." }, { mode: "solver", label: "Assistente de escala", description: "Gere uma escala e revise os conflitos, as faltas de pessoas e as sugestões de ajuste." }
 ];
 
@@ -45,7 +45,7 @@ export function GlobalHeader() {
 
 
       <div className="header-actions">
-        <Button onClick={() => setPrinting(true)}><Printer className="size-4" />Imprimir</Button>
+        <Button onClick={() => setPrinting(true)}><Printer className="size-4" />Fechar e divulgar</Button>
         <StorageBadge />
         <details className="header-tools" onKeyDown={e => {if(e.key === "Escape") {e.currentTarget.open=false;e.currentTarget.querySelector("summary")?.focus();}}}>
           <summary><ChevronDown className="size-4" /> Dados e opções</summary>
@@ -67,7 +67,7 @@ export function GlobalHeader() {
               if (file) {
                 try {
                   const imported = await importNative(file);
-                  if (window.confirm("Abrir este arquivo e substituir o planejamento atual? Uma cópia recuperável será criada antes da substituição.")) importDocument(imported);
+                  if (window.confirm("Abrir este arquivo e substituir o planejamento atual e suas versões? Uma cópia recuperável será criada antes da substituição.")) importDocument(imported);
                 } catch (error) {
                   window.alert(error instanceof Error ? error.message : "Nao foi possivel abrir o arquivo.");
                 } finally {
@@ -103,12 +103,12 @@ export function GlobalHeader() {
       </div>
       </div>
       <PlanningPeriodEditor key={document.id+document.planningPeriod.start+document.planningPeriod.end} />
-      {printing && <PrintSchedule onClose={() => setPrinting(false)} />}
+      {printing && <PublicationPanel onClose={() => setPrinting(false)} />}
       {showUsageGuide && <UsageGuide onClose={() => setShowUsageGuide(false)} />}
       {clearing && <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onKeyDown={e => {if(e.key === "Escape") setClearing(false);}}>
         <form role="dialog" aria-modal="true" aria-labelledby="clear-title" className="w-full max-w-md space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xl" onSubmit={e => {e.preventDefault();if(confirmation === "LIMPAR") {clearAll();setClearing(false);}}}>
           <h2 id="clear-title" className="text-xl font-semibold text-red-600">Apagar todos os dados?</h2>
-          <p className="text-sm">Isso apaga a empresa configurada, funcionários, turnos e regras de cobertura salvos neste dispositivo. A ação não pode ser desfeita. Exporte uma cópia antes, se quiser guardar seus dados.</p>
+          <p className="text-sm">Isso apaga a empresa configurada, funcionários, turnos, versões fechadas e regras de cobertura salvos neste dispositivo. A ação não pode ser desfeita. Exporte uma cópia antes, se quiser guardar seus dados.</p>
           <label className="block text-sm">Digite <strong>LIMPAR</strong> para confirmar<input autoFocus value={confirmation} onChange={e => setConfirmation(e.target.value)} className="mt-2 w-full rounded-lg border border-border bg-background p-3" /></label>
           <div className="flex justify-end gap-2"><Button type="button" onClick={() => setClearing(false)}>Cancelar</Button><Button type="submit" disabled={confirmation !== "LIMPAR"} className="bg-red-600 dark:bg-red-600 dark:text-white">Apagar tudo</Button></div>
         </form>

@@ -45,7 +45,7 @@ public sealed class PlanningEditorTests
     }
 
     [Fact]
-    public void EmployeeEditExplicitlyUpdatesRolesInAllHistoryAndPreservesTimes()
+    public void EmployeeEditPreservesRolesAndTimesInAllHistory()
     {
         var request = AnalysisContractTests.Request(); var current = request.Document.Assignments.Single();
         var before = current with { Id = Guid.NewGuid(), Start = current.Start.AddDays(-7), End = current.End.AddDays(-7), Break = null };
@@ -55,7 +55,7 @@ public sealed class PlanningEditorTests
         var employee = request.Document.Employees[0] with { Role = "Changed", RoleId = roleId, Name = "Edited" };
         var result = Editor().ChangeEmployee(request, employee.Id, employee, Updated);
         Assert.Equal(Hours(request.Document), Hours(result.Document));
-        Assert.All(result.Document.Assignments, a => { Assert.Equal("Changed", a.Role); Assert.Equal(roleId, a.RoleId); });
+        Assert.All(result.Document.Assignments, a => { Assert.Equal(current.Role, a.Role); Assert.Equal(current.RoleId, a.RoleId); });
         Assert.All(request.Document.Assignments, a => Assert.Equal(current.Role, a.Role));
     }
 

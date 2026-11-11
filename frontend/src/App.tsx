@@ -1,3 +1,5 @@
+import { ShiftEditor } from "./components/ShiftEditor";
+import { PlanningActions } from "./components/PlanningActions";
 import { lazy, Suspense, useEffect } from "react";
 import { EmployeeDrawer } from "./components/EmployeeDrawer";
 import { GlobalHeader } from "./components/GlobalHeader";
@@ -22,6 +24,7 @@ export default function App() {
   return (
     <div className="relative flex h-screen flex-col overflow-hidden bg-background text-foreground">
       <GlobalHeader />
+      <PlanningActions />
       <div className="workspace-grid grid min-h-0 flex-1 grid-cols-1 gap-3 overflow-auto p-3 lg:grid-cols-[280px_minmax(0,1fr)]">
         <div className="workspace-sidebar min-h-0 overflow-auto rounded-2xl border border-border">
           <OperationalSidebar />
@@ -30,6 +33,7 @@ export default function App() {
 
       </div>
       <EmployeeDrawer />
+      <ShiftEditor />
     </div>
   );
 }

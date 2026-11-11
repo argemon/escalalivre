@@ -59,7 +59,7 @@ public static class ScheduleJson
             {
                 if (key is "start" or "end" && obj[key] is JsonValue v && v.TryGetValue<string>(out var text) && text.Contains('T'))
                     obj[key] = Civil(text, zone).ToString("yyyy-MM-dd'T'HH:mm:ss", CultureInfo.InvariantCulture);
-                else NormalizeWindows(obj[key], zone);
+                else if (key is not ("publications" or "publicationSelections")) NormalizeWindows(obj[key], zone);
             }
         }
     }

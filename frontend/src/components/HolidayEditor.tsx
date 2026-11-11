@@ -1,3 +1,4 @@
+import { employeeOn, activeOn } from "../lib/policies/employment";
 import { documentSchema } from "../lib/documentSchema";
 import { datePart, timePart, displayClock, nowInstant } from "../lib/dateTime";
 import { useState } from "react";
@@ -22,7 +23,9 @@ export function HolidayEditor({date,onClose}:{date:string;onClose:()=>void}) {
   const [error,setError]=useState("");
   const [editingId,setEditingId]=useState<string>();
   const addShift=()=>{
-    const employee=document.employees.find(e=>e.id===employeeId);
+    const registered=document.employees.find(e=>e.id===employeeId);
+    const employee=registered ? employeeOn(registered,date) : undefined;
+    if(employee && !editingId && !activeOn(employee,date)){setError("Pessoa inativa nesta data.");return;}
     if(!employee) {setError("Selecione uma pessoa da equipe.");return;}
     if(!/^([01]\d|2[0-3]):[0-5]\d(:00)?$/.test(startsAt) || !/^([01]\d|2[0-3]):[0-5]\d(:00)?$/.test(endsAt)) {setError("Informe entrada e saída no formato HH:mm.");return;}
     if(startsAt.slice(0,5)===endsAt.slice(0,5)) {setError("Entrada e saída devem ser diferentes.");return;}

@@ -78,10 +78,16 @@ public sealed class PlanningSettings
             throw new ArgumentException("Coverage references must be nonempty.");
         if (employee.Preferences.Any(p => p is null || string.IsNullOrWhiteSpace(p.Code) || p.Description is null)) throw new ArgumentException("Preference structure is invalid.");
         if (employee.ContractLeaves is {} leaves && leaves.Any(l => l is null || l.Date.Year is < 1900 or > 2100 || l.ExcusedSeconds is < 1 or > 86400)) throw new ArgumentException("Invalid contractual leave.");
+        if (!AbsencePolicy.Valid(employee)) throw new ArgumentException("Invalid absence event.");
+        if (!ExclusiveCoveragePolicy.ValidGroup(employee)) throw new ArgumentException("Invalid accumulation group.");
+        if (!EmploymentPolicy.ValidHistory(employee)) throw new ArgumentException("Invalid employment history.");
         // Windows are structurally validated, without imposing shift availability or rest policy.
         foreach (var w in employee.Availability.Concat(employee.Restrictions)) _ = new CivilWindow(w.Start, w.End);
         return employee with
         {
+            Absences=employee.Absences is null ? null : Copy(employee.Absences.Select(a=>a with{Credits=Copy(a.Credits)})),
+            AccumulationRoleIds = employee.AccumulationRoleIds is null ? null : Copy(employee.AccumulationRoleIds),
+            RoleHistory = employee.RoleHistory is null ? null : Copy(employee.RoleHistory.Select(t=>t with{CoverageRoleIds=t.CoverageRoleIds is null ? null : Copy(t.CoverageRoleIds)})),
             ContractLeaves = employee.ContractLeaves is null ? null : Copy(employee.ContractLeaves),
             Availability = Copy(employee.Availability), Restrictions = Copy(employee.Restrictions), Preferences = Copy(employee.Preferences),
             PreferredDaysOff = Copy(employee.PreferredDaysOff), WorkingDays = employee.WorkingDays is null ? null : Copy(employee.WorkingDays),

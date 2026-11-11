@@ -10,7 +10,8 @@ public sealed record EscalaLivreDocumentDto(
     DateTimeOffset UpdatedAt,
     PlanningPeriodDto? PlanningPeriod = null,
     IReadOnlyList<DocumentRoleDto>? Roles = null,
-    DocumentSetupDto? Setup = null);
+    DocumentSetupDto? Setup = null,
+    IReadOnlyList<PublicationDto>? Publications = null, IReadOnlyList<PublicationDtoSelection>? PublicationSelections = null);
 
 public sealed record DocumentRoleDto(Guid Id, string Name,
     [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<Guid>? CoverageRoleIds = null);
@@ -29,7 +30,8 @@ public sealed record CompanyRulesDto(
     IReadOnlyList<CoverageRequirementDto> Coverage,
     MiddayClosureDto? MiddayClosure = null,
     IReadOnlyList<HolidayDto>? Holidays = null,
-    string TimeZone = "America/Cuiaba");
+    string TimeZone = "America/Cuiaba",
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] string? CoverageMode = null);
 
 public sealed record HolidayDto(DateOnly Date, string Name, bool Closed = true);
 
@@ -54,7 +56,16 @@ public sealed record EmployeeDto(
     IReadOnlyList<string>? CoverageRoles = null,
     Guid? RoleId = null,
     IReadOnlyList<Guid>? CoverageRoleIds = null,
-    IReadOnlyList<ContractLeaveDto>? ContractLeaves = null);
+    IReadOnlyList<ContractLeaveDto>? ContractLeaves = null,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<RoleTenureDto>? RoleHistory = null,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] DateOnly? InactiveFrom = null,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<Guid>? AccumulationRoleIds = null,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<AbsenceEventDto>? Absences = null);
+
+public sealed record AbsenceCreditDto(DateOnly Date,int ExcusedSeconds);
+public sealed record AbsenceEventDto(Guid Id,string Category,DateTime Start,DateTime End,IReadOnlyList<AbsenceCreditDto> Credits);
+
+public sealed record RoleTenureDto(DateOnly StartsOn, string Role, Guid RoleId, IReadOnlyList<Guid>? CoverageRoleIds = null);
 
 public sealed record ContractLeaveDto(DateOnly Date, int ExcusedSeconds);
 
@@ -87,6 +98,7 @@ public sealed record ShiftAssignmentDto(
     BreakWindowDto? Break,
     string Source,
     IReadOnlyList<string> Tags,
-    Guid? RoleId = null);
+    Guid? RoleId = null,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] bool? Pinned = null);
 
 public sealed record BreakWindowDto(DateTime Start, DateTime End);

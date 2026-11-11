@@ -53,7 +53,7 @@ public sealed class OrToolsScheduleOptimizer(ScheduleCandidateGenerator generato
             return Explain(relaxed, "interval-anticipated-for-coverage", a =>
                 IntervalTimingPolicy.IsEarly(request.Document.Company, a)
                 && request.Document.Employees.First(e => e.Id == a.EmployeeId).FixedInterval is null
-                && !input.HolidayShifts.Any(h => h.Id == a.Id));
+                && !input.RetainedInside.Any(h => h.Id == a.Id));
         }
 
         // Always obtain a minimum-duration incumbent before allowing longer automatic pauses.

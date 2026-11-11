@@ -46,9 +46,9 @@ Depois dos cadastros:
 
 1. No cabeçalho, escolha **Início** e **Fim (inclusive)** e clique em **Aplicar período**.
 2. Abra o botão verde **Assistente de escala**, com o ícone de brilho, e clique em **Gerar escala**. A etapa **5. Revisar e gerar** também abre o assistente quando os quatro cadastros estão completos.
-3. Revise a cobertura atendida, as horas faltantes da carga contratada, os conflitos e as sugestões. Uma escala parcial pode ter horários válidos e ainda deixar demanda descoberta ou carga incompleta.
+3. Revise a proposta e suas inclusões, alterações e remoções. Clique em **Aplicar proposta de geração** para confirmar ou rejeite para manter a escala atual. Depois confira cobertura, carga incompleta e conflitos no resumo operacional.
 4. Consulte a escala diária, semanal ou mensal. Na semana, cada pessoa aparece uma única vez, com os horários nas colunas dos dias.
-5. Use **Dados e opções → Exportar** para guardar uma cópia ou **Imprimir** para preparar a escala para o mural.
+5. Edite e fixe os combinados, registre ausências e confira substituições quando necessário. Use **Fechar e divulgar** para guardar uma versão e baixar PDF, PNG ou XLSX; **Dados e opções → Exportar** guarda o arquivo completo `.escalalivre`.
 
 **O Assistente de escala é onde a geração acontece.** As prévias exibidas antes da geração são estimativas dos cadastros; não confirmam jornada, folgas ou descanso. Para gerar, é necessário ter pessoas cadastradas e ao menos uma regra de cobertura com quantidade maior que zero, além da API disponível.
 
@@ -91,32 +91,36 @@ A execução possui limite de tempo e pode encontrar uma solução viável sem c
 | Recurso | Utilidade no dia a dia |
 | --- | --- |
 | **Configuração da empresa** | Definir funcionamento, horas efetivas de trabalho, descanso, limites de intervalo e fechamento para almoço. |
-| **Funções e equipe** | Editar a função dentro do próprio cartão e definir, por pessoa, jornada, dias de trabalho, entrada fixa, disponibilidade e restrições. |
+| **Cadastro de equipe** | Cadastrar com campos essenciais, duplicar modelos, editar campos selecionados em lote e importar CSV/XLSX com prévia e confirmação. |
+| **Funções, vigências e inativação** | Registrar mudanças a partir de uma data, revisar adequações futuras e preservar o histórico dos turnos. |
 | **Mínimo contratado e máximo semanal** | Separar a carga normal a cumprir do teto total com extras autorizadas, com distribuição diária uniforme, sexta reduzida ou personalizada. |
 | **Escala individual 5x2 e 6x1** | Escolher o modelo da pessoa e deixar o gerador definir dias, folgas e horários, ou restringir a dias fixos, independentemente de a empresa abrir sete dias. |
 | **Saída antecipada e horas faltantes** | Ajustar a saída de turnos salvos e conferir o saldo por dia e semana, sem reduzir automaticamente a carga contratada. |
-| **Substituições autorizadas** | Definir várias funções cobertas por uma função, herdadas por toda a equipe daquele cargo, e acrescentar permissões individuais. |
+| **Cobertura exclusiva e acumulação** | Distribuir cada pessoa entre funções autorizadas sem contagem dupla; permitir acumulação somente no grupo explicitamente configurado. |
+| **Ausências e substituições** | Registrar férias, atestados, licenças ou indisponibilidades, conferir turnos atingidos e procurar substitutos elegíveis. |
 | **Cobertura em vários dias** | Aplicar a mesma necessidade a dias selecionados, a todos os dias ou aos dias de funcionamento. |
 | **Cobertura da equipe inteira** | Exigir uma quantidade mínima de pessoas presentes, independentemente da função. |
 | **Operação fora do expediente** | Autorizar necessidades específicas em outros horários ou dias, como segurança e limpeza. |
 | **Intervalos flexíveis ou fixos** | Priorizar a pausa mínima, ampliar somente para reduzir lacunas de cobertura ou respeitar o intervalo fixo de uma pessoa. |
 | **Feriados e turnos especiais** | Configurar abertura ou fechamento por data e manter turnos específicos mesmo com a empresa fechada. |
-| **Geração automática** | Buscar turnos e intervalos que atendam à operação dentro das restrições do modelo. |
+| **Geração com revisão** | Gerar o período ou um recorte, preservar turnos fixados e aplicar somente uma proposta confirmada. |
+| **Edição e desfazer/refazer** | Criar, editar e remover turnos com prévia do impacto, precisão de segundos e histórico de operações da sessão. |
+| **Cópia e troca de turnos** | Copiar uma semana, resolver colisões e conferir a troca completa de responsáveis antes de aplicar. |
 | **Fila e tempo de espera** | Acompanhar a posição real, os pedidos à frente, a estimativa de espera e o tempo decorrido até receber a escala. |
 | **Cancelamento de geração** | Cancelar um pedido na fila ou em processamento, mantendo os turnos atuais. |
 | **Análise durante a edição** | Recalcular localmente a cobertura e os conflitos quando o planejamento muda. |
 | **Escala diária, semanal e mensal** | Consultar horários; na semana, comparar os dias em uma tabela com uma linha por pessoa, sem repetir nomes. |
 | **Período de planejamento** | Definir de 1 a 31 dias, com datas inclusivas, para consulta, análise e geração. |
-| **Ajustes pelo calendário mensal** | Arrastar turnos salvos e conferir o efeito no planejamento; na semana, clicar no nome ou horário para abrir o cadastro da pessoa. |
+| **Ajustes nas três visualizações** | Abrir o editor do turno salvo no dia, na semana ou no mês; arrastar no mês abre uma proposta para revisão. |
 | **Pessoas por horário** | Comparar quantas pessoas estão escaladas com quantas são necessárias por função e período. |
 | **Onde faltam pessoas** | Identificar lacunas por função e dia em uma visualização com cores. |
-| **Assistente de escala** | Gerar a escala otimizada e revisar cobertura, conflitos, explicações e sugestões de ajuste e contratação. |
+| **Resumo operacional com ações** | Separar conflitos obrigatórios, falta de pessoas, carga incompleta e avisos; navegar ao contexto e conferir ações possíveis. |
 | **Arquivo `.escalalivre`** | Exportar e reabrir empresa, equipe, regras, período e turnos em um documento portátil. |
 | **Cópias e recuperação** | Baixar ou restaurar cópias anteriores e recuperar dados quando o armazenamento apresenta falhas. |
-| **Impressão para o mural** | Escolher um mês e imprimir os turnos salvos, com empresa em destaque, datas e marca Escala Livre discreta. |
+| **Fechamento e divulgação** | Guardar versões independentes por período e exportar PDF paginado, PNG em páginas ou XLSX, para equipe ou pessoa. |
 | **Temas claro e escuro** | Usar a interface em português, com explicações das abas e contraste adaptado ao tema. |
 
-O backend também oferece exportação XLSX e uma exportação PDF básica pela API. Os controles de importação e exportação da interface usam o formato nativo `.escalalivre`.
+O formato `.escalalivre` guarda o documento completo, incluindo versões fechadas. O painel **Fechar e divulgar** prepara saídas para a equipe; PDF/XLSX usam o serviço de exportação, e PNG é gerado no navegador.
 
 ## Período de planejamento e geração
 
@@ -124,11 +128,11 @@ O período do cabeçalho vale para as visualizações, a análise de cobertura e
 
 Ao aplicar uma geração, o sistema substitui os turnos **pela data em que começam**:
 
-- Um turno que começa dentro do período é substituído por inteiro, mesmo que termine no dia seguinte ao fim do período.
+- Turnos **fixados** permanecem integralmente, com pessoa, horários e pausa. Turnos livres que começam dentro do período ou recorte podem ser substituídos por inteiro, mesmo que terminem no dia seguinte.
 - Turnos que começam antes ou depois são preservados e considerados nas regras de descanso, jornada e cobertura.
-- Uma geração inviável, uma falha ou um tempo limite sem solução viável mantém os turnos atuais. Uma solução parcial com lacunas pode ser aplicada.
+- A geração apresenta uma proposta com inclusões, alterações e remoções, sem aplicá-la automaticamente. Rejeitar ou cancelar mantém a escala; falha ou resposta sem solução viável também preserva os turnos. Uma solução com lacunas pode ser revisada e confirmada.
 
-Por exemplo, gerar de **19/10 a 21/10** substitui um turno iniciado às 22h de 21/10 e encerrado às 6h de 22/10. Um turno iniciado às 22h de 18/10 permanece intacto.
+Por exemplo, gerar de **19/10 a 21/10** pode substituir um turno livre iniciado às 22h de 21/10 e encerrado às 6h de 22/10. Um turno iniciado às 22h de 18/10 e qualquer turno fixado permanecem intactos. O recorte de geração deve estar dentro do período selecionado.
 
 Antes de importar um documento ou aplicar uma geração, a aplicação cria uma cópia recuperável do planejamento anterior. Os detalhes estão em [preservação de turnos](docs/generation-preservation.md) e [período de planejamento](docs/planning-period.md).
 
@@ -155,16 +159,30 @@ No menu **Dados e opções**, no cabeçalho:
 
 | Ação | Quando usar |
 | --- | --- |
-| **Exportar** | Baixar um arquivo `.escalalivre` para guardar uma cópia ou continuar em outro dispositivo. |
-| **Importar** | Abrir um arquivo `.escalalivre` e confirmar a substituição do planejamento atual. |
+| **Exportar** | Baixar empresa, equipe, regras, turnos e versões fechadas em `.escalalivre` para arquivar ou continuar em outro dispositivo. |
+| **Importar** | Abrir um arquivo `.escalalivre` e confirmar a substituição do planejamento atual e de suas versões. |
 | **Cópias e recuperação de dados** | Baixar ou restaurar cópias anteriores, exportar os dados disponíveis ou tentar salvar novamente após uma falha. |
 | **Limpar tudo** | Apagar o planejamento atual após digitar a confirmação solicitada. Exporte antes o que deseja guardar. |
 
 São mantidas até **três cópias de planejamento** para recuperação, além dos conteúdos preservados em falhas. Se não for possível confirmar a cópia anterior, a importação ou aplicação da geração é bloqueada para proteger o documento atual. Arquivos nativos têm limite de **1 MiB**; downloads brutos de recuperação em `.json` podem precisar de reparo antes de serem usados como planejamento.
 
-**Edição, análise local e importação/exportação nativa funcionam sem consultar a API. A geração automática precisa do backend.** Ao gerar, o documento é enviado à API configurada. Consulte [recuperação de dados](docs/recovery.md) para o comportamento em falhas.
+**Edição, análise local, PNG e importação/exportação nativa funcionam sem consultar a API. A geração automática e as saídas PDF/XLSX precisam do backend.** Ao gerar, o documento é enviado à API configurada. Consulte [recuperação de dados](docs/recovery.md) para o comportamento em falhas.
 
 ## Recursos em detalhe
+
+### Cadastro, histórico e ajustes do dia a dia
+
+O cadastro começa pelos dados essenciais; configurações individuais ficam nos detalhes. É possível duplicar um modelo, escolher quais campos aplicar em lote ou importar CSV/XLSX com prévia por linha. Homônimos, erros e itens excluídos exigem revisão antes de aplicar. Duplicar um modelo não replica ausências nem outros eventos datados. Veja o [formato de importação da equipe](docs/team-import.md).
+
+Mudanças de função podem ter uma **data de vigência** e uma opção explícita de adequar os turnos futuros. Turnos anteriores são preservados. Inativar uma pessoa impede novas alocações a partir da data escolhida e mantém os turnos existentes para revisão.
+
+Abra um turno salvo na escala diária, semanal ou mensal para conferir pessoa, função, entrada, saída, pausa e fixação. A alteração é aplicada somente após revisar seu impacto. Conflitos obrigatórios exigem ciência explícita para manter um rascunho; isso não torna a escala pronta para fechamento. **Desfazer/Refazer** guarda até 20 operações, sujeito à cota de memória da sessão; recarregar, importar ou recuperar um documento reinicia esse histórico. Versões fechadas não são apagadas por desfazer.
+
+Em **Ausências e substituições**, registre categoria, datas e eventuais dispensas explícitas por dia. A categoria, sozinha, não concede crédito de horas. Confira os turnos atingidos e escolha manter, remover ou substituir; um turno fixado precisa ser desafixado antes de uma substituição. A proposta inteira é reavaliada, e a busca pode informar que não há candidato elegível.
+
+Use **Copiar semana / trocar turnos** para copiar de domingo a sábado ou trocar responsáveis por dois turnos. A cópia cria novos IDs e permite escolher se leva a fixação; ausências e versões fechadas não são copiadas. Colisões exigem uma escolha explícita. A troca é aplicada por inteiro e exige que os dois participantes fiquem sem conflitos obrigatórios. Veja [edição e histórico](docs/planning-edits.md), [ausências e substituições](docs/decisions/027-absence-events-and-substitution.md) e [cópia e troca](docs/schedule-reuse.md).
+
+O **resumo operacional** organiza conflitos obrigatórios, falta de pessoas, carga incompleta e avisos. Os filtros e ações levam ao dia, pessoa, turno ou demanda correspondente. Alocação e substituição mostram uma proposta antes de confirmar; a busca é local e não garante encontrar todas as alternativas possíveis. Consulte [resumo e ações](docs/operational-summary.md).
 
 ### Mínimo contratado, máximo semanal e horas faltantes
 
@@ -202,13 +220,13 @@ Sem intervalo fixo, o motor começa pela menor duração compatível com o míni
 
 ### Uma pessoa pode ajudar em outra função — com autorização
 
-Na etapa **Funções**, clique em **Editar** para abrir o formulário no próprio cartão da função e selecione uma ou mais opções em **Esta função também pode cobrir**. Exemplo: autorize **Farmacêutico → Atendente** uma vez para todos os farmacêuticos. Ou marque **Caixa** e **Vendedor** na função **Gerente**: um gerente trabalhando sozinho atende as três funções. Quem for cadastrado depois herda as mesmas permissões.
+Na etapa **Funções**, defina quais outras funções cada cargo pode cobrir. **Substituições individuais** acrescenta permissões por pessoa; a autorização é direcional e não se encadeia automaticamente. Farmacêutico → Atendente não autoriza o contrário, e Gerente → Caixa junto com Caixa → Vendedor não autoriza Gerente → Vendedor.
 
-No cadastro da pessoa, **Substituições individuais** acrescenta permissões e informa as herdadas da função. As duas fontes são somadas; desmarcar uma opção individual não revoga a permissão da função. Alterar as autorizações da função atualiza todos os funcionários sem reescrever seus turnos salvos.
+Documentos novos usam **cobertura exclusiva**: uma pessoa é distribuída entre as funções autorizadas e conta em uma delas por vez. Precisar de um farmacêutico e um atendente exige duas pessoas, mesmo que uma possa exercer as duas funções. Na necessidade de equipe inteira, cada pessoa conta uma vez. Durante a pausa, não fornece cobertura.
 
-A autorização tem direção e vale apenas para as funções selecionadas: Farmacêutico → Atendente não autoriza o contrário. Gerente → Caixa e Caixa → Vendedor não autoriza automaticamente Gerente → Vendedor; selecione Vendedor diretamente. Cada pessoa conta uma vez em cada função autorizada e uma vez na equipe. Durante a pausa, deixa de contar em todas elas.
+A **acumulação explícita** permite configurar um grupo de funções simultâneas por pessoa. Enquanto o grupo estiver ativo, somente seus membros autorizados contribuem; as demais permissões não são alocadas até revisar ou desativar o grupo. Há um grupo ativo por pessoa, sem escolha automática entre vários grupos alternativos.
 
-Se o mesmo horário exige **um farmacêutico e um atendente**, um farmacêutico autorizado e presente atende as duas funções. Se a exigência for de **dois atendentes**, uma pessoa sozinha continua insuficiente. Uma exigência de **equipe inteira** mede o total de pessoas presentes e pode coexistir com mínimos por função.
+Arquivos antigos sem o modo exclusivo mantêm a contagem simultânea legada. A interface permite conferir uma prévia e confirmar a conversão. Consulte a [decisão sobre cobertura exclusiva](docs/decisions/025-exclusive-role-allocation.md).
 
 ### Feriado fechado, segurança escalada
 
@@ -220,7 +238,7 @@ O calendário inclui uma lista de feriados nacionais de data fixa e permite conf
 
 ### Calendário mais fácil de ler
 
-A **escala semanal** mostra uma linha por pessoa e uma coluna por dia, com entrada, saída e intervalo. Dias fora do período ficam identificados; **Sem turno** indica ausência de turno ou prévia naquele dia, sem confirmar folga. Clique no nome ou horário para abrir o cadastro da pessoa.
+A **escala semanal** mostra uma linha por pessoa e uma coluna por dia, com entrada, saída e intervalo. Dias fora do período ficam identificados; **Sem turno** indica ausência de turno ou prévia naquele dia, sem confirmar folga. Clique no nome para abrir o cadastro; clique no horário salvo para editar o turno.
 
 A **escala mensal** apresenta cartões por dia, com pessoa, função, entrada, saída, intervalo e situação. Ambas as visões também exibem horários estimados a partir dos cadastros. No mês:
 
@@ -231,17 +249,19 @@ A **escala mensal** apresenta cartões por dia, com pessoa, função, entrada, s
 | **Feriado · Fechada/Aberta** | Exceção de funcionamento configurada para a data. |
 | **Fundo verde no dia** | Destaque da data de hoje. |
 
-Os cabeçalhos dos dias permanecem visíveis durante a rolagem. Horários preservam os minutos, como **07:30**, e os campos usam o formato **HH:mm**. **+1d** indica que o turno termina no dia seguinte. No calendário mensal, turnos salvos podem ser arrastados; prévias servem para consulta.
+Os cabeçalhos dos dias permanecem visíveis durante a rolagem. As visualizações resumem horários como **07:30**; o editor e as exportações preservam segundos. **+1d** indica que o turno termina no dia seguinte. No calendário mensal, arrastar um turno salvo abre a alteração para revisão; prévias servem para consulta.
 
-### Imprima e leve para o mural
+### Feche uma versão e divulgue a escala
 
-Clique em **Imprimir** no cabeçalho e escolha o **mês da escala**. A impressão mostra funcionários em **ordem alfabética**, com colunas para **dias de trabalho**, **entrada e saída** e **intervalo**.
+Clique em **Fechar e divulgar** e escolha o rascunho ou uma versão fechada. O fechamento guarda uma cópia independente com identidade, número, período, instante, nomes, funções, turnos e pausas. Alterar o cadastro ou a escala depois disso não muda a versão entregue. Refazer o fechamento cria outra versão; a versão vigente é escolhida para cada período, preservando as anteriores. Em períodos sobrepostos, selecione explicitamente qual versão deseja divulgar.
 
-Dias consecutivos com os mesmos horários são agrupados em períodos. Por exemplo: **Edson · 14/10 a 16/10 · 07:30–17:30 · intervalo 11:30–13:30**. Uma mudança de horário ou intervalo, ou um dia sem turno entre duas jornadas, inicia uma nova linha. Todos os funcionários aparecem, incluindo os que não têm turnos salvos no mês.
+Conflitos obrigatórios detectados, inclusive no histórico, bloqueiam o fechamento. Lacunas, carga incompleta, avisos e preferências exigem reconhecimento explícito por categoria. A versão guarda somente contagens dessas pendências, sem motivos privados. Fechar não equivale a assinatura digital ou proteção contra edição externa do arquivo.
 
-O nome da empresa aparece em destaque, o período identifica o mês completo e a marca **Escala Livre** fica discreta no canto. O layout usa **A4 horizontal** e continua em outras folhas quando necessário, repetindo o cabeçalho e mantendo o tamanho do texto.
+Escolha **Equipe completa** ou uma pessoa e baixe **PDF**, **PNG (páginas em ZIP)** ou **XLSX**. As saídas incluem empresa, período, versão, horários com segundos, pausas e legenda. O rascunho recebe a marca **RASCUNHO**. O PDF usa A4 horizontal paginado, o PNG é dividido em imagens legíveis e o XLSX exporta texto seguro, sem fórmulas geradas a partir dos nomes. Ausências, anotações internas e detalhes pessoais desnecessários ficam fora da divulgação.
 
-Use **Imprimir / Salvar PDF** para abrir as opções do navegador. Desative os cabeçalhos e rodapés do navegador para retirar o endereço do site. São impressos somente **turnos salvos**, inclusive os especiais de feriado. Dias sem turno salvo não confirmam folga. Os dias se referem à entrada do turno; `+1d` identifica saída ou intervalo no dia seguinte. As prévias estimadas do calendário não entram na impressão.
+A data e hora de fechamento são apresentadas conforme o PC de quem usa o sistema, sem imprimir a localização do horário. Os horários já registrados nos turnos são mantidos.
+
+São permitidas até **10 versões**, com **1.000 turnos e 200 pessoas por versão**, **256 KiB por versão** e **512 KiB no conjunto**, dentro do limite nativo de **1 MiB**. PNG tem limite de **200 páginas/64 MiB**. Ao atingir uma cota, reduza o período ou exporte/arquive e inicie outro documento; versões não são apagadas automaticamente para liberar espaço. Consulte o [contrato de fechamento e divulgação](docs/decisions/028-publication-snapshots.md).
 
 ## Por que a proposta é diferente
 
@@ -304,27 +324,17 @@ Uma pessoa cobre um bloco somente se trabalha durante **todo** ele e não está 
 
 Cada candidato `c` recebe uma variável binária `x[c]`: **1** seleciona o turno; **0** o descarta. O modelo limita cada pessoa a um turno por dia, impede combinações sem descanso suficiente e restringe trabalho semanal e ciclos em dias. O histórico nas duas bordas do período consome o teto semanal; turnos noturnos e pausas são repartidos na virada da semana. No ciclo em dias, turnos anteriores ao período também reduzem a capacidade disponível nas janelas que os alcançam.
 
-Para cada bloco, a presença de uma pessoa é o OR dos seus turnos que cobrem todo o trecho. Turnos históricos sobrepostos continuam no documento, mas não multiplicam a contagem. Cada exigência soma as pessoas presentes habilitadas para a própria função ou por substituição explicitamente autorizada:
+Para cada bloco, a presença de uma pessoa é o OR dos seus turnos que cobrem todo o trecho. Turnos históricos sobrepostos continuam no documento, mas não multiplicam a contagem. No modo exclusivo, variáveis de alocação distribuem cada pessoa presente entre as funções autorizadas:
 
 ```text
-presente[p,b] = OR dos candidatos selecionados da pessoa p que cobrem b
-Σ pessoas habilitadas presente[p,b] + falta[b,r] ≥ mínimo[b,r]
+alocação[p,b,r] ≤ presente[p,b]
+Σ funções alocação[p,b,r] ≤ presente[p,b]  (pessoa sem acumulação)
+Σ pessoas alocação[p,b,r] + falta[b,r] ≥ mínimo[b,r]
 ```
 
-A pessoa presente conta uma vez em cada função autorizada e conserva a cobertura da própria função. A autorização continua direcional. Para equipe inteira, conta uma única pessoa independentemente de quantas funções ela pode exercer. A pausa não fornece cobertura.
+Grupos de acumulação ativos permitem contribuições simultâneas somente em seus membros autorizados. A necessidade de equipe inteira usa presença, contando cada pessoa uma vez; pausas não fornecem cobertura. A função exercida registrada no turno e a vigência na data inicial participam da elegibilidade. Documentos legados sem o modo exclusivo conservam o contrato simultâneo até uma conversão confirmada. Veja [alocação exclusiva e regressões](docs/decisions/025-exclusive-role-allocation.md).
 
-```text
-Necessidade: 1 STAFF + 1 Monitor
-Edson: STAFF, autorizado a cobrir Monitor
-Alex: Monitor, autorizado a cobrir STAFF
 
-Alex almoçando → Edson atende STAFF e Monitor
-Edson almoçando → Alex atende STAFF e Monitor
-Ambos almoçando → as duas funções ficam descobertas
-Necessidade de 2 Monitores → uma pessoa sozinha continua insuficiente
-```
-
-A variável inteira de falta permite devolver cobertura parcial. O mesmo contrato vale na análise TypeScript, no domínio C# e no modelo do gerador. A função principal permanece no turno. [Decisão e regressões](docs/decisions/021-simultaneous-authorized-coverage.md).
 
 ### 4. Otimizar cobertura, duração dos intervalos, carga e preferências
 
@@ -459,7 +469,7 @@ docs/                           Documentação técnica
 | `POST /validate` | Verificar o planejamento enviado. |
 | `POST /analyze` | Analisar os turnos existentes, sem gerar uma nova escala. |
 | `POST /import` | Ler um documento no formato nativo. |
-| `POST /export` | Exportar em formato nativo, XLSX ou PDF básico. |
+| `POST /export` | Exportar em formato nativo, XLSX ou PDF paginado; saídas de divulgação usam a projeção da versão escolhida. |
 | `GET /health` | Verificar se a API está disponível. |
 
 As operações `/solve`, `/validate` e `/analyze` recebem um documento e um período. As respostas dessas operações usam um envelope com `success`, `data`, `errors`, `warnings` e `metadata`. Em desenvolvimento, o contrato OpenAPI está disponível em [http://localhost:5003/openapi/v1.json](http://localhost:5003/openapi/v1.json). `GET /health` retorna um objeto simples com o estado do serviço.
@@ -500,7 +510,7 @@ node backend/security.integration.cjs
 
 O script inicia sua própria API de teste e verifica as proteções HTTP. Para usar uma compilação em Release, defina `SECURITY_BUILD_CONFIGURATION=Release` no ambiente.
 
-O GitHub Actions executa lint, compilação e testes do frontend, além de compilação da API, testes do backend, arquitetura e integração de segurança em Release. A comparação diferencial roda em UTC e America/New_York e participa da validação obrigatória do backend; o frontend também é testado em fuso alternativo.
+O GitHub Actions executa lint, compilação e testes do frontend, além de compilação da API, testes do backend, arquitetura e integração de segurança em Release. A comparação diferencial e os testes do frontend são executados em duas configurações de relógio do dispositivo; a paridade participa da validação obrigatória do backend.
 
 As ferramentas em `tools/performance-*.cjs` medem fases de análise/geração, memória, modelo e HTTP com fila/worker. O workflow manual **Performance evidence** coleta medições; os limites locais geram alertas e não são tratados como metas universais de produção. A leitura de cobertura indexa turnos por pessoa para evitar varreduras repetidas do histórico. Consulte a [metodologia e os resultados](docs/decisions/012-current-performance.md) antes de interpretar ganhos.
 
@@ -513,7 +523,7 @@ As direções abaixo são possibilidades de evolução, ainda não recursos comp
 | Direção | Valor esperado |
 | --- | --- |
 | Comparação de cenários | Avaliar o efeito de contratar, mudar horários ou ampliar o funcionamento. |
-| Histórico de versões | Comparar planejamentos e acompanhar a evolução da cobertura. |
+| Comparação entre versões | Ampliar a consulta das versões fechadas com comparação detalhada de mudanças e cobertura. |
 | Colaboração e sincronização opcionais | Compartilhar a revisão entre gestores e RH. |
 | PWA e experiência móvel | Facilitar instalação e consulta da escala em diferentes dispositivos. |
 | Integrações com planilhas, ponto e sistemas de RH | Reduzir cadastro repetido e conectar planejamento à operação. |
@@ -521,7 +531,7 @@ As direções abaixo são possibilidades de evolução, ainda não recursos comp
 
 ## Estado atual
 
-O EscalaLivre está em desenvolvimento, com cadastro, análise local, geração de escalas e portabilidade já implementados. O domínio contém tipos validados e operações protegidas de planejamento; análise e validação usam um avaliador comum, separado da otimização. Os regimes declaram capacidades de trabalho, descanso e ciclo, mantendo os tipos públicos `dayBased` e `hourBased`.
+O EscalaLivre está em desenvolvimento, com cadastro/importação de equipe, histórico de vigências, cobertura exclusiva, geração com proposta, edição/desfazer, ausências/substituições, cópia/troca de turnos, resumo com ações e fechamento/exportação de versões implementados. O domínio contém tipos validados e operações protegidas de planejamento; análise e validação usam um avaliador comum, separado da otimização. Os regimes declaram capacidades de trabalho, descanso e ciclo, mantendo os tipos públicos `dayBased` e `hourBased`.
 
 O motor trabalha com candidatos discretos de turnos e intervalos e com as regras atualmente modeladas. A geração é reavaliada antes de aplicar o resultado, preservando os dados anteriores em falhas. A preparação para produção ainda exige validação da versão publicada na hospedagem escolhida, configuração de HTTPS/proxy/recursos e acompanhamento operacional. A fila atual pertence a uma única instância e perde pedidos/resultados ao reiniciar; os arquivos e as cópias locais continuam sob responsabilidade do dispositivo do usuário.
 
@@ -535,11 +545,7 @@ orçamento não representa o consumo total de RAM da API e dos processos filhos.
 O frontend usa Zod 4.6.7 e verifica os limites das coleções antes de migrar os
 documentos, inclusive os recuperados do navegador. Documentos locais válidos
 maiores que o limite de 1 MiB dos arquivos nativos continuam recuperáveis. A
-revisão local passou com Node 22 e .NET 10, incluindo os fluxos no Edge e uma
-saída de impressão A4. A [CI Ubuntu/Node 22/.NET 10 das correções](https://github.com/argemon/escalalivre/actions/runs/41253687438)
-também passou. O [parecer de publicação](review/PARECER-PUBLICACAO.md)
-registra as evidências, os avisos moderados ainda abertos nas ferramentas de
-desenvolvimento e as condições de CI/hospedagem para aprovação operacional.
+[validação das nove tarefas operacionais](docs/tasks/operacao/VALIDACAO-FINAL.md) registra os testes locais, rechecagens focadas, fluxos no Edge e inspeção de PDF/PNG/XLSX. A CI executa a matriz da revisão enviada antes da integração. O [parecer de publicação](review/PARECER-PUBLICACAO.md) registra o contexto das proteções e as condições de hospedagem; resultados históricos não substituem a validação da revisão atual.
 
 A validação cobre regras implementadas, como descanso e limite semanal. Ela não representa uma certificação de conformidade com toda a legislação ou com convenções coletivas. As sugestões de contratação derivam das lacunas de cobertura e precisam ser avaliadas no contexto da empresa.
 
@@ -555,7 +561,7 @@ A validação cobre regras implementadas, como descanso e limite semanal. Ela n�
 - [Período de planejamento](docs/planning-period.md)
 - [Geração e preservação de turnos](docs/generation-preservation.md)
 - [Salvamento e recuperação](docs/recovery.md)
-- [Datas, horários e fuso da empresa](docs/date-time.md)
+- [Datas e horários](docs/date-time.md)
 - [Regras compartilhadas entre frontend e backend](docs/rule-parity.md)
 - [Guia de testes e validação](docs/testing.md)
 - [Extensibilidade dos regimes](docs/decisions/010-regime-extension-boundaries.md)
@@ -570,9 +576,19 @@ A validação cobre regras implementadas, como descanso e limite semanal. Ela n�
 - [Geração e diagnóstico da carga contratada](docs/decisions/018-weekly-workload-generation.md)
 - [Mínimo contratado, máximo com extras e saída antecipada](docs/decisions/019-contract-minimum-and-overtime-ceiling.md)
 - [Escala individual 5x2/6x1 e dias escolhidos pelo gerador](docs/decisions/020-individual-weekly-patterns.md)
-- [Cobertura simultânea por função autorizada](docs/decisions/021-simultaneous-authorized-coverage.md)
+- [Cobertura simultânea legada por função autorizada](docs/decisions/021-simultaneous-authorized-coverage.md)
 - [Autorizações herdadas da função](docs/decisions/022-role-coverage-grants.md)
 - [Preferência pelo intervalo automático mínimo](docs/decisions/023-minimum-automatic-interval.md)
+- [Cadastro e importação de equipe](docs/team-import.md)
+- [Histórico de função e inativação](docs/decisions/024-employment-history.md)
+- [Cobertura exclusiva e acumulação explícita](docs/decisions/025-exclusive-role-allocation.md)
+- [Edição direta e desfazer](docs/planning-edits.md)
+- [Fixação e propostas de geração](docs/decisions/026-pinned-generation-proposals.md)
+- [Ausências e substituições](docs/decisions/027-absence-events-and-substitution.md)
+- [Cópia de semana e troca de turnos](docs/schedule-reuse.md)
+- [Resumo operacional e ações](docs/operational-summary.md)
+- [Fechamento e divulgação](docs/decisions/028-publication-snapshots.md)
+- [Plano operacional e evidências das nove tarefas](docs/tasks/operacao/00-EXECUTAR-PROXIMA-TASK.md)
 - [Fila, estimativas e cancelamento de geração](docs/processing-queue.md)
 - [Identidade visual](docs/brand.md)
 

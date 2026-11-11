@@ -57,14 +57,18 @@ public sealed class PlanningSchedule
         var selected = (replacements ?? throw new ArgumentNullException(nameof(replacements))).ToArray();
         if (selected.Any(a => a is null || !Period.ContainsStart(a.Window))) throw new ArgumentException("Replacement must start within the selected period.");
         // Validate the entire new collection before committing. History on both sides stays intact.
-        assignments = Validate(assignments.Where(a => !Period.ContainsStart(a.Window)).Concat(selected));
+        if(selected.Select(a=>a.Id).Distinct().Count()!=selected.Length)throw new ArgumentException("Duplicate replacement identity.");
+        var pinned=assignments.Where(a=>a.Pinned==true).ToArray();
+        foreach(var a in selected){var old=pinned.FirstOrDefault(v=>v.Id==a.Id);if(old is not null && (old.EmployeeId!=a.EmployeeId || old.Role!=a.Role || old.RoleId!=a.RoleId || old.Pinned!=a.Pinned || old.Window.Start!=a.Window.Start || old.Window.End!=a.Window.End || old.Pause?.Window.Start!=a.Pause?.Window.Start || old.Pause?.Window.End!=a.Pause?.Window.End || old.Source!=a.Source || !old.Tags.SequenceEqual(a.Tags)))throw new ArgumentException("Pinned assignment cannot change during generation.");}
+        var retained=assignments.Where(a=>a.Pinned==true || !Period.ContainsStart(a.Window)).ToArray();
+        assignments = Validate(retained.Concat(selected.Where(a=>!pinned.Any(old=>old.Id==a.Id))));
     }
 
-    public void ChangeEmployeeRole(Guid employeeId, string role, Guid? roleId)
+    public void ChangeEmployeeRole(Guid employeeId, string role, Guid? roleId, DateOnly startsOn)
     {
         if (!employees.Contains(employeeId)) throw new ArgumentException("Employee does not exist.");
         if (string.IsNullOrWhiteSpace(role) || roleId == Guid.Empty) throw new ArgumentException("Role must be valid.");
-        assignments = Validate(assignments.Select(a => a.EmployeeId == employeeId ? a.ChangeRole(role, roleId) : a));
+        assignments = Validate(assignments.Select(a => a.EmployeeId == employeeId && DateOnly.FromDateTime(a.Window.Start)>=startsOn ? a.ChangeRole(role, roleId) : a));
     }
 
     private int Index(Guid id)

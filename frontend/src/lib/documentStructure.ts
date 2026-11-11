@@ -9,8 +9,9 @@ const record=(value:unknown):value is Record<string,unknown> => value!==null && 
 export function documentStructureIssue(input:unknown):Issue|undefined {
   const invalid=(path:Path):Issue=>({path,message:"Estrutura ou coleção inválida ou acima do limite."});
   const array=(value:unknown,max:number,path:Path,optional=false):Issue|undefined =>
-    optional && (value===undefined || ((path[path.length-1]==="contractLeaves" || (path[0]==="roles" && path[path.length-1]==="coverageRoleIds")) && value===null)) ? undefined : !Array.isArray(value) || value.length>max ? invalid(path) : undefined;
+    optional && (value===undefined || ((["contractLeaves","roleHistory","accumulationRoleIds","absences"].includes(String(path[path.length-1])) || (path[0]==="roles" && path[path.length-1]==="coverageRoleIds")) && value===null)) ? undefined : !Array.isArray(value) || value.length>max ? invalid(path) : undefined;
   if(!record(input))return invalid([]);
+  for(const key of ["publications","publicationSelections"]){if(input[key]!==undefined&&input[key]!==null&&(!Array.isArray(input[key])||(input[key] as unknown[]).length>10))return invalid([key]);}
   if(!record(input.company))return invalid(["company"]);
   const top:[unknown,number,Path,boolean?][]=[
     [input.employees,limits.employees,["employees"]],
@@ -29,11 +30,13 @@ export function documentStructureIssue(input:unknown):Issue|undefined {
     const path:Path=["employees",i];
     if(!record(employee))return invalid(path);
     const collections:[string,number,boolean?][]=[
-      ["contractLeaves",limits.windows,true],["availability",limits.windows],["restrictions",limits.windows],
+      ["absences",limits.absences,true],["accumulationRoleIds",limits.coverageRoles,true],["roleHistory",limits.windows,true],["contractLeaves",limits.windows,true],["availability",limits.windows],["restrictions",limits.windows],
       ["preferences",limits.preferences],["preferredDaysOff",limits.days],
       ["workingDays",limits.days,true],["coverageRoleIds",limits.coverageRoles,true],
       ["coverageRoles",limits.coverageRoles,true]
     ];
+    const absenceIssue=array(employee.absences,limits.absences,[...path,"absences"],true);if(absenceIssue)return absenceIssue;
+    let credits=0;for(const [j,absence]of ((employee.absences??[])as unknown[]).entries()){if(!record(absence))return invalid([...path,"absences",j]);const issue=array(absence.credits,limits.absenceCredits,[...path,"absences",j,"credits"]);if(issue)return issue;credits+=(absence.credits as unknown[]).length;if(credits>limits.absenceCredits)return invalid([...path,"absences"]);}
     for(const [key,max,optional] of collections){const issue=array(employee[key],max,[...path,key],optional);if(issue)return issue;}
   }
   for(const [i,assignment] of (input.assignments as unknown[]).entries()) {

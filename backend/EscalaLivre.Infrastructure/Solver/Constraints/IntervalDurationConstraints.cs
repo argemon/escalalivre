@@ -9,8 +9,8 @@ public sealed class IntervalDurationConstraints : IScheduleConstraintTranslator
     {
         var input = context.Input;
         var company = input.Request.Document.Company;
-        var retained = input.HolidayShifts.Select(a => a.Id).ToHashSet();
-        var anchored = input.Preserved.Concat(input.HolidayShifts).Where(a => a.Break is not null)
+        var retained = input.RetainedInside.Select(a => a.Id).ToHashSet();
+        var anchored = input.Preserved.Concat(input.RetainedInside).Where(a => a.Break is not null)
             .Select(a => (a.EmployeeId, Week: ScheduleWindow.WeekStart(a.Start))).ToHashSet();
         foreach (var candidate in input.Candidates.Where(a => !retained.Contains(a.Id)))
         {

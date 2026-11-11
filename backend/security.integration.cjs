@@ -555,7 +555,7 @@ test('editing flow: authorize, save, generate, revoke, save, reload and generate
     assert.ok(local.gaps.some(g=>g.role===covered.name&&g.start==='2026-10-14T12:00:00'));
   });
 });
-test('editing flow: generate, change employee role, save, reload and regenerate consistently',async()=>{
+test('editing flow: generate, change employee role without rewriting saved work, reload and explicitly regenerate',async()=>{
   await withServer({},async({url})=>{
     const {document,covered,employeeId}=editingFixture(),client=editingClient(url);
     client.store.getState().setDocument(document);
@@ -564,15 +564,18 @@ test('editing flow: generate, change employee role, save, reload and regenerate 
     await client.generate();
     const employee=client.store.getState().document.employees.find(e=>e.id===employeeId);
     assert.ok(client.store.getState().document.assignments.some(a=>a.employeeId===employeeId));
+    const savedAssignments=JSON.parse(JSON.stringify(client.store.getState().document.assignments));
     client.store.getState().upsertEmployee({...employee,role:covered.name,roleId:covered.id});
     client.reload();
-    const check=()=>{
-      for(const a of client.store.getState().document.assignments.filter(a=>a.employeeId===employeeId)){
-        assert.equal(a.roleId,covered.id);assert.equal(a.role,covered.name);
-      }
-      assert.ok(!client.store.getState().analysis.conflicts.some(c=>c.code==='invalidShift'));
-    };
-    check();await client.generate();check();
+    // ADR 024: registration never rewrites saved work, including after reload.
+    assert.deepEqual(JSON.parse(JSON.stringify(client.store.getState().document.assignments)),savedAssignments);
+    assert.ok(client.store.getState().analysis.conflicts.some(c=>c.code==='invalidShift'&&c.employeeId===employeeId));
+    // Regeneration is a separate explicit operation and uses the current role.
+    await client.generate();
+    for(const a of client.store.getState().document.assignments.filter(a=>a.employeeId===employeeId)){
+      assert.equal(a.roleId,covered.id);assert.equal(a.role,covered.name);
+    }
+    assert.ok(!client.store.getState().analysis.conflicts.some(c=>c.code==='invalidShift'));
     assert.equal(client.payload.document.employees.find(e=>e.id===employeeId).roleId,covered.id);
   });
 });
@@ -607,10 +610,12 @@ test('overlapping preserved history counts people in team and directional role c
       const envelope=await response.json();assert.equal(envelope.success,true);
       const result=envelope.data;assert.ok(['optimal','feasible'].includes(result.optimization.status));
       assert.equal(result.coverageScore,1);assert.equal(result.gaps.length,0);
-      for(const original of s.request.document.assignments)assert.deepEqual(result.assignments.find(a=>a.id===original.id),original);
+      // Optional null/absent pins both mean unfixed; all other saved content stays exact.
+      for(const original of s.request.document.assignments){const actual=result.assignments.find(a=>a.id===original.id);assert.ok(actual);assert.deepEqual({...actual,pinned:actual.pinned??false},{...original,pinned:original.pinned??false});}
       const local=analyzeDocument({...s.request.document,assignments:result.assignments});
       assert.equal(local.coverageScore,result.coverageScore);
-      assert.deepEqual(JSON.parse(JSON.stringify(local.coverage)),result.coverage);
+      const coverage=blocks=>blocks.map(b=>({...b,employeeIds:b.employeeIds??null}));
+      assert.deepEqual(coverage(JSON.parse(JSON.stringify(local.coverage))),coverage(result.coverage));
       const issueFields=issues=>issues.map(({code,severity,employeeId,start,end,role})=>({code,severity,employeeId,start,end,role}));
       assert.deepEqual(JSON.parse(JSON.stringify(issueFields(local.conflicts))),issueFields(result.conflicts));
       assert.deepEqual(JSON.parse(JSON.stringify(local.gaps)),result.gaps);
@@ -708,3 +713,28 @@ test('automatic lunches stay at company minimum unless extension improves covera
     }
   });
 });
+
+test('employment vigencies survive HTTP native roundtrip and worker analysis',async()=>{
+ const scenarios=require('../shared/employment-scenarios.json').scenarios,{analyzeDocument}=require('../frontend/tests/source-loader.cjs')()('lib/analysis.ts'),{digest}=require('../shared/parity-contract.cjs');
+ await withServer({},async({post})=>{
+  for(const s of scenarios){for(const route of ['/analyze','/validate']){const response=await post(route,s.request);assert.equal(response.status,200,s.id);assert.deepEqual(digest((await response.json()).data),digest(analyzeDocument(s.request.document)));}}
+  const request=scenarios[1].request,exported=await (await post('/export',{document:request.document,format:'native'})).json(),imported=await (await post('/import',{fileName:'history.escalalivre',format:'native',contentBase64:exported.data.contentBase64})).json();assert.deepEqual(imported.data.employees[0].roleHistory,request.document.employees[0].roleHistory);assert.deepEqual(imported.data.assignments.map(a=>({...a,break:a.break??null})),request.document.assignments.map(a=>({...a,break:a.break??null})));
+  for(const inactive of[false,true]){const document=structuredClone(request.document);document.assignments=[];document.planningPeriod={start:'2026-11-15',end:'2026-11-15'};if(inactive)document.employees[0].inactiveFrom='2026-11-15';const response=await post('/solve',{document,start:'2026-11-15T00:00:00',end:'2026-11-15T23:59:59'});assert.equal(response.status,200);const result=(await response.json()).data;if(inactive)assert.equal(result.assignments.length,0);else{assert.ok(result.assignments.length);assert.ok(result.assignments.every(a=>a.role==='Caixa'));}}
+ });
+});
+
+test('exclusive role allocation agrees across HTTP and actual generation',async()=>{
+ const scenarios=require('../shared/exclusive-coverage-scenarios.json').scenarios,{analyzeDocument}=require('../frontend/tests/source-loader.cjs')()('lib/analysis.ts'),{digest}=require('../shared/parity-contract.cjs');
+ await withServer({},async({post})=>{
+  for(const s of scenarios){const response=await post('/analyze',s.request);assert.equal(response.status,200,s.id);const result=(await response.json()).data;assert.equal(result.coverageScore,s.expectedScore,s.id);assert.deepEqual(digest(result),digest(analyzeDocument(s.request.document)),s.id);}
+  for(const id of ['exclusive-single-substitute','exclusive-crossed-permissions','exclusive-explicit-accumulation']){const s=scenarios.find(s=>s.id===id);const request=structuredClone(s.request);request.document.assignments=[];const response=await post('/solve',request);assert.equal(response.status,200,id);const result=(await response.json()).data;assert.equal(result.coverageScore,s.expectedScore,id);assert.deepEqual(digest(result),digest(analyzeDocument({...request.document,assignments:result.assignments})),id);}
+  const s=scenarios.find(s=>s.id==='exclusive-explicit-accumulation'),exported=await (await post('/export',{document:s.request.document,format:'native'})).json(),imported=await (await post('/import',{fileName:'exclusive.escalalivre',format:'native',contentBase64:exported.data.contentBase64})).json();assert.equal(imported.data.company.coverageMode,'exclusive');assert.deepEqual(imported.data.employees[0].accumulationRoleIds,s.request.document.employees[0].accumulationRoleIds);
+ });
+});
+
+test('pinned shifts and subperiod generation preserve exact commitments across worker',async()=>{
+ const scenarios=require('../shared/pinned-generation-scenarios.json').scenarios;
+ await withServer({},async({post})=>{for(const s of scenarios){const response=await post('/solve',s.request);assert.equal(response.status,200,s.id);const result=(await response.json()).data;if(s.expectedStatus==='infeasible')assert.equal(result.optimization.status,'infeasible');else assert.ok(['optimal','feasible'].includes(result.optimization.status));for(const old of s.request.document.assignments){const found=result.assignments.find(a=>a.id===old.id);assert.ok(found,s.id);const normalize=a=>({...a,break:a.break??null,pinned:a.pinned??null});assert.deepEqual(normalize(found),normalize(old),s.id);}}});
+});
+
+test('absence events block generation and preserve explicit credits through HTTP',async()=>{const scenarios=require('../shared/absence-scenarios.json').scenarios,{analyzeDocument}=require('../frontend/tests/source-loader.cjs')()('lib/analysis.ts'),{digest}=require('../shared/parity-contract.cjs');await withServer({},async({post})=>{for(const s of scenarios){const response=await post('/analyze',s.request);assert.equal(response.status,200,s.id);assert.deepEqual(digest((await response.json()).data),digest(analyzeDocument(s.request.document)),s.id);}const r=scenarios[0].request;const generated=await post('/solve',{...r,document:{...r.document,assignments:[]}});assert.equal(generated.status,200);assert.equal((await generated.json()).data.assignments.length,0);const exported=await (await post('/export',{document:r.document,format:'native'})).json(),imported=await (await post('/import',{fileName:'absence.escalalivre',format:'native',contentBase64:exported.data.contentBase64})).json();assert.deepEqual(imported.data.employees[0].absences,r.document.employees[0].absences);});});

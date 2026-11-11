@@ -1,10 +1,11 @@
+import { useDialogFocus } from "../lib/useDialogFocus";
 import { WeeklyWorkPlanEditor } from "./WeeklyWorkPlanEditor";
 import { intervalDescription } from "../lib/policies/weeklyWorkPlan";
 import { nowInstant } from "../lib/dateTime";
 import { regimeChoices, regimeDefinition } from "../lib/regimes";
 import { TimeInput } from "./TimeInput";
 import { DurationInput } from "./DurationInput";
-import { clockMillis } from "../lib/civilTime";
+import { clockMillis, civilMillis } from "../lib/civilTime";
 import { useEditorDismiss } from "../lib/useEditorDismiss";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { useScheduleStore } from "../store/scheduleStore";
@@ -14,11 +15,13 @@ import type { CompanyRules } from "../types/schedule";
 import { groupCoverageRules, expandCoverageRules, outsideOperatingHours, syncOperatingCoverage, type CoverageDraft } from "../lib/coverageRules";
 import { Button } from "./ui";
 
-export function CompanyEditor({ tab, onClose, onSaved }: { tab: "company" | "coverage"; onClose: () => void; onSaved?: () => void }) {
+export function CompanyEditor({ tab, onClose, onSaved, focusContext }: { tab: "company" | "coverage"; onClose: () => void; onSaved?: () => void; focusContext?:{role?:string;date:string} }) {
   const { document, setDocument } = useScheduleStore();
   const [company,setCompany] = useState<CompanyRules>(() => structuredClone(document.company));
   const [coverage, setCoverage] = useState<CoverageDraft[]>(() => groupCoverageRules(document.company.coverage).map(rule => ({...rule, daysMode: rule.daysMode ?? (rule.days.length === document.company.operatingDays.length && rule.days.every(day => document.company.operatingDays.includes(day)) ? "operating" : "custom")})));
   const { requestClose, backdrop } = useEditorDismiss({ company, coverage }, onClose);
+  const dialogRef=useRef<HTMLFormElement>(null);useDialogFocus(dialogRef,requestClose);
+  const focusDone=useRef(false);
   const rulesContainer = useRef<HTMLDivElement>(null);
   const revealNewRule = useRef(false);
   useEffect(() => {
@@ -28,6 +31,7 @@ export function CompanyEditor({ tab, onClose, onSaved }: { tab: "company" | "cov
     rule?.scrollIntoView({ block: "start", behavior: "smooth" });
     rule?.querySelector<HTMLSelectElement>('select')?.focus({ preventScroll: true });
   }, [coverage.length]);
+  useEffect(()=>{if(!focusContext||focusDone.current)return;focusDone.current=true;const day=new Date(civilMillis(focusContext.date+"T00:00:00")).getUTCDay(),index=coverage.findIndex(r=>r.role===focusContext.role&&r.days.includes(day));const row=rulesContainer.current?.querySelectorAll<HTMLElement>("[data-coverage-rule]")[index];row?.scrollIntoView({block:"nearest"});row?.querySelector<HTMLInputElement>('input[type="number"]')?.focus();},[focusContext,coverage]);
   const [error,setError] = useState("");
   const patch = (v: Partial<CompanyRules>) => setCompany(c => ({ ...c,...v }));
   const workload = (v: Partial<CompanyRules["defaultWorkload"]>) => patch({ defaultWorkload: { ...company.defaultWorkload,...v } });
@@ -57,7 +61,7 @@ export function CompanyEditor({ tab, onClose, onSaved }: { tab: "company" | "cov
   const duration = (label: string,value: string,onChange: (s:string) => void) => <Field label={label}><DurationInput required value={value} onChange={onChange} /></Field>;
   const intervalClosure = <><h3 className="font-semibold">Fechamento da empresa para intervalo</h3><label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={Boolean(company.middayClosure)} onChange={e => patch({middayClosure:e.target.checked ? {start:"12:00:00",end:"13:00:00"} : undefined})} />A empresa fecha para intervalo</label>{company.middayClosure && <><div className="grid grid-cols-2 gap-3">{time("Fecha para intervalo",company.middayClosure.start,v => patch({middayClosure:{...company.middayClosure!,start:v}}))}{time("Reabre após intervalo",company.middayClosure.end,v => patch({middayClosure:{...company.middayClosure!,end:v}}))}</div><p className="text-xs text-muted-foreground">A cobertura normal não é exigida durante o fechamento. Turnos que atravessarem esse horário terão pausas que cobrem todo o fechamento. Fora desse período, o gerador alterna as pausas conforme a demanda.</p></>}<p className="text-sm text-muted-foreground">Todos saem para intervalo durante o fechamento. Para um estoquista ou outra exceção, abra o funcionário e marque “Trabalha durante o fechamento para intervalo”. O intervalo dessa pessoa será em outro horário.</p></>;
   return <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/50 p-3" {...backdrop}>
-    <form role="dialog" aria-modal="true" aria-label={tab === "company" ? "Configurar empresa" : "Configurar cobertura mínima"} onSubmit={save} onClick={e => e.stopPropagation()} onKeyDown={e => { if(e.key === "Escape") { e.preventDefault(); e.stopPropagation(); requestClose(); } }} className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-lg border border-border bg-card shadow-xl">
+    <form ref={dialogRef} role="dialog" aria-modal="true" aria-label={tab === "company" ? "Configurar empresa" : "Configurar cobertura mínima"} onSubmit={save} onClick={e => e.stopPropagation()} onKeyDown={e => { if(e.key === "Escape") { e.preventDefault(); e.stopPropagation(); requestClose(); } }} className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-lg border border-border bg-card shadow-xl">
       <header className="flex items-center justify-between border-b border-border p-4"><h2 className="text-xl font-semibold">{company.name || "Configurar empresa"}<span className="block text-sm font-normal text-muted-foreground">{tab === "company" ? "Configurações da empresa" : "Cobertura mínima"}</span></h2><Button type="button" onClick={requestClose}>Fechar</Button></header>
       <div ref={rulesContainer} className="space-y-4 overflow-auto p-4">
 

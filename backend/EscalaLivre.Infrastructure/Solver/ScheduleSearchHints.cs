@@ -9,7 +9,7 @@ internal static class ScheduleSearchHints
     {
         var input = context.Input;
         var company = input.Request.Document.Company;
-        var chosen = input.HolidayShifts.Concat(input.FixedCoverage).Select(a => a.Id).ToHashSet();
+        var chosen = input.RetainedInside.Concat(input.FixedCoverage).Select(a => a.Id).ToHashSet();
         foreach (var week in input.Candidates.GroupBy(a => ScheduleWindow.WeekStart(a.Start)))
         {
             var lunches = new List<(TimeSpan Start, TimeSpan End)>();

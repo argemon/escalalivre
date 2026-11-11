@@ -29,7 +29,7 @@ public static class ContractWorkPolicy
     {
         int nominal = Nominal(company, employee, day);
         if (WeeklyWorkPlanPolicy.For(company,employee)?.FlexibleWorkDays is null && LaborRules.ClosedHoliday(company, day)) return nominal;
-        return (int)Math.Min(nominal, employee.ContractLeaves?.Where(l => l.Date == DateOnly.FromDateTime(day)).Sum(l => (long)l.ExcusedSeconds) ?? 0);
+        return (int)Math.Min(nominal, AbsencePolicy.ExplicitCredit(employee,day));
     }
     public static int Target(CompanyRules company, Employee employee, DateTime day) => Nominal(company, employee, day) - Excused(company, employee, day);
     public static TimeSpan NormalLimit(CompanyRules company, Employee employee, DateTime day)
@@ -37,7 +37,7 @@ public static class ContractWorkPolicy
         var plan = WeeklyWorkPlanPolicy.For(company, employee);
         if (plan is null) return EffectiveWorkPolicy.RuleFor(company, employee).DefaultShiftDuration;
         var permission = plan.Compensation?.AppliesOn(DateOnly.FromDateTime(day)) == true ? 36000 : 28800;
-        return TimeSpan.FromSeconds(Math.Min(Math.Max(0,Nominal(company,employee,day)-(employee.ContractLeaves?.Where(l=>l.Date==DateOnly.FromDateTime(day)).Sum(l=>(long)l.ExcusedSeconds)??0)), permission));
+        return TimeSpan.FromSeconds(Math.Min(Math.Max(0,Nominal(company,employee,day)-AbsencePolicy.ExplicitCredit(employee,day)), permission));
     }
     public static TimeSpan DailyLimit(CompanyRules company, Employee employee, DateTime day)
         => WeeklyWorkPlanPolicy.For(company, employee) is null ? EffectiveWorkPolicy.DailyLimit(employee)
@@ -54,7 +54,7 @@ public static class ContractWorkPolicy
         var desired=DesiredWork(document.Company,employee,day);
         if (WeeklyWorkPlanPolicy.For(document.Company,employee) is null || desired<=TimeSpan.Zero) return [desired];
         var week=ScheduleWindow.WeekStart(day);
-        var history=document.Assignments.Where(a=>a.EmployeeId==employee.Id && (!ScheduleWindow.Contains(a,start,end)||LaborRules.AuthorizedHolidayShift(document.Company,a)));
+        var history=document.Assignments.Where(a=>a.EmployeeId==employee.Id && (!ScheduleWindow.Contains(a,start,end)||a.Pinned==true||LaborRules.AuthorizedHolidayShift(document.Company,a)));
         long remaining=ScheduleCapacityPolicy.RemainingWeeklyTicks(EffectiveWorkPolicy.WeeklyLimit(document.Company,employee),new Duration(TimeSpan.FromTicks(history.Sum(a=>EffectiveWorkPolicy.WorkTicksInWeek(a,week))))) / TimeSpan.TicksPerSecond;
         var sums=new HashSet<long>{0};
         for(var other=week;other<week.AddDays(7);other=other.AddDays(1))

@@ -1,3 +1,6 @@
+import { CoverageAllocationPanel } from "./CoverageAllocationPanel";
+import { activeOn, employeeOn } from "../lib/policies/employment";
+import { TeamTools } from "./TeamTools";
 import { formatDuration } from "../lib/duration";
 import { formatCoverageDays, groupCoverageForDisplay } from "../lib/coverageDisplay";
 import { AlertTriangle, ArrowRight, Check, Clock3, ShieldCheck, Users } from "lucide-react";
@@ -14,6 +17,7 @@ export function OperationalSidebar() {
 
   const [section, setSection] = useState<"company" | "roles" | "coverage" | "team">("company");
   const [search, setSearch] = useState("");
+  const [showInactive,setShowInactive]=useState(true);
   const [editor,setEditor] = useState<"company" | "coverage" | null>(null);
   const steps = [
     { id: "company", label: "Empresa", done: document.setup?.companyConfigured ?? (document.employees.length > 0 || document.company.coverage.length > 0), description: "Defina os dias e horários de funcionamento." },
@@ -65,7 +69,7 @@ export function OperationalSidebar() {
         </section>}
 
         {section === "coverage" && <section className="space-y-2">
-          <SectionTitle icon={<ShieldCheck className="size-4" />} title="Cobertura mínima" /><Button className="w-full" disabled={!document.roles?.length} onClick={() => setEditor("coverage")}>Editar cobertura mínima</Button>
+          <CoverageAllocationPanel /><SectionTitle icon={<ShieldCheck className="size-4" />} title="Cobertura mínima" /><Button className="w-full" disabled={!document.roles?.length} onClick={() => setEditor("coverage")}>Editar cobertura mínima</Button>
           {!document.roles?.length && <p className="text-sm text-muted-foreground">Primeiro, complete a etapa 2: Funções.</p>}
           {!document.company.coverage.length && <p className="text-sm text-muted-foreground">Nenhuma cobertura definida. Informe quantas pessoas são necessárias por função e horário.</p>}
           {groupCoverageForDisplay(document.company.coverage).map(({ requirement, days },index) => {
@@ -98,9 +102,11 @@ export function OperationalSidebar() {
         {section === "team" && <section className="space-y-2">
           <SectionTitle icon={<Users className="size-4" />} title="Equipe" /><Button className="w-full" disabled={!document.roles?.length} onClick={() => setSelectedEmployeeId("new")}>Adicionar funcionário</Button>
           {!document.roles?.length && <p className="text-sm text-muted-foreground">Primeiro, cadastre as funções na aba Funções.</p>}
+          <TeamTools />
+          <label className="block text-xs"><input type="checkbox" checked={showInactive} onChange={e=>setShowInactive(e.target.checked)} /> Mostrar inativos no período</label>
           <label className="block text-xs text-muted-foreground">Buscar na equipe<input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder="Nome ou função" className="mt-1 h-10 w-full rounded-lg border border-border bg-background px-3 text-sm text-foreground" /></label>
           <p className="py-1 text-xs text-muted-foreground">{document.employees.length} pessoas cadastradas · Clique para editar</p>
-          {document.employees.filter(employee => (employee.name + ' ' + employee.role).toLocaleLowerCase('pt-BR').includes(search.toLocaleLowerCase('pt-BR'))).map((employee) => {
+          {document.employees.filter(e=>showInactive || activeOn(e,document.planningPeriod.start)).map(e=>employeeOn(e,document.planningPeriod.start)).filter(employee => (employee.name + ' ' + employee.role).toLocaleLowerCase('pt-BR').includes(search.toLocaleLowerCase('pt-BR'))).map((employee) => {
             const gaps = analysis.gaps.filter((gap) => gap.role === employee.role).length;
             const active = selectedEmployeeId === employee.id;
             return (
@@ -111,7 +117,7 @@ export function OperationalSidebar() {
               >
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <p className="text-sm font-medium">{employee.name}</p>
+                    <p className="text-sm font-medium">{employee.name}{!activeOn(employee,document.planningPeriod.start) && " · Inativo"}</p>
                     <p className="text-xs text-muted-foreground capitalize">{employee.role}</p>
                   </div>
                   {gaps > 0 && (

@@ -1,6 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><IsPackable>false</IsPackable></PropertyGroup>
   <ItemGroup>
+    <None Include="../../shared/absence-scenarios.json" Link="absence-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../shared/pinned-generation-scenarios.json" Link="pinned-generation-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../shared/exclusive-coverage-scenarios.json" Link="exclusive-coverage-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../shared/employment-scenarios.json" Link="employment-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../shared/role-coverage-scenarios.json" Link="role-coverage-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../shared/simultaneous-coverage-scenarios.json" Link="simultaneous-coverage-scenarios.json" CopyToOutputDirectory="PreserveNewest" />
     <ProjectReference Include="../EscalaLivre.Infrastructure/EscalaLivre.Infrastructure.csproj" />

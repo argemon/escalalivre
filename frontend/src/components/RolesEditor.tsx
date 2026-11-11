@@ -24,7 +24,7 @@ export function RolesEditor() {
     <form aria-label={editing ? "Editar função" : "Cadastrar função"} className="space-y-2" onSubmit={e => { e.preventDefault(); save(); }}>
       <label className="block text-sm">Nome da função<input autoFocus={Boolean(editing)} required className="mt-1 w-full rounded border border-border bg-background p-2" value={name} onChange={e => setName(e.target.value)} placeholder="Ex.: Vendedor" /></label>
       <fieldset className="space-y-2 rounded border border-border p-3"><legend>Esta função também pode cobrir</legend>
-        <p className="text-xs text-muted-foreground">Selecione uma ou mais funções. Ex.: Gerente pode cobrir Caixa e Vendedor ao mesmo tempo, mantendo sua própria função atendida. A autorização vale só neste sentido e somente enquanto a pessoa estiver trabalhando.</p>
+        <p className="text-xs text-muted-foreground">Selecione as funções que este cargo pode substituir. A autorização é direcional. No modo exclusivo, a pessoa atende uma função por bloco; acumulação depende de grupo explícito no cadastro individual. Arquivos legados mantêm a presença simultânea até conversão confirmada na etapa Cobertura.</p>
         {roles.filter(r => r.id !== editing).map(role => <label key={role.id} className="flex gap-2 text-sm"><input type="checkbox" checked={coverageRoleIds.includes(role.id)} onChange={e => setCoverageRoleIds(e.target.checked ? [...coverageRoleIds,role.id] : coverageRoleIds.filter(id => id !== role.id))} />Pode cobrir {role.name}</label>)}
         {!roles.some(r => r.id !== editing) && <p className="text-xs text-muted-foreground">Cadastre outras funções para autorizar a cobertura.</p>}
       </fieldset>
@@ -41,7 +41,7 @@ export function RolesEditor() {
     {roles.map(role => {
       const people = document.employees.filter(e => e.roleId === role.id).length;
       const rules = document.company.coverage.filter(r => r.roleId === role.id).length;
-      const used = people > 0 || rules > 0 || document.assignments.some(a => a.roleId === role.id)
+      const used = document.employees.some(e=>e.accumulationRoleIds?.includes(role.id)) || document.employees.some(e=>e.roleHistory?.some(t=>t.roleId===role.id || t.coverageRoleIds?.includes(role.id))) || people > 0 || rules > 0 || document.assignments.some(a => a.roleId === role.id)
         || roles.some(r => r.id !== role.id && r.coverageRoleIds?.includes(role.id)) || document.employees.some(e => e.coverageRoleIds?.includes(role.id));
       const covered = roles.filter(r => role.coverageRoleIds?.includes(r.id)).map(r => r.name);
       return <article key={role.id} className="space-y-2 rounded border border-border p-3">

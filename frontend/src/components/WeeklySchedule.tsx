@@ -12,7 +12,7 @@ import { Button } from "./ui";
 const dateKey = (day: Date) => [day.getFullYear(), String(day.getMonth() + 1).padStart(2, "0"), String(day.getDate()).padStart(2, "0")].join("-");
 
 export function WeeklySchedule() {
-  const { document, analysis, setSelectedEmployeeId } = useScheduleStore();
+  const { document, analysis, setSelectedEmployeeId, selectShift } = useScheduleStore();
   const [anchor, setAnchor] = useState(() => document.planningPeriod.start);
   const first = weekStart(new Date(anchor + "T00:00:00"));
   const days = Array.from({ length: 7 }, (_, index) => {
@@ -64,13 +64,14 @@ export function WeeklySchedule() {
                   const overnight = datePart(shift.end) > datePart(shift.start);
                   const label = displayClock(shift.start) + "–" + displayClock(shift.end) + (overnight ? " +1d" : "");
                   const outside = !authorizedHolidayShift(document.company, shift) && outsideOperatingHours(document.company, day.getDay(), timePart(shift.start), timePart(shift.end));
-                  return <button key={shift.id} className={"block w-full rounded border-l-2 pl-2 text-left " + (outside ? "border-amber-500" : shift.planned ? "border-dashed border-border" : "border-primary")} title={employee.name + " · " + dateLabel(day) + " · " + label} onClick={() => setSelectedEmployeeId(employee.id)}>
-                    <span className="block font-semibold tabular-nums">{label}</span>
+                  return <button key={shift.id} className={"block w-full rounded border-l-2 pl-2 text-left " + (outside ? "border-amber-500" : shift.planned ? "border-dashed border-border" : "border-primary")} title={employee.name + " · " + dateLabel(day) + " · " + label} onClick={() => shift.planned ? window.alert("Prévia estimada. Use Criar turno para salvar um horário explícito.") : selectShift({id:shift.id,employeeId:employee.id,date:key})}>
+                    <span className="block font-semibold tabular-nums">{shift.pinned&&"🔒 "}{label}</span>
                     {shift.break && <span className="block text-[10px] text-muted-foreground">Int. {displayClock(shift.break.start)}–{displayClock(shift.break.end)}</span>}
                     {shift.planned && <span className="block text-[10px] text-muted-foreground">Prévia</span>}
                     {outside && <span className="block text-[10px] text-amber-700 dark:text-amber-300">Fora do expediente</span>}
                   </button>;
                 })}</div> : <span className="text-muted-foreground">{!inPeriod ? "—" : closed ? "Fechada" : "Sem turno"}</span>}
+                {inPeriod&&<button className="block text-xs underline" onClick={()=>selectShift({employeeId:employee.id,date:key})}>Criar turno neste dia</button>}
                 {inPeriod && workload && workload.unmetSeconds > 0 && <p className="mt-2 text-amber-700 dark:text-amber-300">Faltam {secondsDuration(workload.unmetSeconds)} de jornada</p>}
               </td>;
             })}

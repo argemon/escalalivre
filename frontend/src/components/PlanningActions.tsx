@@ -1,0 +1,4 @@
+import { ReuseTools } from "./ReuseTools";
+import { useScheduleStore } from "../store/scheduleStore";
+import { Button } from "./ui";
+export function PlanningActions(){const {document,selectShift,undo,redo,undoCount,redoCount}=useScheduleStore();return <div className="flex gap-2 p-2 border-b border-border bg-card"><Button type="button" disabled={!document.employees.length} onClick={()=>selectShift({employeeId:document.employees[0].id,date:document.planningPeriod.start})}>Criar turno</Button><Button type="button" disabled={!undoCount} onClick={undo}>Desfazer ({undoCount})</Button><Button type="button" disabled={!redoCount} onClick={redo}>Refazer ({redoCount})</Button><ReuseTools /><details className="text-xs"><summary>Histórico da sessão</summary>Até 20 estados e 8 MiB de dados serializados, somente nesta sessão. Abrir/restaurar arquivo limpa as pilhas; trocar de documento também. Jobs e progresso não são restaurados.</details></div>;}

@@ -31,9 +31,11 @@ public static class ScheduleCoverage
         var byEmployee = assignments.ToLookup(a => a.EmployeeId);
         foreach((DateTime Start, DateTime End, List<CoverageRequirement> Rules) block in CoverageDemand.Blocks(document.Company,start,end,assignments)) {
             var people=document.Employees.Where(e=>byEmployee[e.Id].Any(a=>CoverageDemand.Covers(a,block.Start,block.End))).ToList();
+            bool Eligible(Employee e,CoverageRequirement rule)=>byEmployee[e.Id].Any(a=>CoverageDemand.Covers(a,block.Start,block.End) && ScheduleRules.CanCover(EmploymentPolicy.ForShift(e,a),rule,document.Roles));
+            var allocated=document.Company.CoverageMode=="exclusive" ? ExclusiveCoveragePolicy.Allocate(people,block.Rules,Eligible,document.Roles) : null;
             foreach(CoverageRequirement rule in block.Rules) {
-                int assigned =people.Count(e => ScheduleRules.CanCover(e, rule, document.Roles));
-                yield return new(block.Start,block.End,rule.Role,rule.MinimumEmployees,assigned,assigned>=rule.MinimumEmployees ? "healthy" : assigned==0 ? "uncovered" : "warning");
+                int assigned=allocated is null ? people.Count(e=>Eligible(e,rule)) : allocated[rule].Count;
+                yield return new(block.Start,block.End,rule.Role,rule.MinimumEmployees,assigned,assigned>=rule.MinimumEmployees ? "healthy" : assigned==0 ? "uncovered" : "warning",allocated is null ? null : allocated[rule]);
             }
         }
     }

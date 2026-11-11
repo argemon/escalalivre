@@ -96,11 +96,11 @@ public sealed class PlanningAggregateTests
     }
 
     [Fact]
-    public void ExplicitRoleChangeTouchesAllHistoryButNeverHours()
+    public void DatedRoleChangePreservesEarlierHistoryAndNeverChangesHours()
     {
         var shifts = new[] { Shift(-1), Shift(), Shift(1) }; var schedule = Schedule(shifts);
         var roleId = Guid.NewGuid();
-        schedule.ChangeEmployeeRole(Person, "B", roleId);
+        schedule.ChangeEmployeeRole(Person, "B", roleId, DateOnly.FromDateTime(Monday));
         for (var i = 0; i < shifts.Length; i++)
         {
             var updated = schedule.Assignments[i];
@@ -108,8 +108,8 @@ public sealed class PlanningAggregateTests
             Assert.Same(shifts[i].Window, updated.Window);
             Assert.Same(shifts[i].Pause, updated.Pause);
             Assert.Equal(shifts[i].Tags, updated.Tags);
-            Assert.Equal("B", updated.Role);
-            Assert.Equal(roleId, updated.RoleId);
+            Assert.Equal(i==0 ? shifts[i].Role : "B", updated.Role);
+            Assert.Equal(i==0 ? shifts[i].RoleId : roleId, updated.RoleId);
         }
     }
 }

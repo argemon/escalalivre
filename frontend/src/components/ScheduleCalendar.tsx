@@ -1,3 +1,4 @@
+import { moveShift } from "../lib/dateTime";
 import { timePart, formatCivilDateTime } from "../lib/dateTime";
 import { exclusivePeriodEnd } from "../lib/planningPeriod";
 import { Button } from "./ui";
@@ -18,7 +19,7 @@ import { useScheduleStore } from "../store/scheduleStore";
 
 
 export function ScheduleCalendar() {
-  const { document, moveAssignment, viewMode, setSelectedEmployeeId } = useScheduleStore();
+  const { document, viewMode, selectShift } = useScheduleStore();
   const [visibleDate,setVisibleDate] = useState(() => dateKey(new Date()));
   const [holidayPickerDate,setHolidayPickerDate] = useState(() => dateKey(new Date()));
   const [addingHoliday,setAddingHoliday] = useState(false);
@@ -40,7 +41,7 @@ export function ScheduleCalendar() {
         const employee = document.employees.find((item) => item.id === assignment.employeeId);
         return {
           id: assignment.id,
-          title: `${!authorizedHolidayShift(document.company,assignment) && outsideOperatingHours(document.company,new Date(assignment.start).getDay(),timePart(assignment.start),timePart(assignment.end)) ? "⚠ Fora do expediente · " : ""}${employee?.name ?? "Funcionario"} · ${assignment.role}`,
+          title: `${assignment.pinned?"🔒 ":""}${!authorizedHolidayShift(document.company,assignment) && outsideOperatingHours(document.company,new Date(assignment.start).getDay(),timePart(assignment.start),timePart(assignment.end)) ? "⚠ Fora do expediente · " : ""}${employee?.name ?? "Funcionario"} · ${assignment.role}`,
           extendedProps: {employeeId:assignment.employeeId,role:assignment.role,break:assignment.break,planned:"planned" in assignment && assignment.planned},
           editable: !("planned" in assignment && assignment.planned),
           start: assignment.start,
@@ -56,7 +57,8 @@ export function ScheduleCalendar() {
       return;
     }
 
-    moveAssignment(arg.event.id, formatCivilDateTime(arg.event.start), formatCivilDateTime(arg.event.end));
+    const shift=document.assignments.find(a=>a.id===arg.event.id),targetStart=formatCivilDateTime(arg.event.start),targetEnd=formatCivilDateTime(arg.event.end);arg.revert();
+    if(shift)selectShift({id:shift.id,employeeId:shift.employeeId,date:targetStart.slice(0,10),draft:moveShift(shift,targetStart,targetEnd,document.company.timeZone)});
   }
 
   if (viewMode === "week") return <WeeklySchedule />;
@@ -80,7 +82,7 @@ export function ScheduleCalendar() {
           key={document.id+document.planningPeriod.start+document.planningPeriod.end}
           initialDate={document.planningPeriod.start}
           validRange={{start:document.planningPeriod.start,end:exclusivePeriodEnd(document)}}
-          eventClick={arg => setSelectedEmployeeId(arg.event.extendedProps.employeeId)}
+          eventClick={arg => {if(arg.event.extendedProps.planned){window.alert("Prévia estimada; use Criar turno para salvar um horário explícito.");return;}selectShift({id:arg.event.id,employeeId:arg.event.extendedProps.employeeId,date:arg.event.startStr.slice(0,10)});}}
           datesSet={arg => {setVisibleDate(dateKey(arg.view.currentStart));setRange(previous => previous?.start.getTime() === arg.start.getTime() && previous?.end.getTime() === arg.end.getTime() ? previous : {start:arg.start,end:arg.end});}}
           buttonText={{today:"Hoje"}}
           displayEventTime={false}

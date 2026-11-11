@@ -11,7 +11,8 @@ public sealed record EscalaLivreDocument(
     DateTimeOffset UpdatedAt,
     PlanningPeriod? PlanningPeriod = null,
     IReadOnlyList<DocumentRole>? Roles = null,
-    DocumentSetup? Setup = null);
+    DocumentSetup? Setup = null,
+    IReadOnlyList<Publication>? Publications = null, IReadOnlyList<PublicationSelection>? PublicationSelections = null);
 
 public sealed record DocumentRole(Guid Id, string Name, IReadOnlyList<Guid>? CoverageRoleIds = null);
 public sealed record DocumentSetup(bool CompanyConfigured);
@@ -29,7 +30,8 @@ public sealed record CompanyRules(
     IReadOnlyList<CoverageRequirement> Coverage,
     MiddayClosure? MiddayClosure = null,
     IReadOnlyList<Holiday>? Holidays = null,
-    string TimeZone = "America/Cuiaba");
+    string TimeZone = "America/Cuiaba",
+    string? CoverageMode = null);
 
 public sealed record Holiday(DateOnly Date, string Name, bool Closed = true);
 
@@ -54,7 +56,16 @@ public sealed record Employee(
     IReadOnlyList<string>? CoverageRoles = null,
     Guid? RoleId = null,
     IReadOnlyList<Guid>? CoverageRoleIds = null,
-    IReadOnlyList<ContractLeave>? ContractLeaves = null);
+    IReadOnlyList<ContractLeave>? ContractLeaves = null,
+    IReadOnlyList<RoleTenure>? RoleHistory = null,
+    DateOnly? InactiveFrom = null,
+    IReadOnlyList<Guid>? AccumulationRoleIds = null,
+    IReadOnlyList<AbsenceEvent>? Absences = null);
+
+public sealed record AbsenceCredit(DateOnly Date,int ExcusedSeconds);
+public sealed record AbsenceEvent(Guid Id,string Category,DateTime Start,DateTime End,IReadOnlyList<AbsenceCredit> Credits);
+
+public sealed record RoleTenure(DateOnly StartsOn, string Role, Guid RoleId, IReadOnlyList<Guid>? CoverageRoleIds = null);
 
 public sealed record WorkloadRule(
     string RegimeType,
@@ -81,13 +92,14 @@ public sealed record ShiftAssignment(
     BreakWindow? Break,
     string Source,
     IReadOnlyList<string> Tags,
-    Guid? RoleId = null);
+    Guid? RoleId = null,
+    bool? Pinned = null);
 
 public sealed record BreakWindow(DateTime Start, DateTime End);
 
 public sealed record ScheduleIssue(string Severity, string Code, string Message, DateTime? Start = null, DateTime? End = null, string? Role = null, Guid? EmployeeId = null);
 
-public sealed record CoverageBlock(DateTime Start, DateTime End, string Role, int Required, int Assigned, string State);
+public sealed record CoverageBlock(DateTime Start, DateTime End, string Role, int Required, int Assigned, string State, IReadOnlyList<Guid>? EmployeeIds = null);
 
 public sealed record CoverageGap(DateTime Start, DateTime End, string Role, int MissingEmployees);
 

@@ -11,11 +11,11 @@ public sealed class FixedAssignmentConstraints : IScheduleConstraintTranslator
     {
         var request = context.Input.Request;
         var model = context.Model;
-        var holidayShifts = context.Input.HolidayShifts;
+        var holidayShifts = context.Input.RetainedInside;
         var fixedCoverage = context.Input.FixedCoverage;
         var decisionVars = context.DecisionVars;
         foreach (var shift in holidayShifts.Concat(fixedCoverage)) model.Add(decisionVars[shift.Id] == 1);
-        foreach(var shift in holidayShifts)
+        foreach(var shift in holidayShifts.Where(a=>a.Pinned!=true))
         {
             var employee=request.Document.Employees.First(e=>e.Id==shift.EmployeeId);
             if(ScheduleRules.ShiftDiagnostics(request.Document.Company,employee,shift,request.Document.Roles).Any(c=>c.Severity=="error"))model.Add(decisionVars[shift.Id]==0);

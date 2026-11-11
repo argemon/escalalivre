@@ -1,3 +1,4 @@
+import { OperationalSummary } from "./OperationalSummary";
 import { WorkloadSummaryCard } from "./WorkloadSummaryCard";
 import { solverLabels, solverDescriptions } from "../lib/solverStatus";
 import { groupDecisions } from "../lib/decisionGroups";
@@ -5,14 +6,15 @@ import { civilDateTime } from "../lib/dateTime";
 import { HiringSuggestionCard } from "./HiringSuggestionCard";
 import { useGenerationStore } from "../store/generationStore";
 import { GenerationProgress } from "./GenerationProgress";
-import { BrainCircuit, BriefcaseBusiness, CheckCircle2, CircleAlert, Loader2, Wand2 } from "lucide-react";
-import type { ReactNode } from "react";
+import { BrainCircuit, BriefcaseBusiness, CheckCircle2, Loader2, Wand2 } from "lucide-react";
+import { useState, type ReactNode } from "react";
 import { useScheduleStore } from "../store/scheduleStore";
 import { Badge, Button, Panel } from "./ui";
 
 export function SolverPanel() {
   const { document, analysis, solverStatus } = useScheduleStore();
-  const { active, start } = useGenerationStore();
+  const { active, start, proposal, message, confirmProposal, rejectProposal } = useGenerationStore();
+  const [rangeStart,setRangeStart]=useState(document.planningPeriod.start),[rangeEnd,setRangeEnd]=useState(document.planningPeriod.end);
 
   const hardViolations = analysis.conflicts.filter((item) => item.severity === "error").length;
   const softViolations = analysis.conflicts.filter((item) => item.severity !== "error").length + analysis.gaps.length;
@@ -50,31 +52,19 @@ export function SolverPanel() {
           </div>
         </section>
 
-        <Button className="w-full" onClick={() => void start()} disabled={active || !document.employees.length || !document.company.coverage.some(r => r.minimumEmployees > 0)}>
+        <div className="flex gap-2"><label>Gerar desde<input type="date" min={document.planningPeriod.start} max={document.planningPeriod.end} value={rangeStart} onChange={e=>setRangeStart(e.target.value)}/></label><label>Gerar até<input type="date" min={document.planningPeriod.start} max={document.planningPeriod.end} value={rangeEnd} onChange={e=>setRangeEnd(e.target.value)}/></label></div>
+        <Button className="w-full" onClick={() => void start({start:rangeStart,end:rangeEnd})} disabled={active || !document.employees.length || !document.company.coverage.some(r => r.minimumEmployees > 0)}>
           <Wand2 className="size-4" />
           {active ? "Preparando sua escala…" : "Gerar escala"}
         </Button>
 
+        {message&&<p role="status">{message}</p>}
+        {proposal&&<section aria-label="Proposta de geração" className="space-y-2 rounded border border-primary p-3"><h3>Conferir proposta sem alterar o planejamento</h3><p>Recorte: {proposal.range.start} a {proposal.range.end}. Cobertura do planejamento: {Math.round(analysis.coverageScore*100)}% → {Math.round(proposal.preview.analysis.coverageScore*100)}%. Conflitos: {proposal.preview.analysis.conflicts.filter(c=>c.severity==="error").length}.</p>{(["added","changed","removed"]as const).map(k=><details key={k}><summary>{k==="added"?"Inclusões":k==="changed"?"Alterações":"Remoções"}: {proposal.preview.changes[k].length}</summary>{proposal.preview.changes[k].slice(0,30).map(a=><p className="text-xs" key={a.id}>{document.employees.find(e=>e.id===a.employeeId)?.name} · {a.role} · {a.start}–{a.end}</p>)}{proposal.preview.changes[k].length>30&&<p>Mais {proposal.preview.changes[k].length-30} turnos nesta categoria.</p>}</details>)}{proposal.preview.analysis.conflicts.slice(0,30).map((c,i)=><p className="text-xs" key={i}>{c.message}</p>)}<Button type="button" onClick={confirmProposal}>Aplicar proposta de geração</Button><Button type="button" onClick={rejectProposal}>Rejeitar proposta</Button></section>}
         {analysis.workloads?.map(w=><WorkloadSummaryCard key={w.employeeId+w.weekStart} summary={w} name={document.employees.find(e=>e.id===w.employeeId)?.name} />)}
         <GenerationProgress />
-        <p className="text-xs text-muted-foreground">A geração substitui por inteiro os turnos que começam de {document.planningPeriod.start.split("-").reverse().join("/")} a {document.planningPeriod.end.split("-").reverse().join("/")}, inclusive os que terminam no dia seguinte. Os demais turnos serão preservados.</p>
+        <p className="text-xs text-muted-foreground">A proposta de geração substitui os turnos não fixados que começam no recorte escolhido, dentro de {document.planningPeriod.start.split("-").reverse().join("/")} a {document.planningPeriod.end.split("-").reverse().join("/")}, inclusive os que terminam no dia seguinte. Os demais turnos e todos os fixados serão preservados. A aplicação só ocorre após conferir e confirmar a proposta.</p>
         {(!document.employees.length || !document.company.coverage.some(r => r.minimumEmployees > 0)) && <p className="text-sm text-muted-foreground">Para gerar a escala, cadastre funcionários e ao menos uma regra de cobertura com quantidade maior que zero.</p>}
-        <section className="space-y-2">
-          <Title icon={<CircleAlert className="size-4" />} text="O que precisa de atenção" />
-          {analysis.gaps.length === 0 && analysis.conflicts.length === 0 && <p className="text-sm text-muted-foreground">{document.company.coverage.length ? "Nenhum buraco ou conflito detectado no planejamento atual." : "Cadastre regras de cobertura mínima para detectar buracos."}</p>}
-          {analysis.gaps.map((gap) => (
-            <article key={`${gap.role}-${gap.start}`} className="rounded-md border border-red-500/30 bg-red-500/10 p-3">
-              <p className="text-sm font-semibold">Falta {gap.missingEmployees} {gap.role}</p><p className="text-xs text-muted-foreground">Para cobrir: aloque {gap.missingEmployees} pessoa(s) dessa função ou substitutos autorizados nesse período. Se houver equipe disponível, reveja os intervalos fixos e as restrições.</p>
-              <p className="text-xs text-muted-foreground">{new Date(gap.start).toLocaleString()} - {new Date(gap.end).toLocaleTimeString()}</p>
-            </article>
-          ))}
-          {analysis.conflicts.map((conflict) => (
-            <article key={`${conflict.code}-${conflict.start}`} className="rounded-md border border-amber-500/30 bg-amber-500/10 p-3">
-              <p className="text-sm font-semibold">{conflict.code}</p>
-              <p className="text-xs text-muted-foreground">{conflict.message}</p>
-            </article>
-          ))}
-        </section>
+        <OperationalSummary />
 
         <section className="space-y-2">
           <Title icon={<CheckCircle2 className="size-4" />} text="Por que esta escala?" />

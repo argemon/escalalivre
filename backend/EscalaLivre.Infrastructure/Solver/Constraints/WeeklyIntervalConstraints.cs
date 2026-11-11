@@ -9,9 +9,9 @@ public sealed class WeeklyIntervalConstraints : IScheduleConstraintTranslator
     {
         var input = context.Input;
         // Authorized holiday assignments are retained data, even inside the period.
-        var fixedPatterns = input.Preserved.Concat(input.HolidayShifts).Where(a => a.Break is not null)
+        var fixedPatterns = input.Preserved.Concat(input.RetainedInside).Where(a => a.Break is not null)
             .ToLookup(a => (a.EmployeeId, Week: ScheduleWindow.WeekStart(a.Start)));
-        var holidays = input.HolidayShifts.Select(a => a.Id).ToHashSet();
+        var holidays = input.RetainedInside.Select(a => a.Id).ToHashSet();
         foreach (var week in input.Candidates.Where(a => a.Break is not null && !holidays.Contains(a.Id))
                      .GroupBy(a => (a.EmployeeId, Week: ScheduleWindow.WeekStart(a.Start))))
         {

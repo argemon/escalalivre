@@ -15,6 +15,12 @@ public sealed class PlanningEditor(IScheduleAnalyzer analyzer)
     {
         var mapping = PlanningDocumentMapping.Open(request);
         command(mapping);
+        foreach(var a in mapping.ToDocument().Assignments) {
+            var old=request.Document.Assignments.FirstOrDefault(p=>p.Id==a.Id);
+            var employee=mapping.Settings.Employees.First(e=>e.Id==a.EmployeeId);
+            if((old is null || old.EmployeeId!=a.EmployeeId || old.Start.Date!=a.Start.Date) && !EmploymentPolicy.ActiveOn(employee,a.Start))
+                throw new InvalidOperationException("Pessoa inativa na data inicial do turno.");
+        }
         var document = mapping.ToDocument(writePeriod) with { UpdatedAt = updatedAt.ToUniversalTime() };
         if (DocumentSafety.Error(document) is { } error) throw new FormatException(error);
         var period = mapping.Schedule.Period;

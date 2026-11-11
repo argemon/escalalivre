@@ -16,6 +16,9 @@ export function previewPause(company:CompanyRules,e:Employee,work:number,start:n
 // Explicit construction for a new/manual shift or a preview; never called as normalization.
 export function intervalFor(company:CompanyRules,e:Employee,startValue:number,endValue:number,durationMinutes?:number) {
   const startText=formatCivilDateTime(new Date(startValue)),endText=formatCivilDateTime(new Date(endValue));
+  return intervalForCivil(company,e,startText,endText,durationMinutes);
+}
+export function intervalForCivil(company:CompanyRules,e:Employee,startText:string,endText:string,durationMinutes?:number) {
   const start=civilMillis(startText),end=civilMillis(endText);
   const assignment:ShiftAssignment={id:"preview",employeeId:e.id,role:e.role,start:startText,end:endText,source:"manual",tags:[]};
   const valid=(pause:ShiftAssignment["break"])=>hasWorkAroundPause({...assignment,break:pause})&&!shiftDiagnostics(company,e,{...assignment,break:pause}).some(c=>["interval","fixedInterval","middayClosure"].includes(c.code));

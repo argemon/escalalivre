@@ -18,11 +18,13 @@ public sealed class ScheduleCandidateGenerator
             if (LaborRules.ClosedHoliday(company,day)) continue;
 
 
-            foreach (Employee employee in settings.Employees)
+            foreach (Employee registered in settings.Employees)
             {
+                if(!EmploymentPolicy.ActiveOn(registered,day))continue;
+                var employee=EmploymentPolicy.On(registered,day);
                 if (!employee.InheritsCompanyDefaults && employee.WorkingDays is { } days && !days.Contains(day.DayOfWeek)) continue;
                 var anchors = request.Document.Assignments.Where(a=>a.EmployeeId==employee.Id && a.Break is not null
-                    && (!ScheduleWindow.Contains(a,request.Start,request.End)||LaborRules.AuthorizedHolidayShift(company,a))
+                    && (!ScheduleWindow.Contains(a,request.Start,request.End)||a.Pinned==true||LaborRules.AuthorizedHolidayShift(company,a))
                     && ScheduleWindow.WeekStart(a.Start)==ScheduleWindow.WeekStart(day)).ToArray();
                 var regime = settings.RegimeFor(employee.Id);
                 var windows = new List<(DateTime Start, DateTime End)>();
@@ -63,7 +65,7 @@ public sealed class ScheduleCandidateGenerator
                 foreach (BreakWindow? breakWindow in BuildBreakWindows(start, end, company.Lunch, employee.WorksDuringLunchClosure ? null : closure, pauseDuration, employee.FixedInterval,anchors))
                 {
                     if (employee.WorksDuringLunchClosure && closure is not null && breakWindow is not null && breakWindow.Start < closure.End && breakWindow.End > closure.Start) continue;
-                    var candidate = new ShiftAssignment(Guid.NewGuid(),employee.Id,employee.Role,start,end,breakWindow,"solver",[]);
+                    var candidate = new ShiftAssignment(Guid.NewGuid(),employee.Id,employee.Role,start,end,breakWindow,"solver",[],employee.RoleId);
                     if (!IntervalTimingPolicy.HasWorkAroundPause(candidate)) continue;
                     if(ScheduleRules.ShiftDiagnostics(company,employee,candidate,request.Document.Roles).Any(c=>c.Severity=="error") || EffectiveWorkPolicy.Measure(candidate) > ContractWorkPolicy.DailyLimit(company,employee,day)) continue;
                     if (WeeklyWorkPlanPolicy.For(company,employee) is not null && !CoverageDemand.HasRelevantDemand(company,employee,candidate,request.Document.Roles)) continue;
@@ -81,7 +83,7 @@ public sealed class ScheduleCandidateGenerator
                         tags.Add("night");
                     }
 
-                    yield return new ShiftAssignment(Guid.NewGuid(), employee.Id, employee.Role, start, end, breakWindow, "solver", tags);
+                    yield return new ShiftAssignment(Guid.NewGuid(), employee.Id, employee.Role, start, end, breakWindow, "solver", tags, employee.RoleId);
                 }
                 }
                 }

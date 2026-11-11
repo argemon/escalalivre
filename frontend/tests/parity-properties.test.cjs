@@ -15,7 +15,7 @@ for(const scenario of [...boundaries(),...SEEDS.flatMap(seed=>generated(seed))])
  assert.deepEqual(digest(analyzeDocument(first.document)),digest(result),'migration preserves diagnosis and coverage');
  const selected=d.assignments.filter(a=>a.start.slice(0,10)>=d.planningPeriod.start&&a.start.slice(0,10)<=d.planningPeriod.end);
  assert.deepEqual(shifts(replacePeriodAssignments(d,selected)),shifts(d.assignments));
- assert.deepEqual(shifts(replacePeriodAssignments(d,[])),shifts(d.assignments.filter(a=>!selected.includes(a))));
+ assert.deepEqual(shifts(replacePeriodAssignments(d,[])),shifts(d.assignments.filter(a=>a.pinned||!selected.includes(a))));
  const preferencesRemoved={...d,employees:d.employees.map(e=>({...e,preferences:[],preferredDaysOff:[]}))};
  assert.deepEqual(digest(analyzeDocument(preferencesRemoved)),digest(result),'preferences never become mandatory diagnosis');
  assert.equal(JSON.stringify(d),before);
@@ -47,3 +47,5 @@ test('qualified timestamp migration is idempotent across device daylight saving 
  assert.equal(first.document.assignments[0].start,'2026-11-01T01:30:01');assert.equal(first.document.assignments[0].end,'2026-11-01T01:30:02');
  assert.deepEqual(plain(second.document),plain(first.document));assert.deepEqual(plain(second.applied),[]);assert.equal(JSON.stringify(d),before);
 });
+
+test('parity digest verifies contribution IDs as an unordered list',()=>{const r={conflicts:[],gaps:[],coverageScore:1,coverage:[{start:'s',end:'e',role:'r',required:1,assigned:2,state:'healthy',employeeIds:['a','b']}]};const changed=structuredClone(r);changed.coverage[0].employeeIds=['a','c'];assert.notDeepEqual(digest(changed),digest(r));const reversed=structuredClone(r);reversed.coverage[0].employeeIds.reverse();assert.deepEqual(digest(reversed),digest(r));});

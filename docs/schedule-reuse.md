@@ -1,0 +1,15 @@
+# Copiar semana e trocar responsáveis
+
+Task 07, 11/11/2026. A barra do planejamento oferece os dois fluxos com prévia e confirmação. Operações são atômicas, desfazíveis e recusam revisão obsoleta.
+
+A cópia usa semanas domingo–sábado, escolhidas por qualquer dia pertencente a elas, e somente turnos salvos das pessoas selecionadas. Deslocamento usa o eixo civil UTC dos helpers, nunca tempo decorrido local dependente de DST. Entrada, saída e pausa mantêm dia relativo, duração civil e segundos. IDs são novos; source/anotações são conservados, removendo autorizações de feriado datadas da origem. Fixações não são copiadas por padrão; a opção explícita é mostrada no resumo. Ausências e versões fechadas não são duplicadas. A função principal vigente no destino é resolvida e a mudança da função da origem é mostrada explicitamente.
+
+A confirmação seleciona a semana de destino como período de sete dias (dentro dos limites 1900–2100), conservando todas as outras datas como histórico bilateral. Origem vazia não remove o destino. A análise completa avalia feriados, ausência, carga, vigência e demais regras. Inativação impede novas alocações e exige pular o item. Lacunas, avisos ou conflitos exigem reconhecimento explícito de rascunho; não se apresenta cópia com pendências como pronta.
+
+Colisões são por pessoa/data inicial ou sobreposição temporal, incluindo noites que cruzam a borda da semana. É preciso pular explicitamente o item ou marcar todos os turnos colidentes a substituir. Apenas esses IDs são removidos. Não se substituem fixados: devem ser desafixados antes no editor. Colisões entre itens da própria cópia exigem pular itens, sem aplicação parcial.
+
+A troca escolhe dois turnos salvos de pessoas diferentes no período selecionado. Mantém IDs, horários, pausas, source e tags de cada turno e permuta responsáveis, resolvendo a função principal vigente em cada data e conferindo autorização para a função atingida (a mesma representação usada pela geração/substituição). Ambas as mudanças são mostradas antes de aplicar. Pins exigem desafixação prévia.
+
+Regra conservadora de conflitos herdados: as duas pessoas precisam ficar sem erros obrigatórios em toda a escala resultante, inclusive erros preexistentes delas. Conflitos de terceiros permanecem inalterados e exigem reconhecimento do rascunho. Assim, um conflito antigo não autoriza agravar descanso, jornada ou disponibilidade. A análise canônica existente é reutilizada; não há outro motor, novo campo persistido ou mudança do solver.
+
+Validação: seis cenários de cópia/troca em Cuiabá e Nova York, incluindo DST, noturno/pausa/segundos, IDs/pins/eventos, promoção, feriado, ausência/inativação, colisões, troca inválida em um único lado, obsolescência e desfazer. Quatro casos do histórico central também passaram após a mudança de reconhecimento de pendências. Edge verificou prévia/cancelamento/cópia, IDs novos/pins livres, troca completa e desfazer. Lint/build frontend aprovados. Backend/HTTP/solver não alterados; CI e integração pendentes.

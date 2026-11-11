@@ -345,3 +345,28 @@ lacunas. Entre alternativas ampliadas, cobertura precede menor ampliação, carg
 contratada e preferências. Pausas fixas, fechamento, rotinas históricas e antecipação
 preservam seus contratos. A prévia TypeScript usa o mínimo efetivo. Os cenários de
 minimum-interval-scenarios.json verificam C#/TS sem alterar diagnósticos de arquivo.
+
+
+## Vigências e inativação — operação 02, 11/11/2026
+
+A alteração cadastral deixa de reescrever funções históricas. [Contrato e decisão](decisions/024-employment-history.md): EmploymentPolicy/employeeOn resolvem a vigência pela data civil inicial; inativação inclusiva bloqueia novas alocações e diagnostica futuros existentes sem apagá-los. Adequação dos futuros exige prévia e confirmação explícita. A função exercida registrada permanece fonte da cobertura do turno salvo. Os cinco cenários em shared/employment-scenarios.json são usados em análise pura, TS, paridade e HTTP; o adaptador real confere a geração e o round-trip. Ausência dos campos mantém o legado, sem inventar datas. Esta decisão substitui o contrato histórico de upsertEmployee/ChangeEmployee que atualizava todos os turnos.
+
+
+## Cobertura exclusiva e acumulação explícita — operação 03
+
+[Decisão 025](decisions/025-exclusive-role-allocation.md) acrescenta company.coverageMode=exclusive para documentos novos e accumulationRoleIds como grupo ativo explícito por pessoa. Ausência do modo mantém simultaneidade legada. Matching determinístico maximiza demandas atendidas por pessoas exclusivas; grupo ativo só cobre seus membros autorizados. Equipe conta cada pessoa uma vez, pausa conta zero. Variáveis do solver respeitam a mesma capacidade; blocos exclusivos expõem employeeIds. Nove cenários em shared/exclusive-coverage-scenarios.json são compartilhados por C#/TS, solver, HTTP e paridade. Conversão do legado exige prévia e confirmação. Não há mudança dos pesos gerais ou limites do gerador.
+
+
+## Fixação e recorte de geração — operação 05
+
+[ADR 026](decisions/026-pinned-generation-proposals.md): pinned opcional fixa explicitamente um turno, independentemente de source. Substituição de período preserva todos os fixados integralmente; geração os força e considera sua cobertura, descanso e carga. Quatro cenários em shared/pinned-generation-scenarios.json verificam recorte/noturno/histórico bilateral, sábado interno e fixados inviáveis. O probe exige que substituição por vazio conserve fixados internos e histórico externo. Aplicação depende de proposta confirmada e documento não alterado. Nenhum orçamento foi ampliado.
+
+
+## Eventos de ausência — operação 06
+
+[ADR 027](decisions/027-absence-events-and-substitution.md): AbsencePolicy e equivalente TS bloqueiam janelas civis com fim exclusivo e calculam somente créditos explícitos. Componentes de janelas sobrepostas usam crédito máximo; componentes separados somam, preservando créditos legados independentes e limite nominal. Categoria não concede crédito. Dados brutos acima da carga permanecem recuperáveis com aviso. Sete cenários em shared/absence-scenarios.json são usados em análise, paridade e HTTP; o adaptador real não gera sobre ausência. Substituições reavaliam a proposta inteira e respeitam fixações.
+
+
+## Fechamento e divulgação — operação 09
+
+[ADR 028](decisions/028-publication-snapshots.md): conflitos obrigatórios bloqueiam fechamento e pendências permitidas exigem ciência por categoria. Cinco cenários em shared/publication-closure-scenarios.json são consumidos por Domain C# e TS. Snapshots têm validação/limites próprios, horários civis imutáveis e não participam da análise/otimização do rascunho; a coleção e o ponteiro vigente sobrevivem a undo/redo. PDF/PNG/XLSX públicos usam exclusivamente a projeção sanitizada da versão escolhida. Ausência dos campos conserva o formato legado.
