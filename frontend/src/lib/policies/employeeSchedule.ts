@@ -11,7 +11,7 @@ function referenceDays(seconds:number,days:number[],previous?:number[]):number[]
 export function selectEmployeePattern(e:Employee,company:CompanyRules,days:number):Employee {
  const rule=workloadFor(company,e),contracted=rule.weeklyPlan?.contractedSeconds??(days===5?40:44)*3600;
  return {...e,inheritsCompanyDefaults:false,workingDays:undefined,workload:{...rule,regimeType:"dayBased",workUnits:days,restUnits:7-days,
-  weeklyPlan:{contractedSeconds:contracted,dailySeconds:referenceDays(contracted,Array.from({length:days},(_,i)=>i+1),rule.weeklyPlan?.dailySeconds),compensation:rule.weeklyPlan?.compensation,flexibleWorkDays:days}}};
+  weeklyPlan:{contractedSeconds:contracted,dailySeconds:referenceDays(contracted,Array.from({length:days},(_,i)=>i+1),rule.weeklyPlan?.dailySeconds),compensation:rule.weeklyPlan?.compensation,fiveDay42HourMode:days===5?rule.weeklyPlan?.fiveDay42HourMode:undefined,flexibleWorkDays:days}}};
 }
 export function selectEmployeeDays(e:Employee,company:CompanyRules,automatic:boolean):Employee {
  const rule=workloadFor(company,e),count=rule.weeklyPlan?.flexibleWorkDays??rule.workUnits;
@@ -19,7 +19,7 @@ export function selectEmployeeDays(e:Employee,company:CompanyRules,automatic:boo
  const fixed=days.length?days:[1];
  return {...e,inheritsCompanyDefaults:false,workingDays:automatic?undefined:fixed,workload:{...rule,weeklyPlan:rule.weeklyPlan?automatic
   ?{...rule.weeklyPlan,flexibleWorkDays:count}
-  :{contractedSeconds:rule.weeklyPlan.contractedSeconds,dailySeconds:referenceDays(rule.weeklyPlan.contractedSeconds,fixed,rule.weeklyPlan.dailySeconds),compensation:rule.weeklyPlan.compensation}:undefined}};
+  :{contractedSeconds:rule.weeklyPlan.contractedSeconds,dailySeconds:referenceDays(rule.weeklyPlan.contractedSeconds,fixed,rule.weeklyPlan.dailySeconds),compensation:rule.weeklyPlan.compensation,fiveDay42HourMode:rule.weeklyPlan.fiveDay42HourMode}:undefined}};
 }
 export function transitionIssues(company:CompanyRules,e:Employee,end:string):string[] {
  if(end.slice(0,10)<"2026-12-16")return [];

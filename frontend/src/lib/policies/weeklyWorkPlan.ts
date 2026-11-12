@@ -1,4 +1,5 @@
 export { planFor, hasContractPlans, compensationAppliesOn, nominalSeconds, excusedSeconds, targetSeconds, normalLimitSeconds, contractDailyLimitMillis, desiredWorkSeconds, recognizedSeconds, durationSeconds } from "./contractWorkTargets";
+import { selectedNormalDailySeconds } from "./fiveDay42Hours";
 import { planFor, nominalSeconds, excusedSeconds, recognizedSeconds, durationSeconds } from "./contractWorkTargets";
 import type { CompanyRules, EscalaLivreDocument, WeeklyWorkPlan, WorkloadSummary, DailyWorkload } from "../../types/schedule";
 import { civilMillis, civilString, civilDay, civilWeek } from "../civilTime";
@@ -23,7 +24,7 @@ export function weeklyPlanIssues(plan:WeeklyWorkPlan,ceilingHours:number):string
   if(plan.contractedSeconds>44*3600)issues.push("contractAboveNormalLimit");
   const durations=plan.flexibleWorkDays?[Math.ceil(plan.contractedSeconds/plan.flexibleWorkDays)]:plan.dailySeconds;
   if(durations.some(s=>s>36000))issues.push("distributionDailyLimit");
-  if(durations.some(s=>s>28800)&&!plan.compensation)issues.push("compensationRequired");
+  if(durations.some(s=>s>28800)&&!plan.compensation&&selectedNormalDailySeconds(plan)===undefined)issues.push("compensationRequired");
   return issues;
 }
 

@@ -36,7 +36,7 @@ public static class ContractWorkPolicy
     {
         var plan = WeeklyWorkPlanPolicy.For(company, employee);
         if (plan is null) return EffectiveWorkPolicy.RuleFor(company, employee).DefaultShiftDuration;
-        var permission = plan.Compensation?.AppliesOn(DateOnly.FromDateTime(day)) == true ? 36000 : 28800;
+        var permission = FiveDay42HoursPolicy.NormalDailySeconds(plan) ?? (plan.Compensation?.AppliesOn(DateOnly.FromDateTime(day)) == true ? 36000 : 28800);
         return TimeSpan.FromSeconds(Math.Min(Math.Max(0,Nominal(company,employee,day)-AbsencePolicy.ExplicitCredit(employee,day)), permission));
     }
     public static TimeSpan DailyLimit(CompanyRules company, Employee employee, DateTime day)

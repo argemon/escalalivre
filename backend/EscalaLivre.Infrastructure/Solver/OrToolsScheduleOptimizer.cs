@@ -15,6 +15,24 @@ public sealed class OrToolsScheduleOptimizer(ScheduleCandidateGenerator generato
         var context = builder.Build(input, budget);
         var timer = Stopwatch.StartNew();
         bool hasDurationChoice = context.PreferMinimumIntervals is not null;
+        var minimums = ContractMinimumPolicy.Requirements(request.Document,request.Start,request.End,input.Preserved);
+        var retained = input.RetainedInside.Select(a=>a.Id).ToHashSet();
+
+        bool CanRespectTimingPreference(bool minimumOnly)
+        {
+            foreach(var minimum in minimums)
+            {
+                var employee=request.Document.Employees.First(e=>e.Id==minimum.EmployeeId);
+                var eligible=input.Candidates.Where(a=>a.EmployeeId==employee.Id && ScheduleWindow.WeekStart(a.Start)==minimum.WeekStart
+                    && (retained.Contains(a.Id) || ((!minimumOnly || !context.IntervalExtensionSeconds.ContainsKey(a.Id))
+                        && (employee.FixedInterval is not null || !IntervalTimingPolicy.IsEarly(request.Document.Company,a)))));
+                var daily=eligible.GroupBy(a=>a.Start.Date).Select(g=>g.Max(a=>ContractWorkPolicy.Recognized(request.Document.Company,employee,
+                    a.Start,EffectiveWorkPolicy.Measure(a).Ticks/TimeSpan.TicksPerSecond))).OrderByDescending(v=>v);
+                int days=WeeklyWorkPlanPolicy.For(request.Document.Company,employee)?.FlexibleWorkDays ?? int.MaxValue;
+                if(daily.Take(days).Sum()<minimum.RequiredSeconds)return false;
+            }
+            return true;
+        }
 
         ScheduleOptimizationResult Search(double seconds) => context.ContractCredit is null && context.IntervalExtension is null
             ? reader.Read(context, execution.Solve(context.Model, seconds))
@@ -29,7 +47,7 @@ public sealed class OrToolsScheduleOptimizer(ScheduleCandidateGenerator generato
             if (context.PreferUnanticipatedIntervals is {} timing)
                 context.Model.AddAssumption(unanticipatedOnly ? timing : timing.Not());
             context.Model.ClearHints();
-            if (previous is null) ScheduleSearchHints.Apply(context, minimumOnly);
+            if (previous is null) ScheduleSearchHints.Apply(context, minimumOnly, unanticipatedOnly);
             else
             {
                 var selected = previous.SelectedAssignments.Concat(input.FixedCoverage).Select(a => a.Id).ToHashSet();
@@ -41,16 +59,28 @@ public sealed class OrToolsScheduleOptimizer(ScheduleCandidateGenerator generato
         ScheduleOptimizationResult SearchWithTiming(bool minimumOnly, double seconds)
         {
             var timingTimer = Stopwatch.StartNew();
+            // A short contracted day may require an earlier pause. Do not spend the
+            // native budget on a preference whose credit upper bound cannot meet it.
+            if(context.PreferUnanticipatedIntervals is not null && !CanRespectTimingPreference(minimumOnly))
+            {
+                Prepare(minimumOnly,false);
+                var contracted=Search(seconds);
+                return Succeeded(contracted) ? Explain(contracted,"interval-anticipated-for-contract",a=>
+                    IntervalTimingPolicy.IsEarly(request.Document.Company,a)
+                    && request.Document.Employees.First(e=>e.Id==a.EmployeeId).FixedInterval is null
+                    && !retained.Contains(a.Id)) : contracted;
+            }
             Prepare(minimumOnly, true);
             bool hasTimingChoice = context.PreferUnanticipatedIntervals is not null;
             var preferred = Search(hasTimingChoice ? seconds / 2 : seconds);
-            if (!hasTimingChoice || !Succeeded(preferred) || Uncovered(request, preferred) == 0) return preferred;
+            if (!hasTimingChoice || (Succeeded(preferred) && Uncovered(request, preferred) == 0)) return preferred;
             double remaining = seconds - timingTimer.Elapsed.TotalSeconds;
             if (remaining <= 0) return preferred;
-            Prepare(minimumOnly, false, preferred);
+            Prepare(minimumOnly, false, Succeeded(preferred) ? preferred : null);
             var relaxed = Search(remaining);
-            if (!Succeeded(relaxed) || Uncovered(request, relaxed) >= Uncovered(request, preferred)) return preferred;
-            return Explain(relaxed, "interval-anticipated-for-coverage", a =>
+            if (!Succeeded(relaxed)) return Succeeded(preferred) ? preferred : relaxed;
+            if (Succeeded(preferred) && Uncovered(request, relaxed) >= Uncovered(request, preferred)) return preferred;
+            return Explain(relaxed, Succeeded(preferred) ? "interval-anticipated-for-coverage" : "interval-anticipated-for-contract", a =>
                 IntervalTimingPolicy.IsEarly(request.Document.Company, a)
                 && request.Document.Employees.First(e => e.Id == a.EmployeeId).FixedInterval is null
                 && !input.RetainedInside.Any(h => h.Id == a.Id));
@@ -59,12 +89,13 @@ public sealed class OrToolsScheduleOptimizer(ScheduleCandidateGenerator generato
         // Always obtain a minimum-duration incumbent before allowing longer automatic pauses.
         // All attempts share one model, one construction budget and five seconds of native search.
         var minimum = SearchWithTiming(true, hasDurationChoice ? OrToolsExecution.MaximumSeconds / 2 : OrToolsExecution.MaximumSeconds);
-        if (!hasDurationChoice || !Succeeded(minimum) || Uncovered(request, minimum) == 0) return minimum;
+        if (!hasDurationChoice || (Succeeded(minimum) && Uncovered(request, minimum) == 0)) return minimum;
         double remaining = OrToolsExecution.MaximumSeconds - timer.Elapsed.TotalSeconds;
         if (remaining <= 0) return minimum;
         var extended = SearchWithTiming(false, remaining);
-        if (!Succeeded(extended) || Uncovered(request, extended) >= Uncovered(request, minimum)) return minimum;
-        return Explain(extended, "interval-extended-for-coverage", a => context.IntervalExtensionSeconds.ContainsKey(a.Id));
+        if (!Succeeded(extended)) return Succeeded(minimum) ? minimum : extended;
+        if (Succeeded(minimum) && Uncovered(request, extended) >= Uncovered(request, minimum)) return minimum;
+        return Explain(extended, Succeeded(minimum) ? "interval-extended-for-coverage" : "interval-extended-for-contract", a => context.IntervalExtensionSeconds.ContainsKey(a.Id));
     }
 
     private static bool Succeeded(ScheduleOptimizationResult result) => result.Status is "optimal" or "feasible";

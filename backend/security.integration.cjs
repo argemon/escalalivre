@@ -11,6 +11,34 @@ const apiDirectory = path.join(__dirname, 'EscalaLivre.Api');
 const assembly = path.join(apiDirectory, `bin/${process.env.SECURITY_BUILD_CONFIGURATION || 'Debug'}/net10.0/EscalaLivre.Api.dll`);
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
+test('mixed contract minima are mandatory with surplus staff, no demand and an explicit 42h exception', async()=>{
+ await withServer({},async({post})=>{
+  const r=structuredClone(require('../shared/mixed-contract-generation.json'));
+  const {analyzeDocument}=require('../frontend/tests/source-loader.cjs')()('lib/analysis.ts');
+  const {digest}=require('../shared/parity-contract.cjs');
+  for(const noDemand of [false,true]){
+   if(noDemand)r.document.company.coverage=[];
+   const response=await post('/solve',r);assert.equal(response.status,200);
+   const result=(await response.json()).data;
+   assert.ok(['optimal','feasible'].includes(result.optimization.status));
+   assert.equal(result.workloads.reduce((n,w)=>n+w.plannedSeconds,0),248*3600);
+   for(const [i,e]of r.document.employees.entries())assert.equal(result.workloads.find(w=>w.employeeId===e.id).unmetSeconds,i===5?7200:0,e.name);
+   assert.equal(result.conflicts.some(c=>c.severity==='error'),false);
+   if(!noDemand)assert.equal(result.coverageScore,1);
+   assert.deepEqual(digest(result),digest(analyzeDocument({...r.document,assignments:result.assignments})));
+  }
+  const e=r.document.employees[0];e.availability=[{start:'2026-11-09T08:00:00',end:'2026-11-09T13:00:00'}];
+  const saved={id:randomUUID(),employeeId:e.id,role:e.role,start:'2026-11-09T08:00:00',end:'2026-11-09T13:00:00',break:{start:'2026-11-09T10:00:00',end:'2026-11-09T11:00:00'},source:'manual',tags:[]};
+  r.document.assignments=[saved];
+  const response=await post('/solve',r);assert.equal(response.status,200);
+  const result=(await response.json()).data;assert.equal(result.optimization.status,'infeasible');
+  assert.equal(result.assignments.length,1);
+  const canonical=a=>({...a,roleId:a.roleId??null,pinned:a.pinned??null});
+  assert.deepEqual(canonical(result.assignments[0]),canonical(saved));
+  assert.ok(result.conflicts.some(c=>c.code==='solverInfeasible'));
+ });
+});
+
 test('asynchronous generation returns a private ticket, survives polling and supports cancellation', async () => {
   await withServer({}, async ({url, post}) => {
     assert.equal((await post('/solve/jobs', {})).status, 400);

@@ -74,3 +74,36 @@ for(const s of shared.compensationDates)test('compensation validity: '+s.date,()
  const plan={contractedSeconds:158400,dailySeconds:[0,31680,31680,31680,31680,31680,0],compensation:{instrument:'Acordo',startsOn:'2026-01-01',endsOn:'2026-12-31'}};
  assert.equal(policy.compensationAppliesOn(plan,s.date),s.expected);
 });
+
+test('42h editor offers 8h with 2h missing or 8h24 and preserves the contractual target',()=>{
+ const render=editorLoader();let value={...policy.distributeWeekly(151200,[1,2,3,4,5]),flexibleWorkDays:5};
+ const props=()=>({value,onChange:v=>value=v,ceiling:42,entry:'07:30:00',pause:'01:00:00'});
+ let tree=render(props());let choices=nodes(tree).filter(n=>n.type==='input'&&n.props.type==='radio');
+ assert.equal(choices.length,2);choices[0].props.onChange();
+ assert.equal(value.fiveDay42HourMode,'eightHours');assert.equal(value.contractedSeconds,151200);
+ assert.ok(JSON.stringify(render(props())).includes('2h semanais faltantes'));
+ tree=render(props());nodes(tree).filter(n=>n.type==='input'&&n.props.type==='radio')[1].props.onChange();
+ assert.equal(value.fiveDay42HourMode,'completeWeek');assert.equal(value.contractedSeconds,151200);
+ assert.deepEqual(plain(value.dailySeconds),[0,30240,30240,30240,30240,30240,0]);
+ value={contractedSeconds:151200,dailySeconds:[0,28800,28800,28800,28800,28800,0]};
+ tree=render(props());nodes(tree).filter(n=>n.type==='input'&&n.props.type==='radio')[1].props.onChange();
+ assert.deepEqual(plain(value.dailySeconds),[0,30240,30240,30240,30240,30240,0]);
+});
+
+test('explicit 42h mode round trips and other contracts keep compensation rules',()=>{
+ const {selectedNormalDailySeconds}=load('lib/policies/fiveDay42Hours.ts');
+ const doc=documentSchema.parse(structuredClone(sampleDocument)),before=plain(doc.assignments);
+ for(const mode of ['eightHours','completeWeek']){
+  const plan={...policy.distributeWeekly(151200,[1,2,3,4,5]),fiveDay42HourMode:mode};
+  doc.company.defaultWorkload.weeklyPlan=plan;
+  const restored=parseNativeText(serializeNative(doc));
+  assert.equal(restored.company.defaultWorkload.weeklyPlan.fiveDay42HourMode,mode);
+  assert.deepEqual(plain(restored.assignments),before);
+  assert.equal(selectedNormalDailySeconds(plan),mode==='eightHours'?28800:30240);
+  assert.equal(policy.weeklyPlanIssues(plan,42).includes('compensationRequired'),false);
+  assert.equal(selectedNormalDailySeconds({...plan,contractedSeconds:158400}),undefined);
+  assert.equal(selectedNormalDailySeconds({...plan,flexibleWorkDays:6}),undefined);
+ }
+ doc.company.defaultWorkload.weeklyPlan.fiveDay42HourMode='invalid';
+ assert.equal(documentSchema.safeParse(doc).success,false);
+});

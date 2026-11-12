@@ -100,3 +100,7 @@ limita crédito semanal e segundos restantes por essas políticas. TypeScript ma
 alvos e relatórios em módulos puros sem dependência circular. DTOs preservam o campo
 opcional `flexibleWorkDays`; o resultado distingue `unassignedSeconds`. Detalhes e
 compatibilidade: [escala individual](decisions/020-individual-weekly-patterns.md).
+
+## Carga mínima obrigatória — 12/11/2026
+
+ContractMinimumPolicy fornece a obrigação de geração por pessoa/semana. ContractWorkConstraints traduz o crédito e o mínimo para OR-Tools, retirando essa responsabilidade de ScheduleObjective. Application e a proposta frontend revalidam o mínimo antes da aplicação; documentos com falta continuam recuperáveis/editáveis. A demanda de cobertura não limita o número de trabalhadores nem a existência de candidatos contratados. A exceção explícita 42h/8h preserva o aviso de 2h. Contrato, testes e limites na decisão 029 (decisions/029-contract-minimum-generation.md).

@@ -267,10 +267,10 @@ public static class ScheduleDocumentMapper
 
     public static WeeklyWorkPlan? ToProjection(WeeklyWorkPlanDto? value)
         => value is null ? null : new(value.ContractedSeconds, value.DailySeconds,
-            value.Compensation is null ? null : new(value.Compensation.Instrument, value.Compensation.StartsOn, value.Compensation.EndsOn), value.FlexibleWorkDays);
+            value.Compensation is null ? null : new(value.Compensation.Instrument, value.Compensation.StartsOn, value.Compensation.EndsOn), value.FlexibleWorkDays, value.FiveDay42HourMode);
     public static WeeklyWorkPlanDto? ToDto(WeeklyWorkPlan? value)
         => value is null ? null : new(value.ContractedSeconds, Copy(value.DailySeconds),
-            value.Compensation is null ? null : new(value.Compensation.Instrument, value.Compensation.StartsOn, value.Compensation.EndsOn), value.FlexibleWorkDays);
+            value.Compensation is null ? null : new(value.Compensation.Instrument, value.Compensation.StartsOn, value.Compensation.EndsOn), value.FlexibleWorkDays, value.FiveDay42HourMode);
 
     private static Publication PublicationProjection(PublicationDto? v)=>v is null?null!:new(v.Id,v.Number,v.Period is null?null!:new(v.Period.Start,v.Period.End),v.ClosedAt,v.CompanyName,v.CompanyTimeZone,Map(v.People,p=>p is null?null!:new PublicationPerson(p.Id,p.Name,p.Role)),Map(v.Shifts,s=>s is null?null!:new PublicationShift(s.Id,s.EmployeeId,s.Role,s.Start,s.End,s.Break is {} b?new(b.Start,b.End):null)),Map(v.Acknowledgements,a=>a is null?null!:new PublicationAcknowledgement(a.Category,a.Groups,a.Occurrences)));
     private static PublicationDto PublicationDtoValue(Publication? v)=>v is null?null!:new(v.Id,v.Number,v.Period is null?null!:new(v.Period.Start,v.Period.End),v.ClosedAt,v.CompanyName,v.CompanyTimeZone,Map(v.People,p=>new PublicationDtoPerson(p.Id,p.Name,p.Role)),Map(v.Shifts,s=>new PublicationDtoShift(s.Id,s.EmployeeId,s.Role,s.Start,s.End,s.Break is {} b?new(b.Start,b.End):null)),Map(v.Acknowledgements,a=>new PublicationDtoAcknowledgement(a.Category,a.Groups,a.Occurrences)));

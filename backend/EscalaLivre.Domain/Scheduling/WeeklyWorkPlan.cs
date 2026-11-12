@@ -23,11 +23,14 @@ public sealed class WeeklyWorkPlan
     public IReadOnlyList<int> DailySeconds { get; }
     public WeeklyCompensation? Compensation { get; }
     public int? FlexibleWorkDays { get; }
-    public WeeklyWorkPlan(int contractedSeconds, IReadOnlyList<int> dailySeconds, WeeklyCompensation? compensation = null, int? flexibleWorkDays = null)
+    public string? FiveDay42HourMode { get; }
+    public WeeklyWorkPlan(int contractedSeconds, IReadOnlyList<int> dailySeconds, WeeklyCompensation? compensation = null, int? flexibleWorkDays = null, string? fiveDay42HourMode = null)
     {
         if (contractedSeconds is < 1 or > 604800 || dailySeconds is null || dailySeconds.Count != 7 || dailySeconds.Any(s => s is < 0 or > 86400))
             throw new ArgumentException("Carga e distribuição devem usar segundos inteiros e sete dias.");
         if (flexibleWorkDays is < 1 or > 7) throw new ArgumentException("Quantidade de dias automáticos inválida.");
+        if (fiveDay42HourMode is not (null or "eightHours" or "completeWeek")) throw new ArgumentException("Opção de jornada 5x2 inválida.");
+        FiveDay42HourMode = fiveDay42HourMode;
         ContractedSeconds = contractedSeconds; DailySeconds = dailySeconds.ToImmutableArray(); Compensation = compensation; FlexibleWorkDays = flexibleWorkDays;
     }
 }
@@ -62,7 +65,7 @@ public static class WeeklyWorkPlanPolicy
         if (plan.ContractedSeconds > 44 * 3600) issues.Add("contractAboveNormalLimit");
         var durations = plan.FlexibleWorkDays is {} count ? new[] { (plan.ContractedSeconds + count - 1) / count } : plan.DailySeconds;
         if (durations.Any(s => s > 36000)) issues.Add("distributionDailyLimit");
-        if (durations.Any(s => s > 28800) && plan.Compensation is null) issues.Add("compensationRequired");
+        if (durations.Any(s => s > 28800) && plan.Compensation is null && FiveDay42HoursPolicy.NormalDailySeconds(plan) is null) issues.Add("compensationRequired");
         return issues;
     }
     public static TimeSpan EndOffset(TimeOnly entry, int workSeconds, int pauseSeconds)

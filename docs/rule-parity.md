@@ -43,7 +43,7 @@ implementações de negócio C#/TypeScript. Reprodução e validação estão no
 | Regime em horas | Trabalho efetivo, descontada a pausa, não pode exceder `workUnits`. Descanso usa o maior entre `restUnits` em horas e o mínimo da empresa. | `regime`, `minimumRest` |
 | Limite diário | Soma por data inicial. Legado: 8h ou 10h com extras. Plano: limite normal do dia mais até 2h se extras autorizadas, limitado a 10h. Compensação vigente pode autorizar distribuição normal acima de 8h. Regime e teto continuam obrigatórios. | `dailyLimit` |
 | Um turno por dia | No máximo um turno por pessoa e data de início. Um turno noturno pertence inteiro à data de início para essa regra e para substituição. | `multipleShifts` |
-| Carga contratada | Meta diária explícita, dispensa por feriado/crédito líquido de afastamento e saldo como soma das faltas diárias; extras não apagam falta normal. Cobertura e carga são métricas distintas. | `workloadShortfall` (warning) e relatórios `workloads` |
+| Carga contratada | Meta diária explícita, dispensa por feriado/crédito líquido de afastamento e saldo como soma das faltas diárias; extras não apagam falta normal. Geração exige o mínimo devido por pessoa/semana, mesmo sem demanda; mantém a exceção explícita de 42h com 8h/dia. Cobertura e carga são métricas distintas. | `workloadShortfall` (warning no rascunho), impedimento de geração e relatórios `workloads` |
 | Limite semanal | Semana civil de domingo a sábado. Divide o trabalho e a pausa na meia-noite de domingo, considerando o histórico dos dois lados do período. | `weeklyLimit` |
 | Disponibilidade | Quando informada, uma única janela deve conter o turno inteiro, incluindo a pausa. Janelas adjacentes não são unidas implicitamente. | `availability` |
 | Restrições de horário | Qualquer sobreposição com o turno, inclusive durante a pausa, bloqueia o turno. Encostar no início/fim é permitido. | `availability` |
@@ -370,3 +370,38 @@ A alteração cadastral deixa de reescrever funções históricas. [Contrato e d
 ## Fechamento e divulgação — operação 09
 
 [ADR 028](decisions/028-publication-snapshots.md): conflitos obrigatórios bloqueiam fechamento e pendências permitidas exigem ciência por categoria. Cinco cenários em shared/publication-closure-scenarios.json são consumidos por Domain C# e TS. Snapshots têm validação/limites próprios, horários civis imutáveis e não participam da análise/otimização do rascunho; a coleção e o ponteiro vigente sobrevivem a undo/redo. PDF/PNG/XLSX públicos usam exclusivamente a projeção sanitizada da versão escolhida. Ausência dos campos conserva o formato legado.
+
+## Escolha de jornada 5x2 de 42h — 12/11/2026
+
+O campo opcional weeklyPlan.fiveDay42HourMode registra eightHours ou completeWeek.
+Aplica-se exclusivamente a contrato de 151200 segundos em cinco dias automáticos
+ou cinco metas fixas uniformes de 30240 segundos. Define trabalho normal planejado
+de 28800 ou 30240 segundos por dia, sem exigir instrumento de compensação para
+a escolha explícita. A opção de 8h mantém a meta de 42h e reporta 7200 segundos
+faltantes numa semana completa trabalhada. Não constitui autorização de extras;
+intervalos, demanda, teto semanal, ausências e demais restrições permanecem.
+Sem escolha, mantém-se a regra anterior de compensação. Configuração fora desse
+escopo não aplica a opção. Alterações de configuração preservam os turnos salvos.
+A opção é operacional e não infere enquadramento jurídico nem altera contratos
+automaticamente por data. Cenários compartilhados: five-day-42-* em
+shared/contract-work-scenarios.json.
+
+Validação local: frontend 680/680 em America/Cuiaba e America/New_York; backend 861/861; HTTP/worker 33/33; comparação diferencial 220 casos em cada fuso; lint e build aprovados. Testes do editor também verificam a escolha partindo de cinco dias de 8h, normalizando apenas as metas contratuais e preservando os turnos. Sem publicação ou alteração automática por data.
+
+## Carga contratada obrigatória — 12/11/2026
+
+A decisão 029 (decisions/029-contract-minimum-generation.md) substitui o tratamento histórico da carga como preferência de geração e o filtro de candidatos por demanda. ContractMinimumPolicy e policies/contractMinimum.ts exigem a carga normal devida por pessoa e semana. A geração permite pessoas excedentes na mesma função e cria turnos contratados mesmo sem demanda cadastrada. Limites, disponibilidade, créditos explícitos, histórico, recorte e inativação permanecem aplicáveis. Falta impeditiva, timeout ou distribuição fixa divergente preservam a escala anterior. Rascunhos incompletos continuam editáveis; não há migração de arquivo.
+
+Por escolha expressa, 42h/5x2 com 8h/dia permite 40h com aviso de 2h faltantes e sugestão de 8h24 ou complemento por extras autorizadas, contabilizadas separadamente. O orçamento nativo não foi ampliado. Cenários de carga verificam mínimos de geração em C# e TS; mixed-contract-generation.json reproduz a equipe mista na geração real e em HTTP.
+
+Validação da decisão 029: 872/872 testes .NET, 728/728 testes frontend em America/Cuiaba e America/New_York, 34/34 testes HTTP/worker e 224 casos diferenciais em cada fuso. Lint e build aprovados; verificação final dos controles e políticas 74/74. A equipe mista planejou 248h com 100% de cobertura e somente as 2h faltantes intencionais. Nenhuma publicação foi realizada.
+
+## Mínimos por função e aviso de acumulação — 12/11/2026
+
+A interface identifica explicitamente o mínimo de pessoas na função e o mínimo da equipe. O cadastro individual explica a opção de ocupar duas ou mais funções ao mesmo tempo e exige selecionar pelo menos duas. Substituição continua direcional; a autorização para substituir, sozinha, não ativa acumulação no modo exclusivo.
+
+O painel de cobertura mostra o nome, as funções e os períodos em que a mesma pessoa contribui simultaneamente para dois ou mais mínimos. Os períodos adjacentes são agrupados sem atravessar pausas. A equipe continua contando a pessoa uma única vez. No exemplo de 1 farmacêutico e 2 atendentes, o farmacêutico com acumulação autorizada satisfaz o mínimo de farmacêutico e conta como 1 atendente; ainda é necessária outra pessoa para o segundo atendente.
+
+Os avisos são uma projeção das contribuições efetivas. O rastreio opcional de IDs do alocador legado não muda o formato público, pontuação, lacunas, gerações ou dados salvos. As regressões verificam mínimos, autorização, revogação, pausa, presença da equipe, legado, formulário e aviso visível sem abrir os detalhes.
+
+Validação local desta apresentação: 738/738 testes frontend em America/Cuiaba e America/New_York; 872/872 testes .NET; 34/34 HTTP/worker; 224 casos diferenciais em cada fuso. Os 10 novos testes incluem o exemplo farmacêutico/atendente, mínimo de duas pessoas, autorização explícita, pausas, revogação, legado e controles reais. Lint e build aprovados. Sem publicação.
