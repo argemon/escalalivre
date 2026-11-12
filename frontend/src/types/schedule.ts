@@ -4,6 +4,7 @@ export type RegimeType = typeof regimeTypes[number];
 
 export type WeeklyWorkPlan = {
   flexibleWorkDays?: number;
+  fiveDay42HourMode?: "eightHours" | "completeWeek";
   contractedSeconds: number;
   dailySeconds: number[];
   compensation?: { instrument: string; startsOn: string; endsOn: string };

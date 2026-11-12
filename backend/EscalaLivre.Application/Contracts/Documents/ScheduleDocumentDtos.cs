@@ -78,7 +78,8 @@ public sealed record WorkloadRuleDto(
     WeeklyWorkPlanDto? WeeklyPlan = null);
 
 public sealed record WeeklyWorkPlanDto(int ContractedSeconds, IReadOnlyList<int> DailySeconds, WeeklyCompensationDto? Compensation = null,
-    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] int? FlexibleWorkDays = null);
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] int? FlexibleWorkDays = null,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] string? FiveDay42HourMode = null);
 public sealed record WeeklyCompensationDto(string Instrument, DateOnly StartsOn, DateOnly EndsOn);
 
 public sealed record LunchRuleDto(TimeSpan Minimum, TimeSpan Maximum, TimeSpan PreferredAfter);

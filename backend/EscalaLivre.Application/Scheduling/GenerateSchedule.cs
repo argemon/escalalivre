@@ -9,6 +9,8 @@ public sealed class GenerateSchedule(IScheduleOptimizer optimizer, IScheduleAnal
 {
     public ScheduleResult Execute(ScheduleRequest request)
     {
+        var configuration = ContractMinimumPolicy.ConfigurationIssues(request.Document,request.Start,request.End);
+        if(configuration.Count > 0) return Failure(request,"infeasible",configuration);
         var optimized = optimizer.Optimize(request);
         if (optimized.Status is not ("optimal" or "feasible"))
             return Failure(request, optimized.Status, optimized.Issues);
@@ -38,6 +40,12 @@ public sealed class GenerateSchedule(IScheduleOptimizer optimizer, IScheduleAnal
         if (introduced.Count > 0)
             return Failure(request, "invalid", [Invalid(request, "A escala gerada introduz violações obrigatórias ("
                 + string.Join(", ", introduced.Select(i => i.Code).Distinct().Order()) + "); os turnos anteriores foram preservados.")]);
+
+        var missing = ContractMinimumPolicy.Missing(request.Document, request.Start, request.End, assignments);
+        if (missing.Count > 0)
+            return Failure(request, "invalid", missing.Select(m => new ScheduleIssue("error", "solverInvalid",
+                $"Não foi possível completar a carga contratada: faltam {m.RequiredSeconds}s. Os turnos anteriores foram preservados.",
+                request.Start, request.End, EmployeeId: m.EmployeeId)).ToArray());
 
         return evaluated with
         {

@@ -6,6 +6,26 @@ namespace EscalaLivre.Adapter.Tests;
 
 public sealed class ContractGenerationTests
 {
+    [Theory]
+    [InlineData("eightHours", 144000, 7200)]
+    [InlineData("completeWeek", 151200, 0)]
+    public void Explicit42HourChoiceControlsGeneratedNormalWork(string mode, int planned, int unmet)
+    {
+        var r=FlexibleRequest();
+        var rule=r.Document.Company.DefaultWorkload with {WeeklyLimitHours=42,
+            WeeklyPlan=new(151200,new int[7],flexibleWorkDays:5,fiveDay42HourMode:mode)};
+        var days=Enumerable.Range(0,7).Select(i=>(DayOfWeek)i).ToArray();
+        r=r with {Document=r.Document with {Company=r.Document.Company with {DefaultWorkload=rule,ClosesAt=new(17,30),
+            Coverage=days.Select(d=>new CoverageRequirement("Equipe",d,new(7,30),new(17,30),1)).ToArray()}}};
+        var result=AdapterComposition.Generate().Execute(r);
+        Assert.Contains(result.Optimization!.Status,new[]{"optimal","feasible"});
+        var summary=Assert.Single(result.Workloads!);
+        Assert.Equal(151200,summary.ExpectedSeconds);Assert.Equal(planned,summary.PlannedSeconds);Assert.Equal(unmet,summary.UnmetSeconds);
+        Assert.Equal(5,result.Assignments.Count);
+        Assert.DoesNotContain(result.Conflicts,c=>c.Severity=="error");
+        Assert.All(result.Assignments,a=>Assert.Equal(planned/5,EffectiveWorkPolicy.Measure(a).TotalSeconds));
+    }
+
     private static ScheduleRequest FlexibleRequest(int workDays = 5, int people = 1)
     {
         var r=Request(hours:workDays==5?40:44,people:people);
@@ -94,10 +114,9 @@ public sealed class ContractGenerationTests
         r=r with {Document=r.Document with {Company=r.Document.Company with {OperatingDays=days,
             Coverage=r.Document.Company.Coverage.Where(c=>days.Contains(c.Day)).ToArray()}}};
         var result=AdapterComposition.Generate().Execute(r);
-        Assert.Contains(result.Optimization!.Status,new[]{"optimal","feasible"});
-        var summary=Assert.Single(result.Workloads!);
-        Assert.Equal(144000,summary.ExpectedSeconds);Assert.Equal(115200,summary.PlannedSeconds);
-        Assert.Equal(28800,summary.UnmetSeconds);Assert.Equal(28800,summary.UnassignedSeconds);
+        Assert.Equal("infeasible",result.Optimization!.Status);
+        Assert.Equal(r.Document.Assignments,result.Assignments);
+        Assert.Contains(result.Conflicts,c=>c.Code=="solverInfeasible"&&c.Severity=="error");
     }
 
     [Fact]
@@ -168,11 +187,9 @@ public sealed class ContractGenerationTests
         var employee=r.Document.Employees[0] with {Restrictions=[new(new(2026,11,10),new(2026,11,11))],ContractLeaves=[new(new(2026,11,11),31680)]};
         r=r with {Document=r.Document with {Employees=[employee],Company=r.Document.Company with {Holidays=[new(new(2026,11,12),"Feriado")]}}};
         var result=AdapterComposition.Generate().Execute(r);
-        Assert.Contains(result.Optimization!.Status,new[]{"optimal","feasible"});
-        var summary=Assert.Single(result.Workloads!);
-        Assert.Equal(95040,summary.ExpectedSeconds);Assert.Equal(63360,summary.PlannedSeconds);Assert.Equal(31680,summary.UnmetSeconds);
-        Assert.DoesNotContain(result.Assignments,a=>a.Start.Day is 10 or 11 or 12);
-        Assert.Contains(result.Conflicts,c=>c.Code=="workloadShortfall"&&c.Severity=="warning");
+        Assert.Equal("infeasible",result.Optimization!.Status);
+        Assert.Equal(r.Document.Assignments,result.Assignments);
+        Assert.Contains(result.Conflicts,c=>c.Code=="solverInfeasible"&&c.Severity=="error");
     }
     [Fact]
     public void PartialPeriodPreservesBothHistoricalEdgesAndSecondPreciseRoutine()
@@ -196,7 +213,7 @@ public sealed class ContractGenerationTests
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
-    public void ObjectivePrioritizesCoverageThenContractBeforePreferences(bool demandAtClosing)
+    public void ContractMinimumCannotBeSacrificedForCoverageOrPreferences(bool demandAtClosing)
     {
         var r=Request(people:1);r=r with {End=r.Start};
         var company=r.Document.Company with {Lunch=new(TimeSpan.FromHours(1),TimeSpan.FromHours(2),TimeSpan.FromHours(4)),Coverage=demandAtClosing?[new("Equipe",DayOfWeek.Monday,new(17,18),new(17,30),1)]:[]};
@@ -207,23 +224,21 @@ public sealed class ContractGenerationTests
         var budget=new OptimizationBudget();var context=AdapterComposition.Builder().Build(new(r,[a,b],budget),budget);
         var result=ScheduleObjectiveSearch.Solve(context,new OrToolsExecution(),new ScheduleResultReader(),5);
         Assert.Contains(result.Status,new[]{"optimal","feasible"});
-        Assert.Equal(demandAtClosing?28800:31680,EffectiveWorkPolicy.Measure(Assert.Single(result.SelectedAssignments)).TotalSeconds);
+        Assert.Equal(31680,EffectiveWorkPolicy.Measure(Assert.Single(result.SelectedAssignments)).TotalSeconds);
     }
     [Fact]
-    public void WeeklyRemainderIsASecondPreciseCandidateWithoutExtendingAnyDay()
+    public void WeeklyCeilingCannotHideAnUnmetContractMinimum()
     {
         var r=Request(people:1);var employee=r.Document.Employees[0] with {AllowsOvertime=true};
         ShiftAssignment History(int offset) {var day=r.Start.AddDays(offset);return new(Guid.NewGuid(),employee.Id,employee.Role,day.AddHours(7.5),day.AddHours(17.5),new(day.AddHours(12),day.AddHours(13)),"manual",[]);}
         r=r with {Start=r.Start.AddDays(1),End=r.End.AddDays(-1),Document=r.Document with {Employees=[employee],Assignments=[History(0),History(4)]}};
         var result=AdapterComposition.Generate().Execute(r);
-        Assert.Contains(result.Optimization!.Status,new[]{"optimal","feasible"});
-        var summary=Assert.Single(result.Workloads!);
-        Assert.Equal(93600,summary.PlannedSeconds);Assert.Equal(1440,summary.UnmetSeconds);
-        Assert.Equal(158400,result.Assignments.Sum(a=>EffectiveWorkPolicy.Measure(a).TotalSeconds));
-        Assert.DoesNotContain(result.Conflicts,c=>c.Code=="weeklyLimit");
+        Assert.Equal("infeasible",result.Optimization!.Status);
+        Assert.Equal(r.Document.Assignments,result.Assignments);
+        Assert.Contains(result.Conflicts,c=>c.Code=="solverInfeasible"&&c.Severity=="error");
     }
     [Fact]
-    public void IndividualPlanAndFixedPauseExceptionKeepTheirOwnDurations()
+    public void FixedPauseThatPreventsOneContractBlocksTheProposal()
     {
         var r=Request(people:2);
         var people=r.Document.Employees.ToArray();
@@ -231,11 +246,9 @@ public sealed class ContractGenerationTests
         people[1]=people[1] with {FixedInterval=new(new(11,30),new(13,0))};
         r=r with {Document=r.Document with {Employees=people}};
         var result=AdapterComposition.Generate().Execute(r);
-        Assert.Contains(result.Optimization!.Status,new[]{"optimal","feasible"});
-        Assert.Equal(144000,result.Workloads!.Single(w=>w.EmployeeId==people[0].Id).PlannedSeconds);
-        var second=result.Workloads!.Single(w=>w.EmployeeId==people[1].Id);
-        Assert.Equal(153000,second.PlannedSeconds);Assert.Equal(5400,second.UnmetSeconds);
-        Assert.All(result.Assignments.Where(a=>a.EmployeeId==people[1].Id),a=>Assert.Equal(TimeSpan.FromMinutes(90),a.Break!.End-a.Break.Start));
+        Assert.Equal("infeasible",result.Optimization!.Status);
+        Assert.Equal(r.Document.Assignments,result.Assignments);
+        Assert.Contains(result.Conflicts,c=>c.Code=="solverInfeasible"&&c.Severity=="error");
     }
     [Fact]
     public void OvernightCandidateKeepsCivilSecondsAndSundayWeeklySplit()
@@ -251,7 +264,7 @@ public sealed class ContractGenerationTests
         Assert.Equal(0,Assert.Single(result.Workloads!).UnmetSeconds);
     }
     [Fact]
-    public void PartialAvailabilityProvidesShorterWorkWithoutInventingOpeningOrClosingPreferences()
+    public void InsufficientAvailabilityDoesNotApplyAPartialContract()
     {
         var r=Request(people:1);r=r with {End=r.Start};
         var employee=r.Document.Employees[0] with {ShiftStartsAt=null,Availability=[new(r.Start.AddHours(10),r.Start.AddHours(15))]};
@@ -259,22 +272,26 @@ public sealed class ContractGenerationTests
         var candidates=new ScheduleCandidateGenerator().Generate(r).ToArray();Assert.NotEmpty(candidates);
         Assert.All(candidates,a=>{Assert.DoesNotContain("opening",a.Tags);Assert.DoesNotContain("closing",a.Tags);Assert.True(a.Start>=r.Start.AddHours(10)&&a.End<=r.Start.AddHours(15));});
         var result=AdapterComposition.Generate().Execute(r);
-        Assert.Contains(result.Optimization!.Status,new[]{"optimal","feasible"});
-        Assert.Equal(14400,Assert.Single(result.Workloads!).PlannedSeconds);
-        Assert.Equal(17280,Assert.Single(result.Workloads!).UnmetSeconds);
+        Assert.Equal("infeasible",result.Optimization!.Status);
+        Assert.Equal(r.Document.Assignments,result.Assignments);
+        Assert.Contains(result.Conflicts,c=>c.Code=="solverInfeasible"&&c.Severity=="error");
     }
     [Fact]
-    public void NoDemandDoesNotInventShiftsAndExpiredCompensationDoesNotUseOvertimeToFillTarget()
+    public void ContractsGenerateWithoutDemandAndMissingCompensationPreservesOriginal()
     {
         var r=Request(people:1);
         var person=r.Document.Employees[0] with {AllowsOvertime=true};
         var work=r.Document.Company.DefaultWorkload with {WeeklyPlan=new(158400,[0,31680,31680,31680,31680,31680,0])};
         r=r with {Document=r.Document with {Employees=[person],Company=r.Document.Company with {DefaultWorkload=work}}};
         var result=AdapterComposition.Generate().Execute(r);
-        Assert.Equal(40,result.Assignments.Sum(a=>EffectiveWorkPolicy.Measure(a).TotalHours));
-        Assert.Equal(14400,Assert.Single(result.Workloads!).UnmetSeconds);
-        r=r with {Document=r.Document with {Company=r.Document.Company with {Coverage=[]}}};
+        Assert.Equal("infeasible",result.Optimization!.Status);
+        Assert.Equal(r.Document.Assignments,result.Assignments);
+        Assert.Contains(result.Conflicts,c=>c.Code=="solverInfeasible"&&c.Severity=="error");
+        var plan=WeeklyWorkPlanPolicy.Uniform(144000,[DayOfWeek.Monday,DayOfWeek.Tuesday,DayOfWeek.Wednesday,DayOfWeek.Thursday,DayOfWeek.Friday]);
+        r=r with {Document=r.Document with {Company=r.Document.Company with {Coverage=[],DefaultWorkload=work with {WeeklyPlan=plan}}}};
         result=AdapterComposition.Generate().Execute(r);
-        Assert.Empty(result.Assignments);Assert.Equal(158400,Assert.Single(result.Workloads!).UnmetSeconds);
+        Assert.Contains(result.Optimization!.Status,new[]{"optimal","feasible"});
+        Assert.Equal(40,result.Assignments.Sum(a=>EffectiveWorkPolicy.Measure(a).TotalHours));
+        Assert.Equal(0,Assert.Single(result.Workloads!).UnmetSeconds);
     }
 }

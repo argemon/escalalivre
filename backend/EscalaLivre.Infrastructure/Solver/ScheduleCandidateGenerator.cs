@@ -68,7 +68,7 @@ public sealed class ScheduleCandidateGenerator
                     var candidate = new ShiftAssignment(Guid.NewGuid(),employee.Id,employee.Role,start,end,breakWindow,"solver",[],employee.RoleId);
                     if (!IntervalTimingPolicy.HasWorkAroundPause(candidate)) continue;
                     if(ScheduleRules.ShiftDiagnostics(company,employee,candidate,request.Document.Roles).Any(c=>c.Severity=="error") || EffectiveWorkPolicy.Measure(candidate) > ContractWorkPolicy.DailyLimit(company,employee,day)) continue;
-                    if (WeeklyWorkPlanPolicy.For(company,employee) is not null && !CoverageDemand.HasRelevantDemand(company,employee,candidate,request.Document.Roles)) continue;
+                    // Contracted work is required even when the coverage minimum is already met or absent.
                     var tags = new List<string> { "net-work-duration" };
                     if (WeeklyWorkPlanPolicy.For(company,employee) is null ? start == opening : windows.Any(w=>w.Start==start)) tags.Add("opening");
                     if (WeeklyWorkPlanPolicy.For(company,employee) is null ? end == closing : windows.Any(w=>w.End==end)) tags.Add("closing");

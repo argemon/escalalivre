@@ -37,6 +37,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IScheduleConstraintTranslator, RestConstraints>();
         services.AddSingleton<IScheduleConstraintTranslator, WeeklyWorkConstraints>();
         services.AddSingleton<IScheduleConstraintTranslator, DayCycleConstraints>();
+        services.AddSingleton<IScheduleConstraintTranslator, ContractWorkConstraints>();
         services.AddSingleton<IScheduleConstraintTranslator, CoverageConstraints>();
         services.AddSingleton<ScheduleObjective>();
         services.AddSingleton<ScheduleModelBuilder>();

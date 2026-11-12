@@ -9,7 +9,7 @@ internal static class AdapterComposition
 {
     internal static ScheduleModelBuilder Builder() => new(
         [new FixedAssignmentConstraints(), new DailyExclusivityConstraints(), new WeeklyIntervalConstraints(), new IntervalTimingConstraints(), new IntervalDurationConstraints(), new RestConstraints(),
-         new WeeklyWorkConstraints(), new DayCycleConstraints(), new CoverageConstraints()], new());
+         new WeeklyWorkConstraints(), new DayCycleConstraints(), new ContractWorkConstraints(), new CoverageConstraints()], new());
     internal static GenerateSchedule Generate() => new(
         new OrToolsScheduleOptimizer(new(), Builder(), new(), new()), PureComposition.Analyzer());
 }

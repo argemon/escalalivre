@@ -1,3 +1,4 @@
+import { selectedNormalDailySeconds } from "./fiveDay42Hours";
 import { explicitLeaveCredit } from "./absence";
 import type { CompanyRules, Employee, EscalaLivreDocument, WeeklyWorkPlan } from "../../types/schedule";
 import { clockMillis, civilMillis } from "../civilTime";
@@ -20,7 +21,7 @@ export function excusedSeconds(company:CompanyRules,e:Employee,date:string):numb
 export const targetSeconds=(company:CompanyRules,e:Employee,date:string)=>nominalSeconds(company,e,date)-excusedSeconds(company,e,date);
 export function normalLimitSeconds(company:CompanyRules,e:Employee,date:string):number {
  const plan=planFor(company,e);
- return plan?Math.min(Math.max(0,nominalSeconds(company,e,date)-explicitLeaveCredit(e,date)),compensationAppliesOn(plan,date)?36000:28800):durationSeconds((e.inheritsCompanyDefaults?company.defaultWorkload:e.workload).defaultShiftDuration);
+ return plan?Math.min(Math.max(0,nominalSeconds(company,e,date)-explicitLeaveCredit(e,date)),selectedNormalDailySeconds(plan)??(compensationAppliesOn(plan,date)?36000:28800)):durationSeconds((e.inheritsCompanyDefaults?company.defaultWorkload:e.workload).defaultShiftDuration);
 }
 export const contractDailyLimitMillis=(company:CompanyRules,e:Employee,date:string)=>planFor(company,e)?Math.min(36000,normalLimitSeconds(company,e,date)+(e.allowsOvertime?7200:0))*1000:(e.allowsOvertime?10:8)*3600000;
 export function desiredWorkSeconds(company:CompanyRules,e:Employee,date:string):number {

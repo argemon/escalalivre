@@ -16,7 +16,7 @@ function violations(source) {
  visit(root);return issues;
 }
 test('scheduling policies have no UI, state, HTTP or ambient browser dependency',()=>{
- assert.equal(files.length,12);
+ assert.equal(files.length,14);
  assert.ok(files.includes("absence.ts") && files.includes("employment.ts"),"operational policy inventory");
  for(const file of files)assert.deepEqual(violations(fs.readFileSync(path.join(directory,file),'utf8')),[],file);
  assert.deepEqual(violations(fs.readFileSync(path.join(__dirname,'../src/lib/regimes.ts'),'utf8')),[],'regimes.ts');

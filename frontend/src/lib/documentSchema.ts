@@ -60,6 +60,7 @@ const days = boundedArray(z.number().int().min(0).max(6),limits.days).refine(v =
 const civilTimestamp = (value:string) => validCivilDateTime(value) ? civilMillis(value) : NaN;
 const windowSchema = z.object({start:date,end:date}).refine(v => civilTimestamp(v.end)>civilTimestamp(v.start), "Fim deve ser posterior ao inicio");
 const weeklyPlan = z.object({
+  fiveDay42HourMode:z.enum(["eightHours","completeWeek"]).nullish().transform(v=>v??undefined),
   flexibleWorkDays:z.number().int().min(1).max(7).nullish().transform(v=>v??undefined),
   contractedSeconds:z.number().int().min(1).max(604800),
   dailySeconds:boundedArray(z.number().int().min(0).max(86400),7).refine(v=>v.length===7,"Informe sete durações diárias."),

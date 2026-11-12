@@ -64,7 +64,7 @@ Imagine uma loja que precisa de dois vendedores das 9h às 18h, de segunda a sá
 
 **Exemplo de jornada:** oito horas de trabalho com uma hora de intervalo ocupam nove horas no relógio. Das 9h às 18h, com pausa das 12h às 13h, a pessoa trabalha oito horas — e fica fora da cobertura durante a pausa.
 
-O motor considera alternativas de início de turno e de intervalo. Se a equipe não consegue atender toda a demanda, ele pode retornar uma escala parcial com as lacunas identificadas, preservando as restrições obrigatórias do modelo.
+O motor considera alternativas de início de turno e de intervalo. Se a equipe não consegue atender toda a demanda, ele pode retornar uma escala parcial com as lacunas identificadas, preservando as restrições obrigatórias do modelo, inclusive o mínimo contratado devido. Se esse mínimo não couber nas disponibilidades e demais limites, a geração informa o impedimento e preserva os turnos anteriores.
 
 Isso ajuda a responder perguntas práticas: **o problema está nos horários, nos intervalos ou na quantidade de pessoas disponíveis?**
 
@@ -82,7 +82,7 @@ flowchart LR
 
 O núcleo usa **Google OR-Tools CP-SAT**, um motor de otimização por restrições. Ele avalia combinações de turnos e intervalos para reduzir a falta de cobertura, respeitando as regras representadas no modelo.
 
-A busca começa pelo intervalo mínimo efetivo. Uma pausa maior só é aceita se reduzir as lacunas de cobertura. Entre alternativas ampliadas, o motor prioriza cobertura, menor ampliação total dos intervalos, carga normal contratada quando configurada e preferências. O resultado inclui turnos, conflitos, cobertura por período, saldos diários e semanais quando há plano, sugestões e explicações baseadas nas regras avaliadas. Os detalhes estão na [seção técnica](#para-os-nerds-o-algoritmo-por-dentro).
+A busca começa pelo intervalo mínimo efetivo. Uma pausa maior pode viabilizar o mínimo contratado ou reduzir as lacunas de cobertura. Entre alternativas ampliadas, o motor prioriza cobertura, menor ampliação total dos intervalos, carga normal contratada quando configurada e preferências. O resultado inclui turnos, conflitos, cobertura por período, saldos diários e semanais quando há plano, sugestões e explicações baseadas nas regras avaliadas. Os detalhes estão na [seção técnica](#para-os-nerds-o-algoritmo-por-dentro).
 
 A execução possui limite de tempo e pode encontrar uma solução viável sem comprovar que ela é a melhor possível. A interface permite revisar o resultado e continuar ajustando o planejamento.
 
@@ -93,10 +93,10 @@ A execução possui limite de tempo e pode encontrar uma solução viável sem c
 | **Configuração da empresa** | Definir funcionamento, horas efetivas de trabalho, descanso, limites de intervalo e fechamento para almoço. |
 | **Cadastro de equipe** | Cadastrar com campos essenciais, duplicar modelos, editar campos selecionados em lote e importar CSV/XLSX com prévia e confirmação. |
 | **Funções, vigências e inativação** | Registrar mudanças a partir de uma data, revisar adequações futuras e preservar o histórico dos turnos. |
-| **Mínimo contratado e máximo semanal** | Separar a carga normal a cumprir do teto total com extras autorizadas, com distribuição diária uniforme, sexta reduzida ou personalizada. |
-| **Escala individual 5x2 e 6x1** | Escolher o modelo da pessoa e deixar o gerador definir dias, folgas e horários, ou restringir a dias fixos, independentemente de a empresa abrir sete dias. |
+| **Mínimo contratado e máximo semanal** | Exigir a carga normal devida na geração, mesmo com pessoas além do mínimo de cobertura, e separar o teto total com extras autorizadas. |
+| **Escala individual 5x2 e 6x1** | Escolher dias e folgas automáticos ou fixos por pessoa; no 5x2 de 42h, optar por 8h24 diárias ou 8h com aviso das 2h faltantes. |
 | **Saída antecipada e horas faltantes** | Ajustar a saída de turnos salvos e conferir o saldo por dia e semana, sem reduzir automaticamente a carga contratada. |
-| **Cobertura exclusiva e acumulação** | Distribuir cada pessoa entre funções autorizadas sem contagem dupla; permitir acumulação somente no grupo explicitamente configurado. |
+| **Cobertura exclusiva e acumulação** | Definir o mínimo de pessoas por função e permitir acumulação explícita, com aviso dos períodos em que a mesma pessoa cobre várias funções. |
 | **Ausências e substituições** | Registrar férias, atestados, licenças ou indisponibilidades, conferir turnos atingidos e procurar substitutos elegíveis. |
 | **Cobertura em vários dias** | Aplicar a mesma necessidade a dias selecionados, a todos os dias ou aos dias de funcionamento. |
 | **Cobertura da equipe inteira** | Exigir uma quantidade mínima de pessoas presentes, independentemente da função. |
@@ -186,13 +186,13 @@ O **resumo operacional** organiza conflitos obrigatórios, falta de pessoas, car
 
 ### Mínimo contratado, máximo semanal e horas faltantes
 
-Em **Equipe**, abra o funcionário. Ele pode herdar o padrão da empresa ou ter uma configuração própria. Em **Escala do funcionário**, escolha **5x2**, **6x1** ou **Ciclo personalizado**. A escolha de 5x2/6x1 mantém a carga existente; quando ainda não há contrato, sugere 40h/44h para revisão. Documentos antigos continuam sem mínimo inferido ao abrir.
+Em **Equipe**, abra o funcionário. Ele pode herdar o padrão da empresa ou ter uma configuração própria. Em **Escala do funcionário**, escolha **5x2**, **6x1** ou **Ciclo personalizado**. A escolha de 5x2/6x1 mantém a carga existente; quando ainda não há contrato, sugere 40h/44h para revisão. Cada funcionário pode ter sua própria carga, como 20h, 30h, 40h ou 42h. Documentos antigos continuam sem mínimo inferido ao abrir.
 
-Com **Deixar o programa escolher os dias de trabalho e as folgas**, a carga é distribuída entre os dias que o gerador selecionar junto com os horários. Uma empresa aberta sete dias pode ter pessoas em 5x2 com folgas diferentes: abrir todos os dias não obriga cada funcionário a trabalhar todos eles. O ciclo considera também o histórico fora do período. Desmarque a opção para informar dias fixos permitidos e confira a distribuição da carga nesses dias. As folgas não precisam ser sábado e domingo nem consecutivas; restrições podem impedir completar os dias e as horas previstos.
+Com **Deixar o programa escolher os dias de trabalho e as folgas**, a carga é distribuída entre os dias que o gerador selecionar junto com os horários. Uma empresa aberta sete dias pode ter pessoas em 5x2 com folgas diferentes: abrir todos os dias não obriga cada funcionário a trabalhar todos eles. O ciclo considera também o histórico fora do período. Desmarque a opção para informar dias fixos permitidos e confira a distribuição da carga nesses dias. As folgas não precisam ser sábado e domingo nem consecutivas; se as restrições impedirem completar a carga devida, a geração informa o impedimento e mantém o planejamento anterior.
 
 | Campo | Significado |
 | --- | --- |
-| **Mínimo semanal — jornada contratada** | Trabalho normal previsto na semana completa, sem contar pausas ou horas extras. Nos dias fixos, a distribuição define cada meta; no automático, a escala define os dias que receberão a carga. |
+| **Mínimo semanal — jornada contratada** | Trabalho normal exigido na geração para a semana completa, sem contar pausas ou horas extras e respeitando as dispensas e exceções explícitas. Nos dias fixos, a distribuição define cada meta; no automático, a escala define os dias que receberão a carga. |
 | **Máximo semanal, incluindo extras** | Teto de trabalho líquido de domingo a sábado, incluindo extras autorizadas e turnos preservados. Não é uma meta nem uma autorização de extras por si só. |
 | **Permitir hora extra** | Autorização individual, separada da compensação semanal. Limites diários, descanso e demais regras continuam valendo. |
 
@@ -204,11 +204,22 @@ Para ajustar um dia, abra **Ajustar saída dos turnos salvos**, altere a saída 
 
 No plano de dias fixos, feriados fechados e dispensas explicitamente registradas reduzem a meta do dia. Na escolha automática, um feriado não tem dia contratual previamente definido: o fechamento impede turnos, mas a dispensa de carga precisa ser registrada quando aplicável. Bloqueios ou saída antecipada, sozinhos, não concedem crédito. A empresa abrir menos dias também não apaga o contrato.
 
-No automático, horas ainda sem turno aparecem como **Carga ainda sem dia definido**, incluídas no saldo semanal, sem marcar cada possível folga como falta diária. Períodos parciais reservam as cotas cabíveis após o histórico salvo. O gerador pode informar carga incompleta mesmo com cobertura atendida e não cria turnos sem demanda apenas para zerar o saldo.
+No automático, horas ainda sem turno aparecem como **Carga ainda sem dia definido**, incluídas no saldo semanal, sem marcar cada possível folga como falta diária. Períodos parciais reservam as cotas cabíveis após o histórico salvo. O gerador precisa cumprir o mínimo devido mesmo quando a cobertura já está atendida: pode acrescentar pessoas da mesma função dentro do funcionamento e das disponibilidades. A API também admite geração contratada sem demanda; a interface continua exigindo ao menos uma regra positiva de cobertura para iniciar. Se não houver solução compatível com o contrato, preserva os turnos anteriores. Edições manuais continuam permitidas e mostram o saldo faltante.
 
 **Mudanças da legislação:** a EC 141/2026 prevê a transição para dois repousos semanais, 42h normais após dois meses da publicação de 16/10/2026 e 40h um ano depois desse prazo. O cadastro e a análise avisam quando o período planejado alcança a transição e exige revisão de escala/carga. Não convertem contratos nem aplicam exceções coletivas automaticamente. O [registro da pesquisa e da implementação](docs/decisions/020-individual-weekly-patterns.md) explica os prazos do texto oficial e os limites desses avisos.
 
-Ao salvar e reabrir, carga, distribuição, dispensas e horários são preservados. Use uma versão atualizada para editar arquivos com esses recursos: leitores antigos podem ignorar os novos campos ou rejeitar tetos acima de 44h. Consulte o [contrato de mínimo, máximo e saída antecipada](docs/decisions/019-contract-minimum-and-overtime-ceiling.md).
+Ao salvar e reabrir, carga, distribuição, dispensas e horários são preservados. Use uma versão atualizada para editar arquivos com esses recursos: leitores antigos podem ignorar os novos campos ou rejeitar tetos acima de 44h. Consulte o [contrato de mínimo, máximo e saída antecipada](docs/decisions/019-contract-minimum-and-overtime-ceiling.md) e a [exigência do mínimo na geração](docs/decisions/029-contract-minimum-generation.md).
+
+### 42h semanais em 5x2
+
+No plano de 42h em cinco dias, escolha a jornada diária explicitamente:
+
+| Opção | Resultado na semana completa |
+| --- | --- |
+| **8h24 por dia** | 42h de trabalho normal, sem contar intervalos. |
+| **8h por dia** | 40h normais e aviso de **2h faltantes**, com sugestão de ajustar para 8h24. Essa é uma exceção explícita ao mínimo exigido pelo gerador. |
+
+O restante pode ser planejado como hora extra quando houver autorização e margem nos limites, mas extras são contabilizadas separadamente e não apagam automaticamente o saldo normal faltante. O gerador não cria essas extras automaticamente. A escolha fica salva no arquivo; abrir um documento antigo não seleciona uma opção nem altera a jornada.
 
 ### Intervalo e fechamento são coisas diferentes
 
@@ -216,15 +227,17 @@ A empresa pode fechar durante o almoço. Nesse período, as regras normais deixa
 
 Uma pessoa que precisa continuar trabalhando, como um segurança, pode receber a opção **Trabalha durante o fechamento para intervalo** e fazer sua pausa em outro horário. Regras excepcionais de cobertura continuam podendo exigir pessoas durante o fechamento.
 
-Sem intervalo fixo, o motor começa pela menor duração compatível com o mínimo da empresa, a jornada e o fechamento para almoço. Só aceita uma solução com pausas maiores se ela reduzir a falta de cobertura; apenas transferir um buraco para outro horário não justifica ampliar o intervalo. Quando precisa ampliar, prioriza a menor ampliação total encontrada. Se duas pausas de uma hora atendem toda a demanda, mantém uma hora para ambas. Intervalos fixos e rotinas já ancoradas pelo histórico são respeitados. A prévia também usa o mínimo efetivo; a escolha conjunta dos horários acontece na geração.
+Sem intervalo fixo, o motor começa pela menor duração compatível com o mínimo da empresa, a jornada e o fechamento para almoço. Pausas maiores podem viabilizar o mínimo contratado quando a tentativa inicial não encontra solução. Quando já há solução viável, só a substituem se reduzirem a falta de cobertura; apenas transferir um buraco para outro horário não justifica ampliar o intervalo. Quando precisa ampliar, prioriza a menor ampliação total encontrada. Se duas pausas de uma hora atendem toda a demanda, mantém uma hora para ambas. Intervalos fixos e rotinas já ancoradas pelo histórico são respeitados. A prévia também usa o mínimo efetivo; a escolha conjunta dos horários acontece na geração.
 
 ### Uma pessoa pode ajudar em outra função — com autorização
 
-Na etapa **Funções**, defina quais outras funções cada cargo pode cobrir. **Substituições individuais** acrescenta permissões por pessoa; a autorização é direcional e não se encadeia automaticamente. Farmacêutico → Atendente não autoriza o contrário, e Gerente → Caixa junto com Caixa → Vendedor não autoriza Gerente → Vendedor.
+Na cobertura, informe o **Mínimo de pessoas nesta função** para cada cargo e período; a necessidade da equipe inteira é configurada separadamente. Na etapa **Funções**, defina quais outras funções cada cargo pode cobrir. **Substituições individuais** acrescenta permissões por pessoa; a autorização é direcional e não se encadeia automaticamente. Farmacêutico → Atendente não autoriza o contrário, e Gerente → Caixa junto com Caixa → Vendedor não autoriza Gerente → Vendedor.
 
-Documentos novos usam **cobertura exclusiva**: uma pessoa é distribuída entre as funções autorizadas e conta em uma delas por vez. Precisar de um farmacêutico e um atendente exige duas pessoas, mesmo que uma possa exercer as duas funções. Na necessidade de equipe inteira, cada pessoa conta uma vez. Durante a pausa, não fornece cobertura.
+Documentos novos usam **cobertura exclusiva**: uma pessoa é distribuída entre as funções autorizadas e conta em uma delas por vez. Sem autorização explícita de acumulação, precisar de um farmacêutico e um atendente exige duas pessoas, mesmo que uma possa exercer as duas funções. Na necessidade de equipe inteira, cada pessoa conta uma vez. Durante a pausa, não fornece cobertura.
 
-A **acumulação explícita** permite configurar um grupo de funções simultâneas por pessoa. Enquanto o grupo estiver ativo, somente seus membros autorizados contribuem; as demais permissões não são alocadas até revisar ou desativar o grupo. Há um grupo ativo por pessoa, sem escolha automática entre vários grupos alternativos.
+Em **Funções que pode ocupar ao mesmo tempo**, ative **Pode cobrir duas ou mais funções ao mesmo tempo** e selecione pelo menos duas funções autorizadas. A **acumulação explícita** permite configurar um grupo de funções simultâneas por pessoa. Enquanto o grupo estiver ativo, somente seus membros autorizados contribuem; as demais permissões não são alocadas até revisar ou desativar o grupo. Há um grupo ativo por pessoa, sem escolha automática entre vários grupos alternativos.
+
+A análise avisa quando uma pessoa efetivamente atende mínimos de várias funções ao mesmo tempo, indicando nome, funções, data e horário. Um farmacêutico autorizado pode atender o mínimo de um farmacêutico e um atendente simultaneamente. Se forem necessários dois atendentes, ainda falta outro atendente. Na equipe inteira ele continua contando uma vez; a pausa interrompe sua contribuição e o aviso.
 
 Arquivos antigos sem o modo exclusivo mantêm a contagem simultânea legada. A interface permite conferir uma prévia e confirmar a conversão. Consulte a [decisão sobre cobertura exclusiva](docs/decisions/025-exclusive-role-allocation.md).
 
@@ -336,9 +349,11 @@ Grupos de acumulação ativos permitem contribuições simultâneas somente em s
 
 
 
+O mínimo normal devido é uma restrição obrigatória por pessoa e semana, considerando o histórico, o período parcial e as dispensas explícitas. Candidatos contratados podem ser gerados mesmo em horários sem demanda, dentro do funcionamento. A opção explícita de 42h com cinco dias de 8h exige 40h normais e mantém o aviso de 2h faltantes. Distribuição fixa incompatível ou falta de disponibilidade impede aplicar uma nova escala; não reduz silenciosamente o contrato.
+
 ### 4. Otimizar cobertura, duração dos intervalos, carga e preferências
 
-A primeira tentativa admite somente pausas automáticas com a duração mínima efetiva. Se ainda houver déficit, uma tentativa com pausas maiores só substitui essa solução quando reduz estritamente a falta de cobertura em ticks × pessoas, sem usar o score arredondado. A antecipação em relação ao horário preferido também exige melhora de cobertura. Empate, falha ou prazo esgotado preservam a solução anterior. Pausas fixas, fechamento, feriados autorizados e rotina histórica mantêm suas regras.
+A primeira tentativa admite somente pausas automáticas com a duração mínima efetiva. Se o mínimo contratado não couber nessa tentativa, a busca pode relaxar preferências de intervalo para encontrar uma solução viável. Quando já há solução e ainda existe déficit, uma tentativa com pausas maiores só a substitui quando reduz estritamente a falta de cobertura em ticks × pessoas, sem usar o score arredondado. A antecipação em relação ao horário preferido também exige melhora de cobertura. Empate, falha ou prazo esgotado preservam a solução anterior. Pausas fixas, fechamento, feriados autorizados e rotina histórica mantêm suas regras.
 
 Quando há alternativas acima do intervalo mínimo ou plano contratado efetivo, o CP-SAT aplica objetivos sucessivos:
 
@@ -347,7 +362,7 @@ Quando há alternativas acima do intervalo mínimo ou plano contratado efetivo, 
 3. Conservar os valores anteriores e maximizar a carga normal reconhecida, limitada à meta de cada dia, quando houver plano contratado.
 4. Conservar também a carga encontrada e aplicar preferências, ocupação e desempates.
 
-As fases e tentativas compartilham o orçamento de busca. Uma fase sem prova de ótimo fixa o melhor valor encontrado, sem garantir ótimo global; se uma fase inferior piorar as prioridades anteriores, o resultado anterior é preservado. Não se geram extras automaticamente para preencher a meta. Consulte a [preferência pelo intervalo mínimo](docs/decisions/023-minimum-automatic-interval.md) e as [limitações da geração contratada](docs/decisions/018-weekly-workload-generation.md#prioridades-da-busca).
+As fases e tentativas compartilham o orçamento de busca. Uma fase sem prova de ótimo fixa o melhor valor encontrado, sem garantir ótimo global; se uma fase inferior piorar as prioridades anteriores, o resultado anterior é preservado. Não se geram extras automaticamente para preencher a meta. Consulte a [preferência pelo intervalo mínimo](docs/decisions/023-minimum-automatic-interval.md) e o [mínimo obrigatório na geração contratada](docs/decisions/029-contract-minimum-generation.md), que atualiza as limitações anteriores.
 
 **Sem plano contratado e sem alternativas acima do intervalo mínimo**, o CP-SAT mantém uma única função ponderada. Os coeficientes desse modo são:
 

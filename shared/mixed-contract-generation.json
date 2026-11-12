@@ -1,0 +1,354 @@
+{
+  "document": {
+    "schemaVersion": "1.0.0",
+    "id": "0d92abd1-7377-4f0b-89f3-822a696fff11",
+    "updatedAt": "2026-11-01T00:00:00Z",
+    "company": {
+      "name": "Teste de contratos mistos",
+      "timeZone": "America/Cuiaba",
+      "opensAt": "08:00:00",
+      "closesAt": "18:00:00",
+      "operatingDays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "defaultWorkload": {
+        "regimeType": "dayBased",
+        "workUnits": 5,
+        "restUnits": 2,
+        "weeklyLimitHours": 40,
+        "defaultShiftDuration": "08:00:00",
+        "weeklyPlan": {
+          "contractedSeconds": 144000,
+          "dailySeconds": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "flexibleWorkDays": 5
+        }
+      },
+      "minimumRest": "11:00:00",
+      "lunch": {
+        "minimum": "01:00:00",
+        "maximum": "01:00:00",
+        "preferredAfter": "04:00:00"
+      },
+      "coverage": [
+        {
+          "role": "Equipe",
+          "day": 0,
+          "start": "08:00:00",
+          "end": "18:00:00",
+          "minimumEmployees": 2
+        },
+        {
+          "role": "Equipe",
+          "day": 1,
+          "start": "08:00:00",
+          "end": "18:00:00",
+          "minimumEmployees": 2
+        },
+        {
+          "role": "Equipe",
+          "day": 2,
+          "start": "08:00:00",
+          "end": "18:00:00",
+          "minimumEmployees": 2
+        },
+        {
+          "role": "Equipe",
+          "day": 3,
+          "start": "08:00:00",
+          "end": "18:00:00",
+          "minimumEmployees": 2
+        },
+        {
+          "role": "Equipe",
+          "day": 4,
+          "start": "08:00:00",
+          "end": "18:00:00",
+          "minimumEmployees": 2
+        },
+        {
+          "role": "Equipe",
+          "day": 5,
+          "start": "08:00:00",
+          "end": "18:00:00",
+          "minimumEmployees": 2
+        },
+        {
+          "role": "Equipe",
+          "day": 6,
+          "start": "08:00:00",
+          "end": "18:00:00",
+          "minimumEmployees": 2
+        }
+      ]
+    },
+    "employees": [
+      {
+        "id": "255559eb-e484-4d54-b904-d8a0de3cd0d4",
+        "name": "20h — 5x2 fixo",
+        "role": "Equipe",
+        "inheritsCompanyDefaults": false,
+        "workload": {
+          "regimeType": "dayBased",
+          "workUnits": 5,
+          "restUnits": 2,
+          "weeklyLimitHours": 20,
+          "defaultShiftDuration": "08:00:00",
+          "weeklyPlan": {
+            "contractedSeconds": 72000,
+            "dailySeconds": [
+              0,
+              14400,
+              14400,
+              14400,
+              14400,
+              14400,
+              0
+            ]
+          }
+        },
+        "availability": [],
+        "restrictions": [],
+        "preferences": [],
+        "allowsOvertime": false,
+        "allowsNightWork": false,
+        "preferredDaysOff": [],
+        "shiftStartsAt": null,
+        "workingDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contractLeaves": []
+      },
+      {
+        "id": "b3f0efaa-6b74-492d-be56-acda8735c5eb",
+        "name": "30h — 5x2 automático",
+        "role": "Equipe",
+        "inheritsCompanyDefaults": false,
+        "workload": {
+          "regimeType": "dayBased",
+          "workUnits": 5,
+          "restUnits": 2,
+          "weeklyLimitHours": 30,
+          "defaultShiftDuration": "08:00:00",
+          "weeklyPlan": {
+            "contractedSeconds": 108000,
+            "dailySeconds": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flexibleWorkDays": 5
+          }
+        },
+        "availability": [],
+        "restrictions": [],
+        "preferences": [],
+        "allowsOvertime": false,
+        "allowsNightWork": false,
+        "preferredDaysOff": [],
+        "shiftStartsAt": null,
+        "contractLeaves": []
+      },
+      {
+        "id": "501997c0-911e-4900-b2ff-9117c68585eb",
+        "name": "36h — 6x1 automático",
+        "role": "Equipe",
+        "inheritsCompanyDefaults": false,
+        "workload": {
+          "regimeType": "dayBased",
+          "workUnits": 6,
+          "restUnits": 1,
+          "weeklyLimitHours": 36,
+          "defaultShiftDuration": "08:00:00",
+          "weeklyPlan": {
+            "contractedSeconds": 129600,
+            "dailySeconds": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flexibleWorkDays": 6
+          }
+        },
+        "availability": [],
+        "restrictions": [],
+        "preferences": [],
+        "allowsOvertime": false,
+        "allowsNightWork": false,
+        "preferredDaysOff": [],
+        "shiftStartsAt": null,
+        "contractLeaves": []
+      },
+      {
+        "id": "d34d1a2b-0423-45e5-b557-1c843aa7e17a",
+        "name": "40h — 5x2 automático",
+        "role": "Equipe",
+        "inheritsCompanyDefaults": false,
+        "workload": {
+          "regimeType": "dayBased",
+          "workUnits": 5,
+          "restUnits": 2,
+          "weeklyLimitHours": 40,
+          "defaultShiftDuration": "08:00:00",
+          "weeklyPlan": {
+            "contractedSeconds": 144000,
+            "dailySeconds": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flexibleWorkDays": 5
+          }
+        },
+        "availability": [],
+        "restrictions": [],
+        "preferences": [],
+        "allowsOvertime": false,
+        "allowsNightWork": false,
+        "preferredDaysOff": [],
+        "shiftStartsAt": null,
+        "contractLeaves": []
+      },
+      {
+        "id": "da35f217-8da4-4aaa-a517-27b1fcdc26e2",
+        "name": "42h — 5x2 completo",
+        "role": "Equipe",
+        "inheritsCompanyDefaults": false,
+        "workload": {
+          "regimeType": "dayBased",
+          "workUnits": 5,
+          "restUnits": 2,
+          "weeklyLimitHours": 42,
+          "defaultShiftDuration": "08:00:00",
+          "weeklyPlan": {
+            "contractedSeconds": 151200,
+            "dailySeconds": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flexibleWorkDays": 5,
+            "fiveDay42HourMode": "completeWeek"
+          }
+        },
+        "availability": [],
+        "restrictions": [],
+        "preferences": [],
+        "allowsOvertime": false,
+        "allowsNightWork": false,
+        "preferredDaysOff": [],
+        "shiftStartsAt": null,
+        "contractLeaves": []
+      },
+      {
+        "id": "8389ec88-b4d8-4ebd-b8db-9a179751b0fa",
+        "name": "42h — 5x2 com 8h",
+        "role": "Equipe",
+        "inheritsCompanyDefaults": false,
+        "workload": {
+          "regimeType": "dayBased",
+          "workUnits": 5,
+          "restUnits": 2,
+          "weeklyLimitHours": 42,
+          "defaultShiftDuration": "08:00:00",
+          "weeklyPlan": {
+            "contractedSeconds": 151200,
+            "dailySeconds": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flexibleWorkDays": 5,
+            "fiveDay42HourMode": "eightHours"
+          }
+        },
+        "availability": [],
+        "restrictions": [],
+        "preferences": [],
+        "allowsOvertime": false,
+        "allowsNightWork": false,
+        "preferredDaysOff": [],
+        "shiftStartsAt": null,
+        "contractLeaves": []
+      },
+      {
+        "id": "e5094c5b-8ab8-4656-9354-70da147fbaa7",
+        "name": "40h — padrão da empresa",
+        "role": "Equipe",
+        "inheritsCompanyDefaults": true,
+        "workload": {
+          "regimeType": "dayBased",
+          "workUnits": 5,
+          "restUnits": 2,
+          "weeklyLimitHours": 20,
+          "defaultShiftDuration": "08:00:00",
+          "weeklyPlan": {
+            "contractedSeconds": 72000,
+            "dailySeconds": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flexibleWorkDays": 5
+          }
+        },
+        "availability": [],
+        "restrictions": [],
+        "preferences": [],
+        "allowsOvertime": false,
+        "allowsNightWork": false,
+        "preferredDaysOff": [],
+        "shiftStartsAt": null,
+        "contractLeaves": []
+      }
+    ],
+    "assignments": [],
+    "planningPeriod": {
+      "start": "2026-11-08",
+      "end": "2026-11-14"
+    }
+  },
+  "start": "2026-11-08T00:00:00",
+  "end": "2026-11-14T23:59:59"
+}

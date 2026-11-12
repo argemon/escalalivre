@@ -206,7 +206,9 @@
         "errors": [],
         "expected": 158400,
         "planned": 158400,
-        "unmet": 0
+        "unmet": 0,
+        "minimumRequired": 158400,
+        "minimumMissing": 0
       }
     },
     {
@@ -415,7 +417,9 @@
         "errors": [],
         "expected": 158400,
         "planned": 158400,
-        "unmet": 0
+        "unmet": 0,
+        "minimumRequired": 158400,
+        "minimumMissing": 0
       }
     },
     {
@@ -624,7 +628,9 @@
         "errors": [],
         "expected": 144000,
         "planned": 144000,
-        "unmet": 0
+        "unmet": 0,
+        "minimumRequired": 144000,
+        "minimumMissing": 0
       }
     },
     {
@@ -784,7 +790,9 @@
         "errors": [],
         "expected": 91440,
         "planned": 0,
-        "unmet": 91440
+        "unmet": 91440,
+        "minimumRequired": 91440,
+        "minimumMissing": 91440
       }
     },
     {
@@ -932,7 +940,9 @@
         "errors": [],
         "expected": 158400,
         "planned": 0,
-        "unmet": 158400
+        "unmet": 158400,
+        "minimumRequired": 158400,
+        "minimumMissing": 158400
       }
     },
     {
@@ -1142,7 +1152,9 @@
         "expected": 95040,
         "planned": 95040,
         "unmet": 0,
-        "history": 63360
+        "history": 63360,
+        "minimumRequired": 95040,
+        "minimumMissing": 0
       }
     },
     {
@@ -1302,7 +1314,9 @@
         ],
         "expected": 158400,
         "planned": 31680,
-        "unmet": 129600
+        "unmet": 129600,
+        "minimumRequired": 158400,
+        "minimumMissing": 129600
       }
     },
     {
@@ -1506,7 +1520,9 @@
         "errors": [],
         "expected": 158400,
         "planned": 158400,
-        "unmet": 14400
+        "unmet": 14400,
+        "minimumRequired": 158400,
+        "minimumMissing": 14400
       }
     },
     {
@@ -1676,7 +1692,9 @@
         "errors": [],
         "expected": 158400,
         "planned": 63360,
-        "unmet": 95760
+        "unmet": 95760,
+        "minimumRequired": 158400,
+        "minimumMissing": 95760
       }
     },
     {
@@ -1880,7 +1898,9 @@
         "errors": [],
         "expected": 144000,
         "planned": 144000,
-        "unmet": 0
+        "unmet": 0,
+        "minimumRequired": 144000,
+        "minimumMissing": 0
       }
     },
     {
@@ -2028,7 +2048,9 @@
         "errors": [],
         "expected": 28800,
         "planned": 28800,
-        "unmet": 0
+        "unmet": 0,
+        "minimumRequired": 28800,
+        "minimumMissing": 0
       }
     },
     {
@@ -2187,7 +2209,9 @@
         "excused": 0,
         "errors": [
           "regime"
-        ]
+        ],
+        "minimumRequired": 158400,
+        "minimumMissing": 129600
       }
     },
     {
@@ -2396,7 +2420,9 @@
         "errors": [],
         "expected": 144000,
         "planned": 140400,
-        "unmet": 3600
+        "unmet": 3600,
+        "minimumRequired": 144000,
+        "minimumMissing": 3600
       }
     },
     {
@@ -2605,7 +2631,9 @@
         "errors": [],
         "expected": 144000,
         "planned": 172800,
-        "unmet": 0
+        "unmet": 0,
+        "minimumRequired": 144000,
+        "minimumMissing": 0
       }
     },
     {
@@ -2818,7 +2846,9 @@
         ],
         "expected": 144000,
         "planned": 172800,
-        "unmet": 0
+        "unmet": 0,
+        "minimumRequired": 144000,
+        "minimumMissing": 0
       }
     },
     {
@@ -3029,7 +3059,9 @@
         ],
         "expected": 144000,
         "planned": 172800,
-        "unmet": 0
+        "unmet": 0,
+        "minimumRequired": 144000,
+        "minimumMissing": 0
       }
     },
     {
@@ -3255,7 +3287,9 @@
         "errors": [],
         "expected": 144000,
         "planned": 144000,
-        "unmet": 0
+        "unmet": 0,
+        "minimumRequired": 144000,
+        "minimumMissing": 0
       }
     },
     {
@@ -3415,7 +3449,9 @@
         "errors": [],
         "expected": 144000,
         "planned": 0,
-        "unmet": 144000
+        "unmet": 144000,
+        "minimumRequired": 144000,
+        "minimumMissing": 144000
       }
     },
     {
@@ -3641,7 +3677,9 @@
         "errors": [],
         "expected": 144000,
         "planned": 140400,
-        "unmet": 3600
+        "unmet": 3600,
+        "minimumRequired": 144000,
+        "minimumMissing": 3600
       }
     },
     {
@@ -3830,7 +3868,9 @@
         "errors": [],
         "expected": 144000,
         "planned": 115200,
-        "unmet": 28800
+        "unmet": 28800,
+        "minimumRequired": 144000,
+        "minimumMissing": 28800
       }
     },
     {
@@ -4049,7 +4089,9 @@
         "errors": [],
         "expected": 115200,
         "planned": 115200,
-        "unmet": 0
+        "unmet": 0,
+        "minimumRequired": 115200,
+        "minimumMissing": 0
       }
     },
     {
@@ -4276,7 +4318,9 @@
         "expected": 86400,
         "planned": 86400,
         "unmet": 0,
-        "history": 57600
+        "history": 57600,
+        "minimumRequired": 86400,
+        "minimumMissing": 0
       }
     },
     {
@@ -4515,7 +4559,9 @@
         "errors": [],
         "expected": 158400,
         "planned": 158400,
-        "unmet": 0
+        "unmet": 0,
+        "minimumRequired": 158400,
+        "minimumMissing": 0
       }
     },
     {
@@ -4682,7 +4728,9 @@
         "errors": [],
         "expected": 144000,
         "planned": 0,
-        "unmet": 144000
+        "unmet": 144000,
+        "minimumRequired": 144000,
+        "minimumMissing": 144000
       }
     },
     {
@@ -4843,7 +4891,9 @@
         "expected": 26400,
         "planned": 0,
         "unmet": 26400,
-        "transitionCodes": []
+        "transitionCodes": [],
+        "minimumRequired": 26400,
+        "minimumMissing": 26400
       }
     },
     {
@@ -5007,7 +5057,9 @@
         "transitionCodes": [
           "contractHoursTransition",
           "weeklyRestTransition"
-        ]
+        ],
+        "minimumRequired": 26400,
+        "minimumMissing": 26400
       }
     },
     {
@@ -5171,7 +5223,9 @@
         "transitionCodes": [
           "contractHoursTransition",
           "weeklyRestTransition"
-        ]
+        ],
+        "minimumRequired": 26400,
+        "minimumMissing": 26400
       }
     },
     {
@@ -5397,7 +5451,9 @@
         "errors": [],
         "expected": 144001,
         "planned": 144001,
-        "unmet": 0
+        "unmet": 0,
+        "minimumRequired": 144001,
+        "minimumMissing": 0
       }
     },
     {
@@ -5653,7 +5709,9 @@
         "errors": [],
         "expected": 126000,
         "planned": 126000,
-        "unmet": 0
+        "unmet": 0,
+        "minimumRequired": 126000,
+        "minimumMissing": 0
       }
     },
     {
@@ -5863,7 +5921,9 @@
         "planned": 86400,
         "unmet": 0,
         "excused": 57601,
-        "errors": []
+        "errors": [],
+        "minimumRequired": 86400,
+        "minimumMissing": 0
       }
     },
     {
@@ -6090,7 +6150,9 @@
         "expected": 86400,
         "planned": 86400,
         "unmet": 0,
-        "history": 57601
+        "history": 57601,
+        "minimumRequired": 86400,
+        "minimumMissing": 0
       }
     },
     {
@@ -6310,7 +6372,1639 @@
         "expected": 57600,
         "planned": 57600,
         "unmet": 0,
-        "history": 57600
+        "history": 57600,
+        "minimumRequired": 57600,
+        "minimumMissing": 0
+      }
+    },
+    {
+      "id": "five-day-42-fixed-eightHours",
+      "request": {
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "10000000-0000-0000-0000-000000000001",
+          "updatedAt": "2026-11-01T00:00:00Z",
+          "company": {
+            "name": "Loja",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "17:30:00",
+            "operatingDays": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 42,
+              "defaultShiftDuration": "08:00:00",
+              "weeklyPlan": {
+                "contractedSeconds": 151200,
+                "dailySeconds": [
+                  0,
+                  30240,
+                  30240,
+                  30240,
+                  30240,
+                  30240,
+                  0
+                ],
+                "fiveDay42HourMode": "eightHours"
+              }
+            },
+            "minimumRest": "11:00:00",
+            "lunch": {
+              "minimum": "01:00:00",
+              "maximum": "01:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "coverage": [
+              {
+                "role": "Equipe",
+                "day": 1,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 2,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 4,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 5,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "20000000-0000-0000-0000-000000000001",
+              "name": "Pessoa",
+              "role": "Equipe",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 42,
+                "defaultShiftDuration": "08:00:00",
+                "weeklyPlan": {
+                  "contractedSeconds": 151200,
+                  "dailySeconds": [
+                    0,
+                    30240,
+                    30240,
+                    30240,
+                    30240,
+                    30240,
+                    0
+                  ],
+                  "fiveDay42HourMode": "eightHours"
+                }
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": false,
+              "preferredDaysOff": [],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "30000000-0000-0000-0000-000000000009",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-09T07:30:00",
+              "end": "2026-11-09T16:30:00",
+              "break": {
+                "start": "2026-11-09T12:00:00",
+                "end": "2026-11-09T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000010",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-10T07:30:00",
+              "end": "2026-11-10T16:30:00",
+              "break": {
+                "start": "2026-11-10T12:00:00",
+                "end": "2026-11-10T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000011",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-11T07:30:00",
+              "end": "2026-11-11T16:30:00",
+              "break": {
+                "start": "2026-11-11T12:00:00",
+                "end": "2026-11-11T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000012",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-12T07:30:00",
+              "end": "2026-11-12T16:30:00",
+              "break": {
+                "start": "2026-11-12T12:00:00",
+                "end": "2026-11-12T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000013",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-13T07:30:00",
+              "end": "2026-11-13T16:30:00",
+              "break": {
+                "start": "2026-11-13T12:00:00",
+                "end": "2026-11-13T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "planningPeriod": {
+            "start": "2026-11-09",
+            "end": "2026-11-13"
+          }
+        },
+        "start": "2026-11-09T00:00:00",
+        "end": "2026-11-13T00:00:00"
+      },
+      "expected": {
+        "excused": 0,
+        "errors": [],
+        "expected": 151200,
+        "planned": 144000,
+        "unmet": 7200,
+        "minimumRequired": 144000,
+        "minimumMissing": 0
+      }
+    },
+    {
+      "id": "five-day-42-fixed-completeWeek",
+      "request": {
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "10000000-0000-0000-0000-000000000001",
+          "updatedAt": "2026-11-01T00:00:00Z",
+          "company": {
+            "name": "Loja",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "17:30:00",
+            "operatingDays": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 42,
+              "defaultShiftDuration": "08:00:00",
+              "weeklyPlan": {
+                "contractedSeconds": 151200,
+                "dailySeconds": [
+                  0,
+                  30240,
+                  30240,
+                  30240,
+                  30240,
+                  30240,
+                  0
+                ],
+                "fiveDay42HourMode": "completeWeek"
+              }
+            },
+            "minimumRest": "11:00:00",
+            "lunch": {
+              "minimum": "01:00:00",
+              "maximum": "01:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "coverage": [
+              {
+                "role": "Equipe",
+                "day": 1,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 2,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 4,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 5,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "20000000-0000-0000-0000-000000000001",
+              "name": "Pessoa",
+              "role": "Equipe",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 42,
+                "defaultShiftDuration": "08:00:00",
+                "weeklyPlan": {
+                  "contractedSeconds": 151200,
+                  "dailySeconds": [
+                    0,
+                    30240,
+                    30240,
+                    30240,
+                    30240,
+                    30240,
+                    0
+                  ],
+                  "fiveDay42HourMode": "completeWeek"
+                }
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": false,
+              "preferredDaysOff": [],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "30000000-0000-0000-0000-000000000009",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-09T07:30:00",
+              "end": "2026-11-09T16:54:00",
+              "break": {
+                "start": "2026-11-09T12:00:00",
+                "end": "2026-11-09T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000010",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-10T07:30:00",
+              "end": "2026-11-10T16:54:00",
+              "break": {
+                "start": "2026-11-10T12:00:00",
+                "end": "2026-11-10T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000011",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-11T07:30:00",
+              "end": "2026-11-11T16:54:00",
+              "break": {
+                "start": "2026-11-11T12:00:00",
+                "end": "2026-11-11T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000012",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-12T07:30:00",
+              "end": "2026-11-12T16:54:00",
+              "break": {
+                "start": "2026-11-12T12:00:00",
+                "end": "2026-11-12T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000013",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-13T07:30:00",
+              "end": "2026-11-13T16:54:00",
+              "break": {
+                "start": "2026-11-13T12:00:00",
+                "end": "2026-11-13T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "planningPeriod": {
+            "start": "2026-11-09",
+            "end": "2026-11-13"
+          }
+        },
+        "start": "2026-11-09T00:00:00",
+        "end": "2026-11-13T00:00:00"
+      },
+      "expected": {
+        "excused": 0,
+        "errors": [],
+        "expected": 151200,
+        "planned": 151200,
+        "unmet": 0,
+        "minimumRequired": 151200,
+        "minimumMissing": 0
+      }
+    },
+    {
+      "id": "five-day-42-automatic-eightHours",
+      "request": {
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "10000000-0000-0000-0000-000000000001",
+          "updatedAt": "2026-11-01T00:00:00Z",
+          "company": {
+            "name": "Loja",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "17:30:00",
+            "operatingDays": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 42,
+              "defaultShiftDuration": "08:00:00",
+              "weeklyPlan": {
+                "contractedSeconds": 151200,
+                "dailySeconds": [
+                  0,
+                  30240,
+                  30240,
+                  30240,
+                  30240,
+                  30240,
+                  0
+                ],
+                "fiveDay42HourMode": "eightHours",
+                "flexibleWorkDays": 5
+              }
+            },
+            "minimumRest": "11:00:00",
+            "lunch": {
+              "minimum": "01:00:00",
+              "maximum": "01:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "coverage": [
+              {
+                "role": "Equipe",
+                "day": 1,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 2,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 4,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 5,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "20000000-0000-0000-0000-000000000001",
+              "name": "Pessoa",
+              "role": "Equipe",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 42,
+                "defaultShiftDuration": "08:00:00",
+                "weeklyPlan": {
+                  "contractedSeconds": 151200,
+                  "dailySeconds": [
+                    0,
+                    30240,
+                    30240,
+                    30240,
+                    30240,
+                    30240,
+                    0
+                  ],
+                  "fiveDay42HourMode": "eightHours",
+                  "flexibleWorkDays": 5
+                }
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": false,
+              "preferredDaysOff": [],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "30000000-0000-0000-0000-000000000009",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-09T07:30:00",
+              "end": "2026-11-09T16:30:00",
+              "break": {
+                "start": "2026-11-09T12:00:00",
+                "end": "2026-11-09T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000010",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-10T07:30:00",
+              "end": "2026-11-10T16:30:00",
+              "break": {
+                "start": "2026-11-10T12:00:00",
+                "end": "2026-11-10T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000011",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-11T07:30:00",
+              "end": "2026-11-11T16:30:00",
+              "break": {
+                "start": "2026-11-11T12:00:00",
+                "end": "2026-11-11T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000012",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-12T07:30:00",
+              "end": "2026-11-12T16:30:00",
+              "break": {
+                "start": "2026-11-12T12:00:00",
+                "end": "2026-11-12T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000013",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-13T07:30:00",
+              "end": "2026-11-13T16:30:00",
+              "break": {
+                "start": "2026-11-13T12:00:00",
+                "end": "2026-11-13T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "planningPeriod": {
+            "start": "2026-11-09",
+            "end": "2026-11-13"
+          }
+        },
+        "start": "2026-11-09T00:00:00",
+        "end": "2026-11-13T00:00:00"
+      },
+      "expected": {
+        "excused": 0,
+        "errors": [],
+        "expected": 151200,
+        "planned": 144000,
+        "unmet": 7200,
+        "minimumRequired": 144000,
+        "minimumMissing": 0
+      }
+    },
+    {
+      "id": "five-day-42-automatic-completeWeek",
+      "request": {
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "10000000-0000-0000-0000-000000000001",
+          "updatedAt": "2026-11-01T00:00:00Z",
+          "company": {
+            "name": "Loja",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "17:30:00",
+            "operatingDays": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 42,
+              "defaultShiftDuration": "08:00:00",
+              "weeklyPlan": {
+                "contractedSeconds": 151200,
+                "dailySeconds": [
+                  0,
+                  30240,
+                  30240,
+                  30240,
+                  30240,
+                  30240,
+                  0
+                ],
+                "fiveDay42HourMode": "completeWeek",
+                "flexibleWorkDays": 5
+              }
+            },
+            "minimumRest": "11:00:00",
+            "lunch": {
+              "minimum": "01:00:00",
+              "maximum": "01:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "coverage": [
+              {
+                "role": "Equipe",
+                "day": 1,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 2,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 4,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 5,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "20000000-0000-0000-0000-000000000001",
+              "name": "Pessoa",
+              "role": "Equipe",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 42,
+                "defaultShiftDuration": "08:00:00",
+                "weeklyPlan": {
+                  "contractedSeconds": 151200,
+                  "dailySeconds": [
+                    0,
+                    30240,
+                    30240,
+                    30240,
+                    30240,
+                    30240,
+                    0
+                  ],
+                  "fiveDay42HourMode": "completeWeek",
+                  "flexibleWorkDays": 5
+                }
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": false,
+              "preferredDaysOff": [],
+              "shiftStartsAt": "07:30:00"
+            }
+          ],
+          "assignments": [
+            {
+              "id": "30000000-0000-0000-0000-000000000009",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-09T07:30:00",
+              "end": "2026-11-09T16:54:00",
+              "break": {
+                "start": "2026-11-09T12:00:00",
+                "end": "2026-11-09T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000010",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-10T07:30:00",
+              "end": "2026-11-10T16:54:00",
+              "break": {
+                "start": "2026-11-10T12:00:00",
+                "end": "2026-11-10T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000011",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-11T07:30:00",
+              "end": "2026-11-11T16:54:00",
+              "break": {
+                "start": "2026-11-11T12:00:00",
+                "end": "2026-11-11T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000012",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-12T07:30:00",
+              "end": "2026-11-12T16:54:00",
+              "break": {
+                "start": "2026-11-12T12:00:00",
+                "end": "2026-11-12T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000013",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-13T07:30:00",
+              "end": "2026-11-13T16:54:00",
+              "break": {
+                "start": "2026-11-13T12:00:00",
+                "end": "2026-11-13T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "planningPeriod": {
+            "start": "2026-11-09",
+            "end": "2026-11-13"
+          }
+        },
+        "start": "2026-11-09T00:00:00",
+        "end": "2026-11-13T00:00:00"
+      },
+      "expected": {
+        "excused": 0,
+        "errors": [],
+        "expected": 151200,
+        "planned": 151200,
+        "unmet": 0,
+        "minimumRequired": 151200,
+        "minimumMissing": 0
+      }
+    },
+    {
+      "id": "five-day-42-fixed-eightHours-leave-30240",
+      "request": {
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "10000000-0000-0000-0000-000000000001",
+          "updatedAt": "2026-11-01T00:00:00Z",
+          "company": {
+            "name": "Loja",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "17:30:00",
+            "operatingDays": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 42,
+              "defaultShiftDuration": "08:00:00",
+              "weeklyPlan": {
+                "contractedSeconds": 151200,
+                "dailySeconds": [
+                  0,
+                  30240,
+                  30240,
+                  30240,
+                  30240,
+                  30240,
+                  0
+                ],
+                "fiveDay42HourMode": "eightHours"
+              }
+            },
+            "minimumRest": "11:00:00",
+            "lunch": {
+              "minimum": "01:00:00",
+              "maximum": "01:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "coverage": [
+              {
+                "role": "Equipe",
+                "day": 1,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 2,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 4,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 5,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "20000000-0000-0000-0000-000000000001",
+              "name": "Pessoa",
+              "role": "Equipe",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 42,
+                "defaultShiftDuration": "08:00:00",
+                "weeklyPlan": {
+                  "contractedSeconds": 151200,
+                  "dailySeconds": [
+                    0,
+                    30240,
+                    30240,
+                    30240,
+                    30240,
+                    30240,
+                    0
+                  ],
+                  "fiveDay42HourMode": "eightHours"
+                }
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": false,
+              "preferredDaysOff": [],
+              "shiftStartsAt": "07:30:00",
+              "contractLeaves": [
+                {
+                  "date": "2026-11-11",
+                  "excusedSeconds": 30240
+                }
+              ]
+            }
+          ],
+          "assignments": [
+            {
+              "id": "30000000-0000-0000-0000-000000000009",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-09T07:30:00",
+              "end": "2026-11-09T16:30:00",
+              "break": {
+                "start": "2026-11-09T12:00:00",
+                "end": "2026-11-09T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000010",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-10T07:30:00",
+              "end": "2026-11-10T16:30:00",
+              "break": {
+                "start": "2026-11-10T12:00:00",
+                "end": "2026-11-10T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000012",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-12T07:30:00",
+              "end": "2026-11-12T16:30:00",
+              "break": {
+                "start": "2026-11-12T12:00:00",
+                "end": "2026-11-12T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000013",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-13T07:30:00",
+              "end": "2026-11-13T16:30:00",
+              "break": {
+                "start": "2026-11-13T12:00:00",
+                "end": "2026-11-13T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "planningPeriod": {
+            "start": "2026-11-09",
+            "end": "2026-11-13"
+          }
+        },
+        "start": "2026-11-09T00:00:00",
+        "end": "2026-11-13T00:00:00"
+      },
+      "expected": {
+        "expected": 120960,
+        "planned": 115200,
+        "unmet": 5760,
+        "excused": 30240,
+        "errors": [],
+        "minimumRequired": 115200,
+        "minimumMissing": 0
+      }
+    },
+    {
+      "id": "five-day-42-fixed-eightHours-leave-3600",
+      "request": {
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "10000000-0000-0000-0000-000000000001",
+          "updatedAt": "2026-11-01T00:00:00Z",
+          "company": {
+            "name": "Loja",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "17:30:00",
+            "operatingDays": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 42,
+              "defaultShiftDuration": "08:00:00",
+              "weeklyPlan": {
+                "contractedSeconds": 151200,
+                "dailySeconds": [
+                  0,
+                  30240,
+                  30240,
+                  30240,
+                  30240,
+                  30240,
+                  0
+                ],
+                "fiveDay42HourMode": "eightHours"
+              }
+            },
+            "minimumRest": "11:00:00",
+            "lunch": {
+              "minimum": "01:00:00",
+              "maximum": "01:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "coverage": [
+              {
+                "role": "Equipe",
+                "day": 1,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 2,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 4,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 5,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "20000000-0000-0000-0000-000000000001",
+              "name": "Pessoa",
+              "role": "Equipe",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 42,
+                "defaultShiftDuration": "08:00:00",
+                "weeklyPlan": {
+                  "contractedSeconds": 151200,
+                  "dailySeconds": [
+                    0,
+                    30240,
+                    30240,
+                    30240,
+                    30240,
+                    30240,
+                    0
+                  ],
+                  "fiveDay42HourMode": "eightHours"
+                }
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": false,
+              "preferredDaysOff": [],
+              "shiftStartsAt": "07:30:00",
+              "contractLeaves": [
+                {
+                  "date": "2026-11-11",
+                  "excusedSeconds": 3600
+                }
+              ]
+            }
+          ],
+          "assignments": [
+            {
+              "id": "30000000-0000-0000-0000-000000000009",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-09T07:30:00",
+              "end": "2026-11-09T16:30:00",
+              "break": {
+                "start": "2026-11-09T12:00:00",
+                "end": "2026-11-09T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000010",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-10T07:30:00",
+              "end": "2026-11-10T16:30:00",
+              "break": {
+                "start": "2026-11-10T12:00:00",
+                "end": "2026-11-10T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000011",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-11T07:30:00",
+              "end": "2026-11-11T15:54:00",
+              "break": {
+                "start": "2026-11-11T12:00:00",
+                "end": "2026-11-11T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000012",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-12T07:30:00",
+              "end": "2026-11-12T16:30:00",
+              "break": {
+                "start": "2026-11-12T12:00:00",
+                "end": "2026-11-12T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000013",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-13T07:30:00",
+              "end": "2026-11-13T16:30:00",
+              "break": {
+                "start": "2026-11-13T12:00:00",
+                "end": "2026-11-13T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "planningPeriod": {
+            "start": "2026-11-09",
+            "end": "2026-11-13"
+          }
+        },
+        "start": "2026-11-09T00:00:00",
+        "end": "2026-11-13T00:00:00"
+      },
+      "expected": {
+        "expected": 147600,
+        "planned": 141840,
+        "unmet": 5760,
+        "excused": 3600,
+        "errors": [],
+        "minimumRequired": 141840,
+        "minimumMissing": 0
+      }
+    },
+    {
+      "id": "five-day-42-automatic-eightHours-leave-30240",
+      "request": {
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "10000000-0000-0000-0000-000000000001",
+          "updatedAt": "2026-11-01T00:00:00Z",
+          "company": {
+            "name": "Loja",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "17:30:00",
+            "operatingDays": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 42,
+              "defaultShiftDuration": "08:00:00",
+              "weeklyPlan": {
+                "contractedSeconds": 151200,
+                "dailySeconds": [
+                  0,
+                  30240,
+                  30240,
+                  30240,
+                  30240,
+                  30240,
+                  0
+                ],
+                "fiveDay42HourMode": "eightHours",
+                "flexibleWorkDays": 5
+              }
+            },
+            "minimumRest": "11:00:00",
+            "lunch": {
+              "minimum": "01:00:00",
+              "maximum": "01:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "coverage": [
+              {
+                "role": "Equipe",
+                "day": 1,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 2,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 4,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 5,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "20000000-0000-0000-0000-000000000001",
+              "name": "Pessoa",
+              "role": "Equipe",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 42,
+                "defaultShiftDuration": "08:00:00",
+                "weeklyPlan": {
+                  "contractedSeconds": 151200,
+                  "dailySeconds": [
+                    0,
+                    30240,
+                    30240,
+                    30240,
+                    30240,
+                    30240,
+                    0
+                  ],
+                  "fiveDay42HourMode": "eightHours",
+                  "flexibleWorkDays": 5
+                }
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": false,
+              "preferredDaysOff": [],
+              "shiftStartsAt": "07:30:00",
+              "contractLeaves": [
+                {
+                  "date": "2026-11-11",
+                  "excusedSeconds": 30240
+                }
+              ]
+            }
+          ],
+          "assignments": [
+            {
+              "id": "30000000-0000-0000-0000-000000000009",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-09T07:30:00",
+              "end": "2026-11-09T16:30:00",
+              "break": {
+                "start": "2026-11-09T12:00:00",
+                "end": "2026-11-09T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000010",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-10T07:30:00",
+              "end": "2026-11-10T16:30:00",
+              "break": {
+                "start": "2026-11-10T12:00:00",
+                "end": "2026-11-10T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000012",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-12T07:30:00",
+              "end": "2026-11-12T16:30:00",
+              "break": {
+                "start": "2026-11-12T12:00:00",
+                "end": "2026-11-12T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000013",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-13T07:30:00",
+              "end": "2026-11-13T16:30:00",
+              "break": {
+                "start": "2026-11-13T12:00:00",
+                "end": "2026-11-13T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "planningPeriod": {
+            "start": "2026-11-09",
+            "end": "2026-11-13"
+          }
+        },
+        "start": "2026-11-09T00:00:00",
+        "end": "2026-11-13T00:00:00"
+      },
+      "expected": {
+        "expected": 120960,
+        "planned": 115200,
+        "unmet": 5760,
+        "excused": 30240,
+        "errors": [],
+        "minimumRequired": 115200,
+        "minimumMissing": 0
+      }
+    },
+    {
+      "id": "five-day-42-automatic-eightHours-leave-3600",
+      "request": {
+        "document": {
+          "schemaVersion": "1.0.0",
+          "id": "10000000-0000-0000-0000-000000000001",
+          "updatedAt": "2026-11-01T00:00:00Z",
+          "company": {
+            "name": "Loja",
+            "timeZone": "America/Cuiaba",
+            "opensAt": "07:30:00",
+            "closesAt": "17:30:00",
+            "operatingDays": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "defaultWorkload": {
+              "regimeType": "dayBased",
+              "workUnits": 5,
+              "restUnits": 2,
+              "weeklyLimitHours": 42,
+              "defaultShiftDuration": "08:00:00",
+              "weeklyPlan": {
+                "contractedSeconds": 151200,
+                "dailySeconds": [
+                  0,
+                  30240,
+                  30240,
+                  30240,
+                  30240,
+                  30240,
+                  0
+                ],
+                "fiveDay42HourMode": "eightHours",
+                "flexibleWorkDays": 5
+              }
+            },
+            "minimumRest": "11:00:00",
+            "lunch": {
+              "minimum": "01:00:00",
+              "maximum": "01:00:00",
+              "preferredAfter": "04:00:00"
+            },
+            "coverage": [
+              {
+                "role": "Equipe",
+                "day": 1,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 2,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 3,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 4,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              },
+              {
+                "role": "Equipe",
+                "day": 5,
+                "start": "07:30:00",
+                "end": "17:30:00",
+                "minimumEmployees": 1
+              }
+            ]
+          },
+          "employees": [
+            {
+              "id": "20000000-0000-0000-0000-000000000001",
+              "name": "Pessoa",
+              "role": "Equipe",
+              "inheritsCompanyDefaults": true,
+              "workload": {
+                "regimeType": "dayBased",
+                "workUnits": 5,
+                "restUnits": 2,
+                "weeklyLimitHours": 42,
+                "defaultShiftDuration": "08:00:00",
+                "weeklyPlan": {
+                  "contractedSeconds": 151200,
+                  "dailySeconds": [
+                    0,
+                    30240,
+                    30240,
+                    30240,
+                    30240,
+                    30240,
+                    0
+                  ],
+                  "fiveDay42HourMode": "eightHours",
+                  "flexibleWorkDays": 5
+                }
+              },
+              "availability": [],
+              "restrictions": [],
+              "preferences": [],
+              "allowsOvertime": false,
+              "allowsNightWork": false,
+              "preferredDaysOff": [],
+              "shiftStartsAt": "07:30:00",
+              "contractLeaves": [
+                {
+                  "date": "2026-11-11",
+                  "excusedSeconds": 3600
+                }
+              ]
+            }
+          ],
+          "assignments": [
+            {
+              "id": "30000000-0000-0000-0000-000000000009",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-09T07:30:00",
+              "end": "2026-11-09T16:30:00",
+              "break": {
+                "start": "2026-11-09T12:00:00",
+                "end": "2026-11-09T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000010",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-10T07:30:00",
+              "end": "2026-11-10T16:30:00",
+              "break": {
+                "start": "2026-11-10T12:00:00",
+                "end": "2026-11-10T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000011",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-11T07:30:00",
+              "end": "2026-11-11T15:54:00",
+              "break": {
+                "start": "2026-11-11T12:00:00",
+                "end": "2026-11-11T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000012",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-12T07:30:00",
+              "end": "2026-11-12T16:30:00",
+              "break": {
+                "start": "2026-11-12T12:00:00",
+                "end": "2026-11-12T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            },
+            {
+              "id": "30000000-0000-0000-0000-000000000013",
+              "employeeId": "20000000-0000-0000-0000-000000000001",
+              "role": "Equipe",
+              "start": "2026-11-13T07:30:00",
+              "end": "2026-11-13T16:30:00",
+              "break": {
+                "start": "2026-11-13T12:00:00",
+                "end": "2026-11-13T13:00:00"
+              },
+              "source": "manual",
+              "tags": []
+            }
+          ],
+          "planningPeriod": {
+            "start": "2026-11-09",
+            "end": "2026-11-13"
+          }
+        },
+        "start": "2026-11-09T00:00:00",
+        "end": "2026-11-13T00:00:00"
+      },
+      "expected": {
+        "expected": 147600,
+        "planned": 141840,
+        "unmet": 5760,
+        "excused": 3600,
+        "errors": [],
+        "minimumRequired": 141840,
+        "minimumMissing": 0
       }
     }
   ]

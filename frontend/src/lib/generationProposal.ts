@@ -1,3 +1,4 @@
+import { contractMinimums, invalidContractDistributions } from './policies/contractMinimum';
 import type { EscalaLivreDocument, ScheduleResult, ShiftAssignment } from "../types/schedule";
 import { normalizeResultTimes } from "./dateTime";
 import { periodError, type PlanningPeriod } from "./planningPeriod";
@@ -11,6 +12,8 @@ export function generationProposal(document:EscalaLivreDocument,result:ScheduleR
  if(!["optimal","feasible"].includes(result.optimization?.status??"not-run")||result.conflicts.some(c=>["solverInfeasible","solverTimeout","solverInvalid"].includes(c.code)))throw Error("A geração não encontrou proposta admissível. Os turnos foram mantidos. "+result.conflicts.filter(c=>c.severity==="error").slice(0,5).map(c=>c.message).join(" "));
  for(const old of document.assignments.filter(a=>a.pinned&&belongsToPeriod(a,range))){const proposed=result.assignments.find(a=>a.id===old.id);if(!proposed||canonical(old)!==canonical(proposed))throw Error("A proposta não preserva integralmente um turno fixado.");}
  const assignments=replacePeriodAssignments({...document,planningPeriod:range},result.assignments);
+ if(invalidContractDistributions(document,range.start).length)throw Error("A distribuição diária não soma a carga contratada. Ajuste a distribuição antes de gerar.");
+ if(contractMinimums({...document,assignments},range.start+'T00:00:00',range.end+'T23:59:59').some(m=>m.missingSeconds>0))throw Error('A proposta não cumpre a carga contratada. Os turnos foram mantidos. Confira jornada, disponibilidade e folgas.');
  const preview=previewPlanning(document,{...document,assignments},"Aplicar proposta de geração");
  const changes={added:assignments.filter(a=>!document.assignments.some(old=>old.id===a.id)),removed:document.assignments.filter(old=>!assignments.some(a=>a.id===old.id)),changed:assignments.filter(a=>{const old=document.assignments.find(old=>old.id===a.id);return old&&canonical(old)!==canonical(a);})};
  return {...preview,document:{...preview.document,assignments},changes,range};

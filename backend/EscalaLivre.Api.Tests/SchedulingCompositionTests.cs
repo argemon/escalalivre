@@ -48,7 +48,7 @@ public sealed class SchedulingCompositionTests
         Assert.IsType<OrToolsScheduleOptimizer>(services.GetRequiredService<IScheduleOptimizer>());
         Assert.NotNull(services.GetRequiredService<GenerateSchedule>());
         Assert.Equal(new[] { typeof(FixedAssignmentConstraints), typeof(DailyExclusivityConstraints), typeof(WeeklyIntervalConstraints), typeof(IntervalTimingConstraints), typeof(IntervalDurationConstraints), typeof(RestConstraints),
-            typeof(WeeklyWorkConstraints), typeof(DayCycleConstraints), typeof(CoverageConstraints) },
+            typeof(WeeklyWorkConstraints), typeof(DayCycleConstraints), typeof(ContractWorkConstraints), typeof(CoverageConstraints) },
             services.GetServices<IScheduleConstraintTranslator>().Select(t => t.GetType()));
     }
 }
