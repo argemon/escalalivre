@@ -493,7 +493,7 @@ A interface usa a geração assíncrona: `POST /solve/jobs` recebe documento e p
 
 ## Qualidade e validação
 
-O projeto inclui testes de cobertura, intervalos, descanso, turnos noturnos, substituições autorizadas, feriados, impressão, período de planejamento, datas e horários, recuperação, preservação de turnos e segurança. As suítes separam domínio/aplicação puros, adaptadores com OR-Tools real, API e arquitetura.
+O projeto inclui testes de cobertura, intervalos, descanso, turnos noturnos, substituições autorizadas, feriados, impressão, período de planejamento, datas e horários, recuperação, preservação de turnos e segurança. As suítes separam domínio/aplicação puros, adaptadores com OR-Tools real, API e arquitetura. Os testes do adaptador executam sem paralelismo entre coleções para evitar disputa de CPU nos prazos do solver; o limite de produção permanece em 5 segundos.
 
 A comparação diferencial entre C# e TypeScript usa cenários determinísticos para conferir diagnósticos, cobertura, lacunas, pontuação e saldos diários e semanais de carga contratada, além de propriedades de imutabilidade, migração e preservação de histórico. Os testes incluem saída antecipada, dispensas explícitas e teto semanal com e sem autorização de extras. A autorização por IDs explícitos prevalece sobre nomes legados, inclusive quando uma autorização é revogada.
 

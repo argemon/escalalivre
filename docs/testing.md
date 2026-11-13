@@ -94,3 +94,12 @@ Evidências, CI pendente e limitações: [etapa 3](decisions/018-weekly-workload
 ## Operação — conclusão local de 11/11/2026
 
 As nove tasks estão concluídas localmente. [Validação consolidada](tasks/operacao/VALIDACAO-FINAL.md) registra a execução integral, expectativas antigas corrigidas, rechecagens focadas, manifesto dos fontes, cenário final real e inspeção PDF/PNG/XLSX. O inventário final coberto por esses escopos é 855 .NET e 674 frontend por fuso, além de 33 HTTP e 216 cenários diferenciais por fuso. Isto não declara CI remota aprovada nem uma segunda execução integral posterior às correções. CI da revisão exata permanece pendente antes de integrar.
+
+
+## Isolamento dos testes nativos — 13/11/2026
+
+A execução [Validate da main](https://github.com/argemon/escalalivre/actions/runs/43300832565) falhou em `MixedContractsAreMandatoryEvenWithNoCoverageDemand(false)`: o solver retornou `timeout` nos cinco segundos disponíveis. A execução anterior da PR havia passado. A mesma falha foi reproduzida localmente com a suíte de adaptador em dois processadores; os outros 469 testes passaram.
+
+`EscalaLivre.Adapter.Tests/TestExecution.cs` desativa o paralelismo entre coleções xUnit apenas nesse assembly. Isso evita que os testes de OR-Tools disputem CPU entre si dentro de prazos medidos por tempo decorrido. Os 470 testes, suas exigências de carga/cobertura e o limite real de cinco segundos permanecem; nenhum teste aceita timeout como sucesso. O solver, a fila e as regras de produção não foram alterados.
+
+Após a mudança, a suíte completa foi executada três vezes em Release, com afinidade limitada a dois processadores: 470/470 em cada repetição. Essa evidência verifica o caso reproduzido, sem prometer ausência de timeout sob qualquer carga. A CI completa continua obrigatória antes da integração.
